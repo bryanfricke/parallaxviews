@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>Resurrection Theories — Coverage Mockup</title>
+<style>
+  body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  #topbar {
+    display:flex; gap:16px; align-items:center; padding:10px 14px; border-bottom:1px solid #ddd;
+    position:sticky; top:0; background:#fff; z-index:10;
+  }
+  #topbar .group { display:flex; gap:10px; align-items:center; }
+  #legend { margin-left:auto; display:flex; gap:16px; align-items:center; font-size:12px; color:#444; }
+  #legend .swatch { width:12px; height:12px; border-radius:3px; display:inline-block; margin-right:6px; }
+  #legend .line { width:18px; height:0; border-top:3px solid; display:inline-block; margin-right:6px; }
+
+  .node text { pointer-events:none; font-size:12px; }
+  .link { stroke-opacity:0.7; }
+  .tooltip {
+    position:absolute; background:#fff; border:1px solid #ccc; padding:6px 10px; border-radius:4px;
+    pointer-events:none; font-size:13px; display:none; box-shadow:0 2px 6px rgba(0,0,0,.08);
+  }
+  .orphan circle { opacity:0.35; }
+</style>
+
+<div id="topbar">
+  <div class="group"><strong>Theories:</strong>
+    <label><input type="checkbox" class="theory-toggle" value="Resurrection" checked> Resurrection</label>
+    <label><input type="checkbox" class="theory-toggle" value="Hallucination Theory" checked> Hallucination</label>
+    <label><input type="checkbox" class="theory-toggle" value="Stolen Body Theory" checked> Stolen Body</label>
+    <label><input type="checkbox" class="theory-toggle" value="Swoon Theory" checked> Swoon</label>
+  </div>
+  <div class="group">
+    <label><input type="checkbox" id="toggle-prophecy" checked> Show Prophecies</label>
+    <button id="btn-only-resurrection">Resurrection Only</button>
+    <button id="btn-reset">Show All</button>
+  </div>
+  <div id="legend">
+    <span><span class="swatch" style="background:#4F81BD"></span>Facts</span>
+    <span><span class="swatch" style="background:#F28E2B"></span>Theories</span>
+    <span><span class="swatch" style="background:#59A14F"></span>Prophecies</span>
+    <span><span class="line" style="border-color:green"></span>Explains</span>
+    <span><span class="line" style="border-color:orange"></span>Partial</span>
+    <span><span class="line" style="border-color:red"></span>Fails</span>
+  </div>
+</div>
+
+<svg id="graph" width="1200" height="760"></svg>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+/*** DATA ***/
+const nodes = [
+  // Minimal Facts
+  { id: "Empty Tomb", group: "fact" },
+  { id: "Post-Resurrection Appearances", group: "fact" },
+  { id: "Conversion of Paul", group: "fact" },
+  { id: "Conversion of James", group: "fact" },
+  { id: "Early Proclamation", group: "fact" },
+
+  // Theories
+  { id: "Hallucination Theory", group: "theory" },
+  { id: "Stolen Body Theory", group: "theory" },
+  { id: "Swoon Theory", group: "theory" },
+  { id: "Resurrection", group: "theory" },
+
+  // Prophecies
+  { id: "Isaiah 53", group: "prophecy" },
+  { id: "Psalm 22", group: "prophecy" }
+];
+
+const linksAll = [
+  // Theory → Fact (with explanatory strength)
+  { source: "Hallucination Theory", target: "Post-Resurrection Appearances", strength: "partial" },
+  { source: "Hallucination Theory", target: "Conversion of Paul", strength: "partial" },
+  { source: "Hallucination Theory", target: "Empty Tomb", strength: "fail" },
+
+  { source: "Stolen Body Theory", target: "Empty Tomb", strength: "good" },
+  { source: "Stolen Body Theory", target: "Post-Resurrection Appearances", strength: "fail" },
+
+  { source: "Swoon Theory", target: "Empty Tomb", strength: "good" },
+  { source: "Swoon Theory", target: "Post-Resurrection Appearances", strength: "fail" },
+  { source: "Swoon Theory", target: "Conversion of Paul", strength: "fail" },
+
+  { source: "Resurrection", target: "Empty Tomb", strength: "good" },
+  { source: "Resurrection", target: "Post-Resurrection Appearances", strength: "good" },
+  { source: "Resurrection", target: "Conversion of Paul", strength: "good" },
+  { source: "Resurrection", target: "Conversion of James", strength: "good" },
+  { source: "Resurrection", target: "Early Proclamation", strength: "good" },
+
+  // Theory → Prophecy (placeholder)
+  { source: "Resurrection", target: "Isaiah 53", strength: "good" },
+  { source: "Resurrection", target: "Psalm 22", strength: "good" }
+];
+
+/*** SCALES & CONSTS ***/
+const colorScale = d3.scaleOrdinal()
+  .domain(["fact", "theory", "prophecy"])
+  .range(["#4F81BD", "#F28E2B", "#59A14F"]);
+
+const linkColor = { good: "green", partial: "orange", fail: "red" };
+const linkWidth = { good: 3, partial: 2, fail: 1.5 };
+
+const svg = d3.select("#graph"),
+      width = +svg.attr("width"),
+      height = +svg.attr("height");
+
+const idToNode = new Map(nodes.map(d => [d.id, d]));
+
+/*** STATE ***/
+let activeTheories = new Set(["Resurrection", "Hallucination Theory", "Stolen Body Theory", "Swoon Theory"]);
+let showProphecy = true;
+
+/*** BUILD — STATIC NODES GROUP ***/
+const gLinks = svg.append("g");
+const gNodes = svg.append("g");
+
+const node = gNodes.selectAll("g.node")
+  .data(nodes, d => d.id)
+  .join("g")
+  .attr("class", "node");
+
+node.append("circle")
+  .attr("r", 10)
+  .attr("fill", d => colorScale(d.group));
+
+node.append("text")
+  .attr("x", 12)
+  .attr("y", "0.31em")
+  .text(d => d.id);
+
+// Tooltip
+const tooltip = d3.select("body").append("div").attr("class", "tooltip");
+
+node.on("mouseover", (event, d) => {
+  tooltip.style("display","block")
+    .html(`<strong>${d.id}</strong><br>Type: ${d.group}`);
+}).on("mousemove", (event) => {
+  tooltip.style("left", (event.pageX + 10) + "px")
+         .style("top", (event.pageY + 10) + "px");
+}).on("mouseout", () => tooltip.style("display","none"));
+
+/*** SIMULATION ***/
+const simulation = d3.forceSimulation(nodes)
+  .force("link", d3.forceLink().id(d => d.id).distance(l => l.strength === "good" ? 120 : 160))
+  .force("charge", d3.forceManyBody().strength(-450))
+  .force("collide", d3.forceCollide().radius(28))
+  .force("x", d3.forceX(getX).strength(0.18))
+  .force("y", d3.forceY(getY).strength(0.06))
+  .alpha(1)
+  .alphaDecay(0.02);
+
+simulation.on("tick", () => {
+  gLinks.selectAll("line.link")
+    .attr("x1", d => d.source.x)
+    .attr("y1", d => d.source.y)
+    .attr("x2", d => d.target.x)
+    .attr("y2", d => d.target.y);
+
+  node
+    .classed("orphan", d => isOrphan(d))
+    .attr("transform", d => `translate(${d.x},${d.y})`);
+});
+
+/*** RENDER CYCLE ***/
+function getActiveLinks() {
+  // Only links from active theories; prophecy targets only if showProphecy
+  return linksAll.filter(l => {
+    const src = typeof l.source === "string" ? l.source : l.source.id;
+    const tgt = typeof l.target === "string" ? l.target : l.target.id;
+    if (!activeTheories.has(src)) return false;
+    const tgtNode = idToNode.get(tgt);
+    if (tgtNode?.group === "prophecy" && !showProphecy) return false;
+    return true;
+  });
+}
+
+function renderLinks() {
+  const data = getActiveLinks();
+
+  // JOIN by stable key
+  const link = gLinks.selectAll("line.link")
+    .data(data, d => {
+      const s = typeof d.source === "string" ? d.source : d.source.id;
+      const t = typeof d.target === "string" ? d.target : d.target.id;
+      return `${s}→${t}`;
+    });
+
+  link.exit().remove();
+
+  link.enter()
+    .append("line")
+    .attr("class", "link")
+    .attr("stroke", d => linkColor[d.strength])
+    .attr("stroke-width", d => linkWidth[d.strength]);
+
+  // update link force with active links only
+  simulation.force("link").links(data);
+}
+
+function renderNodeVisibility() {
+  // Show facts always; prophecies only if toggled; theories only if active
+  node.style("display", d => {
+    if (d.group === "fact") return null;
+    if (d.group === "prophecy") return showProphecy ? null : "none";
+    if (d.group === "theory") return activeTheories.has(d.id) ? null : "none";
+    return null;
+  });
+}
+
+function isOrphan(n) {
+  if (n.group === "theory") return false;
+  if (n.group === "prophecy" && !showProphecy) return true;
+
+  const active = getActiveLinks();
+  // Check if there exists an explanatory link pointing TO this node
+  const explained = active.some(l => {
+    const tgt = typeof l.target === "string" ? l.target : l.target.id;
+    if (tgt !== n.id) return false;
+    return l.strength === "good" || l.strength === "partial";
+  });
+  return !explained;
+}
+
+function refreshLayout() {
+  renderLinks();
+  renderNodeVisibility();
+  // Recompute forces (getX/getY use orphan status and toggles)
+  simulation.force("x", d3.forceX(getX).strength(0.18));
+  simulation.alpha(0.6).restart();
+}
+
+/*** LAYOUT HELPERS ***/
+// Disjoint layout: explained cluster center-left; orphans slide to the right column
+function getX(d) {
+  const margin = 80;
+  const left = margin + 80;             // theories
+  const centerL = width / 2 - 150;      // explained facts cluster
+  const centerR = width / 2 + 150;      // explained prophecies cluster
+  const right = width - margin - 120;   // orphan rail
+
+  if (d.group === "theory")   return left;
+  if (d.group === "fact")     return isOrphan(d) ? right : centerL;
+  if (d.group === "prophecy") return showProphecy ? (isOrphan(d) ? right : centerR) : right;
+  return width/2;
+}
+
+function getY(d) {
+  const h = height, pad = 70;
+  if (d.group === "theory")   return pad + 80;
+  if (d.group === "fact")     return h/2;
+  if (d.group === "prophecy") return h - pad - 100;
+  return h/2;
+}
+
+/*** DRAG ***/
+node.call(
+  d3.drag()
+    .on("start", event => {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      event.subject.fx = event.subject.x;
+      event.subject.fy = event.subject.y;
+    })
+    .on("drag", event => {
+      event.subject.fx = event.x;
+      event.subject.fy = event.y;
+    })
+    .on("end", event => {
+      if (!event.active) simulation.alphaTarget(0);
+      event.subject.fx = null;
+      event.subject.fy = null;
+    })
+);
+
+/*** UI WIRING ***/
+document.querySelectorAll(".theory-toggle").forEach(cb => {
+  cb.addEventListener("change", e => {
+    const val = e.target.value;
+    if (e.target.checked) activeTheories.add(val);
+    else activeTheories.delete(val);
+    refreshLayout();
+  });
+});
+
+document.getElementById("toggle-prophecy").addEventListener("change", e => {
+  showProphecy = e.target.checked;
+  refreshLayout();
+});
+
+document.getElementById("btn-only-resurrection").addEventListener("click", () => {
+  activeTheories = new Set(["Resurrection"]);
+  document.querySelectorAll(".theory-toggle").forEach(cb => cb.checked = (cb.value === "Resurrection"));
+  showProphecy = true; document.getElementById("toggle-prophecy").checked = true;
+  refreshLayout();
+});
+
+document.getElementById("btn-reset").addEventListener("click", () => {
+  activeTheories = new Set(["Resurrection","Hallucination Theory","Stolen Body Theory","Swoon Theory"]);
+  document.querySelectorAll(".theory-toggle").forEach(cb => cb.checked = true);
+  showProphecy = true; document.getElementById("toggle-prophecy").checked = true;
+  refreshLayout();
+});
+
+/*** INITIAL ***/
+refreshLayout();
+</script>
