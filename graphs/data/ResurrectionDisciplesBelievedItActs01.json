@@ -449,224 +449,224 @@
                                             ]
                                         }
                                     ]
-                                },
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Believed It",
+                            "children": [
                                 {
-                                    "name": "Believed It",
+                                    "name": "Acts",
                                     "children": [
                                         {
-                                            "name": "Acts",
-                                            "children": [
-                                                {
-                                                    "name": "Acts 4:1–22",
-                                                    "subtitle": "Peter and John before the Sanhedrin",
-                                                    "date": "c. AD 30 (event); c. AD 60–80 (traditional dating of Acts)",
-                                                    "details": "Peter and John were arrested for healing a lame man and preaching about Jesus' resurrection. They affirmed that they must obey God rather than men, despite threats from the Jewish council.",
-                                                    "whyItMatters": [
-                                                        "The public trial showed early opposition to resurrection preaching",
-                                                        "The apostles were bold under threat",
-                                                        "Both affirmed the same message of resurrection, showing a unity of witness"
-                                                    ],
-                                                    "source": {
-                                                        "title": "Acts 4:1–22 (ESV)",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+4%3A1-22&version=ESV"
-                                                    }
-                                                },
-                                                {
-                                                    "name": "Acts 5:17–42",
-                                                    "subtitle": "Apostles Imprisoned and Flogged",
-                                                    "date": "c. AD 30 (event); c. AD 60–80 (traditional dating of Acts)",
-                                                    "details": "All the apostles were imprisoned for preaching the resurrection. After an angel released them, they were brought before the Sanhedrin again, where Peter stated they were witnesses to these things. They were flogged and warned but left rejoicing.",
-                                                    "whyItMatters": [
-                                                        "The apostles found joy in suffering",
-                                                        "The angel's intervention underscored divine support",
-                                                        "They persisted in teaching daily despite repeated threats"
-                                                    ],
-                                                    "source": {
-                                                        "title": "Acts 5:17–42 (ESV)",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+5%3A17-42&version=ESV"
-                                                    }
-                                                },
-                                                {
-                                                    "name": "Acts 7:54–60",
-                                                    "subtitle": "The Martyrdom of Stephen",
-                                                    "date": "c. AD 30–35 (event); c. AD 60–80 (traditional dating of Acts)",
-                                                    "details": "Stephen, a deacon, was stoned after delivering a bold defense. As he was being killed, he saw a vision of the risen Christ and prayed for his killers.",
-                                                    "whyItMatters": [
-                                                        "The vision of the risen Christ reinforced belief even at death",
-                                                        "Stephen's death marked the beginning of open persecution",
-                                                        "His prayer for his killers paralleled Jesus' own crucifixion words"
-                                                    ],
-                                                    "source": {
-                                                        "title": "Acts 7:54–60 (ESV)",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+7%3A54-60&version=ESV"
-                                                    }
-                                                },
-                                                {
-                                                    "name": "Acts 12:1–5",
-                                                    "subtitle": "James Killed, Peter Imprisoned",
-                                                    "date": "c. AD 44 (event); c. AD 60–80 (traditional dating of Acts)",
-                                                    "details": "King Herod executed James, making him the first of the Twelve to be martyred. Peter was then arrested and imprisoned but was later rescued by an angel.",
-                                                    "whyItMatters": [
-                                                        "James's execution underscores the mortal risk of discipleship",
-                                                        "Herod's actions show that resurrection preaching had real political consequences",
-                                                        "Peter's imprisonment shows the ongoing danger to church leaders"
-                                                    ],
-                                                    "source": {
-                                                        "title": "Acts 12:1–5 (ESV)",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+12%3A1-5&version=ESV"
-                                                    }
-                                                }
-                                            ]
+                                            "name": "Acts 4:1–22",
+                                            "subtitle": "Peter and John before the Sanhedrin",
+                                            "date": "c. AD 30 (event); c. AD 60–80 (traditional dating of Acts)",
+                                            "details": "Peter and John were arrested for healing a lame man and preaching about Jesus' resurrection. They affirmed that they must obey God rather than men, despite threats from the Jewish council.",
+                                            "whyItMatters": [
+                                                "The public trial showed early opposition to resurrection preaching",
+                                                "The apostles were bold under threat",
+                                                "Both affirmed the same message of resurrection, showing a unity of witness"
+                                            ],
+                                            "source": {
+                                                "title": "Acts 4:1–22 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Acts+4%3A1-22&version=ESV"
+                                            }
                                         },
                                         {
-                                            "name": "Clement of Rome",
-                                            "children": [
-                                                {
-                                                    "name": "1 Clement 5:2–7",
-                                                    "subtitle": "Martyrdom of Peter and Paul",
-                                                    "date": "c. AD 95–97",
-                                                    "details": "In this early letter from the church in Rome to the Corinthians, traditionally attributed to Clement, the author describes the sufferings and martyrdoms of Peter and Paul. They are presented as steadfast witnesses who endured trials, imprisonments, and death because of their proclamation of the risen Christ. Clement shows admiration for their endurance and conviction, seeing their deaths as the ultimate testimony to the truth of the resurrection.",
-                                                    "whyItMatters": [
-                                                        "It provides early external affirmation, written from Rome within a generation of the apostles' deaths, which shows widespread acceptance of their martyrdom.",
-                                                        "It portrays suffering not as a defeat, but as a validation of the resurrection message.",
-                                                        "It reinforces the credibility of resurrection preaching from the perspective of the Roman church, outside of the Jerusalem context."
-                                                    ],
-                                                    "source": {
-                                                        "title": "1 Clement, Chapter 5, Verses 2–7",
-                                                        "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%205%3A1%0ABut,pattern%20of%20patient%20endurance."
-                                                    }
-                                                }
-                                            ]
+                                            "name": "Acts 5:17–42",
+                                            "subtitle": "Apostles Imprisoned and Flogged",
+                                            "date": "c. AD 30 (event); c. AD 60–80 (traditional dating of Acts)",
+                                            "details": "All the apostles were imprisoned for preaching the resurrection. After an angel released them, they were brought before the Sanhedrin again, where Peter stated they were witnesses to these things. They were flogged and warned but left rejoicing.",
+                                            "whyItMatters": [
+                                                "The apostles found joy in suffering",
+                                                "The angel's intervention underscored divine support",
+                                                "They persisted in teaching daily despite repeated threats"
+                                            ],
+                                            "source": {
+                                                "title": "Acts 5:17–42 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Acts+5%3A17-42&version=ESV"
+                                            }
                                         },
                                         {
-                                            "name": "Ignatius of Antioch",
-                                            "children": [
-                                                {
-                                                    "name": "Ignatius to the Smyrnaeans 3:1–2 ",
-                                                    "subtitle": "Apostolic Witness to the Bodily Resurrection",
-                                                    "date": "c. AD 107",
-                                                    "details": "Ignatius, the bishop of Antioch, was writing on his way to martyrdom. In his epistle, he affirmed the bodily resurrection of Jesus, stating that Jesus appeared in the flesh after the resurrection and invited the disciples to touch him. This direct encounter is presented as the reason for the apostles' boldness and their willingness to face death.",
-                                                    "whyItMatters": [
-                                                        "It emphasizes the bodily resurrection, countering the belief system known as docetism.",
-                                                        "It shows that the apostles' belief had a direct experiential basis, with their courage stemming from physical contact with the risen Christ.",
-                                                        "Ignatius, as a martyr facing his own death, uses the disciples' example to link belief in the resurrection with the willingness to die for the truth."
-                                                    ],
-                                                    "source": {
-                                                        "title": "The Epistle of Ignatius to the Smyrnaeans, Chapter 3, Sections 1–2",
-                                                        "url": "https://www.earlychristianwritings.com/text/ignatius-smyrnaeans-lightfoot.html#:~:text=3%3A1%20For,superior%20to%20death."
-                                                    }
-                                                }
-                                            ]
+                                            "name": "Acts 7:54–60",
+                                            "subtitle": "The Martyrdom of Stephen",
+                                            "date": "c. AD 30–35 (event); c. AD 60–80 (traditional dating of Acts)",
+                                            "details": "Stephen, a deacon, was stoned after delivering a bold defense. As he was being killed, he saw a vision of the risen Christ and prayed for his killers.",
+                                            "whyItMatters": [
+                                                "The vision of the risen Christ reinforced belief even at death",
+                                                "Stephen's death marked the beginning of open persecution",
+                                                "His prayer for his killers paralleled Jesus' own crucifixion words"
+                                            ],
+                                            "source": {
+                                                "title": "Acts 7:54–60 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Acts+7%3A54-60&version=ESV"
+                                            }
                                         },
                                         {
-                                            "name": "Polycarp",
-                                            "children": [
-                                                {
-                                                    "name": "Polycarp to the Philippians 9:1–2",
-                                                    "subtitle": "Apostolic Endurance and Suffering",
-                                                    "date": "c. AD 110–140",
-                                                    "details": "Polycarp, bishop of Smyrna and a direct disciple of the apostle John, encourages readers to persist in their faith by highlighting the steadfast endurance of the apostles and other believers. He states that \"Paul himself and the rest of the Apostles ran not in vain but in faith and righteousness,\" and that they \"suffered.\" As someone who likely knew the apostles and their followers personally, Polycarp provides early confirmation that apostolic suffering was closely linked to the resurrection message.",
-                                                    "whyItMatters": [
-                                                        "Eyewitness connection: Polycarp is part of the living memory of the apostolic age, which enhances credibility.",
-                                                        "Suffering linked to belief: He confirms that apostolic endurance was founded on a conviction powerful enough to withstand pain and persecution.",
-                                                        "Call to perseverance: Early Christian leaders regarded apostolic suffering as an example for continued faithfulness."
-                                                    ],
-                                                    "source": {
-                                                        "title": "The Epistle of Polycarp to the Philippians, Chapter 9, Sections 1–2 (trans. J. B. Lightfoot)",
-                                                        "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
-                                                    }
-                                                }
-                                            ]
+                                            "name": "Acts 12:1–5",
+                                            "subtitle": "James Killed, Peter Imprisoned",
+                                            "date": "c. AD 44 (event); c. AD 60–80 (traditional dating of Acts)",
+                                            "details": "King Herod executed James, making him the first of the Twelve to be martyred. Peter was then arrested and imprisoned but was later rescued by an angel.",
+                                            "whyItMatters": [
+                                                "James's execution underscores the mortal risk of discipleship",
+                                                "Herod's actions show that resurrection preaching had real political consequences",
+                                                "Peter's imprisonment shows the ongoing danger to church leaders"
+                                            ],
+                                            "source": {
+                                                "title": "Acts 12:1–5 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Acts+12%3A1-5&version=ESV"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Clement of Rome",
+                                    "children": [
+                                        {
+                                            "name": "1 Clement 5:2–7",
+                                            "subtitle": "Martyrdom of Peter and Paul",
+                                            "date": "c. AD 95–97",
+                                            "details": "In this early letter from the church in Rome to the Corinthians, traditionally attributed to Clement, the author describes the sufferings and martyrdoms of Peter and Paul. They are presented as steadfast witnesses who endured trials, imprisonments, and death because of their proclamation of the risen Christ. Clement shows admiration for their endurance and conviction, seeing their deaths as the ultimate testimony to the truth of the resurrection.",
+                                            "whyItMatters": [
+                                                "It provides early external affirmation, written from Rome within a generation of the apostles' deaths, which shows widespread acceptance of their martyrdom.",
+                                                "It portrays suffering not as a defeat, but as a validation of the resurrection message.",
+                                                "It reinforces the credibility of resurrection preaching from the perspective of the Roman church, outside of the Jerusalem context."
+                                            ],
+                                            "source": {
+                                                "title": "1 Clement, Chapter 5, Verses 2–7",
+                                                "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%205%3A1%0ABut,pattern%20of%20patient%20endurance."
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Ignatius of Antioch",
+                                    "children": [
+                                        {
+                                            "name": "Ignatius to the Smyrnaeans 3:1–2 ",
+                                            "subtitle": "Apostolic Witness to the Bodily Resurrection",
+                                            "date": "c. AD 107",
+                                            "details": "Ignatius, the bishop of Antioch, was writing on his way to martyrdom. In his epistle, he affirmed the bodily resurrection of Jesus, stating that Jesus appeared in the flesh after the resurrection and invited the disciples to touch him. This direct encounter is presented as the reason for the apostles' boldness and their willingness to face death.",
+                                            "whyItMatters": [
+                                                "It emphasizes the bodily resurrection, countering the belief system known as docetism.",
+                                                "It shows that the apostles' belief had a direct experiential basis, with their courage stemming from physical contact with the risen Christ.",
+                                                "Ignatius, as a martyr facing his own death, uses the disciples' example to link belief in the resurrection with the willingness to die for the truth."
+                                            ],
+                                            "source": {
+                                                "title": "The Epistle of Ignatius to the Smyrnaeans, Chapter 3, Sections 1–2",
+                                                "url": "https://www.earlychristianwritings.com/text/ignatius-smyrnaeans-lightfoot.html#:~:text=3%3A1%20For,superior%20to%20death."
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Polycarp",
+                                    "children": [
+                                        {
+                                            "name": "Polycarp to the Philippians 9:1–2",
+                                            "subtitle": "Apostolic Endurance and Suffering",
+                                            "date": "c. AD 110–140",
+                                            "details": "Polycarp, bishop of Smyrna and a direct disciple of the apostle John, encourages readers to persist in their faith by highlighting the steadfast endurance of the apostles and other believers. He states that \"Paul himself and the rest of the Apostles ran not in vain but in faith and righteousness,\" and that they \"suffered.\" As someone who likely knew the apostles and their followers personally, Polycarp provides early confirmation that apostolic suffering was closely linked to the resurrection message.",
+                                            "whyItMatters": [
+                                                "Eyewitness connection: Polycarp is part of the living memory of the apostolic age, which enhances credibility.",
+                                                "Suffering linked to belief: He confirms that apostolic endurance was founded on a conviction powerful enough to withstand pain and persecution.",
+                                                "Call to perseverance: Early Christian leaders regarded apostolic suffering as an example for continued faithfulness."
+                                            ],
+                                            "source": {
+                                                "title": "The Epistle of Polycarp to the Philippians, Chapter 9, Sections 1–2 (trans. J. B. Lightfoot)",
+                                                "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Tertullian",
+                                    "children": [
+                                        {
+                                            "name": "Scorpiace 15",
+                                            "subtitle": "Apostles’ Martyrdom as Public Witness",
+                                            "date": "c. AD 203",
+                                            "details": "In a theological defense of martyrdom, Tertullian, a North African church father, cites the violent deaths of Peter, Paul, James, and Stephen as both historical fact and theological witness. He asserts that their testimony was \"written in their own blood\" and challenges skeptics to check public records for confirmation. He describes their martyrdom as open, verifiable, and a result of their conviction in the resurrection, portraying Paul's execution as a \"new birth.\"",
+                                            "whyItMatters": [
+                                                "Legal-historical appeal: Tertullian references Roman archives for external validation.",
+                                                "Suffering as testimony: Martyrdom is presented as an active witness to their belief in the resurrection.",
+                                                "Early apologetic use: This shows that martyrdom was being used as evidence in theological arguments as early as the 3rd century."
+                                            ],
+                                            "source": {
+                                                "title": "Scorpiace, Chapter 15 (trans. S. Thelwall via Early Christian Writings)",
+                                                "url": "https://www.earlychristianwritings.com/text/tertullian18.html#:~:text=CHAP.%20XV.,draught%20of%20ours."
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Dionysius of Corinth",
+                                    "children": [
+                                        {
+                                            "name": "Ecclesiastical History, Book 2, Chapter 25",
+                                            "subtitle": "Unified Martyrdom of Peter and Paul",
+                                            "date": "c. AD 170",
+                                            "details": "Dionysius of Corinth, a bishop, testified to the martyrdom of both Peter and Paul, describing their deaths as a unified witness of the early church. In a fragment of his writing, preserved by Eusebius, he states that both apostles “suffered martyrdom at the same time.”",
+                                            "whyItMatters": [
+                                                "It confirms an early tradition of apostolic martyrdom.",
+                                                "It links the two leading apostles in a shared testimony of faith.",
+                                                "The tradition is cited by Eusebius, a major historian, which adds historical weight to it."
+                                            ],
+                                            "source": {
+                                                "title": "Dionysius of Corinth, fragment cited in Ecclesiastical History, Book 2, Chapter 25, Section 8",
+                                                "url": "https://sites.google.com/view/risen-evidence/resurrection/disciples/believed-it/dionysius-of-corinth"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Origen",
+                                    "children": [
+                                        {
+                                            "name": "Ecclesiastical History, Book 3, Chapter 1",
+                                            "subtitle": "Martyrdom of Peter and Paul under Nero",
+                                            "date": "c. AD 230",
+                                            "details": "Origen, a learned Christian theologian from the early third century, confirms that Peter was crucified and Paul was beheaded in Rome during Nero's reign. This tradition was well-established by his time and is preserved by Eusebius.",
+                                            "whyItMatters": [
+                                                "It confirms the martyrdom tradition, showing that the deaths of Peter and Paul were widely accepted by the early 3rd century.",
+                                                "It is consistent with earlier sources like Clement of Rome and Dionysius of Corinth.",
+                                                "It demonstrates the historical continuity and enduring memory of the apostolic witness as foundational to early Christian identity."
+                                            ],
+                                            "source": {
+                                                "title": "Origen, Commentary on Genesis, fragment cited in Ecclesiastical History, Book 3, Chapter 1 (trans. Arthur C. McGiffert via CCEL)",
+                                                "url": "https://ccel.org/ccel/schaff/npnf201/npnf201.iii.viii.i.html"
+                                            }
                                         },
                                         {
-                                            "name": "Tertullian",
-                                            "children": [
-                                                {
-                                                    "name": "Scorpiace 15",
-                                                    "subtitle": "Apostles’ Martyrdom as Public Witness",
-                                                    "date": "c. AD 203",
-                                                    "details": "In a theological defense of martyrdom, Tertullian, a North African church father, cites the violent deaths of Peter, Paul, James, and Stephen as both historical fact and theological witness. He asserts that their testimony was \"written in their own blood\" and challenges skeptics to check public records for confirmation. He describes their martyrdom as open, verifiable, and a result of their conviction in the resurrection, portraying Paul's execution as a \"new birth.\"",
-                                                    "whyItMatters": [
-                                                        "Legal-historical appeal: Tertullian references Roman archives for external validation.",
-                                                        "Suffering as testimony: Martyrdom is presented as an active witness to their belief in the resurrection.",
-                                                        "Early apologetic use: This shows that martyrdom was being used as evidence in theological arguments as early as the 3rd century."
-                                                    ],
-                                                    "source": {
-                                                        "title": "Scorpiace, Chapter 15 (trans. S. Thelwall via Early Christian Writings)",
-                                                        "url": "https://www.earlychristianwritings.com/text/tertullian18.html#:~:text=CHAP.%20XV.,draught%20of%20ours."
-                                                    }
-                                                }
-                                            ]
+                                            "name": "Contra Celsum, Book 2, Chapter 56",
+                                            "subtitle": "Disciples’ Willingness to Die",
+                                            "date": "c. AD 248",
+                                            "details": "In his defense of Christianity against the philosopher Celsus, Origen argues that the courage and martyrdom of Jesus’ disciples are proof of the resurrection. He states that the disciples would not have risked their lives for an invented doctrine and were the first to teach and demonstrate a disregard for death.",
+                                            "whyItMatters": [
+                                                "Sincerity under duress: Origen uses the apostles' willingness to suffer and die as evidence of their sincere belief in the resurrection.",
+                                                "Historical apologetic: He presents their martyrdom as a \"clear and unmistakable proof\" of the resurrection's authenticity.",
+                                                "Legacy of courage: The disciples not only taught fearlessness but also lived it out."
+                                            ],
+                                            "source": {
+                                                "title": "Origen, Contra Celsum, Book 2, Chapter 56 (trans. Frederick Crombie, Ante-Nicene Fathers, Vol. 4)",
+                                                "url": "https://www.newadvent.org/fathers/04162.htm#:~:text=But%20since%20the%20Jew,disregard%20for%20its%20terrors."
+                                            }
                                         },
                                         {
-                                            "name": "Dionysius of Corinth",
-                                            "children": [
-                                                {
-                                                    "name": "Ecclesiastical History, Book 2, Chapter 25",
-                                                    "subtitle": "Unified Martyrdom of Peter and Paul",
-                                                    "date": "c. AD 170",
-                                                    "details": "Dionysius of Corinth, a bishop, testified to the martyrdom of both Peter and Paul, describing their deaths as a unified witness of the early church. In a fragment of his writing, preserved by Eusebius, he states that both apostles “suffered martyrdom at the same time.”",
-                                                    "whyItMatters": [
-                                                        "It confirms an early tradition of apostolic martyrdom.",
-                                                        "It links the two leading apostles in a shared testimony of faith.",
-                                                        "The tradition is cited by Eusebius, a major historian, which adds historical weight to it."
-                                                    ],
-                                                    "source": {
-                                                        "title": "Dionysius of Corinth, fragment cited in Ecclesiastical History, Book 2, Chapter 25, Section 8",
-                                                        "url": "https://sites.google.com/view/risen-evidence/resurrection/disciples/believed-it/dionysius-of-corinth"
-                                                    }
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "name": "Origen",
-                                            "children": [
-                                                {
-                                                    "name": "Ecclesiastical History, Book 3, Chapter 1",
-                                                    "subtitle": "Martyrdom of Peter and Paul under Nero",
-                                                    "date": "c. AD 230",
-                                                    "details": "Origen, a learned Christian theologian from the early third century, confirms that Peter was crucified and Paul was beheaded in Rome during Nero's reign. This tradition was well-established by his time and is preserved by Eusebius.",
-                                                    "whyItMatters": [
-                                                        "It confirms the martyrdom tradition, showing that the deaths of Peter and Paul were widely accepted by the early 3rd century.",
-                                                        "It is consistent with earlier sources like Clement of Rome and Dionysius of Corinth.",
-                                                        "It demonstrates the historical continuity and enduring memory of the apostolic witness as foundational to early Christian identity."
-                                                    ],
-                                                    "source": {
-                                                        "title": "Origen, Commentary on Genesis, fragment cited in Ecclesiastical History, Book 3, Chapter 1 (trans. Arthur C. McGiffert via CCEL)",
-                                                        "url": "https://ccel.org/ccel/schaff/npnf201/npnf201.iii.viii.i.html"
-                                                    }
-                                                },
-                                                {
-                                                    "name": "Contra Celsum, Book 2, Chapter 56",
-                                                    "subtitle": "Disciples’ Willingness to Die",
-                                                    "date": "c. AD 248",
-                                                    "details": "In his defense of Christianity against the philosopher Celsus, Origen argues that the courage and martyrdom of Jesus’ disciples are proof of the resurrection. He states that the disciples would not have risked their lives for an invented doctrine and were the first to teach and demonstrate a disregard for death.",
-                                                    "whyItMatters": [
-                                                        "Sincerity under duress: Origen uses the apostles' willingness to suffer and die as evidence of their sincere belief in the resurrection.",
-                                                        "Historical apologetic: He presents their martyrdom as a \"clear and unmistakable proof\" of the resurrection's authenticity.",
-                                                        "Legacy of courage: The disciples not only taught fearlessness but also lived it out."
-                                                    ],
-                                                    "source": {
-                                                        "title": "Origen, Contra Celsum, Book 2, Chapter 56 (trans. Frederick Crombie, Ante-Nicene Fathers, Vol. 4)",
-                                                        "url": "https://www.newadvent.org/fathers/04162.htm#:~:text=But%20since%20the%20Jew,disregard%20for%20its%20terrors."
-                                                    }
-                                                },
-                                                {
-                                                    "name": "Contra Celsum, Book 2, Chapter 77",
-                                                    "subtitle": "Apostolic Conviction and Suffering Affirm the Resurrection",
-                                                    "date": "c. AD 248",
-                                                    "details": "Responding to Celsus's fictional Jewish challenger, Origen defends the resurrection by highlighting the disciples' unwavering conviction. He asserts that Jesus persuaded them so thoroughly that they \"show to all men by their sufferings how they are able to laugh at all the troubles of life.\" He argues that their hardships came from personal evidence of eternal life, not from hearsay.",
-                                                    "whyItMatters": [
-                                                        "Suffering as validation: The disciples' public suffering is presented as a sign of their sincere belief.",
-                                                        "Defense of resurrection claims: Origen argues the resurrection was clearly demonstrated to the disciples through \"word and deed.\"",
-                                                        "Historical continuity: He preserves a second-century defense linking apostolic suffering with eyewitness conviction."
-                                                    ],
-                                                    "source": {
-                                                        "title": "Contra Celsum, Book 2, Chapter 77 (trans. Frederick Crombie via Ante-Nicene Fathers)",
-                                                        "url": "https://www.newadvent.org/fathers/04162.htm#:~:text=Are%20you%20to,word%20and%20deed%3F"
-                                                    }
-                                                }
-                                            ]
+                                            "name": "Contra Celsum, Book 2, Chapter 77",
+                                            "subtitle": "Apostolic Conviction and Suffering Affirm the Resurrection",
+                                            "date": "c. AD 248",
+                                            "details": "Responding to Celsus's fictional Jewish challenger, Origen defends the resurrection by highlighting the disciples' unwavering conviction. He asserts that Jesus persuaded them so thoroughly that they \"show to all men by their sufferings how they are able to laugh at all the troubles of life.\" He argues that their hardships came from personal evidence of eternal life, not from hearsay.",
+                                            "whyItMatters": [
+                                                "Suffering as validation: The disciples' public suffering is presented as a sign of their sincere belief.",
+                                                "Defense of resurrection claims: Origen argues the resurrection was clearly demonstrated to the disciples through \"word and deed.\"",
+                                                "Historical continuity: He preserves a second-century defense linking apostolic suffering with eyewitness conviction."
+                                            ],
+                                            "source": {
+                                                "title": "Contra Celsum, Book 2, Chapter 77 (trans. Frederick Crombie via Ante-Nicene Fathers)",
+                                                "url": "https://www.newadvent.org/fathers/04162.htm#:~:text=Are%20you%20to,word%20and%20deed%3F"
+                                            }
                                         }
                                     ]
                                 }
@@ -767,7 +767,7 @@
                                         {
                                             "name": "Acts 15:12–21",
                                             "subtitle": "James Leads at the Jerusalem Council",
-                                            "date": "c. AD 48–50",
+                                            "date": "c. AD 48–50 (Jerusalem Council); c. AD 60–80 (traditional dating of Acts)",
                                             "details": "At the Jerusalem Council, James, who was the brother of Jesus and the leader of the Jerusalem church, speaks after Peter. He affirms that God is calling Gentiles into his people and offers a judgment based on quoting the prophets that helps shape the council’s final decision. His leadership in this pivotal moment reflects his profound transformation from a skeptic to a person of spiritual authority and scriptural discernment within the growing Christian community.",
                                             "whyItMatters": [
                                                 "Post-resurrection transformation: James, who was once a skeptic of Jesus' ministry, is now a central leader in the Jerusalem church, suggesting a deep change after an encounter with the risen Christ.",
@@ -802,7 +802,53 @@
                         },
                         {
                             "name": "Martyred",
-                            "children": []
+                            "children": [
+                                {
+                                    "name": "Josephus",
+                                    "subtitle": "Josephus records James’ martyrdom, confirming his leadership and death for the faith.",
+                                    "children": [
+                                        {
+                                            "name": "Antiquities of the Jews, Book 20, Section 200",
+                                            "subtitle": "Martyrdom of James",
+                                            "date": "c. AD 93–94",
+                                            "details": "Josephus, a first-century Jewish historian, documented the death of James, “the brother of Jesus, who was called Christ,” who was stoned to death in AD 62. This execution took place between the death of governor Festus and the arrival of his successor Albinus. The article notes that this is the earliest non-Christian record of James’s martyrdom and that his death for his beliefs demonstrates his transformation from a skeptic to a committed witness.",
+                                            "whyItMatters": [
+                                                "Earliest non-Christian source: It is the earliest external confirmation of James's death and his relationship to Jesus.",
+                                                "Familial identification: It refers to James as “the brother of Jesus, who was called Christ,” which confirms Jesus’s existence and James’s significant role.",
+                                                "Public execution: The account shows James was a public and controversial figure, condemned to death through a legal process.",
+                                                "Transformation affirmed: James's readiness to die for his beliefs supports the idea that he underwent a radical change, likely due to a resurrection encounter.",
+                                                "Independent attestation: The account comes from a Jewish historian with no Christian allegiance, providing valuable independent corroboration of Christian tradition."
+                                            ],
+                                            "source": {
+                                                "title": "Antiquities of the Jews, Book 20, Section 200 (trans. William Whiston)",
+                                                "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0146%3Abook%3D20%3Awhiston+chapter%3D9%3Awhiston+section%3D1#:~:text=Festus%20was%20now,to%20be%20stoned"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Hegesippus",
+                                    "subtitle": "Hegesippus provides an early account of James’ martyrdom",
+                                    "children": [
+                                        {
+                                            "name": "Ecclesiastical History, Book 2, Chapter 23",
+                                            "subtitle": "Cited by Eusebius – Hegesippus on the Martyrdom of James",
+                                            "date": "c. AD 160–180",
+                                            "details": "Hegesippus, an early Christian historian, gives a detailed account of James the Just. He describes James as a holy man who was respected even by non-Christians. The tradition states that James was thrown from the temple's pinnacle, stoned, and then killed with a club. This narrative highlights James's devotion and the respect he commanded in Jerusalem, affirming the core tradition of his martyrdom.",
+                                            "whyItMatters": [
+                                                "It's an early Christian tradition, providing a second-century account of James's death and reinforcing the consistency of the martyrdom tradition.",
+                                                "It offers character testimony, describing James as revered by non-Christians, which adds weight to his moral authority.",
+                                                "The martyrdom narrative portrays James's death as violent but dignified, showing his unwavering commitment to Christ.",
+                                                "It affirms his continued role as a central and respected leader of the early Jerusalem church."
+                                            ],
+                                            "source": {
+                                                "title": "Hegesippus, a fragment cited in Ecclesiastical History, Book 2, Chapter 23 (trans. Arthur C. McGiffert via CCEL)",
+                                                "url": "https://www.ccel.org/ccel/schaff/npnf201/npnf201.iii.vii.xxiv.html#:~:text=%E2%80%9CJames%2C%20the%20brother,Vespasian%20besieged%20them.%E2%80%9D"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 },
