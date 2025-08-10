@@ -301,7 +301,8 @@
                         } else {
                             d.children ? collapse(d) : expand(d);
                             update(d);
-                            popupHelp.style("opacity", 0);
+                            popupHelp.style("opacity", 0)
+                                .style("pointer-events", "none");
                             document.removeEventListener('mousedown', popupHelpOutsideClickHandler, true);
                             popupHelpNode = null;
                         }
@@ -328,8 +329,18 @@
                 function popupHelpOutsideClickHandler(e) {
                     const popupEl = popupHelp.node();
                     if (popupHelp.style("opacity") === "1" && (!popupEl || (e.target !== popupEl && !popupEl.contains(e.target)))) {
-                        popupHelp.style("opacity", 0);
+                        popupHelp.style("opacity", 0)
+                            .style("pointer-events", "none");
                         document.removeEventListener('mousedown', popupHelpOutsideClickHandler, true);
+                        // Quickfix: dispatch mouseleave to node under popup
+                        if (popupHelpNode) {
+                            // Find the corresponding SVG node group
+                            const nodeGroup = d3.selectAll('g.node').filter(d => d === popupHelpNode);
+                            nodeGroup.select('text').each(function() {
+                                const evt = new MouseEvent('mouseleave', { bubbles: true });
+                                this.dispatchEvent(evt);
+                            });
+                        }
                         popupHelpNode = null;
                     }
                 }
@@ -408,6 +419,17 @@
                 root.children && root.children.forEach(expandAll);
                 update(root);
             };
+
+            // By default, expand all nodes
+            root.children && root.children.forEach(function expandAll(d) {
+                if (d._children) {
+                    expand(d);
+                    d.children.forEach(expandAll);
+                } else if (d.children) {
+                    d.children.forEach(expandAll);
+                }
+            });
+            update(root);
         }
 
         init();

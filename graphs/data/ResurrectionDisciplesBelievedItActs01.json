@@ -73,21 +73,28 @@
                                     "children": [
                                         {
                                             "name": "Early Creed",
-                                            "subtitle": "Early Creed",
-                                            "date": "c. AD 30s",
-                                            "details": "The Early Creed is an early resurrection creed cited by Paul in 1 Corinthians 15:3-7. It is believed to have been formulated in the AD 30s, predating the letter written around AD 55. This creed is an oral tradition designed for easy memorization and communal recitation, with a formulaic structure rooted in parallelism, repetition, and careful sequencing. It includes core elements of the gospel, stating that Christ died for sins, was buried, was raised on the third day, and appeared to various individuals and groups.",
-                                            "whyItMatters": [
-                                                "It is viewed as an exceptionally early testimony to the resurrection, with most scholars dating it to within five years of the crucifixion.",
-                                                "The creed names multiple witnesses, including Cephas (Peter), James, the twelve, and a group of more than 500, which underscores the widespread nature of the resurrection appearances.",
-                                                "The transmission formula (\"received\" and \"delivered\") is similar to how Jewish rabbis passed on sacred tradition, and the use of the Aramaic name \"Cephas\" points to a Semitic style and Jewish-Christian origins in Jerusalem."
-                                            ],
-                                            "source": {
-                                                "title": "1 Corinthians 15:3-7",
-                                                "url": "https://sites.google.com/view/risen-evidence/resurrection/disciples/claimed-it/oral-tradition/early-creed"
-                                            }
+                                            "subtitle": "An early creed Paul received and passed on, summarizing eyewitness claims of the risen Jesus",
+                                            "children": [
+                                                {
+                                                    "name": "1 Corinthians 15:3-7",
+                                                    "subtitle": "An early creed Paul received and passed on, summarizing eyewitness claims of the risen Jesus",
+                                                    "date": "c. AD 30s",
+                                                    "details": "The Early Creed is an early resurrection creed cited by Paul in 1 Corinthians 15:3-7. It is believed to have been formulated in the AD 30s, predating the letter written around AD 55. This creed is an oral tradition designed for easy memorization and communal recitation, with a formulaic structure rooted in parallelism, repetition, and careful sequencing. It includes core elements of the gospel, stating that Christ died for sins, was buried, was raised on the third day, and appeared to various individuals and groups.",
+                                                    "whyItMatters": [
+                                                        "It is viewed as an exceptionally early testimony to the resurrection, with most scholars dating it to within five years of the crucifixion.",
+                                                        "The creed names multiple witnesses, including Cephas (Peter), James, the twelve, and a group of more than 500, which underscores the widespread nature of the resurrection appearances.",
+                                                        "The transmission formula (\"received\" and \"delivered\") is similar to how Jewish rabbis passed on sacred tradition, and the use of the Aramaic name \"Cephas\" points to a Semitic style and Jewish-Christian origins in Jerusalem."
+                                                    ],
+                                                    "source": {
+                                                        "title": "1 Corinthians 15:3-7",
+                                                        "url": "https://www.biblegateway.com/passage/?search=1%20Corinthians%2015%3A3%E2%80%937&version=ESV"
+                                                    }
+                                                }
+                                            ]
                                         },
                                         {
-                                            "name": "Sermond Summaries",
+                                            "name": "Sermon Summaries",
+                                            "subtitle": "Sermon summaries in Acts may preserve the earliest resurrection preaching, distinct from Luke’s surrounding narrative",
                                             "children": [
                                                 {
                                                     "name": "Acts 2:22-36",
@@ -199,29 +206,471 @@
                                     "name": "Written Tradition",
                                     "children": [
                                         {
-                                            "name": "Mark",
-                                            "subtitle": "Mark 16:1–8 — The Empty Tomb and Fear",
-                                            "date": "c. AD 60–70",
-                                            "details": "The passage describes Mary Magdalene, Mary the mother of James, and Salome visiting Jesus' tomb on the first day of the week. They discover the stone rolled away and encounter a young man in a white robe who informs them that Jesus has risen. He instructs them to tell the disciples and Peter that Jesus is going to Galilee ahead of them. However, the women flee the tomb in fear and initially tell no one.",
-                                            "whyItMatters": [
-                                                "It is considered the earliest resurrection account, potentially preserving the oldest narrative.",
-                                                "It provides early testimony to the resurrection claim through the empty tomb found by the women.",
-                                                "The use of women as the first witnesses is significant because their testimony had little legal weight in the ancient world, making it an unlikely fabrication.",
-                                                "The initial reaction of fear and silence is noted as being consistent with an authentic human response rather than a legendary embellishment.",
-                                                "The abrupt ending at verse 8 is thought by some scholars to be the original ending, which emphasizes mystery and encourages a response from the reader."
-                                            ],
-                                            "source": {
-                                                "title": "Mark 16:1–8 (ESV)",
-                                                "url": "https://sites.google.com/view/risen-evidence/resurrection/disciples/claimed-it/written-tradition/mark"
-                                            }
+                                            "name": "Gospels",
+                                            "children": [
+                                                {
+                                                    "name": "Matthew",
+                                                    "children": [
+                                                        {
+                                                            "name": "Matthew 28:1–10",
+                                                            "subtitle": "Jesus Appears to the Women",
+                                                            "date": "c. AD 80–90 (traditional dating of Matthew)",
+                                                            "details": "Mary Magdalene and “the other Mary” visit the tomb after the Sabbath. An angel announces that Jesus has risen and invites them to see the empty tomb. As they go to tell the disciples, Jesus meets them; they take hold of his feet and worship him.",
+                                                            "whyItMatters": [
+                                                                "Women as first witnesses counters likely invention in that culture.",
+                                                                "Physical contact (“took hold of his feet”) underscores a bodily resurrection.",
+                                                                "Immediate worship highlights recognition of Jesus as the risen Lord.",
+                                                                "Supports proclamation of the resurrection as a real, public event, not mere metaphor or private vision."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Matthew 28:1–10 (ESV)",
+                                                                "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A1-10&version=ESV"
+                                                            }
+                                                        },
+                                                        {
+                                                            "name": "Matthew 28:16–20",
+                                                            "subtitle": "The Great Commission",
+                                                            "date": "c. AD 80–90 (traditional dating of Matthew)",
+                                                            "details": "The risen Jesus appears to the eleven in Galilee. Some worship while some doubt. Jesus declares all authority has been given to him and commissions them to make disciples of all nations, baptizing and teaching, promising to be with them always.",
+                                                            "whyItMatters": [
+                                                                "A post-resurrection encounter grounds the commission in a real meeting with Jesus.",
+                                                                "Universal scope (“all nations”) marks a movement outward rooted in the resurrection.",
+                                                                "Promise of ongoing presence ties the church’s mission to the living, active Lord."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Matthew 28:16–20 (ESV)",
+                                                                "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A16-20&version=ESV"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "Mark",
+                                                    "children": [
+                                                        {
+                                                            "name": "Mark 16:1–8",
+                                                            "subtitle": "The Empty Tomb and Fear",
+                                                            "date": "c. AD 60–70",
+                                                            "details": "The passage describes Mary Magdalene, Mary the mother of James, and Salome visiting Jesus' tomb on the first day of the week. They discover the stone rolled away and encounter a young man in a white robe who informs them that Jesus has risen. He instructs them to tell the disciples and Peter that Jesus is going to Galilee ahead of them. However, the women flee the tomb in fear and initially tell no one.",
+                                                            "whyItMatters": [
+                                                                "It is considered the earliest resurrection account, potentially preserving the oldest narrative.",
+                                                                "It provides early testimony to the resurrection claim through the empty tomb found by the women.",
+                                                                "The use of women as the first witnesses is significant because their testimony had little legal weight in the ancient world, making it an unlikely fabrication.",
+                                                                "The initial reaction of fear and silence is noted as being consistent with an authentic human response rather than a legendary embellishment.",
+                                                                "The abrupt ending at verse 8 is thought by some scholars to be the original ending, which emphasizes mystery and encourages a response from the reader."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Mark 16:1–8 (ESV)",
+                                                                "url": "https://www.biblegateway.com/passage/?search=Mark+16%3A1-8&version=ESV"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "Luke-Acts",
+                                                    "children": [
+                                                        {
+                                                            "name": "Luke 24:13–35",
+                                                            "subtitle": "The Road to Emmaus",
+                                                            "date": "c. AD 60–80 (traditional dating of Luke)",
+                                                            "details": "On the day of the resurrection, two disciples walk toward Emmaus, discouraged. A stranger joins them and explains how the Scriptures foretold the Messiah’s suffering and glory. When he breaks bread with them, their eyes are opened—they recognize Jesus; he vanishes, and they hurry back to Jerusalem to report it.",
+                                                            "whyItMatters": [
+                                                                "Eyewitness-like narrative with personal detail and emotional realism.",
+                                                                "Recognition in the breaking of bread suggests continuity between pre- and post-resurrection Jesus.",
+                                                                "Jesus interprets the Scriptures about himself, rooting the event in prophetic fulfillment.",
+                                                                "Tone shifts from sorrow to urgent joy, reflecting transformation after encounter.",
+                                                                "Independent attestation unique to Luke, complementing other Gospel/Pauline appearances."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Luke 24:13–35 (ESV)",
+                                                                "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A13-35&version=ESV"
+                                                            }
+                                                        },
+                                                        {
+                                                            "name": "Luke 24:36–49",
+                                                            "subtitle": "Jesus Appears to the Disciples",
+                                                            "date": "c. AD 60–80 (traditional dating of Luke)",
+                                                            "details": "After Emmaus, Jesus appears to the gathered disciples in Jerusalem. Startled and thinking they see a spirit, they are reassured when Jesus shows his hands and feet and eats in their presence. He opens their minds to understand the Scriptures and commissions them as witnesses, promising the Holy Spirit.",
+                                                            "whyItMatters": [
+                                                                "Emphasizes bodily resurrection (wounds shown, food eaten).",
+                                                                "Shows continuity of identity alongside transformation/glorification.",
+                                                                "Frames the resurrection as fulfillment of the Law, Prophets, and Psalms.",
+                                                                "Explicit commissioning grounds the church’s mission in a real encounter.",
+                                                                "Promise of the Spirit links resurrection to Pentecost."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Luke 24:36–49 (ESV)",
+                                                                "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A36-49&version=ESV"
+                                                            }
+                                                        },
+                                                        {
+                                                            "name": "Luke 24:50–53",
+                                                            "subtitle": "The Ascension from Bethany",
+                                                            "date": "c. AD 60–80 (traditional dating of Luke)",
+                                                            "details": "Jesus leads the disciples to Bethany, blesses them, and is taken up into heaven. They respond with worship and return to Jerusalem with great joy, continually blessing God in the temple.",
+                                                            "whyItMatters": [
+                                                                "Affirms a bodily departure and transition to exaltation.",
+                                                                "Bridges the Gospel to Acts, anticipating Jesus’ heavenly reign and Pentecost.",
+                                                                "Highlights the disciples’ transformation to worship and joy.",
+                                                                "Signals continuity with Jewish worship while foreshadowing the church’s mission."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Luke 24:50–53 (ESV)",
+                                                                "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A50-53&version=ESV"
+                                                            }
+                                                        },
+                                                        {
+                                                            "name": "Acts 1:1–3 ",
+                                                            "subtitle": "Jesus Appears Over Forty Days",
+                                                            "date": "c. AD 62–64 (traditional dating of Acts)",
+                                                            "details": "In his second volume, Luke states that the risen Jesus presented himself alive to the apostles by many proofs, appearing over forty days and speaking about the kingdom of God.",
+                                                            "whyItMatters": [
+                                                                "Affirms physical post-resurrection appearances supported by intentional proofs.",
+                                                                "Indicates repeated, sustained contact rather than a single vision.",
+                                                                "Lays the foundation for apostolic witness throughout Acts.",
+                                                                "Connects Jesus’ own teaching to the mission the apostles carry forward."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Acts 1:1–3 (ESV)",
+                                                                "url": "https://www.biblegateway.com/passage/?search=Acts+1%3A1-3&version=ESV"
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "John",
+                                                    "children": [
+                                                        {
+                                                            "name": "John 20:11–18",
+                                                            "subtitle": "Jesus Appears to Mary Magdalene",
+                                                            "date": "c. AD 90–100 (traditional dating of John)",
+                                                            "details": "Mary Magdalene, weeping outside the empty tomb, becomes the first recorded witness of the risen Jesus. Initially mistaking him for the gardener, she recognizes him when he speaks her name. Jesus instructs her not to cling to him, but to go and announce his resurrection to the disciples, calling them “my brothers.”",
+                                                            "whyItMatters": [
+                                                                "First appearance to a woman—striking in a culture where women’s testimony held less legal weight.",
+                                                                "Personal recognition through her name highlights the intimate, relational nature of the risen Lord.",
+                                                                "Commissioning of Mary makes her the “apostle to the apostles.”",
+                                                                "Affirms bodily resurrection (her impulse to hold him).",
+                                                                "“My Father and your Father” stresses believers’ shared relationship with God."
+                                                            ],
+                                                            "source": {
+                                                                "title": "John 20:11–18 (ESV)",
+                                                                "url": "https://www.biblegateway.com/passage/?search=John+20%3A11-18&version=ESV"
+                                                            }
+                                                        },
+                                                        {
+                                                            "name": "John 20:19–23",
+                                                            "subtitle": "Jesus Appears to the Disciples",
+                                                            "date": "c. AD 90–100 (traditional dating of John)",
+                                                            "details": "On the evening of the first Easter Sunday, the risen Jesus appears to his disciples, gathered behind locked doors out of fear. He greets them with peace, shows them his hands and side, and breathes on them, saying, “Receive the Holy Spirit.” He then grants authority related to the forgiveness of sins.",
+                                                            "whyItMatters": [
+                                                                "Group appearance underscores the public nature of the encounters.",
+                                                                "Wounds shown confirm continuity: the one who died is the one raised.",
+                                                                "“Peace be with you” and the sending mirror the Father’s mission for Jesus.",
+                                                                "Breathing the Spirit anticipates Pentecost and echoes Genesis’ life-breath.",
+                                                                "Authority to forgive ties the church’s ministry to the risen Lord."
+                                                            ],
+                                                            "source": {
+                                                                "title": "John 20:19–23 (ESV)",
+                                                                "url": "https://www.biblegateway.com/passage/?search=John+20%3A19-23&version=ESV"
+                                                            }
+                                                        },
+                                                        {
+                                                            "name": "John 21:1–14",
+                                                            "subtitle": "Breakfast by the Sea",
+                                                            "date": "c. AD 90–100 (traditional dating of John)",
+                                                            "details": "After his resurrection, Jesus appears again to several disciples by the Sea of Galilee. Following an unproductive night, he directs them to cast the net on the right side, yielding a miraculous catch. Realizing it is the Lord, Peter jumps into the water to reach him; Jesus then shares a breakfast of bread and fish on the shore.",
+                                                            "whyItMatters": [
+                                                                "Another post-resurrection group appearance in a different setting.",
+                                                                "Miraculous catch reveals Jesus’ identity, echoing earlier ministry.",
+                                                                "Shared meal emphasizes embodied, bodily presence—not a mere vision.",
+                                                                "Peter’s eager response reflects restored relationship.",
+                                                                "Intimate fellowship signals ongoing relationship after the resurrection."
+                                                            ],
+                                                            "source": {
+                                                                "title": "John 21:1–14 (ESV)",
+                                                                "url": "https://www.biblegateway.com/passage/?search=John+21%3A1-14&version=ESV"
+                                                            }
+                                                        },
+                                                        {
+                                                            "name": "John 21:15–19",
+                                                            "subtitle": "Jesus Reinstates Peter",
+                                                            "date": "c. AD 90–100 (traditional dating of John)",
+                                                            "details": "After breakfast on the shore, Jesus addresses Peter with three questions of love, mirroring Peter’s three denials. Each affirmation is met with a commission—“feed my sheep.” Jesus then foretells Peter’s future suffering and death, indicating the manner in which he would glorify God, and ends with “Follow me.”",
+                                                            "whyItMatters": [
+                                                                "Public reinstatement of Peter after denial demonstrates grace and restoration.",
+                                                                "Pastoral commission (“feed my sheep”) anticipates Peter’s leadership role.",
+                                                                "Love expressed through obedience links affection and action.",
+                                                                "Prediction of martyrdom aligns with early tradition of apostolic suffering.",
+                                                                "Renewed call to follow anchors discipleship post-resurrection."
+                                                            ],
+                                                            "source": {
+                                                                "title": "John 21:15–19 (ESV)",
+                                                                "url": "https://www.biblegateway.com/passage/?search=John+21%3A15-19&version=ESV"
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Apostolic Fathers",
+                                            "children": [
+                                                {
+                                                    "name": "1 Clement 42:1-3",
+                                                    "subtitle": "The Apostles Sent by the Risen Christ",
+                                                    "date": "c. AD 95",
+                                                    "details": "The author, traditionally identified as Clement of Rome, writing to the Corinthian church, describes a chain of authority beginning with Jesus: “The apostles received the gospel for us from the Lord Jesus Christ; Jesus the Christ was sent from God. So then Christ is from God, and the apostles are from Christ.” He goes on to state that they were fully convinced by Jesus' resurrection and empowered by the Holy Spirit.",
+                                                    "whyItMatters": [
+                                                        "Early testimony: 1 Clement is one of the earliest post–New Testament Christian writings, possibly penned by a companion of the apostles.",
+                                                        "Direct experience implied: The apostles’ reception of the gospel from Christ implies eyewitness interaction with the risen Jesus.",
+                                                        "Continuity of message: The passage emphasizes that the apostles did not invent their message but passed on what they received—rooting the resurrection claim in apostolic authority and continuity."
+                                                    ],
+                                                    "source": {
+                                                        "title": "1 Clement 42:3 (Lightfoot & Harmer translation)",
+                                                        "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%2042%3A1,God%20should%20come."
+                                                    }
+                                                },
+                                                {
+                                                    "name": "Polycarp to the Philippians 9:1–2",
+                                                    "subtitle": "Faith in the Risen Christ",
+                                                    "date": "c. AD 110–140 (traditional dating of Polycarp’s epistle)",
+                                                    "details": "In this passage, Polycarp exhorts believers to remain steadfast in the faith delivered by the apostles, encouraging them to believe “in Him who raised up our Lord Jesus Christ from the dead and gave Him glory, and a throne on His right hand.” He ties resurrection faith to Christian endurance and the anticipation of judgment.",
+                                                    "whyItMatters": [
+                                                        "Shows an early second-century testimony to belief in the bodily resurrection.",
+                                                        "Demonstrates continuity of resurrection faith beyond the apostolic circle.",
+                                                        "Connects resurrection with endurance and eschatological hope.",
+                                                        "Evidence of Christ’s exaltation (‘right hand’)—affirming divine vindication."
+                                                    ],
+                                                    "source": {
+                                                        "title": "Polycarp to the Philippians 9:1–2",
+                                                        "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Believed It",
+                                    "children": [
+                                        {
+                                            "name": "Acts",
+                                            "children": [
+                                                {
+                                                    "name": "Acts 4:1–22",
+                                                    "subtitle": "Peter and John before the Sanhedrin",
+                                                    "date": "c. AD 30 (event); c. AD 60–80 (traditional dating of Acts)",
+                                                    "details": "Peter and John were arrested for healing a lame man and preaching about Jesus' resurrection. They affirmed that they must obey God rather than men, despite threats from the Jewish council.",
+                                                    "whyItMatters": [
+                                                        "The public trial showed early opposition to resurrection preaching",
+                                                        "The apostles were bold under threat",
+                                                        "Both affirmed the same message of resurrection, showing a unity of witness"
+                                                    ],
+                                                    "source": {
+                                                        "title": "Acts 4:1–22 (ESV)",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+4%3A1-22&version=ESV"
+                                                    }
+                                                },
+                                                {
+                                                    "name": "Acts 5:17–42",
+                                                    "subtitle": "Apostles Imprisoned and Flogged",
+                                                    "date": "c. AD 30 (event); c. AD 60–80 (traditional dating of Acts)",
+                                                    "details": "All the apostles were imprisoned for preaching the resurrection. After an angel released them, they were brought before the Sanhedrin again, where Peter stated they were witnesses to these things. They were flogged and warned but left rejoicing.",
+                                                    "whyItMatters": [
+                                                        "The apostles found joy in suffering",
+                                                        "The angel's intervention underscored divine support",
+                                                        "They persisted in teaching daily despite repeated threats"
+                                                    ],
+                                                    "source": {
+                                                        "title": "Acts 5:17–42 (ESV)",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+5%3A17-42&version=ESV"
+                                                    }
+                                                },
+                                                {
+                                                    "name": "Acts 7:54–60",
+                                                    "subtitle": "The Martyrdom of Stephen",
+                                                    "date": "c. AD 30–35 (event); c. AD 60–80 (traditional dating of Acts)",
+                                                    "details": "Stephen, a deacon, was stoned after delivering a bold defense. As he was being killed, he saw a vision of the risen Christ and prayed for his killers.",
+                                                    "whyItMatters": [
+                                                        "The vision of the risen Christ reinforced belief even at death",
+                                                        "Stephen's death marked the beginning of open persecution",
+                                                        "His prayer for his killers paralleled Jesus' own crucifixion words"
+                                                    ],
+                                                    "source": {
+                                                        "title": "Acts 7:54–60 (ESV)",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+7%3A54-60&version=ESV"
+                                                    }
+                                                },
+                                                {
+                                                    "name": "Acts 12:1–5",
+                                                    "subtitle": "James Killed, Peter Imprisoned",
+                                                    "date": "c. AD 44 (event); c. AD 60–80 (traditional dating of Acts)",
+                                                    "details": "King Herod executed James, making him the first of the Twelve to be martyred. Peter was then arrested and imprisoned but was later rescued by an angel.",
+                                                    "whyItMatters": [
+                                                        "James's execution underscores the mortal risk of discipleship",
+                                                        "Herod's actions show that resurrection preaching had real political consequences",
+                                                        "Peter's imprisonment shows the ongoing danger to church leaders"
+                                                    ],
+                                                    "source": {
+                                                        "title": "Acts 12:1–5 (ESV)",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+12%3A1-5&version=ESV"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Clement of Rome",
+                                            "children": [
+                                                {
+                                                    "name": "1 Clement 5:2–7",
+                                                    "subtitle": "Martyrdom of Peter and Paul",
+                                                    "date": "c. AD 95–97",
+                                                    "details": "In this early letter from the church in Rome to the Corinthians, traditionally attributed to Clement, the author describes the sufferings and martyrdoms of Peter and Paul. They are presented as steadfast witnesses who endured trials, imprisonments, and death because of their proclamation of the risen Christ. Clement shows admiration for their endurance and conviction, seeing their deaths as the ultimate testimony to the truth of the resurrection.",
+                                                    "whyItMatters": [
+                                                        "It provides early external affirmation, written from Rome within a generation of the apostles' deaths, which shows widespread acceptance of their martyrdom.",
+                                                        "It portrays suffering not as a defeat, but as a validation of the resurrection message.",
+                                                        "It reinforces the credibility of resurrection preaching from the perspective of the Roman church, outside of the Jerusalem context."
+                                                    ],
+                                                    "source": {
+                                                        "title": "1 Clement, Chapter 5, Verses 2–7",
+                                                        "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%205%3A1%0ABut,pattern%20of%20patient%20endurance."
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Ignatius of Antioch",
+                                            "children": [
+                                                {
+                                                    "name": "Ignatius to the Smyrnaeans 3:1–2 ",
+                                                    "subtitle": "Apostolic Witness to the Bodily Resurrection",
+                                                    "date": "c. AD 107",
+                                                    "details": "Ignatius, the bishop of Antioch, was writing on his way to martyrdom. In his epistle, he affirmed the bodily resurrection of Jesus, stating that Jesus appeared in the flesh after the resurrection and invited the disciples to touch him. This direct encounter is presented as the reason for the apostles' boldness and their willingness to face death.",
+                                                    "whyItMatters": [
+                                                        "It emphasizes the bodily resurrection, countering the belief system known as docetism.",
+                                                        "It shows that the apostles' belief had a direct experiential basis, with their courage stemming from physical contact with the risen Christ.",
+                                                        "Ignatius, as a martyr facing his own death, uses the disciples' example to link belief in the resurrection with the willingness to die for the truth."
+                                                    ],
+                                                    "source": {
+                                                        "title": "The Epistle of Ignatius to the Smyrnaeans, Chapter 3, Sections 1–2",
+                                                        "url": "https://www.earlychristianwritings.com/text/ignatius-smyrnaeans-lightfoot.html#:~:text=3%3A1%20For,superior%20to%20death."
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Polycarp",
+                                            "children": [
+                                                {
+                                                    "name": "Polycarp to the Philippians 9:1–2",
+                                                    "subtitle": "Apostolic Endurance and Suffering",
+                                                    "date": "c. AD 110–140",
+                                                    "details": "Polycarp, bishop of Smyrna and a direct disciple of the apostle John, encourages readers to persist in their faith by highlighting the steadfast endurance of the apostles and other believers. He states that \"Paul himself and the rest of the Apostles ran not in vain but in faith and righteousness,\" and that they \"suffered.\" As someone who likely knew the apostles and their followers personally, Polycarp provides early confirmation that apostolic suffering was closely linked to the resurrection message.",
+                                                    "whyItMatters": [
+                                                        "Eyewitness connection: Polycarp is part of the living memory of the apostolic age, which enhances credibility.",
+                                                        "Suffering linked to belief: He confirms that apostolic endurance was founded on a conviction powerful enough to withstand pain and persecution.",
+                                                        "Call to perseverance: Early Christian leaders regarded apostolic suffering as an example for continued faithfulness."
+                                                    ],
+                                                    "source": {
+                                                        "title": "The Epistle of Polycarp to the Philippians, Chapter 9, Sections 1–2 (trans. J. B. Lightfoot)",
+                                                        "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Tertullian",
+                                            "children": [
+                                                {
+                                                    "name": "Scorpiace 15",
+                                                    "subtitle": "Apostles’ Martyrdom as Public Witness",
+                                                    "date": "c. AD 203",
+                                                    "details": "In a theological defense of martyrdom, Tertullian, a North African church father, cites the violent deaths of Peter, Paul, James, and Stephen as both historical fact and theological witness. He asserts that their testimony was \"written in their own blood\" and challenges skeptics to check public records for confirmation. He describes their martyrdom as open, verifiable, and a result of their conviction in the resurrection, portraying Paul's execution as a \"new birth.\"",
+                                                    "whyItMatters": [
+                                                        "Legal-historical appeal: Tertullian references Roman archives for external validation.",
+                                                        "Suffering as testimony: Martyrdom is presented as an active witness to their belief in the resurrection.",
+                                                        "Early apologetic use: This shows that martyrdom was being used as evidence in theological arguments as early as the 3rd century."
+                                                    ],
+                                                    "source": {
+                                                        "title": "Scorpiace, Chapter 15 (trans. S. Thelwall via Early Christian Writings)",
+                                                        "url": "https://www.earlychristianwritings.com/text/tertullian18.html#:~:text=CHAP.%20XV.,draught%20of%20ours."
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Dionysius of Corinth",
+                                            "children": [
+                                                {
+                                                    "name": "Ecclesiastical History, Book 2, Chapter 25",
+                                                    "subtitle": "Unified Martyrdom of Peter and Paul",
+                                                    "date": "c. AD 170",
+                                                    "details": "Dionysius of Corinth, a bishop, testified to the martyrdom of both Peter and Paul, describing their deaths as a unified witness of the early church. In a fragment of his writing, preserved by Eusebius, he states that both apostles “suffered martyrdom at the same time.”",
+                                                    "whyItMatters": [
+                                                        "It confirms an early tradition of apostolic martyrdom.",
+                                                        "It links the two leading apostles in a shared testimony of faith.",
+                                                        "The tradition is cited by Eusebius, a major historian, which adds historical weight to it."
+                                                    ],
+                                                    "source": {
+                                                        "title": "Dionysius of Corinth, fragment cited in Ecclesiastical History, Book 2, Chapter 25, Section 8",
+                                                        "url": "https://sites.google.com/view/risen-evidence/resurrection/disciples/believed-it/dionysius-of-corinth"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "Origen",
+                                            "children": [
+                                                {
+                                                    "name": "Ecclesiastical History, Book 3, Chapter 1",
+                                                    "subtitle": "Martyrdom of Peter and Paul under Nero",
+                                                    "date": "c. AD 230",
+                                                    "details": "Origen, a learned Christian theologian from the early third century, confirms that Peter was crucified and Paul was beheaded in Rome during Nero's reign. This tradition was well-established by his time and is preserved by Eusebius.",
+                                                    "whyItMatters": [
+                                                        "It confirms the martyrdom tradition, showing that the deaths of Peter and Paul were widely accepted by the early 3rd century.",
+                                                        "It is consistent with earlier sources like Clement of Rome and Dionysius of Corinth.",
+                                                        "It demonstrates the historical continuity and enduring memory of the apostolic witness as foundational to early Christian identity."
+                                                    ],
+                                                    "source": {
+                                                        "title": "Origen, Commentary on Genesis, fragment cited in Ecclesiastical History, Book 3, Chapter 1 (trans. Arthur C. McGiffert via CCEL)",
+                                                        "url": "https://ccel.org/ccel/schaff/npnf201/npnf201.iii.viii.i.html"
+                                                    }
+                                                },
+                                                {
+                                                    "name": "Contra Celsum, Book 2, Chapter 56",
+                                                    "subtitle": "Disciples’ Willingness to Die",
+                                                    "date": "c. AD 248",
+                                                    "details": "In his defense of Christianity against the philosopher Celsus, Origen argues that the courage and martyrdom of Jesus’ disciples are proof of the resurrection. He states that the disciples would not have risked their lives for an invented doctrine and were the first to teach and demonstrate a disregard for death.",
+                                                    "whyItMatters": [
+                                                        "Sincerity under duress: Origen uses the apostles' willingness to suffer and die as evidence of their sincere belief in the resurrection.",
+                                                        "Historical apologetic: He presents their martyrdom as a \"clear and unmistakable proof\" of the resurrection's authenticity.",
+                                                        "Legacy of courage: The disciples not only taught fearlessness but also lived it out."
+                                                    ],
+                                                    "source": {
+                                                        "title": "Origen, Contra Celsum, Book 2, Chapter 56 (trans. Frederick Crombie, Ante-Nicene Fathers, Vol. 4)",
+                                                        "url": "https://www.newadvent.org/fathers/04162.htm#:~:text=But%20since%20the%20Jew,disregard%20for%20its%20terrors."
+                                                    }
+                                                },
+                                                {
+                                                    "name": "Contra Celsum, Book 2, Chapter 77",
+                                                    "subtitle": "Apostolic Conviction and Suffering Affirm the Resurrection",
+                                                    "date": "c. AD 248",
+                                                    "details": "Responding to Celsus's fictional Jewish challenger, Origen defends the resurrection by highlighting the disciples' unwavering conviction. He asserts that Jesus persuaded them so thoroughly that they \"show to all men by their sufferings how they are able to laugh at all the troubles of life.\" He argues that their hardships came from personal evidence of eternal life, not from hearsay.",
+                                                    "whyItMatters": [
+                                                        "Suffering as validation: The disciples' public suffering is presented as a sign of their sincere belief.",
+                                                        "Defense of resurrection claims: Origen argues the resurrection was clearly demonstrated to the disciples through \"word and deed.\"",
+                                                        "Historical continuity: He preserves a second-century defense linking apostolic suffering with eyewitness conviction."
+                                                    ],
+                                                    "source": {
+                                                        "title": "Contra Celsum, Book 2, Chapter 77 (trans. Frederick Crombie via Ante-Nicene Fathers)",
+                                                        "url": "https://www.newadvent.org/fathers/04162.htm#:~:text=Are%20you%20to,word%20and%20deed%3F"
+                                                    }
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
                             ]
-                        },
-                        {
-                            "name": "Believed It",
-                            "children": []
                         }
                     ]
                 },
@@ -230,7 +679,126 @@
                     "children": [
                         {
                             "name": "Converted",
-                            "children": []
+                            "children": [
+                                {
+                                    "name": "Gospels",
+                                    "subtitle": "Gospels note Jesus’ brothers were skeptics before the resurrection, implying a later change in belief.",
+                                    "children": [
+                                        {
+                                            "name": "Mark 3:21",
+                                            "subtitle": "Jesus’ Family Thinks He’s Out of His Mind",
+                                            "date": "c. AD 60–70",
+                                            "details": "This early account shows Jesus' own family, likely including his brother James, thought he was 'out of his mind,' indicating their initial disbelief.",
+                                            "whyItMatters": [
+                                                "This sets the stage for understanding James's transformation from a skeptic to a leader of the Jerusalem church, making his later testimony more compelling."
+                                            ],
+                                            "source": {
+                                                "title": "Mark 3:21 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Mark+3%3A21&version=ESV"
+                                            }
+                                        },
+                                        {
+                                            "name": "Mark 3:31",
+                                            "subtitle": "Jesus’ Mother and Brothers Seek Him",
+                                            "date": "c. AD 60–70",
+                                            "details": "Jesus' mother and brothers stand outside and send for him while he is teaching, which suggests they were not actively supporting his ministry.",
+                                            "whyItMatters": [
+                                                "This reinforces the picture of his family's distance and highlights the significance of James's later transformation into a central figure in the early church."
+                                            ],
+                                            "source": {
+                                                "title": "Mark 3:31 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Mark+3%3A31&version=ESV"
+                                            }
+                                        },
+                                        {
+                                            "name": "Mark 6:3–4",
+                                            "subtitle": "Jesus Rejected in His Hometown",
+                                            "date": "c. AD 60–70",
+                                            "details": "People in Jesus' hometown took offense at him, referring to him by name and mentioning his brothers, including James.",
+                                            "whyItMatters": [
+                                                "This passage places James within a context of familial and communal rejection, which makes his later leadership role in the church more significant."
+                                            ],
+                                            "source": {
+                                                "title": "Mark 6:3–4 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Mark+6%3A3-4&version=ESV"
+                                            }
+                                        },
+                                        {
+                                            "name": "John 7:5",
+                                            "subtitle": "Jesus’ Brothers Don’t Believe in Him",
+                                            "date": "c. AD 85–90",
+                                            "details": "The text states that Jesus’ own brothers, among whom James is traditionally understood, did not believe in him.",
+                                            "whyItMatters": [
+                                                "This verse adds weight to the significance of James's eventual change and leadership role in the early church."
+                                            ],
+                                            "source": {
+                                                "title": "John 7:5 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=John+7%3A5&version=ESV"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Early Creed",
+                                    "subtitle": "Early creed includes a specific post-resurrection appearance to James, Jesus’ once-skeptical brother.",
+                                    "children": [
+                                        {
+                                            "name": "1 Corinthians 15:7",
+                                            "subtitle": "Resurrection Appearance to James",
+                                            "date": "c. AD 55",
+                                            "details": "Paul records that the risen Jesus appeared to James, which is part of an early tradition of resurrection appearances. While the verse doesn't give specific details about the encounter, its presence shows James's significance and implies a major shift in his life. The placement of this appearance, after references to Jesus's appearances to the disciples but before Paul's own experience, suggests this was the moment James, who was likely a skeptic, became a believer and a leader of the Jerusalem church.",
+                                            "whyItMatters": [
+                                                "Transformation of a skeptic: James, who was previously unconvinced of Jesus’ mission, became a key leader of the early church, which points to a powerful post-resurrection encounter.",
+                                                "Independent resurrection appearance: The appearance to James is listed separately from those to the twelve and others, which supports the idea of multiple, varied experiences of the risen Jesus.",
+                                                "Leadership rooted in encounter: James’s later authority in Jerusalem is strengthened by this appearance, grounding his role in a direct resurrection experience.",
+                                                "Early creed inclusion: The structured nature of 1 Corinthians 15 suggests that James’s experience was part of a formal tradition that originated in the earliest years after Jesus’ death."
+                                            ],
+                                            "source": {
+                                                "title": "1 Corinthians 15:7 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A7&version=ESV"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Paul & Acts",
+                                    "subtitle": "Acts and Paul highlight James’ leadership in the early church after the resurrection.",
+                                    "children": [
+                                        {
+                                            "name": "Acts 15:12–21",
+                                            "subtitle": "James Leads at the Jerusalem Council",
+                                            "date": "c. AD 48–50",
+                                            "details": "At the Jerusalem Council, James, who was the brother of Jesus and the leader of the Jerusalem church, speaks after Peter. He affirms that God is calling Gentiles into his people and offers a judgment based on quoting the prophets that helps shape the council’s final decision. His leadership in this pivotal moment reflects his profound transformation from a skeptic to a person of spiritual authority and scriptural discernment within the growing Christian community.",
+                                            "whyItMatters": [
+                                                "Post-resurrection transformation: James, who was once a skeptic of Jesus' ministry, is now a central leader in the Jerusalem church, suggesting a deep change after an encounter with the risen Christ.",
+                                                "Spiritual authority: His ability to speak last and give a decisive judgment shows the respect and influence he had among the apostles and elders.",
+                                                "Scriptural discernment: By interpreting the inclusion of Gentiles in light of Old Testament prophecy, James demonstrates theological maturity and pastoral sensitivity.",
+                                                "Historical anchor: This event places James at the center of early church decision-making, supporting his role as a credible and influential witness to the resurrection."
+                                            ],
+                                            "source": {
+                                                "title": "Acts 15:12–21 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Acts%2015%3A12-21&version=ESV"
+                                            }
+                                        },
+                                        {
+                                            "name": "Galatians 1:19",
+                                            "subtitle": "Paul Meets James, the Lord’s Brother",
+                                            "date": "c. AD 48–50",
+                                            "details": "Paul recounts visiting Jerusalem after his conversion and mentions that he saw none of the apostles except James, \"the Lord's brother.\" This reference confirms James's identity and his status as a recognized leader in the early church. Paul's reference to James among the apostles suggests he held significant authority in the Jerusalem community, likely due to his encounter with the risen Christ.",
+                                            "whyItMatters": [
+                                                "Eyewitness connection: James is identified as “the Lord’s brother,” which reinforces his close familial relationship to Jesus and adds weight to his testimony.",
+                                                "Apostolic recognition: Paul’s mention of James with the apostles implies he was considered a leader of similar authority, even though he was not one of the original Twelve.",
+                                                "Early leadership: This encounter shows James in a prominent leadership role in the Jerusalem church just a few years after Jesus’ death.",
+                                                "Transformation evidence: James being named in this context supports the tradition (1 Corinthians 15:7) that he experienced a resurrection appearance, which helps explain his transition from skepticism to leadership."
+                                            ],
+                                            "source": {
+                                                "title": "Galatians 1:19 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Galatians%201%3A19&version=ESV"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
                         },
                         {
                             "name": "Martyred",
@@ -243,7 +811,87 @@
                     "children": [
                         {
                             "name": "Converted",
-                            "children": []
+                            "children": [
+                                {
+                                    "name": "Gospels",
+                                    "children": [
+                                        {
+                                            "name": "Acts 4:1–22 — Peter and John before the Sanhedrin",
+                                            "subtitle": null,
+                                            "date": "c. AD 30",
+                                            "details": "Peter and John were arrested for healing a lame man and preaching about Jesus' resurrection. They affirmed that they must obey God rather than men, despite threats from the Jewish council.",
+                                            "whyItMatters": [
+                                                "The public trial showed early opposition to resurrection preaching",
+                                                "The apostles were bold under threat",
+                                                "Both affirmed the same message of resurrection, showing a unity of witness"
+                                            ],
+                                            "source": {
+                                                "title": "Acts 4:1–22 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Acts+4:1-22&version=ESV"
+                                            }
+                                        },
+                                        {
+                                            "name": "Acts 5:17–42 — Apostles Imprisoned and Flogged",
+                                            "subtitle": null,
+                                            "date": "c. AD 30",
+                                            "details": "All the apostles were imprisoned for preaching the resurrection. After an angel released them, they were brought before the Sanhedrin again, where Peter stated they were witnesses to these things. They were flogged and warned but left rejoicing.",
+                                            "whyItMatters": [
+                                                "The apostles found joy in suffering",
+                                                "The angel's intervention underscored divine support",
+                                                "They persisted in teaching daily despite repeated threats"
+                                            ],
+                                            "source": {
+                                                "title": "Acts 5:17–42 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Acts+5:17-42&version=ESV"
+                                            }
+                                        },
+                                        {
+                                            "name": "Acts 7:54–60 — The Martyrdom of Stephen",
+                                            "subtitle": null,
+                                            "date": "c. AD 30–35",
+                                            "details": "Stephen, a deacon, was stoned after delivering a bold defense. As he was being killed, he saw a vision of the risen Christ and prayed for his killers.",
+                                            "whyItMatters": [
+                                                "The vision of the risen Christ reinforced belief even at death",
+                                                "Stephen's death marked the beginning of open persecution",
+                                                "His prayer for his killers paralleled Jesus' own crucifixion words"
+                                            ],
+                                            "source": {
+                                                "title": "Acts 7:54–60 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Acts+7:54-60&version=ESV"
+                                            }
+                                        },
+                                        {
+                                            "name": "Acts 12 – James Martyred, Peter Imprisoned",
+                                            "subtitle": null,
+                                            "date": "c. AD 44",
+                                            "details": "The apostle James was executed by Herod Agrippa I, and Peter was arrested afterward, likely to face the same fate. The text emphasizes that apostolic witness to the risen Christ was costly from the beginning.",
+                                            "whyItMatters": [
+                                                "The martyrdom of James, a direct eyewitness, and the imprisonment of Peter demonstrate the sincerity of their belief and the dangers they faced",
+                                                "The passage highlights that the apostles had no earthly incentive to preach and their persistence under threat only makes sense if they truly believed in the resurrection"
+                                            ],
+                                            "source": {
+                                                "title": "Acts of the Apostles, Chapter 12 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Acts+12&version=ESV"
+                                            }
+                                        },
+                                        {
+                                            "name": "Acts 12:1–5 — James Killed, Peter Imprisoned",
+                                            "subtitle": null,
+                                            "date": "c. AD 44",
+                                            "details": "King Herod executed James, making him the first of the Twelve to be martyred. Peter was then arrested and imprisoned but was later rescued by an angel.",
+                                            "whyItMatters": [
+                                                "James's execution underscores the mortal risk of discipleship",
+                                                "Herod's actions show that resurrection preaching had real political consequences",
+                                                "Peter's imprisonment shows the ongoing danger to church leaders"
+                                            ],
+                                            "source": {
+                                                "title": "Acts 12:1–5 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Acts+12:1-5&version=ESV"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
                         },
                         {
                             "name": "Suffered & Martyred",
