@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>OT → NT Fulfillments — “Atoms & Electrons” Force Graph</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #111827;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --accent: #2563eb;
+  }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--ink); font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+  #topbar {
+    display:flex; gap:12px; align-items:center; padding:10px 14px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg); z-index:5;
+  }
+  #topbar h1 { font-size:16px; margin:0 8px 0 0; }
+  #topbar label { display:flex; gap:6px; align-items:center; color:var(--muted); }
+  #topbar select, #topbar input[type="search"], #topbar input[type="range"] {
+    border:1px solid var(--line); border-radius:8px; padding:6px 8px; background:#fff; color:var(--ink);
+  }
+  #topbar .hint { margin-left:auto; font-size:12px; color:var(--muted); }
+  svg { display:block; width:100vw; height:calc(100vh - 56px); }
+  .link { stroke:#9ca3af; stroke-opacity:.35; }
+  .link.ntRes { stroke:#94a3b8; stroke-opacity:.4; stroke-dasharray:3 2; }
+  .node { cursor:grab; }
+  .node:active { cursor:grabbing; }
+  .node circle { stroke:#111827; stroke-width:1px; }
+  .node.ot circle { r:8; }
+  .node.nt circle { r:5; stroke-width:.8px; }
+  .node.res rect { rx:10; ry:10; }
+  .node.res path.star { fill:#fbbf24; stroke:#b45309; stroke-width:1; }
+  .label { font-size:12px; fill:#111; pointer-events:none; user-select:none; }
+  .legend { position:fixed; bottom:12px; left:12px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px 12px; box-shadow:0 6px 24px rgba(0,0,0,.06); font-size:12px; }
+  .legend .row { display:flex; align-items:center; gap:8px; margin:4px 0; }
+  .swatch { width:10px; height:10px; border-radius:999px; border:1px solid #1112; }
+  .tooltip {
+    position:fixed; display:none; pointer-events:none;
+    background:#fff; border:1px solid var(--line); padding:8px 10px; border-radius:10px;
+    box-shadow:0 8px 28px rgba(0,0,0,.09); font-size:13px; color:var(--ink); max-width:320px;
+  }
+  .highlight .link { stroke-opacity:.1; }
+  .highlight .link.active { stroke-opacity:.95; stroke:#374151; stroke-width:2px; }
+  .highlight .node circle { opacity:.3; }
+  .highlight .node.active circle { opacity:1; stroke:#111; stroke-width:2px; }
+</style>
+
+<div id="topbar">
+  <h1>OT → NT Fulfillments</h1>
+  <label>OT cluster
+    <select id="clusterFilter">
+      <option value="">All</option>
+      <option>Birth/Origin</option>
+      <option>Forerunner/Ministry</option>
+      <option>Entry/Conflict</option>
+      <option>Betrayal/Passion</option>
+      <option>Resurrection/Exaltation/New Covenant</option>
+    </select>
+  </label>
+  <label>NT book
+    <select id="ntBookFilter"><option value="">All</option></select>
+  </label>
+  <label>Search
+    <input id="searchBox" type="search" placeholder="e.g., Isaiah 53 or John 19:37" />
+  </label>
+  <label>Repulsion
+    <input id="charge" type="range" min="-400" max="-10" value="-180" />
+  </label>
+  <div class="hint">Tip: click a node to open its ESV passage(s) on Bible Gateway.</div>
+</div>
+<div class="tooltip" id="t"></div>
+<svg id="chart"></svg>
+<div class="legend" id="legend"></div>
+
+<script src="https://unpkg.com/d3@7"></script>
+<script>
+(async function () {
+  const data = await fetch('messianic_prophecies_core_esv.json').then(r => r.json());
+  // ---- Build unique nodes ----
+  const otMap = new Map();    // key = exact OT ref string
+  const ntMap = new Map();    // key = exact NT ref string
+  const links = [];
+
+  // Helper: parse "Book n:m" → book only
+  const bookOf = ref => (ref.match(/^([\w\s1-3]+)\s+\d+:/) || [,''])[1].trim();
+
+  // Build OT nodes and NT nodes with links
+  data.forEach(d => {
+    const otKey = d.ot_ref;
+    if (!otMap.has(otKey)) {
+      otMap.set(otKey, {
+        id: 'OT|' + otKey,
+        kind: 'ot',
+        label: d.ot_ref,
+        tooltip: d.tooltip || (d.claim + ' — ' + d.ot_ref),
+        claim: d.claim,
+        book: bookOf(d.ot_ref),
+        cluster: d.cluster || '',
+        url: d.ot_url_esv
+      });
+    }
+    const otNode = otMap.get(otKey);
+
+    d.nt_refs.forEach((ntr, idx) => {
+      if (!ntMap.has(ntr)) {
+        // build a BibleGateway ESV URL for this specific NT ref
+        const ntUrl = `https://www.biblegateway.com/passage/?search=${encodeURIComponent(ntr)}&version=ESV`;
+        ntMap.set(ntr, {
+          id: 'NT|' + ntr,
+          kind: 'nt',
+          label: ntr,
+          tooltip: `${d.claim} — NT: ${ntr}`,
+          book: bookOf(ntr),
+          url: ntUrl
+        });
+      }
+      const ntNode = ntMap.get(ntr);
+      links.push({ source: otNode.id, target: ntNode.id, type: 'otNt', claim: d.claim });
+    });
+  });
+
+  // ---- Colors (by OT cluster; NT/res use neutrals) ----
+  const clusterColors = new Map([
+    ['Birth/Origin', '#2563eb'],
+    ['Forerunner/Ministry', '#16a34a'],
+    ['Entry/Conflict', '#f59e0b'],
+    ['Betrayal/Passion', '#ef4444'],
+    ['Resurrection/Exaltation/New Covenant', '#7c3aed']
+  ]);
+  const colorFor = d => d.kind === 'ot'
+      ? (clusterColors.get(d.cluster) || '#6b7280')
+      : (d.kind === 'nt' ? '#0ea5e9' : '#f59e0b');
+
+  // Central Resurrection hub
+  const resNode = {
+    id: 'RES|Resurrection',
+    kind: 'res',
+    label: 'Resurrection',
+    tooltip: 'Central claim to which NT witnesses ultimately point',
+    url: 'https://www.biblegateway.com/passage/?search=1%20Corinthians%2015%3A3-8&version=ESV'
+  };
+
+  // Create category nodes for each OT cluster
+  const categoryNodes = Array.from(clusterColors.entries()).map(([name, color]) => ({
+    id: `CAT|${name}`,
+    kind: 'cat',
+    label: name,
+    color,
+    tooltip: `${name} prophecies`
+  }));
+
+  // Connect category nodes to resurrection
+  categoryNodes.forEach(cat => {
+    links.push({ source: cat.id, target: resNode.id, type: 'catRes' });
+  });
+
+  // Connect OT nodes to their category node, or to resurrection if uncategorized
+  for (const ot of otMap.values()) {
+    if (ot.cluster) {
+      links.push({ source: ot.id, target: `CAT|${ot.cluster}`, type: 'otCat' });
+    } else {
+      links.push({ source: ot.id, target: resNode.id, type: 'otRes' });
+    }
+  }
+
+  // Remove NT links to resurrection (do not add them)
+
+  const nodes = [...otMap.values(), ...ntMap.values(), ...categoryNodes, resNode];
+
+  // ---- Legend ----
+  const legend = d3.select('#legend');
+  legend.html('');
+  legend.append('div').style('font-weight','600').style('margin-bottom','6px').text('Legend');
+  for (const [name, col] of clusterColors) {
+    const row = legend.append('div').attr('class','row');
+    row.append('div').attr('class','swatch').style('background', col);
+    row.append('div').text(name);
+  }
+  const rowNT = legend.append('div').attr('class','row');
+  rowNT.append('div').attr('class','swatch').style('background', '#0ea5e9');
+  rowNT.append('div').text('NT fulfillment');
+  const rowRes = legend.append('div').attr('class','row');
+  rowRes.append('div').attr('class','swatch').style('background', '#f59e0b');
+  rowRes.append('div').text('Resurrection hub');
+
+  // ---- SVG & forces ----
+  const svg = d3.select('#chart');
+  const { width, height } = svg.node().getBoundingClientRect();
+  const g = svg.append('g');
+
+  // Draw links
+  const link = g.selectAll('.link')
+    .data(links)
+    .join('line')
+    .attr('class', d => 'link ' + (d.type === 'ntRes' ? 'ntRes' : 'otNt'))
+    .attr('stroke-width', d => d.type === 'ntRes' ? 1 : 1.2);
+
+    // Simulation
+    // Group OT nodes by cluster (like atomic nuclei)
+    // Standard force-directed tree style
+    const simulation = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(links)
+        .id(d => d.id)
+        .distance(d => {
+          if (d.type === 'otNt') return 32;
+          if (d.type === 'otCat') return 24; // tighter grouping for categorized
+          if (d.type === 'otRes') return 80;
+          if (d.type === 'catRes') return 120;
+          return 120;
+        })
+        .strength(d => {
+          if (d.type === 'otNt') return 0.9;
+          if (d.type === 'otCat') return 1.2; // stronger pull to category
+          if (d.type === 'otRes') return 0.7;
+          if (d.type === 'catRes') return 0.08;
+          return 0.08;
+        }))
+      .force('charge', d3.forceManyBody().strength(-120))
+      .force('center', d3.forceCenter(width/2, height/2))
+      .force('collide', d3.forceCollide().radius(16).strength(0.8))
+      .on('tick', ticked);
+
+    // Draw nodes
+    const node = g.selectAll('.node')
+      .data(nodes, d => d.id)
+      .join(enter => {
+        const n = enter.append('g').attr('class', d => `node ${d.kind}`).call(drag(simulation));
+        // Shapes
+        n.each(function(d) {
+          const sel = d3.select(this);
+          sel.append('circle')
+            .attr('r', 8)
+            .attr('fill', colorFor(d));
+        });
+        // Labels (subtle)
+        n.append('text').attr('class','label')
+          .attr('dy', -10)
+          .attr('text-anchor', 'middle')
+          .text(d => d.kind==='res' ? d.label : '');
+        return n;
+      });
+
+  // Tooltip + interactions
+  const tip = d3.select('#t');
+  node.on('mousemove', (event, d) => {
+      const { clientX:x, clientY:y } = event;
+      tip.style('display','block')
+         .style('left', (x + 12) + 'px')
+         .style('top',  (y + 12) + 'px')
+         .html(`<strong>${d.label}</strong><br>${(d.tooltip||'')}<br><span style="color:#6b7280">${d.kind.toUpperCase()}</span>`);
+      // highlight neighborhood
+      svg.classed('highlight', true);
+      link.classed('active', l => l.source.id===d.id || l.target.id===d.id);
+      node.classed('active', n => n.id===d.id || links.some(l => (l.source.id===d.id && l.target.id===n.id) || (l.target.id===d.id && l.source.id===n.id)));
+    })
+    .on('mouseleave', () => {
+      tip.style('display','none');
+      svg.classed('highlight', false);
+      link.classed('active', false);
+      node.classed('active', false);
+    })
+    .on('click', (event, d) => {
+      if (d.url) window.open(d.url, '_blank', 'noopener');
+      else if (d.kind==='nt') window.open( ntUrlFor(d.label), '_blank', 'noopener' );
+    });
+
+  // Zoom / pan
+  svg.call(d3.zoom().scaleExtent([0.4, 2.5]).on('zoom', (event) => {
+    g.attr('transform', event.transform);
+  }));
+
+  // Simulation is now declared above, before node drawing
+
+  // Pin the Resurrection hub near the center
+  const res = nodes.find(n => n.kind==='res');
+  res.fx = width/2; res.fy = height/2;
+
+  function ticked() {
+    link
+      .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+
+    node.attr('transform', d => `translate(${d.x},${d.y})`);
+  }
+
+  // Drag behavior
+  function drag(sim) {
+    function dragstarted(event, d) {
+      if (!event.active) sim.alphaTarget(0.15).restart();
+      d.fx = d.x; d.fy = d.y;
+    }
+    function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
+    function dragended(event, d) {
+      if (!event.active) sim.alphaTarget(0);
+      // leave fixed if Shift is down; otherwise release
+      if (!event.sourceEvent.shiftKey) { d.fx = null; d.fy = null; }
+    }
+    return d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended);
+  }
+
+  // Small helpers
+  function ntUrlFor(ref) {
+    return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=ESV`;
+  }
+  function starPath(cx, cy, spikes, outerR, innerR) {
+    let rot = Math.PI / 2 * 3, x = cx, y = cy, step = Math.PI / spikes, path = [];
+    path.push('M', cx, cy - outerR);
+    for (let i=0; i<spikes; i++) {
+      x = cx + Math.cos(rot) * outerR; y = cy + Math.sin(rot) * outerR; path.push('L', x, y); rot += step;
+      x = cx + Math.cos(rot) * innerR; y = cy + Math.sin(rot) * innerR; path.push('L', x, y); rot += step;
+    }
+    path.push('Z'); return path.join(' ');
+  }
+
+  // ---- Controls: filters & search & charge ----
+  // NT book list
+  const ntBooks = Array.from(new Set(Array.from(ntMap.values()).map(n => n.book))).sort((a,b)=>a.localeCompare(b));
+  const ntSel = document.getElementById('ntBookFilter');
+  ntBooks.forEach(b => { const o=document.createElement('option'); o.value=b; o.textContent=b; ntSel.appendChild(o); });
+
+  const clSel = document.getElementById('clusterFilter');
+  const search = document.getElementById('searchBox');
+  const charge = document.getElementById('charge');
+
+  function applyFilters() {
+    const cl = clSel.value;
+    const ntb = ntSel.value;
+    const q = (search.value || '').trim().toLowerCase();
+
+    // Node visibility rules
+    const visibleNode = new Set();
+    const visibleLink = [];
+
+    links.forEach(l => {
+      const s = l.source, t = l.target;
+      // For OT→NT links, enforce filters; for NT→Res, derive from NT visibility
+      if (l.type === 'otNt') {
+        let ok = true;
+        if (cl && s.kind==='ot') ok = ok && s.cluster === cl;
+        if (ntb && t.kind==='nt') ok = ok && t.book === ntb;
+        if (q) {
+          const inText = (s.label.toLowerCase().includes(q) || t.label.toLowerCase().includes(q) || (s.claim||'').toLowerCase().includes(q));
+          ok = ok && inText;
+        }
+        if (ok) {
+          visibleNode.add(s.id); visibleNode.add(t.id);
+          visibleLink.push(l);
+        }
+      }
+    });
+    // Include the Resurrection node and any NT that passes through to it
+    links.forEach(l => {
+      if (l.type==='ntRes' && visibleNode.has(l.source.id)) {
+        visibleNode.add(l.target.id);
+        visibleLink.push(l);
+      }
+    });
+
+    // Apply
+    node.attr('display', d => visibleNode.size===0 ? null : (visibleNode.has(d.id) ? null : 'none'));
+    link.attr('display', d => (visibleNode.size===0 ? null :
+      (visibleNode.has(d.source.id) && visibleNode.has(d.target.id) ? null : 'none')));
+
+    // Kick the sim a bit so layout adapts
+    simulation.alpha(0.6).restart();
+  }
+  clSel.addEventListener('change', applyFilters);
+  ntSel.addEventListener('change', applyFilters);
+  search.addEventListener('input', applyFilters);
+
+  charge.addEventListener('input', e => {
+    const v = +e.target.value;
+    simulation.force('charge').strength(v);
+    simulation.alpha(0.3).restart();
+  });
+
+})();
+</script>

@@ -1,0 +1,444 @@
+[
+  {
+    "id": 1,
+    "claim": "Born in Bethlehem",
+    "ot_ref": "Micah 5:2",
+    "nt_refs": [
+      "Matthew 2:1-6",
+      "John 7:42"
+    ],
+    "notes": "Cited by chief priests/scribes to Herod; widely recognized messianic expectation."
+  },
+  {
+    "id": 2,
+    "claim": "Virgin conceives and bears a son called Immanuel",
+    "ot_ref": "Isaiah 7:14",
+    "nt_refs": [
+      "Matthew 1:22-23",
+      "Luke 1:26-35"
+    ],
+    "notes": "Christians read this as fulfilled in Jesus' birth; debated in Jewish interpretation."
+  },
+  {
+    "id": 3,
+    "claim": "Messiah from Davidic line with everlasting throne",
+    "ot_ref": "2 Samuel 7:12-16",
+    "nt_refs": [
+      "Luke 1:32-33",
+      "Acts 2:30-36",
+      "Romans 1:3-4"
+    ],
+    "notes": "Davidic covenant applied to Christ."
+  },
+  {
+    "id": 4,
+    "claim": "A forerunner prepares the way",
+    "ot_ref": "Isaiah 40:3; Malachi 3:1",
+    "nt_refs": [
+      "Matthew 3:1-3",
+      "Mark 1:2-3",
+      "Luke 3:2-6",
+      "John 1:23",
+      "Matthew 11:10"
+    ],
+    "notes": "Applied to John the Baptist."
+  },
+  {
+    "id": 5,
+    "claim": "Ministry brings light to Galilee",
+    "ot_ref": "Isaiah 9:1-2",
+    "nt_refs": [
+      "Matthew 4:13-16"
+    ],
+    "notes": "Jesus begins ministry around Capernaum."
+  },
+  {
+    "id": 6,
+    "claim": "Anointed to proclaim good news, liberty; year of the Lord",
+    "ot_ref": "Isaiah 61:1-2",
+    "nt_refs": [
+      "Luke 4:16-21"
+    ],
+    "notes": "Jesus reads and applies this to himself in Nazareth."
+  },
+  {
+    "id": 7,
+    "claim": "He heals the blind, deaf, lame",
+    "ot_ref": "Isaiah 35:5-6",
+    "nt_refs": [
+      "Matthew 11:4-5"
+    ],
+    "notes": "Jesus cites these signs to John\u2019s disciples."
+  },
+  {
+    "id": 8,
+    "claim": "Speaks in parables",
+    "ot_ref": "Psalm 78:2",
+    "nt_refs": [
+      "Matthew 13:34-35"
+    ],
+    "notes": "Matthew cites fulfillment formula."
+  },
+  {
+    "id": 9,
+    "claim": "Zeal for God's house",
+    "ot_ref": "Psalm 69:9",
+    "nt_refs": [
+      "John 2:17",
+      "Romans 15:3"
+    ],
+    "notes": "Applied to temple action and Christ\u2019s reproach-bearing."
+  },
+  {
+    "id": 10,
+    "claim": "Entry to Zion humble and on a donkey",
+    "ot_ref": "Zechariah 9:9",
+    "nt_refs": [
+      "Matthew 21:4-5",
+      "John 12:14-15"
+    ],
+    "notes": "Triumphal entry."
+  },
+  {
+    "id": 11,
+    "claim": "Betrayed by a close friend",
+    "ot_ref": "Psalm 41:9",
+    "nt_refs": [
+      "John 13:18-19"
+    ],
+    "notes": "Jesus cites this at the Last Supper."
+  },
+  {
+    "id": 12,
+    "claim": "Betrayed for thirty silver pieces; money ends up with the potter",
+    "ot_ref": "Zechariah 11:12-13",
+    "nt_refs": [
+      "Matthew 26:14-16",
+      "Matthew 27:3-10"
+    ],
+    "notes": "Matthew references Jeremiah in a composite citation."
+  },
+  {
+    "id": 13,
+    "claim": "Shepherd struck; sheep scattered",
+    "ot_ref": "Zechariah 13:7",
+    "nt_refs": [
+      "Matthew 26:31",
+      "Mark 14:27"
+    ],
+    "notes": "Jesus quotes this about the disciples fleeing."
+  },
+  {
+    "id": 14,
+    "claim": "Silent before accusers",
+    "ot_ref": "Isaiah 53:7",
+    "nt_refs": [
+      "Matthew 27:12-14",
+      "Acts 8:32-35"
+    ],
+    "notes": "Ethiopian eunuch passage connects Isa 53 to Jesus."
+  },
+  {
+    "id": 15,
+    "claim": "Despised, rejected; bore our sins",
+    "ot_ref": "Isaiah 53:3-6",
+    "nt_refs": [
+      "1 Peter 2:22-25",
+      "Matthew 8:16-17"
+    ],
+    "notes": "New Testament explicitly applies Isa 53 to Jesus\u2019 suffering."
+  },
+  {
+    "id": 16,
+    "claim": "Pierced; hands/feet, mocked",
+    "ot_ref": "Psalm 22:16-18",
+    "nt_refs": [
+      "Matthew 27:35",
+      "John 19:23-24",
+      "Luke 23:35"
+    ],
+    "notes": "Casting lots for garments (v18) directly cited."
+  },
+  {
+    "id": 17,
+    "claim": "Given gall/vinegar",
+    "ot_ref": "Psalm 69:21",
+    "nt_refs": [
+      "Matthew 27:34",
+      "John 19:28-30"
+    ],
+    "notes": "John notes 'to fulfill the Scripture' (I thirst)."
+  },
+  {
+    "id": 18,
+    "claim": "None of his bones broken",
+    "ot_ref": "Exodus 12:46; Psalm 34:20",
+    "nt_refs": [
+      "John 19:36"
+    ],
+    "notes": "John cites fulfillment at crucifixion."
+  },
+  {
+    "id": 19,
+    "claim": "They will look on him whom they pierced",
+    "ot_ref": "Zechariah 12:10",
+    "nt_refs": [
+      "John 19:37",
+      "Revelation 1:7"
+    ],
+    "notes": "John cites as fulfilled in piercing."
+  },
+  {
+    "id": 20,
+    "claim": "Buried with the rich",
+    "ot_ref": "Isaiah 53:9",
+    "nt_refs": [
+      "Matthew 27:57-60",
+      "John 19:38-42"
+    ],
+    "notes": "Joseph of Arimathea's tomb."
+  },
+  {
+    "id": 21,
+    "claim": "Not abandoned to Sheol / Holy One not see decay",
+    "ot_ref": "Psalm 16:10",
+    "nt_refs": [
+      "Acts 2:25-32",
+      "Acts 13:34-37"
+    ],
+    "notes": "Peter and Paul preach this as resurrection prophecy."
+  },
+  {
+    "id": 22,
+    "claim": "Ascension/exaltation to God's right hand",
+    "ot_ref": "Psalm 110:1",
+    "nt_refs": [
+      "Matthew 22:41-45",
+      "Acts 2:34-36",
+      "Hebrews 1:13"
+    ],
+    "notes": "Frequently cited enthronement text."
+  },
+  {
+    "id": 23,
+    "claim": "Priest forever after the order of Melchizedek",
+    "ot_ref": "Psalm 110:4",
+    "nt_refs": [
+      "Hebrews 5:5-10",
+      "Hebrews 7:11-17"
+    ],
+    "notes": "Major Christological argument in Hebrews."
+  },
+  {
+    "id": 24,
+    "claim": "A new covenant with God's people",
+    "ot_ref": "Jeremiah 31:31-34",
+    "nt_refs": [
+      "Luke 22:20",
+      "1 Corinthians 11:25",
+      "Hebrews 8:6-13"
+    ],
+    "notes": "Institution of the Eucharist; Hebrews quotes extensively."
+  },
+  {
+    "id": 25,
+    "claim": "Light to the nations (Gentiles)",
+    "ot_ref": "Isaiah 42:6; Isaiah 49:6",
+    "nt_refs": [
+      "Luke 2:30-32",
+      "Acts 13:47"
+    ],
+    "notes": "Simeon\u2019s Nunc Dimittis; Paul\u2019s mission."
+  },
+  {
+    "id": 26,
+    "claim": "A stumbling stone / precious cornerstone",
+    "ot_ref": "Isaiah 8:14; Isaiah 28:16; Psalm 118:22",
+    "nt_refs": [
+      "Romans 9:32-33",
+      "1 Peter 2:6-8",
+      "Matthew 21:42"
+    ],
+    "notes": "Cornerstone motif applied to Jesus."
+  },
+  {
+    "id": 27,
+    "claim": "Out of Egypt I called my son",
+    "ot_ref": "Hosea 11:1",
+    "nt_refs": [
+      "Matthew 2:14-15"
+    ],
+    "notes": "Typological fulfillment in the Holy Family\u2019s return."
+  },
+  {
+    "id": 28,
+    "claim": "Rachel weeping for her children",
+    "ot_ref": "Jeremiah 31:15",
+    "nt_refs": [
+      "Matthew 2:16-18"
+    ],
+    "notes": "Applied to Herod\u2019s massacre."
+  },
+  {
+    "id": 29,
+    "claim": "Called a Nazarene / branch",
+    "ot_ref": "Isaiah 11:1 (netzer, 'branch')",
+    "nt_refs": [
+      "Matthew 2:23"
+    ],
+    "notes": "Matthew summarizes prophetic theme; not a single verse quotation."
+  },
+  {
+    "id": 30,
+    "claim": "Ministry marked by meekness and justice to the nations",
+    "ot_ref": "Isaiah 42:1-4",
+    "nt_refs": [
+      "Matthew 12:17-21"
+    ],
+    "notes": "Matthew quotes the Servant Song."
+  },
+  {
+    "id": 31,
+    "claim": "Chosen and beloved Son",
+    "ot_ref": "Psalm 2:7; Isaiah 42:1",
+    "nt_refs": [
+      "Matthew 3:16-17",
+      "Matthew 17:5"
+    ],
+    "notes": "Baptism/Transfiguration theophany echoes."
+  },
+  {
+    "id": 32,
+    "claim": "Ministry characterized by miracles and compassion",
+    "ot_ref": "Isaiah 53:4 (MT: 'our pains he bore')",
+    "nt_refs": [
+      "Matthew 8:16-17"
+    ],
+    "notes": "Matthew cites this as fulfilled in healings."
+  },
+  {
+    "id": 33,
+    "claim": "Messenger of the covenant comes to the temple",
+    "ot_ref": "Malachi 3:1",
+    "nt_refs": [
+      "Matthew 11:10",
+      "Mark 1:2"
+    ],
+    "notes": "Composite with Isa 40:3; applied to John/Jesus arrival."
+  },
+  {
+    "id": 34,
+    "claim": "Shepherds feed on his betrayal wages (potter\u2019s field)",
+    "ot_ref": "Zechariah 11:13 (and Jeremiah themes)",
+    "nt_refs": [
+      "Matthew 27:7-10"
+    ],
+    "notes": "Purchase of the potter\u2019s field."
+  },
+  {
+    "id": 35,
+    "claim": "Hated without cause",
+    "ot_ref": "Psalm 35:19; Psalm 69:4",
+    "nt_refs": [
+      "John 15:24-25"
+    ],
+    "notes": "Jesus cites 'law' referring to Psalms."
+  },
+  {
+    "id": 36,
+    "claim": "Mocked and reproached",
+    "ot_ref": "Psalm 22:7-8",
+    "nt_refs": [
+      "Matthew 27:39-43"
+    ],
+    "notes": "Passersby quote similar taunts."
+  },
+  {
+    "id": 37,
+    "claim": "Given lots for garments",
+    "ot_ref": "Psalm 22:18",
+    "nt_refs": [
+      "Matthew 27:35",
+      "John 19:23-24"
+    ],
+    "notes": "Explicit fulfillment citation in John."
+  },
+  {
+    "id": 38,
+    "claim": "Numbered with transgressors",
+    "ot_ref": "Isaiah 53:12",
+    "nt_refs": [
+      "Luke 22:37",
+      "Mark 15:27-28 (text-critical)"
+    ],
+    "notes": "Jesus quotes Isa 53:12 of himself."
+  },
+  {
+    "id": 39,
+    "claim": "Friends stand afar off",
+    "ot_ref": "Psalm 38:11; Psalm 88:8",
+    "nt_refs": [
+      "Luke 23:49"
+    ],
+    "notes": "Narrative alignment."
+  },
+  {
+    "id": 40,
+    "claim": "Lots cast for clothing; soldiers divide garments",
+    "ot_ref": "Psalm 22:18",
+    "nt_refs": [
+      "John 19:23-24"
+    ],
+    "notes": "Duplicate of theme; included for clarity of distinct NT citations."
+  },
+  {
+    "id": 41,
+    "claim": "Thirst on the cross ('I am thirsty')",
+    "ot_ref": "Psalm 22:15; Psalm 69:21",
+    "nt_refs": [
+      "John 19:28"
+    ],
+    "notes": "John signals fulfillment."
+  },
+  {
+    "id": 42,
+    "claim": "Casting lots for a single tunic",
+    "ot_ref": "Psalm 22:18",
+    "nt_refs": [
+      "John 19:23-24"
+    ],
+    "notes": "Seamless tunic emphasized."
+  },
+  {
+    "id": 43,
+    "claim": "The stone the builders rejected becomes the cornerstone",
+    "ot_ref": "Psalm 118:22-23",
+    "nt_refs": [
+      "Matthew 21:42",
+      "Acts 4:10-11",
+      "1 Peter 2:7"
+    ],
+    "notes": "Applied to Jesus\u2019 rejection/exaltation."
+  },
+  {
+    "id": 44,
+    "claim": "A prophet like Moses",
+    "ot_ref": "Deuteronomy 18:15-19",
+    "nt_refs": [
+      "Acts 3:22-23",
+      "John 6:14"
+    ],
+    "notes": "Peter applies this to Jesus."
+  },
+  {
+    "id": 45,
+    "claim": "Entry accompanied by praise 'Hosanna' from Psalm 118",
+    "ot_ref": "Psalm 118:25-26",
+    "nt_refs": [
+      "Matthew 21:9",
+      "Mark 11:9-10",
+      "John 12:13"
+    ],
+    "notes": "Crowd acclamation from Hallel psalm."
+  }
+]

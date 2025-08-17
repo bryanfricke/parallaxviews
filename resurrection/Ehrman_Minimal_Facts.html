@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ehrman — 4+1 Minimal Facts (Interactive)</title>
+  <style>
+    :root { --fg:#222; --bg:#fff; --muted:#666; --accent:#2b6cb0; --card:#f7f7f9; }
+    * { box-sizing: border-box; }
+    body { margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:var(--fg); background:var(--bg); }
+    header { padding:24px 20px; border-bottom:1px solid #eee; position:sticky; top:0; background:#fff; }
+    h1 { margin:0 0 6px; font-size:22px; }
+    p.lead { margin:0; color:var(--muted); }
+    main { max-width:1200px; margin:0 auto; padding:20px; }
+    .grid { display:grid; grid-template-columns: 1.1fr 1.9fr; gap:16px; }
+    .card { background:var(--card); border:1px solid #e9e9ee; border-radius:14px; padding:16px; }
+    h2 { font-size:18px; margin:0 0 8px; }
+    .fact { margin-bottom:16px; }
+    details { background:#fff; border:1px solid #e9e9ee; border-radius:12px; padding:12px 14px; }
+    details + details { margin-top:10px; }
+    summary { cursor:pointer; font-weight:600; }
+    .quote { margin:10px 0 0; padding:12px; background:#fafafa; border-left:3px solid var(--accent); border-radius:8px; }
+    .source { font-size:14px; color:var(--muted); margin-top:8px; }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .actions { display:flex; gap:10px; margin-top:8px; }
+    button.copy { padding:6px 10px; border:1px solid #ddd; background:#fff; border-radius:8px; cursor:pointer; }
+    footer { margin-top:28px; font-size:13px; color:var(--muted); }
+    .note { margin-top:18px; padding:12px 14px; border:1px dashed #ddd; border-radius:10px; background:#fcfcfe; }
+    @media (max-width:900px){ .grid{ grid-template-columns:1fr; } header{ position:static; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>4 + 1 Minimal Facts — Bart Ehrman’s Affirmations</h1>
+    <p class="lead">Clickable sources, collapsible details, and copyable quotes.</p>
+  </header>
+  <main>
+    <div class="grid">
+      <div class="card">
+        <h2>About Bart Ehrman</h2>
+        <p>Bart D. Ehrman is a New Testament scholar and agnostic who affirms certain historical facts (e.g., Jesus’s crucifixion, the early disciples’ belief in his resurrection, and James the Just’s leadership) but rejects the resurrection as a historical miracle. He has frequently debated evangelical scholars and others, often arguing against the logical inference that these facts point to a literal resurrection.</p>
+        <h2>Facts</h2>
+        <ol id="toc">
+          <li><a href="#fact1" data-target="fact1">Crucifixion of Jesus</a></li>
+          <li><a href="#fact2" data-target="fact2">Disciples’ appearance-claims & sincerity (Peter, James son of Zebedee, John)</a></li>
+          <li><a href="#fact3" data-target="fact3">Paul’s appearance-claim, sincerity, and death</a></li>
+          <li><a href="#fact4" data-target="fact4">James the Just — appearance in creed, leadership, death</a></li>
+          <li><a href="#fact5" data-target="fact5">(+1) Empty tomb — burial in creed & early testimony re: Joseph of Arimathea</a></li>
+        </ol>
+        <div class="note">
+          <strong>Note on later distancing:</strong> In later writings/debates, Ehrman expresses greater caution about the empty tomb tradition, while the earlier statements below reflect his stronger acceptance of early burial testimony.
+        </div>
+      </div>
+      <div class="card">
+        <h2>Quotes & Sources</h2>
+
+        <section id="fact1" class="fact">
+          <details open>
+            <summary>Fact 1 — Crucifixion of Jesus</summary>
+            <div class="quote" id="q1">“For one thing, I am convinced beyond a shadow of a doubt that Jesus was physically crucified and died on the cross. That is rock-bottom certain in my books.”</div>
+            <div class="source">
+              — Bart D. Ehrman, <em>The Historicity of Jesus – A Blast from the Past</em>. 
+              Source: <a href="https://ehrmanblog.org/the-historicity-of-jesus-a-blast-from-the-past/" target="_blank" rel="noopener">ehrmanblog.org</a>
+            </div>
+            <div class="actions">
+              <button class="copy" data-target="q1">Copy quote</button>
+            </div>
+          </details>
+        </section>
+
+        <section id="fact2" class="fact">
+          <details>
+            <summary>Fact 2 — Disciples’ Claims of Appearances & Sincerity (Peter, James son of Zebedee, John)</summary>
+            <div class="quote" id="q2">“That Jesus’ followers (and later Paul) had resurrection experiences is, in my judgment, a fact. What the reality was that gave rise to the experiences I do not know.”</div>
+            <div class="source">
+              — Bart D. Ehrman, <em>How Jesus Became God</em> (2014), p. 182. 
+              Book info: <a href="https://www.harpercollins.com/products/how-jesus-became-god-bart-d-ehrman" target="_blank" rel="noopener">HarperOne</a>
+            </div>
+            <div class="quote" id="q2b">“We can say with complete certainty that some of his disciples at some later time insisted that… he soon appeared to them, convincing them that he had been raised from the dead.”</div>
+            <div class="source">
+              — Quoted in context summarizing Ehrman’s view; see discussion: 
+              <a href="https://chab123.wordpress.com/2016/01/04/bart-ehrman-the-resurrection-of-jesus-and-the-vision-hypothesis-2/" target="_blank" rel="noopener">chab123.wordpress.com</a>
+            </div>
+            <div class="quote" id="q2c">“Paul reports that Jesus appeared to Peter (Cephas) … and this is in a creed he received from others, going back to just a few years after Jesus’ death.”</div>
+            <div class="source">
+              — Bart D. Ehrman, <em>How Jesus Became God</em> (2014), p. 182. 
+              Book info: <a href="https://www.harpercollins.com/products/how-jesus-became-god-bart-d-ehrman" target="_blank" rel="noopener">HarperOne</a>
+            </div>
+            <div class="actions">
+              <button class="copy" data-target="q2">Copy quote 1</button>
+              <button class="copy" data-target="q2b">Copy quote 2</button>
+              <button class="copy" data-target="q2c">Copy quote 3</button>
+            </div>
+          </details>
+        </section>
+
+        <section id="fact3" class="fact">
+          <details>
+            <summary>Fact 3 — Paul’s Claim, Sincerity, and Death</summary>
+            <div class="quote" id="q3">“We know some of these believers by name; one of them, the apostle Paul, claims quite plainly to have seen Jesus alive after his death.”</div>
+            <div class="source">
+              — Bart D. Ehrman, <em>How Jesus Became God</em> (2014), p. 182. 
+              Book info: <a href="https://www.harpercollins.com/products/how-jesus-became-god-bart-d-ehrman" target="_blank" rel="noopener">HarperOne</a>
+            </div>
+            <div class="quote" id="q3b">“Peter… and Paul almost certainly yes [were martyred].”</div>
+            <div class="source">
+              — Bart D. Ehrman, “Were the Disciples Martyred for Believing in the Resurrection?” 
+              Source: <a href="https://ehrmanblog.org/were-the-disciples-martyred-for-believing-in-the-resurrection/" target="_blank" rel="noopener">ehrmanblog.org</a>
+            </div>
+            <div class="actions">
+              <button class="copy" data-target="q3">Copy quote 1</button>
+              <button class="copy" data-target="q3b">Copy quote 2</button>
+            </div>
+          </details>
+        </section>
+
+        <section id="fact4" class="fact">
+          <details>
+            <summary>Fact 4 — James the Just: Appearance in Creed, Leadership, Death</summary>
+            <div class="quote" id="q4">“Most scholars who study such things think that James himself claimed to have seen Jesus alive after his death and that he was not basing it on the claims of others.”</div>
+            <div class="source">
+              — Bart D. Ehrman, “James the Brother of the Lord.” 
+              Source: <a href="https://ehrmanblog.org/james-the-brother-of-the-lord/" target="_blank" rel="noopener">ehrmanblog.org</a>
+            </div>
+            <div class="quote" id="q4a">“Yes, James was the head of the church in Jerusalem early on, not Peter. But he would not be the ‘pope’ because that is the designation of the head of the church specifically in Rome.”</div>
+            <div class="source">
+              — Bart D. Ehrman, The Brother of Jesus and the Book of James, on ehrmanblog.org
+            </div>
+            <div class="quote" id="q4b">“James the brother of Jesus was probably martyred, though he may have been killed on other charges/for other reasons.”</div>
+            <div class="source">
+              — Bart D. Ehrman, “Were the Disciples Martyred for Believing in the Resurrection?” 
+              Source: <a href="https://ehrmanblog.org/were-the-disciples-martyred-for-believing-in-the-resurrection/" target="_blank" rel="noopener">ehrmanblog.org</a>
+            </div>
+            <div class="actions">
+              <button class="copy" data-target="q4">Copy quote 1</button>
+              <button class="copy" data-target="q4a">Copy quote 2</button>
+              <button class="copy" data-target="q4b">Copy quote 3</button>
+            </div>
+          </details>
+        </section>
+
+        <section id="fact5" class="fact">
+          <details>
+            <summary>(+1) Empty Tomb — Burial in Creed & Early Testimony (Joseph of Arimathea)</summary>
+            <div class="quote" id="q5">“The earliest creed about Jesus’ death and resurrection (1 Cor 15:3–4) states he was buried.”</div>
+            <div class="source">
+              Scripture reference: <a href="https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-4&version=ESV" target="_blank" rel="noopener">1 Corinthians 15:3–4 (ESV)</a>
+            </div>
+            <div class="quote" id="q5b">“The earliest accounts we have are unanimous in saying that Jesus was in fact buried by this fellow, Joseph of Arimathea, and so it’s relatively reliable that that’s what happened. We also have solid traditions to indicate that women found this tomb empty three days later.”</div>
+            <div class="source">
+              — Bart D. Ehrman, <em>From Jesus to Constantine: A History of Early Christianity</em>, Lecture 4 (2003). 
+              Context: <a href="https://ehrmanblog.org/the-burial-of-jesus-a-blast-from-the-past/" target="_blank" rel="noopener">ehrmanblog.org</a>
+            </div>
+            <div class="actions">
+              <button class="copy" data-target="q5">Copy quote 1</button>
+              <button class="copy" data-target="q5b">Copy quote 2</button>
+            </div>
+          </details>
+        </section>
+
+      </div>
+    </div>
+
+    <footer>
+      Compiled for reference. Wherever possible, links point to Bart Ehrman’s own blog or book pages.
+    </footer>
+  </main>
+
+  <script>
+    // Copy buttons
+    document.querySelectorAll('button.copy').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-target');
+        const el = document.getElementById(id);
+        if (!el) return;
+        try {
+          await navigator.clipboard.writeText(el.textContent.trim());
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = 'Copy quote', 1200);
+        } catch (e) {
+          btn.textContent = 'Copy failed';
+          setTimeout(() => btn.textContent = 'Copy quote', 1200);
+        }
+      });
+    });
+
+    // TOC behavior: always open the matching details and scroll into view
+    document.querySelectorAll('#toc a[data-target]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = link.getAttribute('data-target');
+        const section = document.getElementById(id);
+        if (!section) return;
+        const det = section.querySelector('details');
+        if (det) det.open = true;
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, '', '#' + id);
+      });
+    });
+  </script>
+</body>
+</html>

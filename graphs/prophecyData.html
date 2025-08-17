@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>OT → NT Fulfillments (Bipartite)</title>
+<style>
+  html,body { margin:0; height:100%; font:14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  #topbar { padding:10px 14px; border-bottom:1px solid #e5e7eb; display:flex; gap:12px; align-items:center; }
+  svg { display:block; width:100vw; height:calc(100vh - 52px); background:#fff; }
+  .col-title { font-weight:600; fill:#111; }
+  .node text { fill:#111; cursor:default; }
+  .node circle { r:4; fill:#fff; stroke:#444; }
+  .link { fill:none; stroke:#888; stroke-opacity:.35; }
+  .link.highlight { stroke-opacity:.9; stroke-width:2.5px; }
+  .node.highlight circle { stroke:#000; stroke-width:2px; }
+  .tooltip {
+    position:fixed; pointer-events:none; background:#fff; border:1px solid #e5e7eb; padding:8px 10px;
+    border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,.08); font-size:13px; color:#111; display:none;
+  }
+</style>
+<div id="topbar">
+  <strong>OT → NT Fulfillments</strong>
+  <label>Filter OT book:
+    <select id="otFilter"><option value="">All</option></select>
+  </label>
+  <label>Filter NT book:
+    <select id="ntFilter"><option value="">All</option></select>
+  </label>
+</div>
+<div class="tooltip" id="t"></div>
+<svg id="chart"></svg>
+
+<script src="https://unpkg.com/d3@7"></script>
+<script>
+(async function() {
+  // Load your core JSON (id, claim, ot_ref, nt_refs[])
+  const data = await fetch('messianic_prophecies_core.json').then(r => r.json());
+
+  // Helpers to parse "Book chap:verse"
+  const parseRef = ref => {
+    // e.g., "Isaiah 7:14" or "Exodus 12:46"
+    const m = ref.match(/^([\w\s1-3]+)\s+(\d+):(\d+(-\d+)?)$/);
+    return m ? { book: m[1].trim(), chapter: m[2], verse: m[3] } : { book: ref, chapter: '', verse: '' };
+  };
+  const ntBooksFrom = ntRefs => ntRefs.map(parseRef).map(d => d.book);
+
+  // Build unique OT nodes (by exact OT ref) and NT nodes (by NT passage)
+  const otNodesMap = new Map();
+  const ntNodesMap = new Map();
+  const links = [];
+
+  data.forEach(d => {
+    const ot = parseRef(d.ot_ref);
+    const otKey = d.ot_ref;
+    if (!otNodesMap.has(otKey)) otNodesMap.set(otKey, { id: otKey, label: `${ot.book} ${ot.chapter}:${ot.verse}`, side:'ot', book: ot.book, items: []});
+    const otNode = otNodesMap.get(otKey);
+    otNode.items.push(d);
+
+    d.nt_refs.forEach(ntr => {
+      const nt = parseRef(ntr);
+      const ntKey = ntr;
+      if (!ntNodesMap.has(ntKey)) ntNodesMap.set(ntKey, { id: ntKey, label: `${nt.book} ${nt.chapter}:${nt.verse}`, side:'nt', book: nt.book, items: []});
+      const ntNode = ntNodesMap.get(ntKey);
+      ntNode.items.push(d);
+
+      links.push({
+        source: otKey,
+        target: ntKey,
+        claim: d.claim,
+        ot: d.ot_ref,
+        nt: ntr
+      });
+    });
+  });
+
+  let otNodes = Array.from(otNodesMap.values());
+  let ntNodes = Array.from(ntNodesMap.values());
+
+  // Populate filters
+  const unique = arr => Array.from(new Set(arr)).sort((a,b)=>a.localeCompare(b));
+  const otBooks = unique(otNodes.map(n=>n.book));
+  const ntBooks = unique(ntNodes.map(n=>n.book));
+  const otSel = document.getElementById('otFilter');
+  const ntSel = document.getElementById('ntFilter');
+  otBooks.forEach(b => { const o=document.createElement('option'); o.value=b; o.textContent=b; otSel.appendChild(o); });
+  ntBooks.forEach(b => { const o=document.createElement('option'); o.value=b; o.textContent=b; ntSel.appendChild(o); });
+
+  const svg = d3.select('#chart');
+  const { width, height } = svg.node().getBoundingClientRect();
+  const margin = { top: 40, right: 40, bottom: 40, left: 40 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const leftX = 120;
+  const rightX = innerW - 120;
+
+  // Titles
+  g.append('text').attr('x', leftX).attr('y', -10).attr('text-anchor','middle').attr('class','col-title').text('Old Testament');
+  g.append('text').attr('x', rightX).attr('y', -10).attr('text-anchor','middle').attr('class','col-title').text('New Testament');
+
+  const tooltip = d3.select('#t');
+
+  function render() {
+    const otFilter = otSel.value;
+    const ntFilter = ntSel.value;
+
+    // Filter nodes and links
+    const linkFiltered = links.filter(l =>
+      (otFilter ? parseRef(l.ot).book === otFilter : true) &&
+      (ntFilter ? parseRef(l.nt).book === ntFilter : true)
+    );
+
+    const otSet = new Set(linkFiltered.map(l => l.source));
+    const ntSet = new Set(linkFiltered.map(l => l.target));
+
+    const otData = otNodes.filter(n => otSet.has(n.id)).sort((a,b)=> d3.ascending(a.book, b.book) || d3.ascending(a.label, b.label));
+    const ntData = ntNodes.filter(n => ntSet.has(n.id)).sort((a,b)=> d3.ascending(a.book, b.book) || d3.ascending(a.label, b.label));
+
+    // Vertical spacing
+    const otY = d3.scalePoint().domain(otData.map(d=>d.id)).range([0, innerH]).padding(0.5);
+    const ntY = d3.scalePoint().domain(ntData.map(d=>d.id)).range([0, innerH]).padding(0.5);
+
+    // Map id -> position
+    const pos = new Map();
+    otData.forEach(d => pos.set(d.id, {x:leftX, y:otY(d.id)}));
+    ntData.forEach(d => pos.set(d.id, {x:rightX, y:ntY(d.id)}));
+
+    // Links
+    const path = d3.linkHorizontal()
+      .x(d => d.x)
+      .y(d => d.y);
+
+    const L = g.selectAll('.link').data(linkFiltered, d=>d.source+'→'+d.target+'|'+d.nt);
+    L.enter().append('path')
+      .attr('class','link')
+      .attr('d', d => path({ source: pos.get(d.source), target: pos.get(d.target) }))
+      .on('mousemove', (event, d) => {
+        tooltip.style('display','block')
+          .style('left', (event.clientX + 12) + 'px')
+          .style('top', (event.clientY + 12) + 'px')
+          .html(`<strong>${d.claim}</strong><br>OT: ${d.ot}<br>NT: ${d.nt}`);
+        d3.select(event.currentTarget).classed('highlight', true);
+      })
+      .on('mouseleave', (event) => {
+        tooltip.style('display','none');
+        d3.select(event.currentTarget).classed('highlight', false);
+      })
+    .merge(L)
+      .attr('d', d => path({ source: pos.get(d.source), target: pos.get(d.target) }));
+    L.exit().remove();
+
+    // OT nodes
+    const otG = g.selectAll('.node.ot').data(otData, d=>d.id);
+    const otEnter = otG.enter().append('g').attr('class','node ot');
+    otEnter.append('circle').attr('r',4);
+    otEnter.append('text').attr('x', 8).attr('dy', '0.32em').text(d=>d.label);
+    otG.merge(otEnter)
+      .attr('transform', d => `translate(${leftX},${otY(d.id)})`);
+
+    // NT nodes
+    const ntG = g.selectAll('.node.nt').data(ntData, d=>d.id);
+    const ntEnter = ntG.enter().append('g').attr('class','node nt');
+    ntEnter.append('circle').attr('r',4);
+    ntEnter.append('text').attr('x', -8).attr('dy', '0.32em').attr('text-anchor','end').text(d=>d.label);
+    ntG.merge(ntEnter)
+      .attr('transform', d => `translate(${rightX},${ntY(d.id)})`);
+
+    // Hover highlight behavior for nodes
+    g.selectAll('.node').on('mousemove', (event, n) => {
+      const isOT = n.side === 'ot';
+      const related = linkFiltered.filter(l => (isOT ? l.source === n.id : l.target === n.id));
+      tooltip.style('display','block')
+        .style('left', (event.clientX + 12) + 'px')
+        .style('top', (event.clientY + 12) + 'px')
+        .html(`<strong>${n.label}</strong><br>${related.length} link(s)`);
+      d3.select(event.currentTarget).classed('highlight', true);
+      // highlight links touching this node
+      g.selectAll('.link').classed('highlight', d => (isOT ? d.source === n.id : d.target === n.id));
+    }).on('mouseleave', () => {
+      tooltip.style('display','none');
+      g.selectAll('.node').classed('highlight', false);
+      g.selectAll('.link').classed('highlight', false);
+    });
+  }
+
+  render();
+  otSel.addEventListener('change', render);
+  ntSel.addEventListener('change', render);
+})();
+</script>

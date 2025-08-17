@@ -1,0 +1,753 @@
+[
+  {
+    "id": 1,
+    "claim": "Born in Bethlehem",
+    "ot_ref": "Micah 5:2",
+    "nt_refs": [
+      "Matthew 2:1-6",
+      "Luke 2:4-7",
+      "John 7:42"
+    ],
+    "notes": "Cited by chief priests/scribes to Herod; widely recognized messianic expectation; Luke narrates Joseph and Mary traveling to Bethlehem where Jesus is born.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Micah+5%3A2&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+2%3A1-6&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Luke+2%3A4-7&version=ESV",
+      "https://www.biblegateway.com/passage/?search=John+7%3A42&version=ESV"
+    ],
+    "tooltip": "Born in Bethlehem — Micah 5:2",
+    "cluster": "Birth/Origin"
+  },
+  {
+    "id": 2,
+    "claim": "Virgin conceives and bears a son called Immanuel",
+    "ot_ref": "Isaiah 7:14",
+    "nt_refs": [
+      "Matthew 1:22-23",
+      "Luke 1:26-35"
+    ],
+    "notes": "Christians read this as fulfilled in Jesus' birth; debated in Jewish interpretation.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+7%3A14&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+1%3A22-23&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Luke+1%3A26-35&version=ESV"
+    ],
+    "tooltip": "Virgin conceives and bears a son called Immanuel \u2014 Isaiah 7:14",
+    "cluster": "Birth/Origin"
+  },
+  {
+    "id": 3,
+    "claim": "Messiah from Davidic line with everlasting throne",
+    "ot_ref": "2 Samuel 7:12-16",
+    "nt_refs": [
+      "Luke 1:32-33",
+      "Acts 2:30-36",
+      "Romans 1:3-4"
+    ],
+    "notes": "Davidic covenant applied to Christ.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=2+Samuel+7%3A12-16&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Luke+1%3A32-33&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Acts+2%3A30-36&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Romans+1%3A3-4&version=ESV"
+    ],
+    "tooltip": "Messiah from Davidic line with everlasting throne \u2014 2 Samuel 7:12-16",
+    "cluster": "Birth/Origin"
+  },
+  {
+    "id": 4,
+    "claim": "A forerunner prepares the way",
+    "ot_ref": "Isaiah 40:3; Malachi 3:1",
+    "nt_refs": [
+      "Matthew 3:1-3",
+      "Mark 1:2-3",
+      "Luke 3:2-6",
+      "John 1:23",
+      "Matthew 11:10"
+    ],
+    "notes": "Applied to John the Baptist.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+40%3A3+%3B+Malachi+3%3A1&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+3%3A1-3&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Mark+1%3A2-3&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Luke+3%3A2-6&version=ESV",
+      "https://www.biblegateway.com/passage/?search=John+1%3A23&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Matthew+11%3A10&version=ESV"
+    ],
+    "tooltip": "A forerunner prepares the way \u2014 Isaiah 40:3; Malachi 3:1",
+    "cluster": "Forerunner/Ministry"
+  },
+  {
+    "id": 5,
+    "claim": "Ministry brings light to Galilee",
+    "ot_ref": "Isaiah 9:1-2",
+    "nt_refs": [
+      "Matthew 4:13-16"
+    ],
+    "notes": "Jesus begins ministry around Capernaum.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+9%3A1-2&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+4%3A13-16&version=ESV"
+    ],
+    "tooltip": "Ministry brings light to Galilee \u2014 Isaiah 9:1-2",
+    "cluster": "Forerunner/Ministry"
+  },
+  {
+    "id": 6,
+    "claim": "Anointed to proclaim good news, liberty; year of the Lord",
+    "ot_ref": "Isaiah 61:1-2",
+    "nt_refs": [
+      "Luke 4:16-21"
+    ],
+    "notes": "Jesus reads and applies this to himself in Nazareth.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+61%3A1-2&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Luke+4%3A16-21&version=ESV"
+    ],
+    "tooltip": "Anointed to proclaim good news, liberty; year of the Lord \u2014 Isaiah 61:1-2",
+    "cluster": "Forerunner/Ministry"
+  },
+  {
+    "id": 7,
+    "claim": "He heals the blind, deaf, lame",
+    "ot_ref": "Isaiah 35:5-6",
+    "nt_refs": [
+      "Matthew 11:4-5"
+    ],
+    "notes": "Jesus cites these signs to John\u2019s disciples.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+35%3A5-6&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+11%3A4-5&version=ESV"
+    ],
+    "tooltip": "He heals the blind, deaf, lame \u2014 Isaiah 35:5-6",
+    "cluster": "Forerunner/Ministry"
+  },
+  {
+    "id": 8,
+    "claim": "Speaks in parables",
+    "ot_ref": "Psalm 78:2",
+    "nt_refs": [
+      "Matthew 13:34-35"
+    ],
+    "notes": "Matthew cites fulfillment formula.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+78%3A2&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+13%3A34-35&version=ESV"
+    ],
+    "tooltip": "Speaks in parables \u2014 Psalm 78:2",
+    "cluster": "Forerunner/Ministry"
+  },
+  {
+    "id": 9,
+    "claim": "Zeal for God's house",
+    "ot_ref": "Psalm 69:9",
+    "nt_refs": [
+      "John 2:17",
+      "Romans 15:3"
+    ],
+    "notes": "Applied to temple action and Christ\u2019s reproach-bearing.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+69%3A9&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=John+2%3A17&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Romans+15%3A3&version=ESV"
+    ],
+    "tooltip": "Zeal for God's house \u2014 Psalm 69:9",
+    "cluster": "Forerunner/Ministry"
+  },
+  {
+    "id": 10,
+    "claim": "Entry to Zion humble and on a donkey",
+    "ot_ref": "Zechariah 9:9",
+    "nt_refs": [
+      "Matthew 21:4-5",
+      "John 12:14-15"
+    ],
+    "notes": "Triumphal entry.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Zechariah+9%3A9&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+21%3A4-5&version=ESV",
+      "https://www.biblegateway.com/passage/?search=John+12%3A14-15&version=ESV"
+    ],
+    "tooltip": "Entry to Zion humble and on a donkey \u2014 Zechariah 9:9",
+    "cluster": "Entry/Conflict"
+  },
+  {
+    "id": 11,
+    "claim": "Betrayed by a close friend",
+    "ot_ref": "Psalm 41:9",
+    "nt_refs": [
+      "John 13:18-19"
+    ],
+    "notes": "Jesus cites this at the Last Supper.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+41%3A9&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=John+13%3A18-19&version=ESV"
+    ],
+    "tooltip": "Betrayed by a close friend \u2014 Psalm 41:9",
+    "cluster": "Betrayal/Passion"
+  },
+  {
+    "id": 12,
+    "claim": "Betrayed for thirty silver pieces; money ends up with the potter",
+    "ot_ref": "Zechariah 11:12-13",
+    "nt_refs": [
+      "Matthew 26:14-16",
+      "Matthew 27:3-10"
+    ],
+    "notes": "Matthew references Jeremiah in a composite citation.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Zechariah+11%3A12-13&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+26%3A14-16&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Matthew+27%3A3-10&version=ESV"
+    ],
+    "tooltip": "Betrayed for thirty silver pieces; money ends up with the potter \u2014 Zechariah 11:12-13",
+    "cluster": "Betrayal/Passion"
+  },
+  {
+    "id": 13,
+    "claim": "Shepherd struck; sheep scattered",
+    "ot_ref": "Zechariah 13:7",
+    "nt_refs": [
+      "Matthew 26:31",
+      "Mark 14:27"
+    ],
+    "notes": "Jesus quotes this about the disciples fleeing.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Zechariah+13%3A7&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+26%3A31&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Mark+14%3A27&version=ESV"
+    ],
+    "tooltip": "Shepherd struck; sheep scattered \u2014 Zechariah 13:7",
+    "cluster": "Betrayal/Passion"
+  },
+  {
+    "id": 14,
+    "claim": "Silent before accusers",
+    "ot_ref": "Isaiah 53:7",
+    "nt_refs": [
+      "Matthew 27:12-14",
+      "Acts 8:32-35"
+    ],
+    "notes": "Ethiopian eunuch passage connects Isa 53 to Jesus.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+53%3A7&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+27%3A12-14&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Acts+8%3A32-35&version=ESV"
+    ],
+    "tooltip": "Silent before accusers \u2014 Isaiah 53:7",
+    "cluster": "Betrayal/Passion"
+  },
+  {
+    "id": 15,
+    "claim": "Despised, rejected; bore our sins",
+    "ot_ref": "Isaiah 53:3-6",
+    "nt_refs": [
+      "1 Peter 2:22-25",
+      "Matthew 8:16-17"
+    ],
+    "notes": "New Testament explicitly applies Isa 53 to Jesus\u2019 suffering.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+53%3A3-6&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=1+Peter+2%3A22-25&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Matthew+8%3A16-17&version=ESV"
+    ],
+    "tooltip": "Despised, rejected; bore our sins \u2014 Isaiah 53:3-6",
+    "cluster": "Betrayal/Passion"
+  },
+  {
+    "id": 16,
+    "claim": "Pierced; hands/feet, mocked",
+    "ot_ref": "Psalm 22:16-18",
+    "nt_refs": [
+      "Matthew 27:35",
+      "John 19:23-24",
+      "Luke 23:35"
+    ],
+    "notes": "Casting lots for garments (v18) directly cited.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+22%3A16-18&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+27%3A35&version=ESV",
+      "https://www.biblegateway.com/passage/?search=John+19%3A23-24&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Luke+23%3A35&version=ESV"
+    ],
+    "tooltip": "Pierced; hands/feet, mocked \u2014 Psalm 22:16-18",
+    "cluster": "Betrayal/Passion"
+  },
+  {
+    "id": 17,
+    "claim": "Given gall/vinegar",
+    "ot_ref": "Psalm 69:21",
+    "nt_refs": [
+      "Matthew 27:34",
+      "John 19:28-30"
+    ],
+    "notes": "John notes 'to fulfill the Scripture' (I thirst).",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+69%3A21&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+27%3A34&version=ESV",
+      "https://www.biblegateway.com/passage/?search=John+19%3A28-30&version=ESV"
+    ],
+    "tooltip": "Given gall/vinegar \u2014 Psalm 69:21",
+    "cluster": "Betrayal/Passion"
+  },
+  {
+    "id": 18,
+    "claim": "None of his bones broken",
+    "ot_ref": "Exodus 12:46; Psalm 34:20",
+    "nt_refs": [
+      "John 19:36"
+    ],
+    "notes": "John cites fulfillment at crucifixion.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Exodus+12%3A46+%3B+Psalm+34%3A20&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=John+19%3A36&version=ESV"
+    ],
+    "tooltip": "None of his bones broken \u2014 Exodus 12:46; Psalm 34:20",
+    "cluster": "Betrayal/Passion"
+  },
+  {
+    "id": 19,
+    "claim": "They will look on him whom they pierced",
+    "ot_ref": "Zechariah 12:10",
+    "nt_refs": [
+      "John 19:37",
+      "Revelation 1:7"
+    ],
+    "notes": "John cites as fulfilled in piercing.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Zechariah+12%3A10&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=John+19%3A37&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Revelation+1%3A7&version=ESV"
+    ],
+    "tooltip": "They will look on him whom they pierced \u2014 Zechariah 12:10",
+    "cluster": "Betrayal/Passion"
+  },
+  {
+    "id": 20,
+    "claim": "Buried with the rich",
+    "ot_ref": "Isaiah 53:9",
+    "nt_refs": [
+      "Matthew 27:57-60",
+      "John 19:38-42"
+    ],
+    "notes": "Joseph of Arimathea's tomb.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+53%3A9&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+27%3A57-60&version=ESV",
+      "https://www.biblegateway.com/passage/?search=John+19%3A38-42&version=ESV"
+    ],
+    "tooltip": "Buried with the rich \u2014 Isaiah 53:9",
+    "cluster": "Betrayal/Passion"
+  },
+  {
+    "id": 21,
+    "claim": "Not abandoned to Sheol / Holy One not see decay",
+    "ot_ref": "Psalm 16:10",
+    "nt_refs": [
+      "Acts 2:25-32",
+      "Acts 13:34-37"
+    ],
+    "notes": "Peter and Paul preach this as resurrection prophecy.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+16%3A10&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Acts+2%3A25-32&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Acts+13%3A34-37&version=ESV"
+    ],
+    "tooltip": "Not abandoned to Sheol / Holy One not see decay \u2014 Psalm 16:10",
+    "cluster": "Resurrection/Exaltation/New Covenant"
+  },
+  {
+    "id": 22,
+    "claim": "Ascension/exaltation to God's right hand",
+    "ot_ref": "Psalm 110:1",
+    "nt_refs": [
+      "Matthew 22:41-45",
+      "Acts 2:34-36",
+      "Hebrews 1:13"
+    ],
+    "notes": "Frequently cited enthronement text.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+110%3A1&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+22%3A41-45&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Acts+2%3A34-36&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Hebrews+1%3A13&version=ESV"
+    ],
+    "tooltip": "Ascension/exaltation to God's right hand \u2014 Psalm 110:1",
+    "cluster": "Resurrection/Exaltation/New Covenant"
+  },
+  {
+    "id": 23,
+    "claim": "Priest forever after the order of Melchizedek",
+    "ot_ref": "Psalm 110:4",
+    "nt_refs": [
+      "Hebrews 5:5-10",
+      "Hebrews 7:11-17"
+    ],
+    "notes": "Major Christological argument in Hebrews.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+110%3A4&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Hebrews+5%3A5-10&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Hebrews+7%3A11-17&version=ESV"
+    ],
+    "tooltip": "Priest forever after the order of Melchizedek \u2014 Psalm 110:4",
+    "cluster": "Resurrection/Exaltation/New Covenant"
+  },
+  {
+    "id": 24,
+    "claim": "A new covenant with God's people",
+    "ot_ref": "Jeremiah 31:31-34",
+    "nt_refs": [
+      "Luke 22:20",
+      "1 Corinthians 11:25",
+      "Hebrews 8:6-13"
+    ],
+    "notes": "Institution of the Eucharist; Hebrews quotes extensively.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Jeremiah+31%3A31-34&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Luke+22%3A20&version=ESV",
+      "https://www.biblegateway.com/passage/?search=1+Corinthians+11%3A25&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Hebrews+8%3A6-13&version=ESV"
+    ],
+    "tooltip": "A new covenant with God's people \u2014 Jeremiah 31:31-34",
+    "cluster": "Resurrection/Exaltation/New Covenant"
+  },
+  {
+    "id": 25,
+    "claim": "Light to the nations (Gentiles)",
+    "ot_ref": "Isaiah 42:6; Isaiah 49:6",
+    "nt_refs": [
+      "Luke 2:30-32",
+      "Acts 13:47"
+    ],
+    "notes": "Simeon\u2019s Nunc Dimittis; Paul\u2019s mission.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+42%3A6+%3B+Isaiah+49%3A6&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Luke+2%3A30-32&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Acts+13%3A47&version=ESV"
+    ],
+    "tooltip": "Light to the nations (Gentiles) \u2014 Isaiah 42:6; Isaiah 49:6",
+    "cluster": "Resurrection/Exaltation/New Covenant"
+  },
+  {
+    "id": 26,
+    "claim": "A stumbling stone / precious cornerstone",
+    "ot_ref": "Isaiah 8:14; Isaiah 28:16; Psalm 118:22",
+    "nt_refs": [
+      "Romans 9:32-33",
+      "1 Peter 2:6-8",
+      "Matthew 21:42"
+    ],
+    "notes": "Cornerstone motif applied to Jesus.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+8%3A14+%3B+Isaiah+28%3A16+%3B+Psalm+118%3A22&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Romans+9%3A32-33&version=ESV",
+      "https://www.biblegateway.com/passage/?search=1+Peter+2%3A6-8&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Matthew+21%3A42&version=ESV"
+    ],
+    "tooltip": "A stumbling stone / precious cornerstone \u2014 Isaiah 8:14; Isaiah 28:16; Psalm 118:22",
+    "cluster": "Entry/Conflict"
+  },
+  {
+    "id": 27,
+    "claim": "Out of Egypt I called my son",
+    "ot_ref": "Hosea 11:1",
+    "nt_refs": [
+      "Matthew 2:14-15"
+    ],
+    "notes": "Typological fulfillment in the Holy Family\u2019s return.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Hosea+11%3A1&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+2%3A14-15&version=ESV"
+    ],
+    "tooltip": "Out of Egypt I called my son \u2014 Hosea 11:1",
+    "cluster": "Birth/Origin"
+  },
+  {
+    "id": 28,
+    "claim": "Rachel weeping for her children",
+    "ot_ref": "Jeremiah 31:15",
+    "nt_refs": [
+      "Matthew 2:16-18"
+    ],
+    "notes": "Applied to Herod\u2019s massacre.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Jeremiah+31%3A15&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+2%3A16-18&version=ESV"
+    ],
+    "tooltip": "Rachel weeping for her children \u2014 Jeremiah 31:15",
+    "cluster": "Birth/Origin"
+  },
+  {
+    "id": 29,
+    "claim": "Called a Nazarene / branch",
+    "ot_ref": "Isaiah 11:1 (netzer, 'branch')",
+    "nt_refs": [
+      "Matthew 2:23"
+    ],
+    "notes": "Matthew summarizes prophetic theme; not a single verse quotation.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+11%3A1+%28netzer%2C+%27branch%27%29&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+2%3A23&version=ESV"
+    ],
+    "tooltip": "Called a Nazarene / branch \u2014 Isaiah 11:1 (netzer, 'branch')",
+    "cluster": ""
+  },
+  {
+    "id": 30,
+    "claim": "Ministry marked by meekness and justice to the nations",
+    "ot_ref": "Isaiah 42:1-4",
+    "nt_refs": [
+      "Matthew 12:17-21"
+    ],
+    "notes": "Matthew quotes the Servant Song.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+42%3A1-4&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+12%3A17-21&version=ESV"
+    ],
+    "tooltip": "Ministry marked by meekness and justice to the nations \u2014 Isaiah 42:1-4",
+    "cluster": "Forerunner/Ministry"
+  },
+  {
+    "id": 31,
+    "claim": "Chosen and beloved Son",
+    "ot_ref": "Psalm 2:7; Isaiah 42:1",
+    "nt_refs": [
+      "Matthew 3:16-17",
+      "Matthew 17:5"
+    ],
+    "notes": "Baptism/Transfiguration theophany echoes.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+2%3A7+%3B+Isaiah+42%3A1&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+3%3A16-17&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Matthew+17%3A5&version=ESV"
+    ],
+    "tooltip": "Chosen and beloved Son \u2014 Psalm 2:7; Isaiah 42:1",
+    "cluster": "Forerunner/Ministry"
+  },
+  {
+    "id": 32,
+    "claim": "Ministry characterized by miracles and compassion",
+    "ot_ref": "Isaiah 53:4",
+    "nt_refs": [
+      "Matthew 8:16-17"
+    ],
+    "notes": "Matthew cites this as fulfilled in healings.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+53%3A4&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+8%3A16-17&version=ESV"
+    ],
+    "tooltip": "Ministry characterized by miracles and compassion \u2014 Isaiah 53:4",
+    "cluster": ""
+  },
+  {
+    "id": 33,
+    "claim": "Messenger of the covenant comes to the temple",
+    "ot_ref": "Malachi 3:1",
+    "nt_refs": [
+      "Matthew 11:10",
+      "Mark 1:2"
+    ],
+    "notes": "Composite with Isa 40:3; applied to John/Jesus arrival.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Malachi+3%3A1&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+11%3A10&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Mark+1%3A2&version=ESV"
+    ],
+    "tooltip": "Messenger of the covenant comes to the temple \u2014 Malachi 3:1",
+    "cluster": "Forerunner/Ministry"
+  },
+  {
+    "id": 34,
+    "claim": "Shepherds feed on his betrayal wages (potter\u2019s field)",
+    "ot_ref": "Zechariah 11:13 (and Jeremiah themes)",
+    "nt_refs": [
+      "Matthew 27:7-10"
+    ],
+    "notes": "Purchase of the potter\u2019s field.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Zechariah+11%3A13+%28and+Jeremiah+themes%29&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+27%3A7-10&version=ESV"
+    ],
+    "tooltip": "Shepherds feed on his betrayal wages (potter\u2019s field) \u2014 Zechariah 11:13 (and Jeremiah themes)",
+    "cluster": ""
+  },
+  {
+    "id": 35,
+    "claim": "Hated without cause",
+    "ot_ref": "Psalm 35:19; Psalm 69:4",
+    "nt_refs": [
+      "John 15:24-25"
+    ],
+    "notes": "Jesus cites 'law' referring to Psalms.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+35%3A19+%3B+Psalm+69%3A4&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=John+15%3A24-25&version=ESV"
+    ],
+    "tooltip": "Hated without cause \u2014 Psalm 35:19; Psalm 69:4",
+    "cluster": ""
+  },
+  {
+    "id": 36,
+    "claim": "Mocked and reproached",
+    "ot_ref": "Psalm 22:7-8",
+    "nt_refs": [
+      "Matthew 27:39-43"
+    ],
+    "notes": "Passersby quote similar taunts.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+22%3A7-8&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+27%3A39-43&version=ESV"
+    ],
+    "tooltip": "Mocked and reproached \u2014 Psalm 22:7-8",
+    "cluster": ""
+  },
+  {
+    "id": 37,
+    "claim": "Given lots for garments",
+    "ot_ref": "Psalm 22:18",
+    "nt_refs": [
+      "Matthew 27:35",
+      "John 19:23-24"
+    ],
+    "notes": "Explicit fulfillment citation in John.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+22%3A18&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+27%3A35&version=ESV",
+      "https://www.biblegateway.com/passage/?search=John+19%3A23-24&version=ESV"
+    ],
+    "tooltip": "Given lots for garments \u2014 Psalm 22:18",
+    "cluster": ""
+  },
+  {
+    "id": 38,
+    "claim": "Numbered with transgressors",
+    "ot_ref": "Isaiah 53:12",
+    "nt_refs": [
+      "Luke 22:37",
+      "Mark 15:27-28"
+    ],
+    "notes": "Jesus quotes Isa 53:12 of himself.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+53%3A12&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Luke+22%3A37&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Mark+15%3A27-28&version=ESV"
+    ],
+    "tooltip": "Numbered with transgressors \u2014 Isaiah 53:12",
+    "cluster": ""
+  },
+  {
+    "id": 39,
+    "claim": "Friends stand afar off",
+    "ot_ref": "Psalm 38:11; Psalm 88:8",
+    "nt_refs": [
+      "Luke 23:49"
+    ],
+    "notes": "Narrative alignment.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+38%3A11+%3B+Psalm+88%3A8&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Luke+23%3A49&version=ESV"
+    ],
+    "tooltip": "Friends stand afar off \u2014 Psalm 38:11; Psalm 88:8",
+    "cluster": ""
+  },
+  {
+    "id": 40,
+    "claim": "Lots cast for clothing; soldiers divide garments",
+    "ot_ref": "Psalm 22:18",
+    "nt_refs": [
+      "John 19:23-24"
+    ],
+    "notes": "Duplicate theme; included for distinct NT citation.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+22%3A18&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=John+19%3A23-24&version=ESV"
+    ],
+    "tooltip": "Lots cast for clothing; soldiers divide garments \u2014 Psalm 22:18",
+    "cluster": ""
+  },
+  {
+    "id": 41,
+    "claim": "Thirst on the cross ('I am thirsty')",
+    "ot_ref": "Psalm 22:15; Psalm 69:21",
+    "nt_refs": [
+      "John 19:28"
+    ],
+    "notes": "John signals fulfillment.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+22%3A15+%3B+Psalm+69%3A21&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=John+19%3A28&version=ESV"
+    ],
+    "tooltip": "Thirst on the cross ('I am thirsty') \u2014 Psalm 22:15; Psalm 69:21",
+    "cluster": ""
+  },
+  {
+    "id": 42,
+    "claim": "Casting lots for a single tunic",
+    "ot_ref": "Psalm 22:18",
+    "nt_refs": [
+      "John 19:23-24"
+    ],
+    "notes": "Seamless tunic emphasized.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+22%3A18&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=John+19%3A23-24&version=ESV"
+    ],
+    "tooltip": "Casting lots for a single tunic \u2014 Psalm 22:18",
+    "cluster": ""
+  },
+  {
+    "id": 43,
+    "claim": "The stone the builders rejected becomes the cornerstone",
+    "ot_ref": "Psalm 118:22-23",
+    "nt_refs": [
+      "Matthew 21:42",
+      "Acts 4:10-11",
+      "1 Peter 2:7"
+    ],
+    "notes": "Applied to Jesus\u2019 rejection/exaltation.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+118%3A22-23&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+21%3A42&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Acts+4%3A10-11&version=ESV",
+      "https://www.biblegateway.com/passage/?search=1+Peter+2%3A7&version=ESV"
+    ],
+    "tooltip": "The stone the builders rejected becomes the cornerstone \u2014 Psalm 118:22-23",
+    "cluster": ""
+  },
+  {
+    "id": 44,
+    "claim": "A prophet like Moses",
+    "ot_ref": "Deuteronomy 18:15-19",
+    "nt_refs": [
+      "Acts 3:22-23",
+      "John 6:14"
+    ],
+    "notes": "Peter applies this to Jesus.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Deuteronomy+18%3A15-19&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Acts+3%3A22-23&version=ESV",
+      "https://www.biblegateway.com/passage/?search=John+6%3A14&version=ESV"
+    ],
+    "tooltip": "A prophet like Moses \u2014 Deuteronomy 18:15-19",
+    "cluster": ""
+  },
+  {
+    "id": 45,
+    "claim": "Entry accompanied by 'Hosanna' from Psalm 118",
+    "ot_ref": "Psalm 118:25-26",
+    "nt_refs": [
+      "Matthew 21:9",
+      "Mark 11:9-10",
+      "John 12:13"
+    ],
+    "notes": "Crowd acclamation from Hallel psalm.",
+    "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+118%3A25-26&version=ESV",
+    "nt_urls_esv": [
+      "https://www.biblegateway.com/passage/?search=Matthew+21%3A9&version=ESV",
+      "https://www.biblegateway.com/passage/?search=Mark+11%3A9-10&version=ESV",
+      "https://www.biblegateway.com/passage/?search=John+12%3A13&version=ESV"
+    ],
+    "tooltip": "Entry accompanied by 'Hosanna' from Psalm 118 \u2014 Psalm 118:25-26",
+    "cluster": "Entry/Conflict"
+  }
+]

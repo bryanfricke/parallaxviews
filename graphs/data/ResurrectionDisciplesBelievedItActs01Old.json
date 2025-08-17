@@ -1,5 +1,5 @@
 {
-    "name": "Minimal Facts",
+    "name": "Home",
     "subtitle": "Overview of key events and testimonies related to the resurrection of Jesus",
     "children": [
         {
@@ -27,11 +27,9 @@
                                     "source": {
                                         "title": "Antiquities of the Jews, Book 18, Section 63",
                                         "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0146%3Abook%3D18%3Awhiston+chapter%3D3%3Awhiston+section%3D3"
-                                    },
-                                    "kind": "evidence"
+                                    }
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Tacitus",
@@ -49,12 +47,10 @@
                                     ],
                                     "source": {
                                         "title": "Tacitus, Annals 15.44",
-                                        "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.02.0078%3Abook%3D15%3Achapter%3D44"
-                                    },
-                                    "kind": "evidence"
+                                        "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.02.0078:book=15:chapter=44"
+                                    }
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Lucian",
@@ -72,13 +68,10 @@
                                     ],
                                     "source": {
                                         "title": "Lucian, The Death of Peregrinus",
-                                        "url": "https://www.tertullian.org/rpearse/lucian/peregrinus.htm",
-                                        "highlightedUrl": "https://www.tertullian.org/rpearse/lucian/peregrinus.htm#:~:text=11.%C2%A0%C2%A0%C2%A0%20%22It%20was,upon%20simple%20folk."
-                                    },
-                                    "kind": "evidence"
+                                        "url": "https://www.tertullian.org/rpearse/lucian/peregrinus.htm?utm_source=chatgpt.com#:~:text=11.%C2%A0%C2%A0%C2%A0%20%22It%20was,upon%20simple%20folk."
+                                    }
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Mara bar-Serapion",
@@ -95,13 +88,11 @@
                                         "Acknowledges Jesus’s Jewish identity and execution."
                                     ],
                                     "source": {
-                                        "title": "Letter of Mara bar",
+                                        "title": "Letter of Mara bar-Serapion",
                                         "url": "https://www.earlychristianwritings.com/mara.html#google_vignette"
-                                    },
-                                    "kind": "evidence"
+                                    }
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Babylonian Talmud",
@@ -120,21 +111,16 @@
                                     "source": {
                                         "title": "Babylonian Talmud, Sanhedrin 43a",
                                         "url": "https://www.sefaria.org/Sanhedrin.43a.20?lang=bi&lookup=%D7%95%D6%B0&with=Lexicon&lang2=en"
-                                    },
-                                    "kind": "evidence"
+                                    }
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         }
-                    ],
-                    "kind": "collection"
+                    ]
                 }
-            ],
-            "kind": "collection"
+            ]
         },
         {
             "name": "Burial",
-            "subtitle": "Historical and textual evidence for Jesus’s burial after crucifixion",
             "children": [
                 {
                     "name": "Early Creed",
@@ -151,13 +137,11 @@
                                 "The burial clause both undergirds the empty-tomb inference and yields an unambiguous “third day” count whether anchored to death or burial."
                             ],
                             "source": {
-                                "title": "1 Corinthians 15:3",
+                                "title": "1 Corinthians 15:3–4 (ESV)",
                                 "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-4&version=ESV"
-                            },
-                            "kind": "evidence"
+                            }
                         }
-                    ],
-                    "kind": "collection"
+                    ]
                 },
                 {
                     "name": "Before Sunset",
@@ -170,7 +154,7 @@
                                 {
                                     "name": "Deuteronomy 21:22–23",
                                     "subtitle": "Remove the body the same day",
-                                    "date": "c. 7th–5th century BC ",
+                                    "date": "Ancient (c. 7th–5th century BC)",
                                     "details": "The law commands that if someone is executed and their body is displayed, it must not remain overnight; they must be buried the same day so the land is not defiled.",
                                     "whyItMatters": [
                                         "Primary source for the Jewish same-day burial norm.",
@@ -178,13 +162,11 @@
                                         "Background for later Jewish practice referenced by Josephus and the Gospels."
                                     ],
                                     "source": {
-                                        "title": "Deuteronomy 21:22",
+                                        "title": "Deuteronomy 21:22–23 (ESV)",
                                         "url": "https://www.biblegateway.com/passage/?search=Deuteronomy+21%3A22-23&version=ESV"
-                                    },
-                                    "kind": "evidence"
+                                    }
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Josephus",
@@ -203,8 +185,7 @@
                                     "source": {
                                         "title": "Josephus, War 4.317 (Whiston/Perseus)",
                                         "url": "https://lexundria.com/j_bj/4.317/wst"
-                                    },
-                                    "kind": "evidence"
+                                    }
                                 },
                                 {
                                     "name": "Antiquities 4.202–203",
@@ -218,12 +199,10 @@
                                     ],
                                     "source": {
                                         "title": "Josephus, Antiquities 4.202–203 (Perseus)",
-                                        "url": "https://www.perseus.tufts.edu/hopper/text?doc=J.+AJ+4.202"
-                                    },
-                                    "kind": "evidence"
+                                        "url": "https://www.perseus.tufts.edu/hopper/text?doc=J.%20AJ%204.202"
+                                    }
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Philo",
@@ -241,13 +220,10 @@
                                     ],
                                     "source": {
                                         "title": "Philo, In Flaccum 83–84 (English, Yonge trans.)",
-                                        "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Philo/in_Flaccum*.html",
-                                        "highlightedUrl": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Philo/in_Flaccum*.html#:~:text=83%C2%A0I%C2%A0have,fire%20and%20sword%3B"
-                                    },
-                                    "kind": "evidence"
+                                        "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Philo/in_Flaccum*.html#:~:text=83%C2%A0I%C2%A0have,fire%20and%20sword%3B"
+                                    }
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Roman Law",
@@ -256,7 +232,7 @@
                                 {
                                     "name": "Digest of Justinian 48.24.1–3",
                                     "subtitle": "Bodies not to be denied to relatives (with exceptions)",
-                                    "date": "Compiled AD 533 (quoting earlier jurists like Ulpian, 3rd c. )",
+                                    "date": "Compiled AD 533 (quoting earlier jurists like Ulpian, 3rd c.)",
                                     "details": "The Digest records the principle that the bodies of those punished should not be refused to their relatives, though treason cases could be excluded. It reflects a normative allowance for burial under Roman administration.",
                                     "whyItMatters": [
                                         "Indicates burial permissions were routine enough to be codified.",
@@ -264,13 +240,11 @@
                                         "Fits the Gospels’ portrayal of official permission to bury."
                                     ],
                                     "source": {
-                                        "title": "Digest 48.24 (De cadaveribus punitorum)",
+                                        "title": "Digest 48.24 (De cadaveribus punitorum) – Latin text",
                                         "url": "https://droitromain.univ-grenoble-alpes.fr/Anglica/D48_Scott.htm#XXIV:~:text=1.%20Ulpianus%2C%20On%20the%20Duties%20of%20Proconsul%2C%20Book%20IX,given%20to%20whoever%20requests%20them%20for%20the%20purpose%20of%20burial"
-                                    },
-                                    "kind": "evidence"
+                                    }
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Gospels",
@@ -287,10 +261,9 @@
                                         "Supports a known, checkable burial site."
                                     ],
                                     "source": {
-                                        "title": "Mark 15:42",
+                                        "title": "Mark 15:42–47 (ESV)",
                                         "url": "https://www.biblegateway.com/passage/?search=Mark+15%3A42-47&version=ESV"
-                                    },
-                                    "kind": "evidence"
+                                    }
                                 },
                                 {
                                     "name": "Matthew 27:57–61",
@@ -303,10 +276,9 @@
                                         "Corroborates the Markan sequence with independent nuance."
                                     ],
                                     "source": {
-                                        "title": "Matthew 27:57",
+                                        "title": "Matthew 27:57–61 (ESV)",
                                         "url": "https://www.biblegateway.com/passage/?search=Matthew+27%3A57-61&version=ESV"
-                                    },
-                                    "kind": "evidence"
+                                    }
                                 },
                                 {
                                     "name": "Luke 23:50–56",
@@ -319,10 +291,9 @@
                                         "Explains their return after Sabbath with prepared spices."
                                     ],
                                     "source": {
-                                        "title": "Luke 23:50",
+                                        "title": "Luke 23:50–56 (ESV)",
                                         "url": "https://www.biblegateway.com/passage/?search=Luke+23%3A50-56&version=ESV"
-                                    },
-                                    "kind": "evidence"
+                                    }
                                 },
                                 {
                                     "name": "John 19:31, 38–42",
@@ -335,24 +306,23 @@
                                         "Complements Synoptic testimony about women without duplicating it."
                                     ],
                                     "source": {
-                                        "title": "John 19:31, 38",
+                                        "title": "John 19:31, 38–42 (ESV)",
                                         "url": "https://www.biblegateway.com/passage/?search=John+19%3A31%2C+38-42&version=ESV"
-                                    },
-                                    "kind": "evidence"
+                                    }
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         }
-                    ],
-                    "kind": "collection"
+                    ]
                 },
                 {
                     "name": "Empty Tomb",
-                    "subtitle": "Early Christians used ‘resurrection’ in the bodily sense recognized in Judaism and Greco-Roman contexts. As N. T. Wright puts it: “when the early Christians said ‘resurrection’ … ‘resurrection’ meant bodily resurrection; and that is what the early Christians affirmed.” (Christian Origins, 3:209).",
+                    "details": "Early Christians used ‘resurrection’ in the bodily sense recognized in Judaism and Greco-Roman contexts. As N. T. Wright puts it: “when the early Christians said ‘resurrection’ … ‘resurrection’ meant bodily resurrection; and that is what the early Christians affirmed.” (Christian Origins, 3:209).",
                     "children": [
                         {
                             "name": "Jerusalem Factor",
-                            "subtitle": "The message began in Jerusalem, where authorities could have refuted it by producing a body.",
+                            "subtitle": "Claim arose where it could be falsified",
+                            "date": "c. AD 30",
+                            "details": "The message began in Jerusalem, where authorities could have refuted it by producing a body.",
                             "children": [
                                 {
                                     "name": "Paul’s Letters",
@@ -361,47 +331,44 @@
                                         {
                                             "name": "Galatians 1:18–19",
                                             "subtitle": "Paul meets Cephas and James in Jerusalem",
-                                            "date": "mid-1st c. AD ",
+                                            "date": "mid-1st c. AD",
                                             "details": "Three years after his conversion, Paul visits Jerusalem, stays fifteen days with Cephas, and sees James, the Lord’s brother. This implies a known leadership presence in Jerusalem early on.",
                                             "whyItMatters": [
                                                 "Locates named leaders (Cephas, James) in Jerusalem soon after Easter.",
                                                 "Shows direct contact between Paul and Jerusalem eyewitness leadership."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:18–19 (ESV)",
+                                                "title": "Galatians 1:18–19 (ESV) — BibleGateway",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A18-19&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Galatians 2:9",
                                             "subtitle": "James, Cephas, and John as acknowledged ‘pillars’",
-                                            "date": "mid-1st c. AD ",
+                                            "date": "mid-1st c. AD",
                                             "details": "Paul notes that James, Cephas, and John recognized his mission and extended fellowship, indicating a stable, recognized leadership hub in Jerusalem.",
                                             "whyItMatters": [
                                                 "Identifies Jerusalem ‘pillars’ by name.",
                                                 "Implies sustained authority centered in Jerusalem."
                                             ],
                                             "source": {
-                                                "title": "Galatians 2:9 (ESV)",
+                                                "title": "Galatians 2:9 (ESV) — BibleGateway",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+2%3A9&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Galatians 2:12",
                                             "subtitle": "‘Certain men came from James’",
-                                            "date": "mid-1st c. AD ",
+                                            "date": "mid-1st c. AD",
                                             "details": "Reference to emissaries ‘from James’ presumes James’s active oversight and influence based in Jerusalem.",
                                             "whyItMatters": [
                                                 "Corroborates James’s functional leadership.",
                                                 "Assumes Jerusalem as the sending center."
                                             ],
                                             "source": {
-                                                "title": "Galatians 2:12 (ESV)",
+                                                "title": "Galatians 2:12 (ESV) — BibleGateway",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+2%3A12&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Romans 15:25–27",
@@ -413,10 +380,9 @@
                                                 "Implies wide awareness of that community across the movement."
                                             ],
                                             "source": {
-                                                "title": "Romans 15:25–27 (ESV)",
+                                                "title": "Romans 15:25–27 (ESV) — BibleGateway",
                                                 "url": "https://www.biblegateway.com/passage/?search=Romans+15%3A25-27&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "1 Corinthians 16:1–4",
@@ -428,10 +394,9 @@
                                                 "Confirms Jerusalem as a living point of reference."
                                             ],
                                             "source": {
-                                                "title": "1 Corinthians 16:1–4 (ESV)",
+                                                "title": "1 Corinthians 16:1–4 (ESV) — BibleGateway",
                                                 "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+16%3A1-4&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "2 Corinthians 8–9",
@@ -443,10 +408,9 @@
                                                 "Reinforces the visibility of the Jerusalem believers."
                                             ],
                                             "source": {
-                                                "title": "2 Corinthians 8–9 (ESV)",
-                                                "url": "https://www.biblegateway.com/passage/?search=2+Corinthians+8%3B2+Corinthians+9&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                                "title": "2 Corinthians 8–9 (ESV) — BibleGateway",
+                                                "url": "https://www.biblegateway.com/passage/?search=2+Corinthians+8;2+Corinthians+9&version=ESV"
+                                            }
                                         },
                                         {
                                             "name": "1 Thessalonians 2:14",
@@ -458,13 +422,11 @@
                                                 "Fits the picture of an early, publicly known movement centered in Judea/Jerusalem."
                                             ],
                                             "source": {
-                                                "title": "1 Thessalonians 2:14 (ESV)",
+                                                "title": "1 Thessalonians 2:14 (ESV) — BibleGateway",
                                                 "url": "https://www.biblegateway.com/passage/?search=1+Thessalonians+2%3A14&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Josephus",
@@ -473,24 +435,18 @@
                                         {
                                             "name": "Antiquities 20.200 (20.9.1)",
                                             "subtitle": "Execution of James, the brother of Jesus, in Jerusalem",
-                                            "date": "Event: c. AD 62; Composition: c. AD 93–94",
+                                            "date": "c. AD 62 (event); c. AD 93–94 (composition)",
                                             "details": "Josephus reports that the high priest Ananus convened the Sanhedrin and executed ‘the brother of Jesus, who was called Christ, whose name was James’ in Jerusalem—evidence of an established Christian leadership there into the 60s.",
                                             "whyItMatters": [
                                                 "Non-Christian confirmation of a Jerusalem Christian leader.",
                                                 "Shows Christian presence in the city three decades after Jesus’s death."
                                             ],
                                             "source": {
-                                                "title": "Josephus, Antiquities of the Jews 20.200 (Whiston trans.)",
+                                                "title": "Josephus, Antiquities of the Jews 20.200 (Whiston trans.) — Lexundria",
                                                 "url": "https://lexundria.com/j_aj/20.200/wst"
-                                            },
-                                            "kind": "evidence",
-                                            "dates": {
-                                                "event": "c. AD 62",
-                                                "composition": "c. AD 93–94"
                                             }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Hegesippus",
@@ -506,16 +462,13 @@
                                                 "Corroborates a continuing, public Christian presence in the city."
                                             ],
                                             "source": {
-                                                "title": "Eusebius, Church History 3.32 (quoting Hegesippus)",
+                                                "title": "Eusebius, Church History 3.32 (quoting Hegesippus) — New Advent",
                                                 "url": "https://www.newadvent.org/fathers/250103.htm#chapter32:~:text=1.%20It%20is%20reported,is%20falsely%20so%2Dcalled.%27"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Enemy Attestation",
@@ -527,10 +480,9 @@
                                     "date": "c. AD 80–90 (traditional dating of Matthew)",
                                     "details": "Matthew preserves the earliest Jewish polemic: a bribed guard is to report that the disciples stole the body while the soldiers slept. The narrative both records the opposing claim and implies that, on all sides, the body was not in the tomb.",
                                     "source": {
-                                        "title": "Matthew 28:11",
+                                        "title": "Matthew 28:11–15 (ESV)",
                                         "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A11-15&version=ESV"
-                                    },
-                                    "kind": "evidence"
+                                    }
                                 },
                                 {
                                     "name": "Justin Martyr, Dialogue with Trypho 108",
@@ -539,10 +491,8 @@
                                     "details": "Justin says Jewish leaders dispatched agents throughout the Mediterranean to accuse Christians of stealing Jesus’ body—an explicit continuation of the theft claim and an implicit admission that the tomb was empty.",
                                     "source": {
                                         "title": "Dialogue with Trypho, ch. 108 (New Advent)",
-                                        "url": "https://www.newadvent.org/fathers/01287.htm",
-                                        "highlightedUrl": "https://www.newadvent.org/fathers/01287.htm#:~:text=Justin%3A%20And%20though,suffering%20Father%20of%20all."
-                                    },
-                                    "kind": "evidence"
+                                        "url": "https://www.newadvent.org/fathers/01287.htm#:~:text=Justin%3A%20And%20though,suffering%20Father%20of%20all."
+                                    }
                                 },
                                 {
                                     "name": "Tertullian, De Spectaculis 30",
@@ -551,13 +501,10 @@
                                     "details": "Tertullian lampoons familiar anti-Christian retorts including the stolen-body claim and a ‘gardener’ variant, showing these hostile explanations were widely enough known to satirize—again presuming a missing corpse.",
                                     "source": {
                                         "title": "De Spectaculis, ch. 30 (New Advent)",
-                                        "url": "https://www.newadvent.org/fathers/0303.htm",
-                                        "highlightedUrl": "https://www.newadvent.org/fathers/0303.htm#:~:text=But%20what%20a,every%20race%2Dcourse."
-                                    },
-                                    "kind": "evidence"
+                                        "url": "https://www.newadvent.org/fathers/0303.htm#:~:text=But%20what%20a,every%20race%2Dcourse."
+                                    }
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Testimony of Women",
@@ -573,13 +520,11 @@
                                             "date": "c. AD 60–90 (traditional range for Luke)",
                                             "details": "Luke frankly notes the men did not believe the women, aligning with broader ancient attitudes toward female testimony and undercutting any charge of Christian embellishment.",
                                             "source": {
-                                                "title": "Luke 24:11",
+                                                "title": "Luke 24:11 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A11&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Josephus",
@@ -593,11 +538,9 @@
                                             "source": {
                                                 "title": "Antiquities 4.219 (English)",
                                                 "url": "https://lexundria.com/j_aj/4.219/wst"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Mishnah",
@@ -611,8 +554,7 @@
                                             "source": {
                                                 "title": "Mishnah Rosh Hashanah 1:8–9 (Sefaria)",
                                                 "url": "https://www.sefaria.org/Mishnah_Rosh_Hashanah.1.8"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Shevuot 4:1",
@@ -627,11 +569,9 @@
                                             "source": {
                                                 "title": "Mishnah Shevuot 4:1 (Sefaria)",
                                                 "url": "https://www.sefaria.org/Mishnah_Shevuot.4.1"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Jerusalem Talmud",
@@ -645,11 +585,9 @@
                                             "source": {
                                                 "title": "Yerushalmi Sotah 3:4 (Sefaria)",
                                                 "url": "https://www.sefaria.org/Jerusalem_Talmud_Sotah.3.4.7?lang=bi&lang2=en"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Babylonian Talmud",
@@ -663,11 +601,9 @@
                                             "source": {
                                                 "title": "Kiddushin 82b (Sefaria)",
                                                 "url": "https://www.sefaria.org/Kiddushin.82b"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Origen",
@@ -680,10 +616,8 @@
                                             "details": "Origen quotes Celsus’ sneer that a ‘half-frantic/half-mad woman’ reported the resurrection—showing pagan critics themselves dismissed the women’s testimony as inherently unreliable.",
                                             "source": {
                                                 "title": "Contra Celsum, Book II (New Advent)",
-                                                "url": "https://www.newadvent.org/fathers/04162.htm",
-                                                "highlightedUrl": "https://www.newadvent.org/fathers/04162.htm#:~:text=He%20imagines%20also,system%20of%20deception!"
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://www.newadvent.org/fathers/04162.htm#:~:text=He%20imagines%20also,system%20of%20deception!"
+                                            }
                                         },
                                         {
                                             "name": "Contra Celsum 3.55",
@@ -692,13 +626,10 @@
                                             "details": "Further reflecting elite disdain, Celsus caricatures Christians as targeting ignorant women—evidence of a cultural environment predisposed to discount women as credible bearers of truth claims.",
                                             "source": {
                                                 "title": "Contra Celsum, Book III (public excerpts)",
-                                                "url": "https://www.newadvent.org/fathers/04163.htm",
-                                                "highlightedUrl": "https://www.newadvent.org/fathers/04163.htm#:~:text=But%20as%20Celsus%20delights,they%20gain%20them%20over."
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://www.newadvent.org/fathers/04163.htm#:~:text=But%20as%20Celsus%20delights,they%20gain%20them%20over."
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Suetonius",
@@ -712,20 +643,15 @@
                                             "source": {
                                                 "title": "Suetonius, Life of Augustus 44 (Lexundria)",
                                                 "url": "https://lexundria.com/suet_aug/44/r"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         }
-                    ],
-                    "kind": "collection"
+                    ]
                 }
-            ],
-            "kind": "collection"
+            ]
         },
         {
             "name": "Resurrection",
@@ -754,10 +680,9 @@
                                                 "Paul engaged in deliberate discussions with Peter (Cephas) to investigate."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:18",
-                                                "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A18-19&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                                "title": "Galatians 1:18–19 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Galatians%201%3A18-19&version=ESV"
+                                            }
                                         },
                                         {
                                             "name": "Galatians 2:1–10",
@@ -770,10 +695,9 @@
                                                 "Early cooperation and trust: Their giving “the right hand of fellowship” demonstrates mutual recognition and shared mission, especially in proclaiming the risen Christ to Jews and Gentiles alike."
                                             ],
                                             "source": {
-                                                "title": "Galatians 2:1",
-                                                "url": "https://www.biblegateway.com/passage/?search=Galatians+2%3A1-10&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                                "title": "Galatians 2:1–10 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Galatians%202%3A1-10&version=ESV"
+                                            }
                                         },
                                         {
                                             "name": "1 Corinthians 15:9–11",
@@ -786,13 +710,11 @@
                                                 "Underscores divine initiative: Paul attributes his apostleship and transformation to grace, reinforcing the supernatural character of the resurrection message."
                                             ],
                                             "source": {
-                                                "title": "1 Corinthians 15:9",
+                                                "title": "1 Corinthians 15:9–11",
                                                 "url": "https://sites.google.com/view/risen-evidence/resurrection/disciples/claimed-it/pauls-letters"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Oral Tradition",
@@ -813,13 +735,11 @@
                                                         "The transmission formula (\"received\" and \"delivered\") is similar to how Jewish rabbis passed on sacred tradition, and the use of the Aramaic name \"Cephas\" points to a Semitic style and Jewish-Christian origins in Jerusalem."
                                                     ],
                                                     "source": {
-                                                        "title": "1 Corinthians 15:3",
-                                                        "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3%E2%80%937&version=ESV"
-                                                    },
-                                                    "kind": "evidence"
+                                                        "title": "1 Corinthians 15:3-7",
+                                                        "url": "https://www.biblegateway.com/passage/?search=1%20Corinthians%2015%3A3%E2%80%937&version=ESV"
+                                                    }
                                                 }
-                                            ],
-                                            "kind": "collection"
+                                            ]
                                         },
                                         {
                                             "name": "Sermon Summaries",
@@ -828,7 +748,7 @@
                                                 {
                                                     "name": "Acts 2:22-36",
                                                     "subtitle": "Peter’s Pentecost Sermon",
-                                                    "date": "Event: c. AD 30; Composition: c. AD 60–80",
+                                                    "date": "c. AD 30 (event); c. AD 60–80 (traditional dating of Acts)",
                                                     "details": "Peter proclaims Jesus’ resurrection as the fulfillment of Scripture and firsthand apostolic testimony, appealing to the crowd’s knowledge of Jesus’ miracles and crucifixion. He declares that “God raised him up,” citing Psalm 16 and stating, “this Jesus God raised up, and of that we all are witnesses.”",
                                                     "whyItMatters": [
                                                         "Public testimony in Jerusalem: Delivered in the city where Jesus was crucified, strengthening its apologetic force.",
@@ -836,115 +756,86 @@
                                                         "Claim of eyewitnesses: “We all are witnesses” shows collective apostolic affirmation."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 2:22",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+2%3A22-36&version=ESV"
-                                                    },
-                                                    "kind": "evidence",
-                                                    "dates": {
-                                                        "event": "c. AD 30",
-                                                        "composition": "c. AD 60–80"
+                                                        "title": "Acts 2:22–36 (ESV)",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+2:22-36&version=ESV"
                                                     }
                                                 },
                                                 {
                                                     "name": "Acts 3:13–15",
                                                     "subtitle": "Peter at Solomon’s Portico",
-                                                    "date": "Event: c. AD 30–31; Composition: c. AD 60–80",
+                                                    "date": "c. AD 30–31 (event); c. AD 60–80 (traditional dating of Acts)",
                                                     "details": "Peter accuses the crowd of killing the “Author of life,” but states, “God raised him from the dead. To this we are witnesses.”",
                                                     "whyItMatters": [
                                                         "Direct confrontation: Peter boldly blames the crowd and asserts resurrection before them.",
                                                         "Consistency: The message aligns with Peter’s earlier Pentecost sermon."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 3:13",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+3%3A13-15&version=ESV"
-                                                    },
-                                                    "kind": "evidence",
-                                                    "dates": {
-                                                        "event": "c. AD 30–31",
-                                                        "composition": "c. AD 60–80"
+                                                        "title": "Acts 3:13–15 (ESV)",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+3:13-15&version=ESV"
                                                     }
                                                 },
                                                 {
                                                     "name": "Acts 4:8–12, 33",
                                                     "subtitle": "Peter before the Sanhedrin",
-                                                    "date": "Event: c. AD 30–31; Composition: c. AD 60–80",
+                                                    "date": "c. AD 30–31 (event); c. AD 60–80 (traditional dating of Acts)",
                                                     "details": "Peter, filled with the Holy Spirit, declares before the Jewish council that a lame man was healed “by the name of Jesus Christ of Nazareth, whom you crucified, whom God raised from the dead.” He identifies Jesus as the rejected stone that has become the cornerstone and asserts that “there is salvation in no one else…”",
                                                     "whyItMatters": [
                                                         "Healing provokes hostility: A miraculous healing prompts accusation rather than praise.",
                                                         "Exclusive claim: Peter boldly asserts that salvation is found in no one else but Jesus.",
-                                                        "Fulfillment of Scripture: Peter cites Psalm 118:22, identifying Jesus as the rejected cornerstone."
+                                                        "Fulfillment of Scripture: Peter cites Psalm 118:22, identifying Jesus as the rejected cornerstone.",
+                                                        "Continuity with Jesus: The opposition to Jesus’ healing ministry now extends to His followers."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 4:8",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+4%3A8-12&version=ESV"
-                                                    },
-                                                    "kind": "evidence",
-                                                    "dates": {
-                                                        "event": "c. AD 30–31",
-                                                        "composition": "c. AD 60–80"
+                                                        "title": "Acts 4:8–12 (ESV)",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+4:8-12&version=ESV"
                                                     }
                                                 },
                                                 {
                                                     "name": "Acts 5:30–32",
                                                     "subtitle": "Apostles before the Sanhedrin Again",
-                                                    "date": "Event: c. AD 31; Composition: c. AD 60–80",
+                                                    "date": "c. AD 31 (event); c. AD 60–80 (traditional dating of Acts)",
                                                     "details": "Peter states, “The God of our fathers raised Jesus, whom you killed by hanging him on a tree… And we are witnesses to these things, and so is the Holy Spirit...”",
                                                     "whyItMatters": [
                                                         "Divine validation: The apostles invoke the Holy Spirit as co-witness.",
                                                         "Repetition and consistency: The message is again that of resurrection and the guilt of the hearers."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 5:30",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+5%3A30-32&version=ESV"
-                                                    },
-                                                    "kind": "evidence",
-                                                    "dates": {
-                                                        "event": "c. AD 31",
-                                                        "composition": "c. AD 60–80"
+                                                        "title": "Acts 5:30–32 (ESV)",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+5:30-32&version=ESV"
                                                     }
                                                 },
                                                 {
                                                     "name": "Acts 10:39–41",
                                                     "subtitle": "Peter at Cornelius’s House",
-                                                    "date": "Event: c. AD 37–38; Composition: c. AD 60–80",
+                                                    "date": "c. AD 37–38 (event); c. AD 60–80 (traditional dating of Acts)",
                                                     "details": "Peter states, “We are witnesses of all that he did… They put him to death… but God raised him… and made him appear… to us who had been chosen by God as witnesses.”",
                                                     "whyItMatters": [
                                                         "Gentile mission context: Peter shares resurrection testimony beyond Jewish circles.",
                                                         "Focus on God’s initiative: The witnesses were “chosen by God.”"
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 10:39",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+10%3A39-41&version=ESV"
-                                                    },
-                                                    "kind": "evidence",
-                                                    "dates": {
-                                                        "event": "c. AD 37–38",
-                                                        "composition": "c. AD 60–80"
+                                                        "title": "Acts 10:39–41 (ESV)",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+10:39-41&version=ESV"
                                                     }
                                                 },
                                                 {
                                                     "name": "Acts 13:26–37",
                                                     "subtitle": "Paul in Pisidian Antioch",
-                                                    "date": "Event: c. AD 47–48; Composition: c. AD 60–80",
+                                                    "date": " c. AD 47–48 (event); c. AD 60–80 (traditional dating of Acts)",
                                                     "details": "Paul echoes Peter’s Pentecost sermon, citing Psalm 2 and 16 as fulfilled in Jesus’ resurrection. He states, “God raised him from the dead, and for many days he appeared to those… who are now his witnesses...”",
                                                     "whyItMatters": [
                                                         "Scripture-centered: Paul also grounds the resurrection in prophecy.",
                                                         "Transmission of testimony: Highlights that the eyewitnesses now preach this message."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 13:26",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+13%3A26-37&version=ESV"
-                                                    },
-                                                    "kind": "evidence",
-                                                    "dates": {
-                                                        "event": "c. AD 47–48",
-                                                        "composition": "c. AD 60–80"
+                                                        "title": "Acts 13:26–37 (ESV)",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+13:26-37&version=ESV"
                                                     }
                                                 },
                                                 {
                                                     "name": "Acts 17:2–3, 30–31",
                                                     "subtitle": "Paul in Thessalonica and Athens",
-                                                    "date": "Event: c. AD 49–51; Composition: c. AD 60–80",
+                                                    "date": "c. AD 49–51 (event); c. AD 60–80 (traditional dating of Acts)",
                                                     "details": "In Thessalonica, Paul reasons from the Scriptures that “it was necessary for the Christ to suffer and to rise from the dead,” declaring “this Jesus… is the Christ.” In Athens, he asserts that God “has fixed a day on which he will judge the world… by a man whom he has appointed; and of this he has given assurance to all by raising him from the dead.”",
                                                     "whyItMatters": [
                                                         "Scriptural reasoning: Paul presents Jesus’ death and resurrection as necessary fulfillments of Jewish prophecy.",
@@ -952,27 +843,20 @@
                                                         "Universal significance: Paul links the resurrection to a future judgment of all people, reinforcing its cosmic importance."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 17:2",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+17%3A2-3%2C30-31&version=ESV"
-                                                    },
-                                                    "kind": "evidence",
-                                                    "dates": {
-                                                        "event": "c. AD 49–51",
-                                                        "composition": "c. AD 60–80"
+                                                        "title": "Acts 17:2–3, 30–31 (ESV)",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+17:2-3,30-31&version=ESV"
                                                     }
                                                 }
-                                            ],
-                                            "kind": "collection"
+                                            ]
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Written Tradition",
                                     "subtitle": "Early written accounts and testimonies from Gospel writers and apostolic fathers recording the disciples' resurrection claims",
                                     "children": [
                                         {
-                                            "name": "Gospels and Acts",
+                                            "name": "Gospels / Acts",
                                             "subtitle": "Primary written accounts of the disciples' resurrection claims from the first century",
                                             "children": [
                                                 {
@@ -987,13 +871,13 @@
                                                             "whyItMatters": [
                                                                 "Women as first witnesses counters likely invention in that culture.",
                                                                 "Physical contact (“took hold of his feet”) underscores a bodily resurrection.",
-                                                                "Immediate worship highlights recognition of Jesus as the risen Lord."
+                                                                "Immediate worship highlights recognition of Jesus as the risen Lord.",
+                                                                "Supports proclamation of the resurrection as a real, public event, not mere metaphor or private vision."
                                                             ],
                                                             "source": {
-                                                                "title": "Matthew 28:1",
+                                                                "title": "Matthew 28:1–10 (ESV)",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A1-10&version=ESV"
-                                                            },
-                                                            "kind": "evidence"
+                                                            }
                                                         },
                                                         {
                                                             "name": "Matthew 28:16–20",
@@ -1006,13 +890,11 @@
                                                                 "Promise of ongoing presence ties the church’s mission to the living, active Lord."
                                                             ],
                                                             "source": {
-                                                                "title": "Matthew 28:16",
+                                                                "title": "Matthew 28:16–20 (ESV)",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A16-20&version=ESV"
-                                                            },
-                                                            "kind": "evidence"
+                                                            }
                                                         }
-                                                    ],
-                                                    "kind": "collection"
+                                                    ]
                                                 },
                                                 {
                                                     "name": "Mark",
@@ -1026,16 +908,16 @@
                                                             "whyItMatters": [
                                                                 "It is considered the earliest resurrection account, potentially preserving the oldest narrative.",
                                                                 "It provides early testimony to the resurrection claim through the empty tomb found by the women.",
-                                                                "The use of women as the first witnesses is significant because their testimony had little legal weight in the ancient world, making it an unlikely fabrication."
+                                                                "The use of women as the first witnesses is significant because their testimony had little legal weight in the ancient world, making it an unlikely fabrication.",
+                                                                "The initial reaction of fear and silence is noted as being consistent with an authentic human response rather than a legendary embellishment.",
+                                                                "The abrupt ending at verse 8 is thought by some scholars to be the original ending, which emphasizes mystery and encourages a response from the reader."
                                                             ],
                                                             "source": {
-                                                                "title": "Mark 16:1",
+                                                                "title": "Mark 16:1–8 (ESV)",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Mark+16%3A1-8&version=ESV"
-                                                            },
-                                                            "kind": "evidence"
+                                                            }
                                                         }
-                                                    ],
-                                                    "kind": "collection"
+                                                    ]
                                                 },
                                                 {
                                                     "name": "Luke",
@@ -1049,13 +931,14 @@
                                                             "whyItMatters": [
                                                                 "Eyewitness-like narrative with personal detail and emotional realism.",
                                                                 "Recognition in the breaking of bread suggests continuity between pre- and post-resurrection Jesus.",
-                                                                "Jesus interprets the Scriptures about himself, rooting the event in prophetic fulfillment."
+                                                                "Jesus interprets the Scriptures about himself, rooting the event in prophetic fulfillment.",
+                                                                "Tone shifts from sorrow to urgent joy, reflecting transformation after encounter.",
+                                                                "Independent attestation unique to Luke, complementing other Gospel/Pauline appearances."
                                                             ],
                                                             "source": {
-                                                                "title": "Luke 24:13",
+                                                                "title": "Luke 24:13–35 (ESV)",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A13-35&version=ESV"
-                                                            },
-                                                            "kind": "evidence"
+                                                            }
                                                         },
                                                         {
                                                             "name": "Luke 24:36–49",
@@ -1065,13 +948,14 @@
                                                             "whyItMatters": [
                                                                 "Emphasizes bodily resurrection (wounds shown, food eaten).",
                                                                 "Shows continuity of identity alongside transformation/glorification.",
-                                                                "Frames the resurrection as fulfillment of the Law, Prophets, and Psalms."
+                                                                "Frames the resurrection as fulfillment of the Law, Prophets, and Psalms.",
+                                                                "Explicit commissioning grounds the church’s mission in a real encounter.",
+                                                                "Promise of the Spirit links resurrection to Pentecost."
                                                             ],
                                                             "source": {
-                                                                "title": "Luke 24:36",
+                                                                "title": "Luke 24:36–49 (ESV)",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A36-49&version=ESV"
-                                                            },
-                                                            "kind": "evidence"
+                                                            }
                                                         },
                                                         {
                                                             "name": "Luke 24:50–53",
@@ -1081,13 +965,13 @@
                                                             "whyItMatters": [
                                                                 "Affirms a bodily departure and transition to exaltation.",
                                                                 "Bridges the Gospel to Acts, anticipating Jesus’ heavenly reign and Pentecost.",
-                                                                "Highlights the disciples’ transformation to worship and joy."
+                                                                "Highlights the disciples’ transformation to worship and joy.",
+                                                                "Signals continuity with Jewish worship while foreshadowing the church’s mission."
                                                             ],
                                                             "source": {
-                                                                "title": "Luke 24:50",
+                                                                "title": "Luke 24:50–53 (ESV)",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A50-53&version=ESV"
-                                                            },
-                                                            "kind": "evidence"
+                                                            }
                                                         },
                                                         {
                                                             "name": "Acts 1:1–3 ",
@@ -1097,16 +981,15 @@
                                                             "whyItMatters": [
                                                                 "Affirms physical post-resurrection appearances supported by intentional proofs.",
                                                                 "Indicates repeated, sustained contact rather than a single vision.",
-                                                                "Lays the foundation for apostolic witness throughout Acts."
+                                                                "Lays the foundation for apostolic witness throughout Acts.",
+                                                                "Connects Jesus’ own teaching to the mission the apostles carry forward."
                                                             ],
                                                             "source": {
-                                                                "title": "Acts 1:1",
+                                                                "title": "Acts 1:1–3 (ESV)",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+1%3A1-3&version=ESV"
-                                                            },
-                                                            "kind": "evidence"
+                                                            }
                                                         }
-                                                    ],
-                                                    "kind": "collection"
+                                                    ]
                                                 },
                                                 {
                                                     "name": "John",
@@ -1120,13 +1003,14 @@
                                                             "whyItMatters": [
                                                                 "First appearance to a woman—striking in a culture where women’s testimony held less legal weight.",
                                                                 "Personal recognition through her name highlights the intimate, relational nature of the risen Lord.",
-                                                                "Commissioning of Mary makes her the “apostle to the apostles.”"
+                                                                "Commissioning of Mary makes her the “apostle to the apostles.”",
+                                                                "Affirms bodily resurrection (her impulse to hold him).",
+                                                                "“My Father and your Father” stresses believers’ shared relationship with God."
                                                             ],
                                                             "source": {
-                                                                "title": "John 20:11",
+                                                                "title": "John 20:11–18 (ESV)",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+20%3A11-18&version=ESV"
-                                                            },
-                                                            "kind": "evidence"
+                                                            }
                                                         },
                                                         {
                                                             "name": "John 20:19–23",
@@ -1136,13 +1020,14 @@
                                                             "whyItMatters": [
                                                                 "Group appearance underscores the public nature of the encounters.",
                                                                 "Wounds shown confirm continuity: the one who died is the one raised.",
-                                                                "“Peace be with you” and the sending mirror the Father’s mission for Jesus."
+                                                                "“Peace be with you” and the sending mirror the Father’s mission for Jesus.",
+                                                                "Breathing the Spirit anticipates Pentecost and echoes Genesis’ life-breath.",
+                                                                "Authority to forgive ties the church’s ministry to the risen Lord."
                                                             ],
                                                             "source": {
-                                                                "title": "John 20:19",
+                                                                "title": "John 20:19–23 (ESV)",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+20%3A19-23&version=ESV"
-                                                            },
-                                                            "kind": "evidence"
+                                                            }
                                                         },
                                                         {
                                                             "name": "John 21:1–14",
@@ -1152,13 +1037,14 @@
                                                             "whyItMatters": [
                                                                 "Another post-resurrection group appearance in a different setting.",
                                                                 "Miraculous catch reveals Jesus’ identity, echoing earlier ministry.",
-                                                                "Shared meal emphasizes embodied, bodily presence—not a mere vision."
+                                                                "Shared meal emphasizes embodied, bodily presence—not a mere vision.",
+                                                                "Peter’s eager response reflects restored relationship.",
+                                                                "Intimate fellowship signals ongoing relationship after the resurrection."
                                                             ],
                                                             "source": {
-                                                                "title": "John 21:1",
+                                                                "title": "John 21:1–14 (ESV)",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+21%3A1-14&version=ESV"
-                                                            },
-                                                            "kind": "evidence"
+                                                            }
                                                         },
                                                         {
                                                             "name": "John 21:15–19",
@@ -1168,19 +1054,18 @@
                                                             "whyItMatters": [
                                                                 "Public reinstatement of Peter after denial demonstrates grace and restoration.",
                                                                 "Pastoral commission (“feed my sheep”) anticipates Peter’s leadership role.",
-                                                                "Love expressed through obedience links affection and action."
+                                                                "Love expressed through obedience links affection and action.",
+                                                                "Prediction of martyrdom aligns with early tradition of apostolic suffering.",
+                                                                "Renewed call to follow anchors discipleship post-resurrection."
                                                             ],
                                                             "source": {
-                                                                "title": "John 21:15",
+                                                                "title": "John 21:15–19 (ESV)",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+21%3A15-19&version=ESV"
-                                                            },
-                                                            "kind": "evidence"
+                                                            }
                                                         }
-                                                    ],
-                                                    "kind": "collection"
+                                                    ]
                                                 }
-                                            ],
-                                            "kind": "collection"
+                                            ]
                                         },
                                         {
                                             "name": "Apostolic Fathers",
@@ -1198,10 +1083,8 @@
                                                     ],
                                                     "source": {
                                                         "title": "1 Clement 42:3 (Lightfoot & Harmer translation)",
-                                                        "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html",
-                                                        "highlightedUrl": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%2042%3A1,God%20should%20come."
-                                                    },
-                                                    "kind": "evidence"
+                                                        "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%2042%3A1,God%20should%20come."
+                                                    }
                                                 },
                                                 {
                                                     "name": "Polycarp to the Philippians 9:1–2",
@@ -1211,23 +1094,19 @@
                                                     "whyItMatters": [
                                                         "Shows an early second-century testimony to belief in the bodily resurrection.",
                                                         "Demonstrates continuity of resurrection faith beyond the apostolic circle.",
-                                                        "Connects resurrection with endurance and eschatological hope."
+                                                        "Connects resurrection with endurance and eschatological hope.",
+                                                        "Evidence of Christ’s exaltation (‘right hand’)—affirming divine vindication."
                                                     ],
                                                     "source": {
-                                                        "title": "Polycarp to the Philippians 9:1",
-                                                        "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html",
-                                                        "highlightedUrl": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
-                                                    },
-                                                    "kind": "evidence"
+                                                        "title": "Polycarp to the Philippians 9:1–2",
+                                                        "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
+                                                    }
                                                 }
-                                            ],
-                                            "kind": "collection"
+                                            ]
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Believed It",
@@ -1235,12 +1114,12 @@
                             "children": [
                                 {
                                     "name": "Luke",
-                                    "subtitle": "Physician, companion of Paul, and author of Luke-Acts; documents apostolic suffering and resurrection faith.",
+                                    "subtitle": "Written c. AD 60-80, documents early apostles' persecution and martyrdom for their resurrection belief in Acts",
                                     "children": [
                                         {
                                             "name": "Acts 4:1–22",
                                             "subtitle": "Peter and John before the Sanhedrin",
-                                            "date": "Event: c. AD 30; Composition: c. AD 60–80",
+                                            "date": "c. AD 30 (event); c. AD 60–80 (traditional dating of Acts)",
                                             "details": "Peter and John were arrested for healing a lame man and preaching about Jesus' resurrection. They affirmed that they must obey God rather than men, despite threats from the Jewish council.",
                                             "whyItMatters": [
                                                 "The public trial showed early opposition to resurrection preaching",
@@ -1248,19 +1127,14 @@
                                                 "Both affirmed the same message of resurrection, showing a unity of witness"
                                             ],
                                             "source": {
-                                                "title": "Acts 4:1",
+                                                "title": "Acts 4:1–22 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+4%3A1-22&version=ESV"
-                                            },
-                                            "kind": "evidence",
-                                            "dates": {
-                                                "event": "c. AD 30",
-                                                "composition": "c. AD 60–80"
                                             }
                                         },
                                         {
                                             "name": "Acts 5:17–42",
                                             "subtitle": "Apostles Imprisoned and Flogged",
-                                            "date": "Event: c. AD 30; Composition: c. AD 60–80",
+                                            "date": "c. AD 30 (event); c. AD 60–80 (traditional dating of Acts)",
                                             "details": "All the apostles were imprisoned for preaching the resurrection. After an angel released them, they were brought before the Sanhedrin again, where Peter stated they were witnesses to these things. They were flogged and warned but left rejoicing.",
                                             "whyItMatters": [
                                                 "The apostles found joy in suffering",
@@ -1268,19 +1142,14 @@
                                                 "They persisted in teaching daily despite repeated threats"
                                             ],
                                             "source": {
-                                                "title": "Acts 5:17",
+                                                "title": "Acts 5:17–42 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+5%3A17-42&version=ESV"
-                                            },
-                                            "kind": "evidence",
-                                            "dates": {
-                                                "event": "c. AD 30",
-                                                "composition": "c. AD 60–80"
                                             }
                                         },
                                         {
                                             "name": "Acts 7:54–60",
                                             "subtitle": "The Martyrdom of Stephen",
-                                            "date": "Event: c. AD 30–35; Composition: c. AD 60–80",
+                                            "date": "c. AD 30–35 (event); c. AD 60–80 (traditional dating of Acts)",
                                             "details": "Stephen, a deacon, was stoned after delivering a bold defense. As he was being killed, he saw a vision of the risen Christ and prayed for his killers.",
                                             "whyItMatters": [
                                                 "The vision of the risen Christ reinforced belief even at death",
@@ -1288,19 +1157,14 @@
                                                 "His prayer for his killers paralleled Jesus' own crucifixion words"
                                             ],
                                             "source": {
-                                                "title": "Acts 7:54",
+                                                "title": "Acts 7:54–60 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+7%3A54-60&version=ESV"
-                                            },
-                                            "kind": "evidence",
-                                            "dates": {
-                                                "event": "c. AD 30–35",
-                                                "composition": "c. AD 60–80"
                                             }
                                         },
                                         {
                                             "name": "Acts 12:1–5",
                                             "subtitle": "James Killed, Peter Imprisoned",
-                                            "date": "Event: c. AD 44; Composition: c. AD 60–80",
+                                            "date": "c. AD 44 (event); c. AD 60–80 (traditional dating of Acts)",
                                             "details": "King Herod executed James, making him the first of the Twelve to be martyred. Peter was then arrested and imprisoned but was later rescued by an angel.",
                                             "whyItMatters": [
                                                 "James's execution underscores the mortal risk of discipleship",
@@ -1308,21 +1172,15 @@
                                                 "Peter's imprisonment shows the ongoing danger to church leaders"
                                             ],
                                             "source": {
-                                                "title": "Acts 12:1",
+                                                "title": "Acts 12:1–5 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+12%3A1-5&version=ESV"
-                                            },
-                                            "kind": "evidence",
-                                            "dates": {
-                                                "event": "c. AD 44",
-                                                "composition": "c. AD 60–80"
                                             }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Clement of Rome",
-                                    "subtitle": "Early bishop of Rome (c. AD 95–97); provides the earliest non-biblical account of Peter and Paul's martyrdom.",
+                                    "subtitle": "Writing c. AD 95-97, provides earliest non-biblical account of Peter and Paul's martyrdom in Rome",
                                     "children": [
                                         {
                                             "name": "1 Clement 5:2–7",
@@ -1335,18 +1193,15 @@
                                                 "It reinforces the credibility of resurrection preaching from the perspective of the Roman church, outside of the Jerusalem context."
                                             ],
                                             "source": {
-                                                "title": "1 Clement, Chapter 5, Verses 2",
-                                                "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html",
-                                                "highlightedUrl": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%205%3A1%0ABut,pattern%20of%20patient%20endurance."
-                                            },
-                                            "kind": "evidence"
+                                                "title": "1 Clement, Chapter 5, Verses 2–7",
+                                                "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%205%3A1%0ABut,pattern%20of%20patient%20endurance."
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Ignatius of Antioch",
-                                    "subtitle": "Bishop of Antioch (c. AD 107–110); martyred church leader who affirmed the bodily resurrection.",
+                                    "subtitle": "Writing c. AD 107-110, attests to early church's unshakeable belief in physical resurrection despite persecution",
                                     "children": [
                                         {
                                             "name": "Ignatius to the Smyrnaeans 3:1–2 ",
@@ -1359,18 +1214,15 @@
                                                 "Ignatius, as a martyr facing his own death, uses the disciples' example to link belief in the resurrection with the willingness to die for the truth."
                                             ],
                                             "source": {
-                                                "title": "The Epistle of Ignatius to the Smyrnaeans, Chapter 3, Sections 1",
-                                                "url": "https://www.earlychristianwritings.com/text/ignatius-smyrnaeans-lightfoot.html",
-                                                "highlightedUrl": "https://www.earlychristianwritings.com/text/ignatius-smyrnaeans-lightfoot.html#:~:text=3%3A1%20For,superior%20to%20death."
-                                            },
-                                            "kind": "evidence"
+                                                "title": "The Epistle of Ignatius to the Smyrnaeans, Chapter 3, Sections 1–2",
+                                                "url": "https://www.earlychristianwritings.com/text/ignatius-smyrnaeans-lightfoot.html#:~:text=3%3A1%20For,superior%20to%20death."
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Polycarp",
-                                    "subtitle": "Bishop of Smyrna (c. AD 110–140), disciple of John; early witness to apostolic endurance and resurrection faith.",
+                                    "subtitle": "Early church father, bishop of Smyrna, and disciple of the apostle John.",
                                     "children": [
                                         {
                                             "name": "Polycarp to the Philippians 9:1–2",
@@ -1384,17 +1236,14 @@
                                             ],
                                             "source": {
                                                 "title": "The Epistle of Polycarp to the Philippians, Chapter 9, Sections 1–2 (trans. J. B. Lightfoot)",
-                                                "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html",
-                                                "highlightedUrl": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Tertullian",
-                                    "subtitle": "North African Christian apologist (late 2nd–early 3rd c.); used martyrdom as evidence for resurrection faith.",
+                                    "subtitle": "Early Christian apologist and theologian from North Africa, active in the late 2nd and early 3rd centuries.",
                                     "children": [
                                         {
                                             "name": "Scorpiace 15",
@@ -1408,17 +1257,13 @@
                                             ],
                                             "source": {
                                                 "title": "Scorpiace, Chapter 15 (trans. S. Thelwall via Early Christian Writings)",
-                                                "url": "https://www.earlychristianwritings.com/text/tertullian18.html",
-                                                "highlightedUrl": "https://www.earlychristianwritings.com/text/tertullian18.html#:~:text=CHAP.%20XV.,draught%20of%20ours."
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://www.earlychristianwritings.com/text/tertullian18.html#:~:text=CHAP.%20XV.,draught%20of%20ours."
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Dionysius of Corinth",
-                                    "subtitle": "Bishop of Corinth (c. AD 170); attested to the unified martyrdom of Peter and Paul.",
                                     "children": [
                                         {
                                             "name": "Ecclesiastical History, Book 2, Chapter 25",
@@ -1432,17 +1277,14 @@
                                             ],
                                             "source": {
                                                 "title": "Dionysius of Corinth, fragment cited in Ecclesiastical History, Book 2, Chapter 25, Section 8",
-                                                "url": "https://ccel.org/ccel/schaff/npnf201/npnf201.iii.vii.xxvi.html",
-                                                "highlightedUrl": "https://ccel.org/ccel/schaff/npnf201/npnf201.iii.vii.xxvi.html#:~:text=8.%20And%20that,still%20more%20confirmed."
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://ccel.org/ccel/schaff/npnf201/npnf201.iii.vii.xxvi.html#:~:text=8.%20And%20that,still%20more%20confirmed."
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Origen",
-                                    "subtitle": "Alexandrian scholar and theologian (c. 185–254); cited apostolic suffering as proof of resurrection conviction.",
+                                    "subtitle": "Influential early Christian scholar, theologian, and writer from Alexandria (c. 185–254).",
                                     "children": [
                                         {
                                             "name": "Ecclesiastical History, Book 3, Chapter 1",
@@ -1457,8 +1299,7 @@
                                             "source": {
                                                 "title": "Origen, Commentary on Genesis, fragment cited in Ecclesiastical History, Book 3, Chapter 1 (trans. Arthur C. McGiffert via CCEL)",
                                                 "url": "https://ccel.org/ccel/schaff/npnf201/npnf201.iii.viii.i.html"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Contra Celsum, Book 2, Chapter 56",
@@ -1472,10 +1313,8 @@
                                             ],
                                             "source": {
                                                 "title": "Origen, Contra Celsum, Book 2, Chapter 56 (trans. Frederick Crombie, Ante-Nicene Fathers, Vol. 4)",
-                                                "url": "https://www.newadvent.org/fathers/04162.htm",
-                                                "highlightedUrl": "https://www.newadvent.org/fathers/04162.htm#:~:text=But%20since%20the%20Jew,disregard%20for%20its%20terrors."
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://www.newadvent.org/fathers/04162.htm#:~:text=But%20since%20the%20Jew,disregard%20for%20its%20terrors."
+                                            }
                                         },
                                         {
                                             "name": "Contra Celsum, Book 2, Chapter 77",
@@ -1489,19 +1328,14 @@
                                             ],
                                             "source": {
                                                 "title": "Contra Celsum, Book 2, Chapter 77 (trans. Frederick Crombie via Ante-Nicene Fathers)",
-                                                "url": "https://www.newadvent.org/fathers/04162.htm",
-                                                "highlightedUrl": "https://www.newadvent.org/fathers/04162.htm#:~:text=Are%20you%20to,word%20and%20deed%3F"
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://www.newadvent.org/fathers/04162.htm#:~:text=Are%20you%20to,word%20and%20deed%3F"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         }
-                    ],
-                    "kind": "collection"
+                    ]
                 },
                 {
                     "name": "James",
@@ -1524,10 +1358,9 @@
                                                 "This sets the stage for understanding James's transformation from a skeptic to a leader of the Jerusalem church, making his later testimony more compelling."
                                             ],
                                             "source": {
-                                                "title": "Mark 3:21",
+                                                "title": "Mark 3:21 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Mark+3%3A21&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Mark 3:31",
@@ -1538,10 +1371,9 @@
                                                 "This reinforces the picture of his family's distance and highlights the significance of James's later transformation into a central figure in the early church."
                                             ],
                                             "source": {
-                                                "title": "Mark 3:31",
+                                                "title": "Mark 3:31 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Mark+3%3A31&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Mark 6:3–4",
@@ -1552,10 +1384,9 @@
                                                 "This passage places James within a context of familial and communal rejection, which makes his later leadership role in the church more significant."
                                             ],
                                             "source": {
-                                                "title": "Mark 6:3",
+                                                "title": "Mark 6:3–4 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Mark+6%3A3-4&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "John 7:5",
@@ -1566,13 +1397,11 @@
                                                 "This verse adds weight to the significance of James's eventual change and leadership role in the early church."
                                             ],
                                             "source": {
-                                                "title": "John 7:5",
+                                                "title": "John 7:5 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=John+7%3A5&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Early Creed",
@@ -1586,16 +1415,15 @@
                                             "whyItMatters": [
                                                 "Transformation of a skeptic: James, who was previously unconvinced of Jesus’ mission, became a key leader of the early church, which points to a powerful post-resurrection encounter.",
                                                 "Independent resurrection appearance: The appearance to James is listed separately from those to the twelve and others, which supports the idea of multiple, varied experiences of the risen Jesus.",
-                                                "Leadership rooted in encounter: James’s later authority in Jerusalem is strengthened by this appearance, grounding his role in a direct resurrection experience."
+                                                "Leadership rooted in encounter: James’s later authority in Jerusalem is strengthened by this appearance, grounding his role in a direct resurrection experience.",
+                                                "Early creed inclusion: The structured nature of 1 Corinthians 15 suggests that James’s experience was part of a formal tradition that originated in the earliest years after Jesus’ death."
                                             ],
                                             "source": {
-                                                "title": "1 Corinthians 15:7",
+                                                "title": "1 Corinthians 15:7 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A7&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Paul & Acts",
@@ -1604,18 +1432,18 @@
                                         {
                                             "name": "Acts 15:12–21",
                                             "subtitle": "James Leads at the Jerusalem Council",
-                                            "date": "c. AD 48–50 (Jerusalem Council); c. AD 60–80 (traditional dating of Acts)",
+                                            "date": "c. AD 48–50 (Jerusalem Council); c. AD 60–80 (traditional dating of Acts)",
                                             "details": "At the Jerusalem Council, James, who was the brother of Jesus and the leader of the Jerusalem church, speaks after Peter. He affirms that God is calling Gentiles into his people and offers a judgment based on quoting the prophets that helps shape the council’s final decision. His leadership in this pivotal moment reflects his profound transformation from a skeptic to a person of spiritual authority and scriptural discernment within the growing Christian community.",
                                             "whyItMatters": [
                                                 "Post-resurrection transformation: James, who was once a skeptic of Jesus' ministry, is now a central leader in the Jerusalem church, suggesting a deep change after an encounter with the risen Christ.",
                                                 "Spiritual authority: His ability to speak last and give a decisive judgment shows the respect and influence he had among the apostles and elders.",
-                                                "Scriptural discernment: By interpreting the inclusion of Gentiles in light of Old Testament prophecy, James demonstrates theological maturity and pastoral sensitivity."
+                                                "Scriptural discernment: By interpreting the inclusion of Gentiles in light of Old Testament prophecy, James demonstrates theological maturity and pastoral sensitivity.",
+                                                "Historical anchor: This event places James at the center of early church decision-making, supporting his role as a credible and influential witness to the resurrection."
                                             ],
                                             "source": {
-                                                "title": "Acts 15:12",
-                                                "url": "https://www.biblegateway.com/passage/?search=Acts+15%3A12-21&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                                "title": "Acts 15:12–21 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Acts%2015%3A12-21&version=ESV"
+                                            }
                                         },
                                         {
                                             "name": "Galatians 1:19",
@@ -1625,19 +1453,17 @@
                                             "whyItMatters": [
                                                 "Eyewitness connection: James is identified as “the Lord’s brother,” which reinforces his close familial relationship to Jesus and adds weight to his testimony.",
                                                 "Apostolic recognition: Paul’s mention of James with the apostles implies he was considered a leader of similar authority, even though he was not one of the original Twelve.",
-                                                "Early leadership: This encounter shows James in a prominent leadership role in the Jerusalem church just a few years after Jesus’ death."
+                                                "Early leadership: This encounter shows James in a prominent leadership role in the Jerusalem church just a few years after Jesus’ death.",
+                                                "Transformation evidence: James being named in this context supports the tradition (1 Corinthians 15:7) that he experienced a resurrection appearance, which helps explain his transition from skepticism to leadership."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:19",
-                                                "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A19&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                                "title": "Galatians 1:19 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Galatians%201%3A19&version=ESV"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Martyred",
@@ -1655,20 +1481,20 @@
                                             "whyItMatters": [
                                                 "Earliest non-Christian source: It is the earliest external confirmation of James's death and his relationship to Jesus.",
                                                 "Familial identification: It refers to James as “the brother of Jesus, who was called Christ,” which confirms Jesus’s existence and James’s significant role.",
-                                                "Public execution: The account shows James was a public and controversial figure, condemned to death through a legal process."
+                                                "Public execution: The account shows James was a public and controversial figure, condemned to death through a legal process.",
+                                                "Transformation affirmed: James's readiness to die for his beliefs supports the idea that he underwent a radical change, likely due to a resurrection encounter.",
+                                                "Independent attestation: The account comes from a Jewish historian with no Christian allegiance, providing valuable independent corroboration of Christian tradition."
                                             ],
                                             "source": {
                                                 "title": "Antiquities of the Jews, Book 20, Section 200 (trans. William Whiston)",
-                                                "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0146%3Abook%3D20%3Awhiston+chapter%3D9%3Awhiston+section%3D1",
-                                                "highlightedUrl": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0146%3Abook%3D20%3Awhiston+chapter%3D9%3Awhiston+section%3D1#:~:text=Festus%20was%20now,to%20be%20stoned"
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0146%3Abook%3D20%3Awhiston+chapter%3D9%3Awhiston+section%3D1#:~:text=Festus%20was%20now,to%20be%20stoned"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Hegesippus",
+                                    "subtitle": "Second-century Christian chronicler known for preserving early church traditions.",
                                     "subtitle": "Hegesippus provides an early account of James’ martyrdom",
                                     "children": [
                                         {
@@ -1679,17 +1505,15 @@
                                             "whyItMatters": [
                                                 "It's an early Christian tradition, providing a second-century account of James's death and reinforcing the consistency of the martyrdom tradition.",
                                                 "It offers character testimony, describing James as revered by non-Christians, which adds weight to his moral authority.",
-                                                "The martyrdom narrative portrays James's death as violent but dignified, showing his unwavering commitment to Christ."
+                                                "The martyrdom narrative portrays James's death as violent but dignified, showing his unwavering commitment to Christ.",
+                                                "It affirms his continued role as a central and respected leader of the early Jerusalem church."
                                             ],
                                             "source": {
                                                 "title": "Hegesippus, a fragment cited in Ecclesiastical History, Book 2, Chapter 23 (trans. Arthur C. McGiffert via CCEL)",
-                                                "url": "https://www.ccel.org/ccel/schaff/npnf201/npnf201.iii.vii.xxiv.html",
-                                                "highlightedUrl": "https://www.ccel.org/ccel/schaff/npnf201/npnf201.iii.vii.xxiv.html#:~:text=%E2%80%9CJames%2C%20the%20brother,Vespasian%20besieged%20them.%E2%80%9D"
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://www.ccel.org/ccel/schaff/npnf201/npnf201.iii.vii.xxiv.html#:~:text=%E2%80%9CJames%2C%20the%20brother,Vespasian%20besieged%20them.%E2%80%9D"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Clement of Alexandria",
@@ -1707,19 +1531,14 @@
                                             ],
                                             "source": {
                                                 "title": "Clement of Alexandria, Hypotyposes, fragment cited in Eusebius, Ecclesiastical History, Book 2, Chapter 1, Section 4 (trans. Arthur C. McGiffert via CCEL)",
-                                                "url": "https://www.newadvent.org/fathers/250102.htm",
-                                                "highlightedUrl": "https://www.newadvent.org/fathers/250102.htm#:~:text=4.%20But%20the,Galatians%C2%A01%3A19"
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://www.newadvent.org/fathers/250102.htm#:~:text=4.%20But%20the,Galatians%C2%A01%3A19"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         }
-                    ],
-                    "kind": "collection"
+                    ]
                 },
                 {
                     "name": "Paul",
@@ -1743,10 +1562,9 @@
                                                 "Link to resurrection testimony: Reinforces that Paul saw himself as a direct witness to the risen Lord."
                                             ],
                                             "source": {
-                                                "title": "1 Corinthians 15:9",
-                                                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A9%E2%80%9310&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                                "title": "1 Corinthians 15:9–10 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=1%20Corinthians%2015%3A9%E2%80%9310&version=ESV"
+                                            }
                                         },
                                         {
                                             "name": "Galatians 1:13–16",
@@ -1759,10 +1577,9 @@
                                                 "Transformation as evidence: His shift from persecutor to preacher reinforces the sincerity and conviction behind his proclamation."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:13",
-                                                "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A13%E2%80%9316&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                                "title": "Galatians 1:13–16 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Galatians%201%3A13%E2%80%9316&version=ESV"
+                                            }
                                         },
                                         {
                                             "name": "Philippians 3:6–7",
@@ -1775,13 +1592,11 @@
                                                 "Consistency with other letters: This aligns with Paul's other autobiographical reflections, reinforcing a coherent testimony rooted in a personal encounter with the risen Christ."
                                             ],
                                             "source": {
-                                                "title": "Philippians 3:6",
-                                                "url": "https://www.biblegateway.com/passage/?search=Philippians+3%3A6%E2%80%937&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                                "title": "Philippians 3:6–7 (ESV)",
+                                                "url": "https://www.biblegateway.com/passage/?search=Philippians%203%3A6%E2%80%937&version=ESV"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Acts",
@@ -1794,13 +1609,13 @@
                                             "whyItMatters": [
                                                 "The dramatic reversal from persecutor to preacher underscores the credibility of his transformation.",
                                                 "The encounter with the risen Jesus validates his apostleship as divinely initiated.",
-                                                "The narrative aligns with Paul’s own descriptions in his letters."
+                                                "The narrative aligns with Paul’s own descriptions in his letters.",
+                                                "Affirms that the early church recognized his transformation as a genuine encounter with the risen Christ."
                                             ],
                                             "source": {
-                                                "title": "Acts 9",
+                                                "title": "Acts 9 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+9&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Acts 22",
@@ -1810,13 +1625,13 @@
                                             "whyItMatters": [
                                                 "His public defense in a hostile setting shows confidence in the truth of his testimony.",
                                                 "The account mirrors earlier descriptions, strengthening its historical credibility.",
-                                                "Emphasizing his Pharisaic background gives weight to his transformation for a Jewish audience."
+                                                "Emphasizing his Pharisaic background gives weight to his transformation for a Jewish audience.",
+                                                "His calling is shown to come directly from the risen Christ, validating his role as an apostolic witness."
                                             ],
                                             "source": {
-                                                "title": "Acts 22",
+                                                "title": "Acts 22 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+22&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Acts 26",
@@ -1826,16 +1641,15 @@
                                             "whyItMatters": [
                                                 "Connects his authority directly to a divine commission from the risen Christ.",
                                                 "Aligns his mission with Jewish prophetic tradition, reinforcing continuity between the resurrection and Israel’s hope.",
-                                                "Testifying before both Roman and Jewish authorities shows his willingness to affirm the resurrection publicly."
+                                                "Testifying before both Roman and Jewish authorities shows his willingness to affirm the resurrection publicly.",
+                                                "His calling to preach to Jews and Gentiles highlights the global scope of the resurrection message."
                                             ],
                                             "source": {
-                                                "title": "Acts 26",
+                                                "title": "Acts 26 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+26&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Oral Tradition",
@@ -1848,19 +1662,17 @@
                                             "whyItMatters": [
                                                 "Even distant churches knew of Paul’s transformation, suggesting it was widely recognized and hard to fabricate.",
                                                 "Represents an early oral tradition, showing how news of conversions and resurrection-related events spread among Christians.",
-                                                "Paul’s reversal from persecutor to preacher serves as compelling evidence for the sincerity of his testimony."
+                                                "Paul’s reversal from persecutor to preacher serves as compelling evidence for the sincerity of his testimony.",
+                                                "Believers accepted the reality of his change without personal contact, indicating the strength of the resurrection witness tied to his conversion."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:22",
+                                                "title": "Galatians 1:22–23 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A22-23&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         },
                         {
                             "name": "Suffered & Martyred",
@@ -1878,13 +1690,13 @@
                                             "whyItMatters": [
                                                 "Authenticity through adversity: Paul’s extensive suffering shows his mission was not for personal gain but rooted in deep conviction.",
                                                 "Radical reversal: The persecutor becomes the persecuted, highlighting the change caused by his encounter with the risen Christ.",
-                                                "Public, verifiable hardship: His sufferings were public and could be confirmed by others, reinforcing the credibility of his witness."
+                                                "Public, verifiable hardship: His sufferings were public and could be confirmed by others, reinforcing the credibility of his witness.",
+                                                "Apostolic sincerity: His endurance serves as strong evidence of the resurrection’s impact and his unwavering faith in the gospel."
                                             ],
                                             "source": {
-                                                "title": "2 Corinthians 11:23",
+                                                "title": "2 Corinthians 11:23–28 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=2+Corinthians+11%3A23-28&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Philippians 1:21–23",
@@ -1894,16 +1706,15 @@
                                             "whyItMatters": [
                                                 "Resurrection as lived hope: His desire to be with Christ shows that belief in the resurrection was central to his life and mission.",
                                                 "Fearless before death: His readiness to embrace death reveals profound confidence in life after death with Christ.",
-                                                "Ministry shaped by conviction: He chooses to remain alive for the sake of others, motivated by resurrection hope."
+                                                "Ministry shaped by conviction: He chooses to remain alive for the sake of others, motivated by resurrection hope.",
+                                                "Apostolic authenticity: His devotion affirms that his testimony about the risen Jesus is rooted in genuine belief, not rhetoric."
                                             ],
                                             "source": {
-                                                "title": "Philippians 1:21",
+                                                "title": "Philippians 1:21–23 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Philippians+1%3A21-23&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Acts",
@@ -1917,13 +1728,13 @@
                                             "whyItMatters": [
                                                 "Radical transformation: Once a persecutor, Paul now suffers persecution for the faith.",
                                                 "Costly conviction: Willingness to endure stoning reflects deep sincerity in belief in the resurrection.",
-                                                "Apostolic witness: Fits the broader pattern of early disciples risking their lives to proclaim the risen Christ."
+                                                "Apostolic witness: Fits the broader pattern of early disciples risking their lives to proclaim the risen Christ.",
+                                                "Historical credibility: Public suffering strengthens the case that their message was not fabricated."
                                             ],
                                             "source": {
-                                                "title": "Acts 14:19",
+                                                "title": "Acts 14:19 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+14%3A19&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Acts 16:19–24",
@@ -1936,10 +1747,9 @@
                                                 "Resurrection conviction: Their courage indicates confidence grounded in a real encounter with the risen Christ."
                                             ],
                                             "source": {
-                                                "title": "Acts 16:19",
+                                                "title": "Acts 16:19–24 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+16%3A19-24&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Acts 17:5",
@@ -1952,10 +1762,9 @@
                                                 "Authenticity of mission: Persistent ministry under hostility supports the credibility of his belief."
                                             ],
                                             "source": {
-                                                "title": "Acts 17:5",
+                                                "title": "Acts 17:5 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+17%3A5&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Acts 17:13–15",
@@ -1968,10 +1777,9 @@
                                                 "Enduring resolve: Continues preaching despite sustained opposition."
                                             ],
                                             "source": {
-                                                "title": "Acts 17:13",
+                                                "title": "Acts 17:13–15 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+17%3A13-15&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Acts 18:12–13",
@@ -1984,10 +1792,9 @@
                                                 "Unshaken boldness: Persisted despite facing formal accusations."
                                             ],
                                             "source": {
-                                                "title": "Acts 18:12",
+                                                "title": "Acts 18:12–13 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+18%3A12-13&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Acts 21:27–36",
@@ -2000,10 +1807,9 @@
                                                 "Conviction under fire: Faces a violent mob without recanting his testimony."
                                             ],
                                             "source": {
-                                                "title": "Acts 21:27",
+                                                "title": "Acts 21:27–36 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+21%3A27-36&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         },
                                         {
                                             "name": "Acts 23:12–35",
@@ -2016,13 +1822,11 @@
                                                 "Unwavering mission: Presses on despite direct threats to his life."
                                             ],
                                             "source": {
-                                                "title": "Acts 23:12",
+                                                "title": "Acts 23:12–35 (ESV)",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+23%3A12-35&version=ESV"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Clement of Rome",
@@ -2036,17 +1840,15 @@
                                             "whyItMatters": [
                                                 "Early extra-biblical Christian source affirming the persecution and death of both apostles.",
                                                 "Reflects the Roman church’s high regard for Peter and Paul as models of endurance and faith.",
-                                                "Links their suffering directly to preaching the risen Christ, reinforcing the sincerity of their testimony."
+                                                "Links their suffering directly to preaching the risen Christ, reinforcing the sincerity of their testimony.",
+                                                "Shows that the memory of their martyrdom was firmly embedded in Christian tradition within a generation of their deaths."
                                             ],
                                             "source": {
-                                                "title": "1 Clement, Chapter 5, Verses 2",
-                                                "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html",
-                                                "highlightedUrl": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%205%3A1%0ABut,pattern%20of%20patient%20endurance."
-                                            },
-                                            "kind": "evidence"
+                                                "title": "1 Clement, Chapter 5, Verses 2–7",
+                                                "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%205%3A1%0ABut,pattern%20of%20patient%20endurance."
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Polycarp",
@@ -2064,13 +1866,10 @@
                                             ],
                                             "source": {
                                                 "title": "The Epistle of Polycarp to the Philippians, Chapter 9, Sections 1–2 (trans. J. B. Lightfoot)",
-                                                "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html",
-                                                "highlightedUrl": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Tertullian",
@@ -2084,17 +1883,15 @@
                                             "whyItMatters": [
                                                 "Historical witness claimed as public record: Tertullian appealed to official Roman archives to prove the apostles' deaths, treating their martyrdoms as verifiable events rather than legends.",
                                                 "Martyrdom as theological proof: He presents their suffering as a testimony to the truth of the resurrection and a spiritual triumph, suggesting that their endurance was based on conviction.",
-                                                "Early North African voice: Writing in the early third century, Tertullian represents a distinct Christian community that upheld the same apostolic tradition of resurrection-centered suffering."
+                                                "Early North African voice: Writing in the early third century, Tertullian represents a distinct Christian community that upheld the same apostolic tradition of resurrection-centered suffering.",
+                                                "Paul’s death as birth: The imagery of Paul's execution as a \"new birth\" highlights the early Christian view of death being transformed by the hope of the resurrection."
                                             ],
                                             "source": {
                                                 "title": "Scorpiace, Chapter 15 (trans. S. Thelwall via Early Christian Writings)",
-                                                "url": "https://www.earlychristianwritings.com/text/tertullian18.html",
-                                                "highlightedUrl": "https://www.earlychristianwritings.com/text/tertullian18.html#:~:text=CHAP.%20XV.,draught%20of%20ours."
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://www.earlychristianwritings.com/text/tertullian18.html#:~:text=CHAP.%20XV.,draught%20of%20ours."
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Dionysius of Corinth",
@@ -2112,13 +1909,10 @@
                                             ],
                                             "source": {
                                                 "title": "Dionysius of Corinth, fragment cited in Ecclesiastical History, Book 2, Chapter 25, Section 8 (trans. Arthur C. McGiffert via CCEL)",
-                                                "url": "https://ccel.org/ccel/schaff/npnf201/npnf201.iii.vii.xxvi.html",
-                                                "highlightedUrl": "https://ccel.org/ccel/schaff/npnf201/npnf201.iii.vii.xxvi.html#:~:text=8.%20And%20that,still%20more%20confirmed."
-                                            },
-                                            "kind": "evidence"
+                                                "url": "https://ccel.org/ccel/schaff/npnf201/npnf201.iii.vii.xxvi.html#:~:text=8.%20And%20that,still%20more%20confirmed."
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 },
                                 {
                                     "name": "Origen",
@@ -2136,21 +1930,15 @@
                                             "source": {
                                                 "title": "Origen, Commentary on Genesis, fragment cited in Eusebius's Ecclesiastical History, Book 3, Chapter 1",
                                                 "url": "https://ccel.org/ccel/schaff/npnf201/npnf201.iii.viii.i.html"
-                                            },
-                                            "kind": "evidence"
+                                            }
                                         }
-                                    ],
-                                    "kind": "collection"
+                                    ]
                                 }
-                            ],
-                            "kind": "collection"
+                            ]
                         }
-                    ],
-                    "kind": "collection"
+                    ]
                 }
-            ],
-            "kind": "collection"
+            ]
         }
-    ],
-    "kind": "collection"
+    ]
 }

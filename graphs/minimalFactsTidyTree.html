@@ -6,36 +6,131 @@
     <title>Tidy Tree</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
+        #topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 8px 24px;
+            background: var(--bg-light);
+            border-bottom: 1px solid #e0e0e0;
+            min-height: 48px;
+        }
+        body.dark-mode #topbar {
+            background: var(--bg-dark);
+            border-bottom: 1px solid var(--link-dark);
+        }
+        #topbar label, #topbar button {
+            margin: 0 4px;
+        }
+        #topbar label {
+            font-weight: 500;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        #topbar button {
+            background: linear-gradient(90deg, #00BFAE 0%, #0074d9 100%);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+        }
+        #topbar button:hover, #topbar button:focus {
+            background: linear-gradient(90deg, #00E6B2 0%, #005fa3 100%);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+        }
+        body.dark-mode #topbar button {
+            background: linear-gradient(90deg, var(--accent-dark) 0%, #005fa3 100%);
+            color: var(--text-dark);
+        }
+        body.dark-mode #topbar button:hover, body.dark-mode #topbar button:focus {
+            background: linear-gradient(90deg, var(--node-hover-stroke-dark) 0%, #003d5c 100%);
+            color: var(--text-dark);
+        }
+        #topbar input[type="checkbox"] {
+            accent-color: #00BFAE;
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
+        }
+        body.dark-mode #topbar input[type="checkbox"] {
+            accent-color: var(--accent-dark);
+        }
+        #topbar > * {
+            margin-right: 8px;
+        }
+        #topbar > *:last-child {
+            margin-right: 0;
+        }
+        :root {
+            --bg-light: #fff;
+            --bg-dark: #181A20;
+            --panel-dark: #23272F;
+            --node-fill-dark: #263238;
+            --node-stroke-dark: #00BFAE;
+            --node-hover-fill-dark: #374151;
+            --node-hover-stroke-dark: #00E6B2;
+            --link-dark: #3B4252;
+            --text-dark: #E0E7EF;
+            --text-secondary-dark: #A0AEC0;
+            --accent-dark: #00BFAE;
+            --tooltip-bg-dark: #23272F;
+            --tooltip-border-dark: #00BFAE;
+        }
+
         body {
             margin: 0;
             font: 14px/1.4 system-ui, sans-serif;
             overflow: hidden;
+            background: var(--bg-light);
+            color: #222;
+            transition: background 0.3s, color 0.3s;
         }
 
-        #topbar {
-            padding: 10px 14px;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            gap: 12px;
-            align-items: center;
+        body.dark-mode {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode #topbar {
+            background: var(--bg-dark);
+            border-bottom: 1px solid var(--link-dark);
+            color: var(--text-dark);
         }
 
         #chart {
             width: 100vw;
             height: calc(100vh - 48px);
             overflow: hidden;
+            background: var(--bg-light);
+        }
+
+        body.dark-mode #chart {
+            background: var(--bg-dark);
         }
 
         svg {
             width: 100%;
             height: 100%;
             display: block;
+            background: transparent;
         }
 
         .link {
             fill: none;
             stroke: #ccc;
             stroke-width: 1.5px;
+        }
+
+        body.dark-mode .link {
+            stroke: var(--link-dark);
         }
 
         .node circle {
@@ -52,9 +147,19 @@
             stroke: #00796b;
         }
 
+        body.dark-mode .node circle {
+            fill: var(--node-fill-dark);
+            stroke: var(--node-stroke-dark);
+        }
+
         .node:hover circle {
             fill: #b2ebf2;
             stroke: #004d40;
+        }
+
+        body.dark-mode .node:hover circle {
+            fill: var(--node-hover-fill-dark);
+            stroke: var(--node-hover-stroke-dark);
         }
 
         .node text {
@@ -76,6 +181,16 @@
         .node text .label {
             fill: #222;
             stroke: none;
+        }
+
+        body.dark-mode .node text {
+            fill: var(--text-dark) !important;
+            stroke: var(--bg-dark) !important;
+        }
+
+        body.dark-mode .node text .label {
+            fill: var(--text-dark) !important;
+            stroke: none !important;
         }
 
         .tooltip {
@@ -104,6 +219,25 @@
             z-index: 1001;
         }
 
+        body.dark-mode .tooltip,
+        body.dark-mode .popup-help {
+            background: var(--tooltip-bg-dark) !important;
+            border: 1px solid var(--tooltip-border-dark) !important;
+            color: var(--text-dark) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.32) !important;
+        }
+
+        body.dark-mode .tooltip a,
+        body.dark-mode .popup-help a {
+            color: var(--accent-dark) !important;
+            text-decoration: underline;
+        }
+
+        body.dark-mode .tooltip a:hover,
+        body.dark-mode .popup-help a:hover {
+            color: var(--node-hover-stroke-dark) !important;
+        }
+
         .node.clickable text {
             fill: #0074d9;
             cursor: pointer;
@@ -117,15 +251,19 @@
     </style>
 </head>
 
-<body>
+<body class="dark-mode">
     <div id="topbar">
-        <strong>Tidy Tree</strong>
-        <label><input type="checkbox" id="wrap"> Wrap labels</label>
-        <label>Node size: <input type="range" id="nodesize" min="10" max="100" value="20"></label>
-        <label>Vertical spacing: <input type="range" id="nodesizeY" min="10" max="150" value="60"></label>
-        <label>Horizontal spacing: <input type="range" id="nodesizeX" min="10" max="300" value="180"></label>
+        <strong style="font-size:18px; letter-spacing:0.5px; margin-right:16px;">Tidy Tree</strong>
+        <label style="display:none;"><input type="checkbox" id="wrap"> Wrap labels</label>
+        <label><input type="checkbox" id="clusterToggle"> Cluster layout</label>
+        <label style="display:none;">Node size: <input type="range" id="nodesize" min="10" max="100" value="20"></label>
+        <label style="display:none;">Vertical spacing: <input type="range" id="nodesizeY" min="10" max="150" value="60"></label>
+        <label style="display:none;">Horizontal spacing: <input type="range" id="nodesizeX" min="10" max="300" value="180"></label>
         <button id="collapseAll">Collapse All</button>
         <button id="expandAll">Expand All</button>
+        <button id="collapseOneLevel">Collapse One Level</button>
+        <button id="expandOneLevel">Expand One Level</button>
+        <label style="margin-left:auto;"><input type="checkbox" id="darkModeToggle"> Dark mode</label>
     </div>
     <div id="chart"></div>
 
@@ -144,7 +282,11 @@
             const svg = d3.select("#chart").append("svg")
                 .attr("width", width).attr("height", height);
 
-            const g = svg.append("g"); // for zoom/pan
+            // Create a main group for zoom/pan
+            const g = svg.append("g");
+            // Create links and nodes groups in correct order
+            const linkGroup = g.append("g").attr("class", "links");
+            const nodeGroup = g.append("g").attr("class", "nodes");
 
             const zoom = d3.zoom().scaleExtent([0.4, 2.5]).on("zoom", (event) => {
                 g.attr("transform", event.transform);
@@ -195,7 +337,9 @@
             root.y0 = 0;
             root.children && root.children.forEach(collapse); // start collapsed
 
-            const tree = d3.tree().nodeSize([20, 200]); // vertical spacing, horizontal spacing
+            // Default to cluster layout
+            let treeLayout = d3.cluster();
+            treeLayout.nodeSize([20, 200]); // vertical spacing, horizontal spacing
 
             // Controls
             const nodeSizeYInput = document.getElementById('nodesizeY');
@@ -205,7 +349,7 @@
             function updateNodeSize() {
                 const y = +nodeSizeYInput.value;
                 const x = +nodeSizeXInput.value;
-                tree.nodeSize([y, x]);
+                treeLayout.nodeSize([y, x]);
                 update(root);
             }
             // const tree = d3.tree().nodeSize([120, 200]); // vertical spacing, horizontal spacing
@@ -213,7 +357,7 @@
             const nodeSizeInput = document.getElementById('nodesize');
             nodeSizeInput.addEventListener('input', () => {
                 const v = +nodeSizeInput.value;
-                tree.nodeSize([v, v + 80]);
+                treeLayout.nodeSize([v, v + 80]);
                 update(root);
             });
             const wrapToggle = document.getElementById('wrap');
@@ -255,14 +399,30 @@
             }
 
             function update(source) {
-                tree(root);
+                treeLayout(root);
                 const nodes = root.descendants();
                 const links = root.links();
+                // Cluster layout toggle
+                const clusterToggle = document.getElementById('clusterToggle');
+                // Default cluster toggle to checked
+                clusterToggle.checked = true;
+                clusterToggle.addEventListener('change', function () {
+                    if (clusterToggle.checked) {
+                        treeLayout = d3.cluster();
+                    } else {
+                        treeLayout = d3.tree();
+                    }
+                    // Keep node size settings
+                    const y = +nodeSizeYInput.value;
+                    const x = +nodeSizeXInput.value;
+                    treeLayout.nodeSize([y, x]);
+                    update(root);
+                });
 
                 // nodes.forEach(d => d.y = d.depth * 180); // horizontal spacing per depth
 
-                // LINKS
-                const link = g.selectAll("path.link").data(links, d => d.target.id || (d.target.id = crypto.randomUUID()));
+                // LINKS (drawn first, behind nodes)
+                const link = linkGroup.selectAll("path.link").data(links, d => d.target.id || (d.target.id = crypto.randomUUID()));
                 link.enter().append("path")
                     .attr("class", "link")
                     .attr("d", d3.linkHorizontal().x(d => source.y0).y(d => source.x0))
@@ -273,8 +433,8 @@
                     .attr("d", d3.linkHorizontal().x(d => source.y).y(d => source.x))
                     .remove();
 
-                // NODES
-                const node = g.selectAll("g.node").data(nodes, d => d.id || (d.id = crypto.randomUUID()));
+                // NODES (drawn above links)
+                const node = nodeGroup.selectAll("g.node").data(nodes, d => d.id || (d.id = crypto.randomUUID()));
 
                 const nodeEnter = node.enter().append("g")
                     .attr("class", d => {
@@ -299,7 +459,12 @@
                                 document.addEventListener('mousedown', popupHelpOutsideClickHandler, true);
                             }, 0);
                         } else {
-                            d.children ? collapse(d) : expand(d);
+                            if (!d.children && d._children) {
+                                expand(d);
+                                if (d.children) d.children.forEach(expandAllRecursive);
+                            } else {
+                                collapse(d);
+                            }
                             update(d);
                             popupHelp.style("opacity", 0)
                                 .style("pointer-events", "none");
@@ -336,7 +501,7 @@
                         if (popupHelpNode) {
                             // Find the corresponding SVG node group
                             const nodeGroup = d3.selectAll('g.node').filter(d => d === popupHelpNode);
-                            nodeGroup.select('text').each(function() {
+                            nodeGroup.select('text').each(function () {
                                 const evt = new MouseEvent('mouseleave', { bubbles: true });
                                 this.dispatchEvent(evt);
                             });
@@ -420,6 +585,99 @@
                 update(root);
             };
 
+            let lastCollapsed = new Set();
+
+            // Utilities (standard D3 tree togglers)
+            function collapse(d) {
+                if (d.children) {
+                    d._children = d.children;
+                    d.children = null;
+                }
+            }
+            function expand(d) {
+                if (d._children) {
+                    d.children = d._children;
+                    d._children = null;
+                }
+            }
+
+            // Helper to get a stable id for a node (adjust to your data)
+            function nodeKey(d) {
+                // Prefer a stable id if you have one:
+                return d.id ?? d.data?.id ?? d.data?.name ?? d; // fallback to object ref
+            }
+
+            // COLLAPSE ONE LEVEL (same behavior as yours, but records which nodes it collapses)
+            document.getElementById('collapseOneLevel').onclick = () => {
+                lastCollapsed.clear();
+
+                const candidates = root.descendants().filter(d => d.children && d.children.length > 0);
+                candidates.forEach(d => {
+                    const allChildrenAreLeavesOrCollapsed = d.children.every(
+                        c => !c.children || c.children.length === 0
+                    );
+                    if (allChildrenAreLeavesOrCollapsed) {
+                        collapse(d);
+                        lastCollapsed.add(nodeKey(d));   // remember this exact node
+                    }
+                });
+
+                update(root);
+            };
+
+
+            // // Collapse only visible nodes with children whose children are all leaves or collapsed
+            // document.getElementById('collapseOneLevel').onclick = () => {
+            //     // Find all visible nodes with children
+            //     const candidates = root.descendants().filter(d => d.children && d.children.length > 0);
+            //     // Only collapse those whose children are all leaves or already collapsed
+            //     candidates.forEach(d => {
+            //         const allChildrenAreLeavesOrCollapsed = d.children.every(
+            //             c => !c.children || c.children.length === 0
+            //         );
+            //         if (allChildrenAreLeavesOrCollapsed) {
+            //             collapse(d);
+            //         }
+            //     });
+            //     update(root);
+            // };
+
+            // // Expand only hidden (collapsed) nodes whose hidden children are all leaves or collapsed
+            // document.getElementById('expandOneLevel').onclick = () => {
+            //     // Find all nodes that are currently collapsed (have _children)
+            //     // const candidates = root.descendants().filter(d => d._children && d._children.length > 0);
+
+            //     // Only expand those whose hidden children are all leaves or already collapsed
+            //     candidates.forEach(d => {
+            //         const allHiddenChildrenAreLeavesOrCollapsed = d._children.every(
+            //             c => !c.children || c.children.length === 0
+            //         );
+            //         if (allHiddenChildrenAreLeavesOrCollapsed) {
+            //             expand(d);  // assumes your expand(d) does: d.children = d._children; d._children = null;
+            //         }
+            //     });
+
+            //     update(root);
+            // };
+
+            document.getElementById('expandOneLevel').onclick = () => {
+                if (lastCollapsed.size > 0) {
+                    root.descendants().forEach(d => {
+                        if (d._children && lastCollapsed.has(nodeKey(d))) expand(d);
+                    });
+                    lastCollapsed.clear();
+                } else {
+                    // Fallback: expand nodes that are currently collapsed and whose hidden children are all leaves/collapsed
+                    root.descendants()
+                        .filter(d => d._children && d._children.length > 0)
+                        .forEach(d => {
+                            const ok = d._children.every(c => !c.children || c.children.length === 0);
+                            if (ok) expand(d);
+                        });
+                }
+                update(root);
+            };
+
             // By default, expand all nodes
             root.children && root.children.forEach(function expandAll(d) {
                 if (d._children) {
@@ -432,7 +690,32 @@
             update(root);
         }
 
+        // Place helper at top-level scope so it's available everywhere
+        // Ensure expand is defined at top-level scope before expandAllRecursive
+        function collapse(d) {
+            if (d.children) { d._children = d.children; d._children.forEach(collapse); d.children = null; }
+        }
+        function expand(d) {
+            if (d._children) { d.children = d._children; d._children = null; }
+        }
+        function expandAllRecursive(d) {
+            if (d._children) {
+                expand(d);
+                if (d.children) d.children.forEach(expandAllRecursive);
+            } else if (d.children) {
+                d.children.forEach(expandAllRecursive);
+            }
+        }
+
         init();
+
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.checked = true;
+        document.body.classList.add('dark-mode');
+        darkModeToggle.addEventListener('change', function () {
+            document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+        });
     </script>
 </body>
 

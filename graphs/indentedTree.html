@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>D3 Indented Tree</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            --bg-light: #fff;
+            --bg-dark: #181A20;
+            --panel-dark: #23272F;
+            --text-dark: #E0E7EF;
+            --link-dark: #3B4252;
+            --accent: #0ea5e9;
+            --accent-dark: #00BFAE;
+            --tooltip-bg-dark: #23272F;
+            --tooltip-border-dark: #00BFAE;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font: 14px/1.4 system-ui, sans-serif;
+            background: var(--bg-light);
+            color: #222
+        }
+
+        body.dark-mode {
+            background: var(--bg-dark);
+            color: var(--text-dark)
+        }
+
+        #topbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            background: inherit;
+            z-index: 2
+        }
+
+        body.dark-mode #topbar {
+            border-color: var(--link-dark)
+        }
+
+        #chart {
+            width: 100vw;
+            height: calc(100vh - 48px);
+            overflow: auto
+        }
+
+        svg {
+            display: block
+        }
+
+        .node-label {
+            cursor: pointer
+        }
+
+        .node-label {
+            cursor: pointer;
+            fill: #222;
+        }
+
+        body.dark-mode .node-label {
+            fill: var(--text-dark);
+            color: var(--text-dark);
+        }
+
+        .toggle {
+            cursor: pointer;
+            user-select: none;
+            fill: #6b7280;
+            font-size: 22px;
+        }
+
+        body.dark-mode .toggle {
+            fill: #a3a3a3;
+            font-size: 22px;
+        }
+
+        .link {
+            fill: none;
+            stroke: #d1d5db
+        }
+
+        body.dark-mode .link {
+            stroke: #3B4252
+        }
+
+        .row:hover .node-label {
+            text-decoration: underline
+        }
+
+        .popup {
+            position: fixed;
+            z-index: 10;
+            max-width: 360px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, .15);
+            padding: 10px 12px
+        }
+
+
+        body.dark-mode .popup {
+            background: var(--tooltip-bg-dark) !important;
+            border: 1px solid var(--tooltip-border-dark) !important;
+            color: var(--text-dark) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.32) !important;
+        }
+
+        body.dark-mode .popup a {
+            color: var(--accent-dark) !important;
+            text-decoration: underline;
+        }
+        body.dark-mode .popup a:hover {
+            color: var(--node-hover-stroke-dark) !important;
+        }
+
+        /* Tooltip for all nodes */
+        .popup.tooltip {
+            z-index: 10;
+        }
+
+        /* Main popup for leaf nodes with source url */
+        .popup.main {
+            z-index: 20;
+        }
+
+        body.dark-mode .popup {
+            background: var(--panel-dark);
+            border-color: #374151;
+            color: var(--text-dark)
+        }
+
+        .popup a {
+            color: var(--accent);
+            text-decoration: underline
+        }
+    </style>
+</head>
+
+<body class="dark-mode">
+    <div id="topbar">
+        <strong>Indented Tree</strong>
+        <label>Row height <input id="rowH" type="range" min="18" max="44" value="26"></label>
+        <label>Indent <input id="indent" type="range" min="10" max="40" value="18"></label>
+        <button id="collapseAll">Collapse All</button>
+        <button id="expandAll">Expand All</button>
+        <label><input type="checkbox" id="darkMode"> Dark mode</label>
+    </div>
+    <div id="chart"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script>
+        (async function () {
+            // Load your same data file
+            const data = await fetch('data/ResurrectionDisciplesBelievedItActs01.json').then(r => r.json());
+
+            const chart = d3.select('#chart');
+            const svg = chart.append('svg');
+            const gLinks = svg.append('g');
+            const gNodes = svg.append('g');
+
+            const margin = { top: 8, right: 24, bottom: 8, left: 20 };
+            let rowH = +document.getElementById('rowH').value;     // row height
+            let indent = +document.getElementById('indent').value; // indent per depth
+
+            // Build hierarchy
+            const root = d3.hierarchy(data);
+            let uid = 0; root.each(d => d.id = ++uid);
+
+            // Start collapsed except root
+            root.children && root.children.forEach(collapseAll);
+            function collapseAll(d) { if (d.children) { d._children = d.children; d._children.forEach(collapseAll); d.children = null; } }
+
+            function expandAll(d) {
+                if (d._children) { d.children = d._children; d._children = null; }
+                (d.children || []).forEach(expandAll);
+            }
+
+            // Compute the list of visible nodes (preorder, skipping collapsed subtrees)
+            function visibleNodes() {
+                const out = [];
+                (function visit(d) {
+                    out.push(d);
+                    (d.children || []).forEach(visit);
+                })(root);
+                return out;
+            }
+
+            function update(source) {
+                const nodes = visibleNodes();
+                nodes.forEach((d, i) => d.x = margin.top + i * rowH);
+                const maxDepth = d3.max(nodes, d => d.depth) ?? 0;
+                const width = Math.max(chart.node().clientWidth, margin.left + maxDepth * indent + 480);
+                const height = margin.top + nodes.length * rowH + margin.bottom;
+                svg.attr('width', width).attr('height', height);
+
+                // LINKS (skip root)
+                const link = gLinks.selectAll('path.link')
+                    .data(nodes.filter(d => d.parent), d => d.id);
+
+                link.enter().append('path')
+                    .attr('class', 'link')
+                    .attr('d', d => elbow({ x: source?.x ?? d.x, y: source ? (source.depth * indent + margin.left) : (d.depth * indent + margin.left), parent: source?.parent || d.parent }))
+                    .merge(link)
+                    .transition().duration(300)
+                    .attr('d', d => elbow({ x: d.x, y: d.depth * indent + margin.left, parent: d.parent }));
+
+                link.exit().remove();
+
+                // NODES (rows)
+                const row = gNodes.selectAll('g.row')
+                    .data(nodes, d => d.id);
+
+                const rowEnter = row.enter().append('g')
+                    .attr('class', 'row')
+                    .attr('transform', d => `translate(${margin.left + (source ? source.depth * indent : d.depth * indent)},${source ? source.x : d.x})`)
+                    .style('opacity', 0)
+                    .on('click', (ev, d) => {
+                        const isLeafWithUrl = !d.children && !d._children && d.data?.source?.url;
+                        if (isLeafWithUrl) { showPopup(ev.currentTarget, d); return; }
+                        toggle(d); update(d);
+                    });
+
+                // caret / toggle
+                rowEnter.append('text')
+                    .attr('class', 'toggle')
+                    .attr('x', d => d.depth * indent - 10)
+                    .attr('y', 0)
+                    .attr('dy', '.32em')
+                    .attr('text-anchor', 'end')
+                    .text(d => (d.children || d._children) ? (d.children ? '▾' : '▸') : '')
+                    .on('click', (ev, d) => { ev.stopPropagation(); toggle(d); update(d); });
+
+
+                // label with styled tooltip
+                const labelEnter = rowEnter.append('text')
+                    .attr('class', 'node-label')
+                    .attr('x', d => d.depth * indent)
+                    .attr('y', 0)
+                    .attr('dy', '.32em')
+                    .text(d => d.data.name || '(untitled)')
+                    .on('mouseenter', function (ev, d) {
+                        const subtitle = d.data.subtitle || '';
+                        const date = d.data.date || '';
+                        if (!subtitle && !date) return;
+                        const html = `<div style="font-weight:600">${d.data.name || ''}</div>` +
+                            (subtitle ? `<div style="margin-top:4px">${subtitle}</div>` : '') +
+                            (date ? `<div style="margin-top:4px;font-weight:600">${date}</div>` : '');
+                        tooltip.html(html)
+                            .style('left', (ev.clientX + 24) + 'px')
+                            .style('top', (ev.clientY + 24) + 'px')
+                            .style('display', 'block')
+                            .style('opacity', 1);
+                    })
+                    .on('mousemove', function (ev) {
+                        tooltip.style('left', (ev.clientX + 24) + 'px')
+                            .style('top', (ev.clientY + 24) + 'px');
+                    })
+                    .on('mouseleave', function () {
+                        tooltip.style('display', 'none').style('opacity', 0);
+                    });
+
+                // make leaves with links look clickable
+                rowEnter.filter(d => !d.children && !d._children && d.data?.source?.url)
+                    .select('.node-label')
+                    .attr('fill', 'currentColor')
+                    .style('text-decoration', 'underline');
+
+                // UPDATE
+                const rowUpdate = rowEnter.merge(row);
+                rowUpdate.transition().duration(300)
+                    .attr('transform', d => `translate(${margin.left},${d.x})`)
+                    .style('opacity', 1);
+
+                rowUpdate.select('.toggle')
+                    .text(d => (d.children || d._children) ? (d.children ? '▾' : '▸') : '')
+                    .attr('x', d => d.depth * indent - 10);
+
+                rowUpdate.select('.node-label')
+                    .attr('x', d => d.depth * indent);
+
+                // EXIT
+                row.exit()
+                    .transition().duration(300)
+                    .style('opacity', 0)
+                    .attr('transform', d => `translate(${margin.left + (source ? source.depth * indent : d.depth * indent)},${source ? source.x : d.x})`)
+                    .remove();
+            }
+
+            function elbow(d) {
+                // right-angle elbow from parent to child
+                const px = d.parent.x, py = d.parent.depth * indent + margin.left;
+                const cx = d.x, cy = d.y;
+                return `M${py},${px} V${cx} H${cy}`;
+            }
+
+            function toggle(d) {
+                if (d.children) { d._children = d.children; d.children = null; }
+                else if (d._children) { d.children = d._children; d._children = null; }
+            }
+
+            // Popup for leaf nodes with a source url
+            const popup = d3.select('body').append('div').attr('class', 'popup main').style('display', 'none');
+            // Tooltip for all nodes
+            const tooltip = d3.select('body').append('div').attr('class', 'popup tooltip').style('display', 'none').style('pointer-events', 'none');
+            function showPopup(target, d) {
+                const rect = target.getBoundingClientRect();
+                const html = `
+        <div style="font-weight:600">${d.data.name || ''}</div>
+        ${d.data.date ? `<div style="margin-top:4px;font-weight:600">${d.data.date}</div>` : ''}
+        ${d.data.details ? `<div style="margin-top:6px">${d.data.details}</div>` : ''}
+        ${d.data.source?.url ? `<div style="margin-top:10px"><a href="${d.data.source.url}" target="_blank">${d.data.source.title || 'View Source'}</a></div>` : ''}
+      `;
+                popup.html(html)
+                    .style('left', (rect.left + 24) + 'px')
+                    .style('top', (rect.top + 24) + 'px')
+                    .style('display', 'block');
+                const off = (e) => {
+                    if (!popup.node().contains(e.target)) { popup.style('display', 'none'); document.removeEventListener('mousedown', off, true); }
+                };
+                setTimeout(() => document.addEventListener('mousedown', off, true), 0);
+            }
+
+            // Controls
+            document.getElementById('rowH').addEventListener('input', e => { rowH = +e.target.value; update(root); });
+            document.getElementById('indent').addEventListener('input', e => { indent = +e.target.value; update(root); });
+            document.getElementById('collapseAll').addEventListener('click', () => { root.children && root.children.forEach(collapseAll); update(root); });
+            document.getElementById('expandAll').addEventListener('click', () => { root.children && root.children.forEach(expandAll); update(root); });
+
+            const darkToggle = document.getElementById('darkMode');
+            darkToggle.checked = true;
+            darkToggle.addEventListener('change', () => {
+                document.body.classList.toggle('dark-mode', darkToggle.checked);
+            });
+
+            // First render
+            update(root);
+            // Resize-aware width (height is based on row count)
+            window.addEventListener('resize', () => update(root));
+        })();
+    </script>
+</body>
+
+</html>
