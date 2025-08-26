@@ -140,22 +140,22 @@
                     "name": "Early Creed",
                     "subtitle": "Earliest tradition explicitly includes Jesus’ burial prior to resurrection",
                     "children": [
-                        {
-                            "name": "1 Corinthians 15:3–4",
-                            "subtitle": "“…that he was buried, that he was raised on the third day…”",
-                            "date": "Tradition: c. AD 30–35; citation: c. AD 55",
-                            "details": "Paul preserves a pre-Pauline formula he “received” and “delivered” in which the burial (Greek: etaphē, “was buried”) stands between death and resurrection. This locates a concrete interment of a body in time and place—consistent with Jewish same-day burial practice—and forms the narrative hinge for the proclamation that the tomb was later found empty. Because “on the third day” follows both death and burial in the sequence, the timing reads coherently whether reckoned from death or from burial—naturally presuming they occurred the same day.",
-                            "whyItMatters": [
-                                "The earliest stratum explicitly affirms Jesus’ burial, not merely death and resurrection.",
-                                "Formal transmission language (“received…delivered”) signals controlled, communal tradition handling very close to the events.",
-                                "The burial clause both undergirds the empty-tomb inference and yields an unambiguous “third day” count whether anchored to death or burial."
-                            ],
-                            "source": {
-                                "title": "1 Corinthians 15:3",
-                                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-4&version=ESV"
-                            },
-                            "kind": "evidence"
-                        }
+                                {
+                                    "name": "1 Corinthians 15:3–4",
+                                    "subtitle": "“…that he was buried, that he was raised on the third day…”",
+                                    "date": "Tradition: c. AD 30–35; citation: c. AD 55",
+                                    "details": "Paul preserves a pre-Pauline formula he “received” and “delivered” in which the burial (Greek: etaphē, “was buried”) stands between death and resurrection. This locates a concrete interment of a body in time and place—consistent with Jewish same-day burial practice—and forms the narrative hinge for the proclamation that the tomb was later found empty. Because “on the third day” follows both death and burial in the sequence, the timing reads coherently whether reckoned from death or from burial—naturally presuming they occurred the same day.",
+                                    "whyItMatters": [
+                                        "The earliest stratum explicitly affirms Jesus’ burial, not merely death and resurrection.",
+                                        "Formal transmission language (“received…delivered”) signals controlled, communal tradition handling very close to the events.",
+                                        "The burial clause both undergirds the empty-tomb inference and yields an unambiguous “third day” count whether anchored to death or burial."
+                                    ],
+                                    "source": {
+                                        "title": "1 Corinthians 15:3–4)",
+                                        "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-4&version=ESV"
+                                    },
+                                    "kind": "evidence"
+                                }
                     ],
                     "kind": "collection"
                 },
@@ -178,7 +178,7 @@
                                         "Background for later Jewish practice referenced by Josephus and the Gospels."
                                     ],
                                     "source": {
-                                        "title": "Deuteronomy 21:22",
+                                        "title": "Deuteronomy 21:22-23",
                                         "url": "https://www.biblegateway.com/passage/?search=Deuteronomy+21%3A22-23&version=ESV"
                                     },
                                     "kind": "evidence"
@@ -303,7 +303,7 @@
                                         "Corroborates the Markan sequence with independent nuance."
                                     ],
                                     "source": {
-                                        "title": "Matthew 27:57",
+                                        "title": "Matthew 27:57-61",
                                         "url": "https://www.biblegateway.com/passage/?search=Matthew+27%3A57-61&version=ESV"
                                     },
                                     "kind": "evidence"
@@ -319,7 +319,7 @@
                                         "Explains their return after Sabbath with prepared spices."
                                     ],
                                     "source": {
-                                        "title": "Luke 23:50",
+                                        "title": "Luke 23:50-56",
                                         "url": "https://www.biblegateway.com/passage/?search=Luke+23%3A50-56&version=ESV"
                                     },
                                     "kind": "evidence"
@@ -368,7 +368,7 @@
                                                 "Shows direct contact between Paul and Jerusalem eyewitness leadership."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:18–19 (ESV)",
+                                                "title": "Galatians 1:18–19",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A18-19&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -383,7 +383,7 @@
                                                 "Implies sustained authority centered in Jerusalem."
                                             ],
                                             "source": {
-                                                "title": "Galatians 2:9 (ESV)",
+                                                "title": "Galatians 2:9",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+2%3A9&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -398,7 +398,7 @@
                                                 "Assumes Jerusalem as the sending center."
                                             ],
                                             "source": {
-                                                "title": "Galatians 2:12 (ESV)",
+                                                "title": "Galatians 2:12",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+2%3A12&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -413,7 +413,7 @@
                                                 "Implies wide awareness of that community across the movement."
                                             ],
                                             "source": {
-                                                "title": "Romans 15:25–27 (ESV)",
+                                                "title": "Romans 15:25–27",
                                                 "url": "https://www.biblegateway.com/passage/?search=Romans+15%3A25-27&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -428,7 +428,7 @@
                                                 "Confirms Jerusalem as a living point of reference."
                                             ],
                                             "source": {
-                                                "title": "1 Corinthians 16:1–4 (ESV)",
+                                                "title": "1 Corinthians 16:1–4",
                                                 "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+16%3A1-4&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -443,7 +443,7 @@
                                                 "Reinforces the visibility of the Jerusalem believers."
                                             ],
                                             "source": {
-                                                "title": "2 Corinthians 8–9 (ESV)",
+                                                "title": "2 Corinthians 8–9",
                                                 "url": "https://www.biblegateway.com/passage/?search=2+Corinthians+8%3B2+Corinthians+9&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -458,7 +458,7 @@
                                                 "Fits the picture of an early, publicly known movement centered in Judea/Jerusalem."
                                             ],
                                             "source": {
-                                                "title": "1 Thessalonians 2:14 (ESV)",
+                                                "title": "1 Thessalonians 2:14",
                                                 "url": "https://www.biblegateway.com/passage/?search=1+Thessalonians+2%3A14&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -527,7 +527,7 @@
                                     "date": "c. AD 80–90 (traditional dating of Matthew)",
                                     "details": "Matthew preserves the earliest Jewish polemic: a bribed guard is to report that the disciples stole the body while the soldiers slept. The narrative both records the opposing claim and implies that, on all sides, the body was not in the tomb.",
                                     "source": {
-                                        "title": "Matthew 28:11",
+                                        "title": "Matthew 28:11-15",
                                         "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A11-15&version=ESV"
                                     },
                                     "kind": "evidence"
@@ -754,7 +754,7 @@
                                                 "Paul engaged in deliberate discussions with Peter (Cephas) to investigate."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:18",
+                                                "title": "Galatians 1:18-19",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A18-19&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -770,7 +770,7 @@
                                                 "Early cooperation and trust: Their giving “the right hand of fellowship” demonstrates mutual recognition and shared mission, especially in proclaiming the risen Christ to Jews and Gentiles alike."
                                             ],
                                             "source": {
-                                                "title": "Galatians 2:1",
+                                                "title": "Galatians 2:1-10",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+2%3A1-10&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -786,8 +786,8 @@
                                                 "Underscores divine initiative: Paul attributes his apostleship and transformation to grace, reinforcing the supernatural character of the resurrection message."
                                             ],
                                             "source": {
-                                                "title": "1 Corinthians 15:9",
-                                                "url": "https://sites.google.com/view/risen-evidence/resurrection/disciples/claimed-it/pauls-letters"
+                                                "title": "1 Corinthians 15:9-11",
+                                                "url": "https://www.biblegateway.com/passage/?search=1%20Corinthians%2015%3A9%E2%80%9311&version=ESV"
                                             },
                                             "kind": "evidence"
                                         }
@@ -813,7 +813,7 @@
                                                         "The transmission formula (\"received\" and \"delivered\") is similar to how Jewish rabbis passed on sacred tradition, and the use of the Aramaic name \"Cephas\" points to a Semitic style and Jewish-Christian origins in Jerusalem."
                                                     ],
                                                     "source": {
-                                                        "title": "1 Corinthians 15:3",
+                                                        "title": "1 Corinthians 15:3-7",
                                                         "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3%E2%80%937&version=ESV"
                                                     },
                                                     "kind": "evidence"
@@ -836,7 +836,7 @@
                                                         "Claim of eyewitnesses: “We all are witnesses” shows collective apostolic affirmation."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 2:22",
+                                                        "title": "Acts 2:22-36",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts+2%3A22-36&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -855,7 +855,7 @@
                                                         "Consistency: The message aligns with Peter’s earlier Pentecost sermon."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 3:13",
+                                                        "title": "Acts 3:13–15",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts+3%3A13-15&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -875,8 +875,8 @@
                                                         "Fulfillment of Scripture: Peter cites Psalm 118:22, identifying Jesus as the rejected cornerstone."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 4:8",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+4%3A8-12&version=ESV"
+                                                        "title": "Acts 4:8-12, 33",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts%204%3A8-12%2C%2033&version=ESV"
                                                     },
                                                     "kind": "evidence",
                                                     "dates": {
@@ -894,7 +894,7 @@
                                                         "Repetition and consistency: The message is again that of resurrection and the guilt of the hearers."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 5:30",
+                                                        "title": "Acts 5:30-32",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts+5%3A30-32&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -913,7 +913,7 @@
                                                         "Focus on God’s initiative: The witnesses were “chosen by God.”"
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 10:39",
+                                                        "title": "Acts 10:39-41",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts+10%3A39-41&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -932,7 +932,7 @@
                                                         "Transmission of testimony: Highlights that the eyewitnesses now preach this message."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 13:26",
+                                                        "title": "Acts 13:26-37",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts+13%3A26-37&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -952,7 +952,7 @@
                                                         "Universal significance: Paul links the resurrection to a future judgment of all people, reinforcing its cosmic importance."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 17:2",
+                                                        "title": "Acts 17:2-3, 30-31",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts+17%3A2-3%2C30-31&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -990,7 +990,7 @@
                                                                 "Immediate worship highlights recognition of Jesus as the risen Lord."
                                                             ],
                                                             "source": {
-                                                                "title": "Matthew 28:1",
+                                                                "title": "Matthew 28:1-10",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A1-10&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1006,7 +1006,7 @@
                                                                 "Promise of ongoing presence ties the church’s mission to the living, active Lord."
                                                             ],
                                                             "source": {
-                                                                "title": "Matthew 28:16",
+                                                                "title": "Matthew 28:16-20",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A16-20&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1029,7 +1029,7 @@
                                                                 "The use of women as the first witnesses is significant because their testimony had little legal weight in the ancient world, making it an unlikely fabrication."
                                                             ],
                                                             "source": {
-                                                                "title": "Mark 16:1",
+                                                                "title": "Mark 16:1-8",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Mark+16%3A1-8&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1052,7 +1052,7 @@
                                                                 "Jesus interprets the Scriptures about himself, rooting the event in prophetic fulfillment."
                                                             ],
                                                             "source": {
-                                                                "title": "Luke 24:13",
+                                                                "title": "Luke 24:13-35",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A13-35&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1084,7 +1084,7 @@
                                                                 "Highlights the disciples’ transformation to worship and joy."
                                                             ],
                                                             "source": {
-                                                                "title": "Luke 24:50",
+                                                                "title": "Luke 24:50-53",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A50-53&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1100,7 +1100,7 @@
                                                                 "Lays the foundation for apostolic witness throughout Acts."
                                                             ],
                                                             "source": {
-                                                                "title": "Acts 1:1",
+                                                                "title": "Acts 1:1-3",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+1%3A1-3&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1123,7 +1123,7 @@
                                                                 "Commissioning of Mary makes her the “apostle to the apostles.”"
                                                             ],
                                                             "source": {
-                                                                "title": "John 20:11",
+                                                                "title": "John 20:11-18",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+20%3A11-18&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1139,7 +1139,7 @@
                                                                 "“Peace be with you” and the sending mirror the Father’s mission for Jesus."
                                                             ],
                                                             "source": {
-                                                                "title": "John 20:19",
+                                                                "title": "John 20:19-23",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+20%3A19-23&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1155,7 +1155,7 @@
                                                                 "Shared meal emphasizes embodied, bodily presence—not a mere vision."
                                                             ],
                                                             "source": {
-                                                                "title": "John 21:1",
+                                                                "title": "John 21:1-14",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+21%3A1-14&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1171,7 +1171,7 @@
                                                                 "Love expressed through obedience links affection and action."
                                                             ],
                                                             "source": {
-                                                                "title": "John 21:15",
+                                                                "title": "John 21:15-19",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+21%3A15-19&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1214,7 +1214,7 @@
                                                         "Connects resurrection with endurance and eschatological hope."
                                                     ],
                                                     "source": {
-                                                        "title": "Polycarp to the Philippians 9:1",
+                                                        "title": "Polycarp to the Philippians 9:1-2",
                                                         "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html",
                                                         "highlightedUrl": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
                                                     },
@@ -1248,7 +1248,7 @@
                                                 "Both affirmed the same message of resurrection, showing a unity of witness"
                                             ],
                                             "source": {
-                                                "title": "Acts 4:1",
+                                                "title": "Acts 4:1-22",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+4%3A1-22&version=ESV"
                                             },
                                             "kind": "evidence",
@@ -1268,7 +1268,7 @@
                                                 "They persisted in teaching daily despite repeated threats"
                                             ],
                                             "source": {
-                                                "title": "Acts 5:17",
+                                                "title": "Acts 5:17-42",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+5%3A17-42&version=ESV"
                                             },
                                             "kind": "evidence",
@@ -1288,7 +1288,7 @@
                                                 "His prayer for his killers paralleled Jesus' own crucifixion words"
                                             ],
                                             "source": {
-                                                "title": "Acts 7:54",
+                                                "title": "Acts 7:54-60",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+7%3A54-60&version=ESV"
                                             },
                                             "kind": "evidence",
@@ -1308,7 +1308,7 @@
                                                 "Peter's imprisonment shows the ongoing danger to church leaders"
                                             ],
                                             "source": {
-                                                "title": "Acts 12:1",
+                                                "title": "Acts 12:1-5",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+12%3A1-5&version=ESV"
                                             },
                                             "kind": "evidence",
@@ -1552,7 +1552,7 @@
                                                 "This passage places James within a context of familial and communal rejection, which makes his later leadership role in the church more significant."
                                             ],
                                             "source": {
-                                                "title": "Mark 6:3",
+                                                "title": "Mark 6:3-4",
                                                 "url": "https://www.biblegateway.com/passage/?search=Mark+6%3A3-4&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1612,7 +1612,7 @@
                                                 "Scriptural discernment: By interpreting the inclusion of Gentiles in light of Old Testament prophecy, James demonstrates theological maturity and pastoral sensitivity."
                                             ],
                                             "source": {
-                                                "title": "Acts 15:12",
+                                                "title": "Acts 15:12-21",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+15%3A12-21&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1743,7 +1743,7 @@
                                                 "Link to resurrection testimony: Reinforces that Paul saw himself as a direct witness to the risen Lord."
                                             ],
                                             "source": {
-                                                "title": "1 Corinthians 15:9",
+                                                "title": "1 Corinthians 15:9-10",
                                                 "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A9%E2%80%9310&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1759,7 +1759,7 @@
                                                 "Transformation as evidence: His shift from persecutor to preacher reinforces the sincerity and conviction behind his proclamation."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:13",
+                                                "title": "Galatians 1:13-16",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A13%E2%80%9316&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1775,7 +1775,7 @@
                                                 "Consistency with other letters: This aligns with Paul's other autobiographical reflections, reinforcing a coherent testimony rooted in a personal encounter with the risen Christ."
                                             ],
                                             "source": {
-                                                "title": "Philippians 3:6",
+                                                "title": "Philippians 3:6-7",
                                                 "url": "https://www.biblegateway.com/passage/?search=Philippians+3%3A6%E2%80%937&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1851,7 +1851,7 @@
                                                 "Paul’s reversal from persecutor to preacher serves as compelling evidence for the sincerity of his testimony."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:22",
+                                                "title": "Galatians 1:22-23",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A22-23&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1881,7 +1881,7 @@
                                                 "Public, verifiable hardship: His sufferings were public and could be confirmed by others, reinforcing the credibility of his witness."
                                             ],
                                             "source": {
-                                                "title": "2 Corinthians 11:23",
+                                                "title": "2 Corinthians 11:23-28",
                                                 "url": "https://www.biblegateway.com/passage/?search=2+Corinthians+11%3A23-28&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1897,7 +1897,7 @@
                                                 "Ministry shaped by conviction: He chooses to remain alive for the sake of others, motivated by resurrection hope."
                                             ],
                                             "source": {
-                                                "title": "Philippians 1:21",
+                                                "title": "Philippians 1:21-23",
                                                 "url": "https://www.biblegateway.com/passage/?search=Philippians+1%3A21-23&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1936,7 +1936,7 @@
                                                 "Resurrection conviction: Their courage indicates confidence grounded in a real encounter with the risen Christ."
                                             ],
                                             "source": {
-                                                "title": "Acts 16:19",
+                                                "title": "Acts 16:19-24",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+16%3A19-24&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1968,7 +1968,7 @@
                                                 "Enduring resolve: Continues preaching despite sustained opposition."
                                             ],
                                             "source": {
-                                                "title": "Acts 17:13",
+                                                "title": "Acts 17:13-15",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+17%3A13-15&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1984,7 +1984,7 @@
                                                 "Unshaken boldness: Persisted despite facing formal accusations."
                                             ],
                                             "source": {
-                                                "title": "Acts 18:12",
+                                                "title": "Acts 18:12-13",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+18%3A12-13&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -2000,7 +2000,7 @@
                                                 "Conviction under fire: Faces a violent mob without recanting his testimony."
                                             ],
                                             "source": {
-                                                "title": "Acts 21:27",
+                                                "title": "Acts 21:27-36",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+21%3A27-36&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -2016,7 +2016,7 @@
                                                 "Unwavering mission: Presses on despite direct threats to his life."
                                             ],
                                             "source": {
-                                                "title": "Acts 23:12",
+                                                "title": "Acts 23:12-35",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+23%3A12-35&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -2039,7 +2039,7 @@
                                                 "Links their suffering directly to preaching the risen Christ, reinforcing the sincerity of their testimony."
                                             ],
                                             "source": {
-                                                "title": "1 Clement, Chapter 5, Verses 2",
+                                                "title": "1 Clement, Chapter 5, Verses 2-7",
                                                 "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html",
                                                 "highlightedUrl": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%205%3A1%0ABut,pattern%20of%20patient%20endurance."
                                             },

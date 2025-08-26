@@ -255,7 +255,8 @@
     <div id="topbar">
         <strong style="font-size:18px; letter-spacing:0.5px; margin-right:16px;">Tidy Tree</strong>
         <label style="display:none;"><input type="checkbox" id="wrap"> Wrap labels</label>
-        <label><input type="checkbox" id="clusterToggle"> Cluster layout</label>
+    <label><input type="checkbox" id="clusterToggle"> Cluster layout</label>
+    <label><input type="checkbox" id="radialToggle"> Radial layout</label>
         <label style="display:none;">Node size: <input type="range" id="nodesize" min="10" max="100" value="20"></label>
         <label style="display:none;">Vertical spacing: <input type="range" id="nodesizeY" min="10" max="150" value="60"></label>
         <label style="display:none;">Horizontal spacing: <input type="range" id="nodesizeX" min="10" max="300" value="180"></label>
@@ -335,20 +336,13 @@
             const root = d3.hierarchy(data);
             root.x0 = height / 2;
             root.y0 = 0;
-            // Collapse the 'Death', 'Burial', and 'Resurrection' nodes themselves so only those are visible under the root
-            if (root.children) {
-                root.children.forEach(child => {
-                    if (["Death", "Burial", "Resurrection"].includes(child.data.name)) {
-                        collapse(child);
-                    } else {
-                        collapse(child);
-                    }
-                });
-            }
+            root.children && root.children.forEach(collapse); // start collapsed
+
 
             // Default to cluster layout
             let treeLayout = d3.cluster();
             treeLayout.nodeSize([20, 200]); // vertical spacing, horizontal spacing
+            let isRadial = false;
 
             // Controls
             const nodeSizeYInput = document.getElementById('nodesizeY');
@@ -407,40 +401,98 @@
                 return "#6c6c6c";
             }
 
+
+            // Layout toggles
+            const clusterToggle = document.getElementById('clusterToggle');
+            const radialToggle = document.getElementById('radialToggle');
+            // Default cluster toggle to checked, radial to unchecked
+            clusterToggle.checked = true;
+            radialToggle.checked = false;
+            clusterToggle.addEventListener('change', function () {
+                if (clusterToggle.checked) {
+                    treeLayout = d3.cluster();
+                    isRadial = false;
+                } else {
+                    treeLayout = d3.tree();
+                    isRadial = false;
+                }
+                // Uncheck radial if cluster/tree is selected
+                radialToggle.checked = false;
+                // Keep node size settings
+                const y = +nodeSizeYInput.value;
+                const x = +nodeSizeXInput.value;
+                treeLayout.nodeSize([y, x]);
+                update(root);
+            });
+            radialToggle.addEventListener('change', function () {
+                if (radialToggle.checked) {
+                    isRadial = true;
+                    clusterToggle.checked = false;
+                } else {
+                    isRadial = false;
+                    clusterToggle.checked = true;
+                }
+                update(root);
+            });
+
+            function projectRadial(x, y) {
+                const angle = (x - 90) / 180 * Math.PI;
+                return [y * Math.cos(angle), y * Math.sin(angle)];
+            }
+
             function update(source) {
-                treeLayout(root);
-                const nodes = root.descendants();
-                const links = root.links();
-                // Cluster layout toggle
-                const clusterToggle = document.getElementById('clusterToggle');
-                // Default cluster toggle to checked
-                clusterToggle.checked = true;
-                clusterToggle.addEventListener('change', function () {
-                    if (clusterToggle.checked) {
-                        treeLayout = d3.cluster();
-                    } else {
-                        treeLayout = d3.tree();
-                    }
-                    // Keep node size settings
+                if (isRadial) {
+                    // Use cluster layout for radial, but interpret as polar
+                    treeLayout = d3.cluster();
+                    treeLayout.size([360, Math.min(width, height) / 2 - 80]);
+                    treeLayout(root);
+                } else {
+                    // Use nodeSize for cluster/tree
                     const y = +nodeSizeYInput.value;
                     const x = +nodeSizeXInput.value;
                     treeLayout.nodeSize([y, x]);
-                    update(root);
-                });
+                    treeLayout(root);
+                }
+                const nodes = root.descendants();
+                const links = root.links();
 
                 // nodes.forEach(d => d.y = d.depth * 180); // horizontal spacing per depth
 
                 // LINKS (drawn first, behind nodes)
                 const link = linkGroup.selectAll("path.link").data(links, d => d.target.id || (d.target.id = crypto.randomUUID()));
-                link.enter().append("path")
-                    .attr("class", "link")
-                    .attr("d", d3.linkHorizontal().x(d => source.y0).y(d => source.x0))
-                    .merge(link)
-                    .transition().duration(350)
-                    .attr("d", d3.linkHorizontal().x(d => d.y).y(d => d.x));
-                link.exit().transition().duration(250)
-                    .attr("d", d3.linkHorizontal().x(d => source.y).y(d => source.x))
-                    .remove();
+                if (isRadial) {
+                    link.enter().append("path")
+                        .attr("class", "link")
+                        .attr("d", d => {
+                            const s = projectRadial(d.source.x, d.source.y);
+                            const t = projectRadial(d.target.x, d.target.y);
+                            return `M${s[0]},${s[1]}C${(s[0]+t[0])/2},${(s[1]+t[1])/2} ${(s[0]+t[0])/2},${(s[1]+t[1])/2} ${t[0]},${t[1]}`;
+                        })
+                        .merge(link)
+                        .transition().duration(350)
+                        .attr("d", d => {
+                            const s = projectRadial(d.source.x, d.source.y);
+                            const t = projectRadial(d.target.x, d.target.y);
+                            return `M${s[0]},${s[1]}C${(s[0]+t[0])/2},${(s[1]+t[1])/2} ${(s[0]+t[0])/2},${(s[1]+t[1])/2} ${t[0]},${t[1]}`;
+                        });
+                    link.exit().transition().duration(250)
+                        .attr("d", d => {
+                            const s = projectRadial(d.source.x, d.source.y);
+                            const t = projectRadial(d.target.x, d.target.y);
+                            return `M${s[0]},${s[1]}C${(s[0]+t[0])/2},${(s[1]+t[1])/2} ${(s[0]+t[0])/2},${(s[1]+t[1])/2} ${t[0]},${t[1]}`;
+                        })
+                        .remove();
+                } else {
+                    link.enter().append("path")
+                        .attr("class", "link")
+                        .attr("d", d3.linkHorizontal().x(d => source.y0).y(d => source.x0))
+                        .merge(link)
+                        .transition().duration(350)
+                        .attr("d", d3.linkHorizontal().x(d => d.y).y(d => d.x));
+                    link.exit().transition().duration(250)
+                        .attr("d", d3.linkHorizontal().x(d => source.y).y(d => source.x))
+                        .remove();
+                }
 
                 // NODES (drawn above links)
                 const node = nodeGroup.selectAll("g.node").data(nodes, d => d.id || (d.id = crypto.randomUUID()));
@@ -452,7 +504,14 @@
                         }
                         return "node";
                     })
-                    .attr("transform", d => `translate(${source.y0},${source.x0})`)
+                    .attr("transform", d => {
+                        if (isRadial) {
+                            const [x, y] = projectRadial(source.x0, source.y0);
+                            return `translate(${x},${y})`;
+                        } else {
+                            return `translate(${source.y0},${source.x0})`;
+                        }
+                    })
                     .on("click", (event, d) => {
                         if (!d.children && !d._children && d.data.source && d.data.source.url) {
                             let html = `<strong>${d.data.name}</strong>`;
@@ -526,8 +585,30 @@
 
                 const labels = nodeEnter.append("text")
                     .attr("dy", "0em")
-                    .attr("x", d => (d.children || d._children) ? -10 : 10)
-                    .attr("text-anchor", d => (d.children || d._children) ? "end" : "start")
+                    .attr("x", d => {
+                        if (isRadial) {
+                            return d.children || d._children ? -10 : 10;
+                        } else {
+                            return (d.children || d._children) ? -10 : 10;
+                        }
+                    })
+                    .attr("text-anchor", d => {
+                        if (isRadial) {
+                            return d.x < 180 ? "start" : "end";
+                        } else {
+                            return (d.children || d._children) ? "end" : "start";
+                        }
+                    })
+                    .attr("transform", d => {
+                        if (isRadial) {
+                            let angle = d.x;
+                            let y = d.y;
+                            let rotate = angle < 180 ? angle - 90 : angle + 90;
+                            return `rotate(${rotate})`;
+                        } else {
+                            return null;
+                        }
+                    })
                     .html(d => d.data.link
                         ? `<a href="${d.data.link}" target="_blank" style="fill:blue;text-decoration:underline">${d.data.name}</a>`
                         : d.data.name);
@@ -545,18 +626,54 @@
                 // UPDATE + TRANSITIONS
                 const nodeUpdate = nodeEnter.merge(node);
                 nodeUpdate.transition().duration(350)
-                    .attr("transform", d => `translate(${d.y},${d.x})`)
+                    .attr("transform", d => {
+                        if (isRadial) {
+                            const [x, y] = projectRadial(d.x, d.y);
+                            return `translate(${x},${y})`;
+                        } else {
+                            return `translate(${d.y},${d.x})`;
+                        }
+                    })
                     .on("end", () => { updatePopupHelpPosition(); });
                 nodeUpdate.select("circle").transition().duration(350)
                     .attr("r", 6)
                     .attr("fill", d => (d._children ? nodeColor(d) : "#fff"))
                     .attr("stroke", d => nodeColor(d));
                 nodeUpdate.select("text").transition().duration(350)
-                    .attr("x", d => (d.children || d._children) ? -10 : 10)
-                    .attr("text-anchor", d => (d.children || d._children) ? "end" : "start");
+                    .attr("x", d => {
+                        if (isRadial) {
+                            return d.children || d._children ? -10 : 10;
+                        } else {
+                            return (d.children || d._children) ? -10 : 10;
+                        }
+                    })
+                    .attr("text-anchor", d => {
+                        if (isRadial) {
+                            return d.x < 180 ? "start" : "end";
+                        } else {
+                            return (d.children || d._children) ? "end" : "start";
+                        }
+                    })
+                    .attr("transform", d => {
+                        if (isRadial) {
+                            let angle = d.x;
+                            let y = d.y;
+                            let rotate = angle < 180 ? angle - 90 : angle + 90;
+                            return `rotate(${rotate})`;
+                        } else {
+                            return null;
+                        }
+                    });
 
                 const nodeExit = node.exit().transition().duration(250)
-                    .attr("transform", d => `translate(${source.y},${source.x})`)
+                    .attr("transform", d => {
+                        if (isRadial) {
+                            const [x, y] = projectRadial(source.x, source.y);
+                            return `translate(${x},${y})`;
+                        } else {
+                            return `translate(${source.y},${source.x})`;
+                        }
+                    })
                     .remove();
                 nodeExit.select("circle").attr("r", 1e-6);
 
@@ -564,11 +681,15 @@
                 nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
             }
 
+
             update(root);
 
             // Center root nicely
-            // Shift right so root node is visible
-            svg.call(zoom.transform, d3.zoomIdentity.translate(220, height / 2).scale(1));
+            if (isRadial) {
+                svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(1));
+            } else {
+                svg.call(zoom.transform, d3.zoomIdentity.translate(60, height / 2).scale(1));
+            }
 
             // Collapse or expand all nodes
             function collapseAll(d) {
@@ -688,7 +809,15 @@
                 update(root);
             };
 
-            // By default, only root and first-level children are expanded
+            // By default, expand all nodes
+            root.children && root.children.forEach(function expandAll(d) {
+                if (d._children) {
+                    expand(d);
+                    d.children.forEach(expandAll);
+                } else if (d.children) {
+                    d.children.forEach(expandAll);
+                }
+            });
             update(root);
         }
 
