@@ -733,7 +733,7 @@
             "children": [
                 {
                     "name": "Disciples",
-                    "subtitle": "Eyewitnesses and early followers who claimed or believed in the resurrection",
+                    "subtitle": "Eyewitnesses and early followers who claimed and believed in the resurrection",
                     "children": [
                         {
                             "name": "Claimed It",
@@ -741,17 +741,17 @@
                             "children": [
                                 {
                                     "name": "Paul's Letters",
-                                    "subtitle": "Paul’s epistolary testimony and references to resurrection appearances",
+                                    "subtitle": "Paul’s epistolary testimony and confirmation of apostolic resurrection witness",
                                     "children": [
                                         {
                                             "name": "Galatians 1:18-19",
                                             "subtitle": "Paul Meets Peter and James",
                                             "date": "c. AD 48–50",
-                                            "details": "Paul recalls that three years after his conversion, he went to Jerusalem and stayed with Peter for fifteen days. He also saw James, the Lord’s brother. This brief remark provides strong evidence that Paul had personal contact with those who were central eyewitnesses to the resurrection. His time with Peter, in particular, supports the claim that his gospel was in alignment with those who had seen the risen Jesus firsthand. The Greek word translated “to visit” (histēresai) in the referenced passage suggests careful inquiry or investigation, implying that Paul engaged in deliberate discussions with Peter (Cephas).",
+                                            "details": "Paul recalls that three years after his conversion, he went to Jerusalem and stayed with Peter (Cephas) for fifteen days, also meeting James, the Lord’s brother. This brief but historically significant remark shows that Paul personally encountered leading figures who were eyewitnesses of the risen Jesus. While Paul insists elsewhere that his gospel was received by revelation, his deliberate visit (Greek historeō, 'to inquire or investigate') indicates that he sought direct acquaintance with Peter’s testimony. In doing so, Paul implicitly authenticates that the resurrection witness of the apostles was consistent with his own proclamation.",
                                             "whyItMatters": [
-                                                "Paul had personal contact with central eyewitnesses to the resurrection.",
-                                                "His gospel was in alignment with those who had seen the risen Jesus firsthand.",
-                                                "Paul engaged in deliberate discussions with Peter (Cephas) to investigate."
+                                                "Paul’s testimony provides independent confirmation that Peter and James were central eyewitnesses to the resurrection.",
+                                                "The verb historeō implies deliberate inquiry, underscoring that Paul investigated apostolic testimony rather than remaining isolated.",
+                                                "Paul’s independent gospel proclamation aligns with the testimony of those who had seen the risen Christ firsthand."
                                             ],
                                             "source": {
                                                 "title": "Galatians 1:18-19",
@@ -763,11 +763,11 @@
                                             "name": "Galatians 2:1–10",
                                             "subtitle": "Unity of the Apostolic Witness",
                                             "date": "c. AD 48–50",
-                                            "details": "In this passage, Paul describes a later visit to Jerusalem where he meets with the pillars of the early church—James, Peter (Cephas), and John. He presents to them the gospel he preaches to the Gentiles and receives their affirmation. Paul’s account highlights that the core message he proclaimed, including the resurrection of Jesus, was in full agreement with what the other apostles were teaching.",
+                                            "details": "Paul recounts a later visit to Jerusalem where he met with the 'pillars',James, Peter, and John,and presented the gospel he preached among the Gentiles. These leaders extended to him the 'right hand of fellowship,' confirming the authenticity of his mission. This episode highlights that the apostolic leaders who had been eyewitnesses recognized Paul’s message as consistent with their own proclamation of the risen Christ.",
                                             "whyItMatters": [
-                                                "Independent but unified proclamation: Paul’s gospel, received by revelation, is recognized as authentic by the original apostles.",
-                                                "Affirmation of resurrection message: The unity between Paul and the Jerusalem leaders underscores the consistency of the resurrection claim across early Christian communities.",
-                                                "Early cooperation and trust: Their giving “the right hand of fellowship” demonstrates mutual recognition and shared mission, especially in proclaiming the risen Christ to Jews and Gentiles alike."
+                                                "Independent but unified proclamation: Paul’s gospel, received by revelation, was nonetheless confirmed by those who had seen the risen Jesus.",
+                                                "Apostolic agreement: The Jerusalem leaders affirmed Paul’s message, showing continuity and unity in the resurrection proclamation.",
+                                                "Shared mission: Their giving of the 'right hand of fellowship' demonstrates trust and cooperation rooted in the common resurrection witness."
                                             ],
                                             "source": {
                                                 "title": "Galatians 2:1-10",
@@ -779,11 +779,11 @@
                                             "name": "1 Corinthians 15:9–11",
                                             "subtitle": "Shared Apostolic Message",
                                             "date": "c. AD 55",
-                                            "details": "In this follow-up to the early creed, Paul reflects on his own unworthiness due to his former persecution of the church, yet emphasizes that God's grace enabled him to labor fruitfully as an apostle. He underscores that whether it was he or the other apostles who preached, their core message remained the same—and so the Corinthians believed.",
+                                            "details": "Reflecting on the resurrection tradition, Paul acknowledges his unworthiness as a former persecutor of the church but emphasizes that God's grace enabled him to labor as an apostle. He stresses that whether it was he or the other apostles who preached, the content of the message was the same,and it is this consistent proclamation that the Corinthians received and believed.",
                                             "whyItMatters": [
-                                                "Affirms shared message: Paul insists that all the apostles preached the same gospel, including the resurrection.",
-                                                "Supports unified witness: Indicates that the resurrection was not a private or disputed claim, but publicly and consistently proclaimed by all.",
-                                                "Underscores divine initiative: Paul attributes his apostleship and transformation to grace, reinforcing the supernatural character of the resurrection message."
+                                                "Affirms shared proclamation: Paul insists that all the apostles preached the same resurrection gospel.",
+                                                "Supports unified witness: Demonstrates that the resurrection was publicly and consistently proclaimed across the apostolic band.",
+                                                "Highlights divine initiative: Paul’s transformation from persecutor to preacher underscores the power of the resurrection message."
                                             ],
                                             "source": {
                                                 "title": "1 Corinthians 15:9-11",
@@ -1370,17 +1370,17 @@
                                 },
                                 {
                                     "name": "Polycarp",
-                                    "subtitle": "Bishop of Smyrna (c. AD 110–140), disciple of John; early witness to apostolic endurance and resurrection faith.",
+                                    "subtitle": "Bishop of Smyrna (c. AD 110–140), traditionally associated with the Apostle John; early witness to apostolic endurance and resurrection faith.",
                                     "children": [
                                         {
                                             "name": "Polycarp to the Philippians 9:1–2",
                                             "subtitle": "Apostolic Endurance and Suffering",
                                             "date": "c. AD 110–140",
-                                            "details": "Polycarp, bishop of Smyrna and a direct disciple of the apostle John, encourages readers to persist in their faith by highlighting the steadfast endurance of the apostles and other believers. He states that \"Paul himself and the rest of the Apostles ran not in vain but in faith and righteousness,\" and that they \"suffered.\" As someone who likely knew the apostles and their followers personally, Polycarp provides early confirmation that apostolic suffering was closely linked to the resurrection message.",
+                                            "details": "Polycarp, bishop of Smyrna, exhorts the Philippians to persevere by recalling the steadfastness of the apostles. He writes that 'Paul himself and the rest of the Apostles ran not in vain but in faith and righteousness,' and that they 'suffered.' Early church tradition, preserved by Irenaeus (Against Heresies 3.3.4), holds that Polycarp was a disciple of the Apostle John and conversant with others who had seen the Lord. While direct evidence is not conclusive, Polycarp clearly stands in close proximity to the apostolic generation, offering confirmation that suffering was understood as integral to the apostolic proclamation of the resurrection.",
                                             "whyItMatters": [
-                                                "Eyewitness connection: Polycarp is part of the living memory of the apostolic age, which enhances credibility.",
-                                                "Suffering linked to belief: He confirms that apostolic endurance was founded on a conviction powerful enough to withstand pain and persecution.",
-                                                "Call to perseverance: Early Christian leaders regarded apostolic suffering as an example for continued faithfulness."
+                                                "Eyewitness proximity: Polycarp represents continuity between the apostolic age and the second century, supported by Irenaeus’ testimony.",
+                                                "Suffering linked to belief: He confirms that apostolic endurance was grounded in conviction about Christ’s resurrection.",
+                                                "Call to perseverance: Early Christian leaders regarded apostolic suffering as a model for faithful endurance."
                                             ],
                                             "source": {
                                                 "title": "The Epistle of Polycarp to the Philippians, Chapter 9, Sections 1–2 (trans. J. B. Lightfoot)",
@@ -1906,7 +1906,7 @@
                                     "kind": "collection"
                                 },
                                 {
-                                    "name": "Acts",
+                                    "name": "Luke",
                                     "subtitle": "Acts’ narrative of Paul’s suffering and trials for the resurrection message",
                                     "children": [
                                         {
@@ -2026,7 +2026,7 @@
                                 },
                                 {
                                     "name": "Clement of Rome",
-                                    "subtitle": "Early church testimony to the martyrdom of Peter and Paul",
+                                    "subtitle": "Early bishop of Rome (c. AD 95–97); author of the letter '1 Clement', a late-1st-century epistle that recalls Peter and Paul's martyrdom and affirms apostolic witness.",
                                     "children": [
                                         {
                                             "name": "1 Clement, Chapter 5, Verses 2–7",
@@ -2074,7 +2074,7 @@
                                 },
                                 {
                                     "name": "Tertullian",
-                                    "subtitle": "Tertullian’s apologetic use of apostolic martyrdom as evidence",
+                                    "subtitle": "North African Christian apologist (c. AD 155–240); prolific author (e.g., Apologeticum, Scorpiace) who appealed to apostolic martyrdom and public records as evidence for the resurrection and Christian truth.",
                                     "children": [
                                         {
                                             "name": "Scorpiace, Chapter 15",
@@ -2098,7 +2098,7 @@
                                 },
                                 {
                                     "name": "Dionysius of Corinth",
-                                    "subtitle": "Dionysius’s testimony to the unified martyrdom of Peter and Paul",
+                                    "subtitle": "Dionysius of Corinth, an early bishop (c. AD 170), testifies to the unified martyrdom of Peter and Paul",
                                     "children": [
                                         {
                                             "name": "Ecclesiastical History, Book 2, Chapter 25, Section 8",
@@ -2122,6 +2122,7 @@
                                 },
                                 {
                                     "name": "Origen",
+                                    "subtitle": "Alexandrian scholar and theologian (c. AD 185–254); prolific commentator and exegete who affirmed apostolic suffering and the tradition of Peter and Paul's martyrdom.",
                                     "children": [
                                         {
                                             "name": "Ecclesiastical History, Book 3, Chapter 1",
