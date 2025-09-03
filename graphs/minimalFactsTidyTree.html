@@ -378,7 +378,7 @@
 
             // Default to cluster layout
             let treeLayout = d3.cluster();
-            treeLayout.nodeSize([20, 200]); // vertical spacing, horizontal spacing
+            // initial nodeSize will be set from the UI controls below so spacing matches the visible defaults
 
             // Controls
             const nodeSizeYInput = document.getElementById('nodesizeY');
@@ -400,6 +400,32 @@
                 update(root);
             });
             const wrapToggle = document.getElementById('wrap');
+
+            // Initialize layout sizing to the denser defaults used previously
+            const initialVertical = 17; // vertical spacing (denser)
+            const initialHorizontal = 200; // horizontal spacing
+            // Sync hidden UI controls to reflect these defaults so toggling preserves expected spacing
+            if (nodeSizeYInput) nodeSizeYInput.value = initialVertical;
+            if (nodeSizeXInput) nodeSizeXInput.value = initialHorizontal;
+            if (nodeSizeInput) nodeSizeInput.value = initialVertical;
+            treeLayout.nodeSize([initialVertical, initialHorizontal]);
+
+            // Cluster toggle: set up once (not inside update) so it isn't reset on every render
+            const clusterToggle = document.getElementById('clusterToggle');
+            // Default to cluster layout (matches initial treeLayout)
+            clusterToggle.checked = true;
+            clusterToggle.addEventListener('change', function () {
+                if (clusterToggle.checked) {
+                    treeLayout = d3.cluster();
+                } else {
+                    treeLayout = d3.tree();
+                }
+                // Keep node size settings
+                const y = +nodeSizeYInput.value;
+                const x = +nodeSizeXInput.value;
+                treeLayout.nodeSize([y, x]);
+                update(root);
+            });
 
             // Word wrap helper
             function wrapText(selection, width = 160) {
@@ -441,22 +467,7 @@
                 treeLayout(root);
                 const nodes = root.descendants();
                 const links = root.links();
-                // Cluster layout toggle
-                const clusterToggle = document.getElementById('clusterToggle');
-                // Default cluster toggle to checked
-                clusterToggle.checked = true;
-                clusterToggle.addEventListener('change', function () {
-                    if (clusterToggle.checked) {
-                        treeLayout = d3.cluster();
-                    } else {
-                        treeLayout = d3.tree();
-                    }
-                    // Keep node size settings
-                    const y = +nodeSizeYInput.value;
-                    const x = +nodeSizeXInput.value;
-                    treeLayout.nodeSize([y, x]);
-                    update(root);
-                });
+                // (cluster toggle is wired once at top-level to avoid being reset on each update)
 
                 // nodes.forEach(d => d.y = d.depth * 180); // horizontal spacing per depth
 
@@ -633,12 +644,17 @@
             // starting from root-only up to fully-expanded. Then collapse/expand one level
             // simply moves the current index and applies the corresponding state to the live tree.
 
-            // Helper to get a stable id for a node (adjust to your data)
-            // Prefer stable identifiers from the data (data.id or data.name) before using the
-            // ephemeral d.id that D3 assigns during join. This ensures keys computed from the
-            // simulated hierarchy (which only has data.* fields) match the live nodes.
+            // Helper to get a stable key for a node: use the ancestor path (ids or names) so
+            // keys are stable and unique across simulated and live hierarchies.
             function nodeKey(d) {
-                return d.data?.id ?? d.data?.name ?? d.id ?? d; // fallback to object ref
+                // build path from root -> ... -> node using data.id if present, otherwise data.name
+                try {
+                    const parts = d.ancestors().reverse().map(n => (n.data && (n.data.id ?? n.data.name)) || '').filter(Boolean);
+                    return parts.join('/');
+                } catch (e) {
+                    // fallback for nodes that don't support ancestors(): use name or id
+                    return d.data?.id ?? d.data?.name ?? d.id ?? String(d);
+                }
             }
 
             let expansionStates = []; // array of Set(nodeKey) from root-only (index 0) to fully-expanded (last)

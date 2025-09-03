@@ -12,13 +12,13 @@
                     "children": [
                         {
                             "name": "Josephus",
-                            "subtitle": "First-century Jewish historian; provides an early non-Christian reference to Jesus’s crucifixion.",
+                            "subtitle": "First-century Jewish historian; provides an early non-Christian reference to Jesus’s crucifixion",
                             "children": [
                                 {
                                     "name": "Antiquities 18.3.3",
-                                    "subtitle": "Records Jesus’s crucifixion under Pontius Pilate; widely regarded as authentic.",
+                                    "subtitle": "Records Jesus’s crucifixion under Pontius Pilate; widely regarded as authentic",
                                     "date": "c. AD 93–94",
-                                    "details": "The first-century Jewish historian Josephus records that Jesus was crucified under Pontius Pilate. While the broader passage is debated, most scholars accept the reference to his execution as authentic. Further Reading: T. C. Schmidt, *Josephus and Jesus: New Evidence for the One Called Christ* (Oxford University Press, 2025), Oxford Academic, accessed July 25, 2025.",
+                                    "details": "The first-century Jewish historian Josephus records that Jesus was crucified under Pontius Pilate. While the broader passage is debated, most scholars accept the reference to his execution as authentic. Further Reading: T. C. Schmidt, <em>Josephus and Jesus: New Evidence for the One Called Christ</em> (Oxford University Press, 2025), Oxford Academic, accessed July 25, 2025.",
                                     "whyItMatters": [
                                         "Earliest non-Christian reference to Jesus’s death.",
                                         "Corroborates the Gospel accounts of crucifixion under Pilate.",
@@ -35,11 +35,11 @@
                         },
                         {
                             "name": "Tacitus",
-                            "subtitle": "Prominent Roman historian; confirms Jesus’s execution under Pilate in Roman records.",
+                            "subtitle": "Prominent Roman historian; confirms Jesus’s execution under Pilate in Roman records",
                             "children": [
                                 {
                                     "name": "Annals 15.44",
-                                    "subtitle": "Roman record of Jesus’s execution by Pilate during Tiberius’s reign.",
+                                    "subtitle": "Roman record of Jesus’s execution by Pilate during Tiberius’s reign",
                                     "date": "c. AD 115",
                                     "details": "The Roman historian Tacitus reports that 'Christus' was executed by Pontius Pilate during Tiberius’s reign. This independent account confirms key Gospel details and shows the crucifixion was publicly recognized.",
                                     "whyItMatters": [
@@ -58,11 +58,11 @@
                         },
                         {
                             "name": "Lucian",
-                            "subtitle": "Second-century Greek satirist; provides evidence that crucifixion was central to Christian identity.",
+                            "subtitle": "Second-century Greek satirist; provides evidence that crucifixion was central to Christian identity",
                             "children": [
                                 {
                                     "name": "The Death of Peregrinus, Sections 11–13",
-                                    "subtitle": "Mocks Christians for worshiping a crucified figure; shows crucifixion was widely known.",
+                                    "subtitle": "Mocks Christians for worshiping a crucified figure; shows crucifixion was widely known",
                                     "date": "c. AD 165",
                                     "details": "Greek satirist Lucian mocks Christians for worshiping a crucified figure, showing the crucifixion was a well-known and defining feature of the faith by the second century.",
                                     "whyItMatters": [
@@ -82,11 +82,11 @@
                         },
                         {
                             "name": "Mara bar-Serapion",
-                            "subtitle": "Syrian Stoic philosopher; his letter is an early non-Christian reference to Jesus’s death.",
+                            "subtitle": "Syrian Stoic philosopher; his letter is an early non-Christian reference to Jesus’s death",
                             "children": [
                                 {
                                     "name": "Letter",
-                                    "subtitle": "Refers to the execution of a 'wise king of the Jews' whose teachings endured.",
+                                    "subtitle": "Refers to the execution of a 'wise king of the Jews' whose teachings endured",
                                     "date": "c. AD 73",
                                     "details": "A Stoic philosopher, writing in Syriac, refers to the execution of a 'wise king of the Jews' whose teachings endured. Many scholars see this as an early non-Christian reference to Jesus’s death.",
                                     "whyItMatters": [
@@ -105,11 +105,11 @@
                         },
                         {
                             "name": "Babylonian Talmud",
-                            "subtitle": "Central text of Rabbinic Judaism; contains a hostile but independent tradition about Jesus’s execution.",
+                            "subtitle": "Central text of Rabbinic Judaism; contains a hostile but independent tradition about Jesus’s execution",
                             "children": [
                                 {
                                     "name": "Sanhedrin 43a",
-                                    "subtitle": "Jewish tradition recounting the execution of 'Jesus the Nazarene' on Passover Eve.",
+                                    "subtitle": "Jewish tradition recounting the execution of 'Jesus the Nazarene' on Passover Eve",
                                     "date": "c. AD 200 (oral tradition), AD 500 (written)",
                                     "details": "A hostile Jewish tradition in the Talmud recounts the execution of 'Jesus the Nazarene' on Passover Eve. Though written centuries later, it reflects an independent acknowledgment of his death.",
                                     "whyItMatters": [
@@ -140,22 +140,22 @@
                     "name": "Early Creed",
                     "subtitle": "Earliest tradition explicitly includes Jesus’ burial prior to resurrection",
                     "children": [
-                                {
-                                    "name": "1 Corinthians 15:3–4",
-                                    "subtitle": "“…that he was buried, that he was raised on the third day…”",
-                                    "date": "Tradition: c. AD 30–35; citation: c. AD 55",
-                                    "details": "Paul preserves a pre-Pauline formula he “received” and “delivered” in which the burial (Greek: etaphē, “was buried”) stands between death and resurrection. This locates a concrete interment of a body in time and place—consistent with Jewish same-day burial practice—and forms the narrative hinge for the proclamation that the tomb was later found empty. Because “on the third day” follows both death and burial in the sequence, the timing reads coherently whether reckoned from death or from burial—naturally presuming they occurred the same day.",
-                                    "whyItMatters": [
-                                        "The earliest stratum explicitly affirms Jesus’ burial, not merely death and resurrection.",
-                                        "Formal transmission language (“received…delivered”) signals controlled, communal tradition handling very close to the events.",
-                                        "The burial clause both undergirds the empty-tomb inference and yields an unambiguous “third day” count whether anchored to death or burial."
-                                    ],
-                                    "source": {
-                                        "title": "1 Corinthians 15:3–4)",
-                                        "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-4&version=ESV"
-                                    },
-                                    "kind": "evidence"
-                                }
+                        {
+                            "name": "1 Corinthians 15:3–4",
+                            "subtitle": "“…that he was buried, that he was raised on the third day…”",
+                            "date": "Tradition: c. AD 30–35; citation: c. AD 55",
+                            "details": "Paul preserves a pre-Pauline formula he “received” and “delivered” in which the burial (Greek: etaphē, “was buried”) stands between death and resurrection. This locates a concrete interment of a body in time and place—consistent with Jewish same-day burial practice—and forms the narrative hinge for the proclamation that the tomb was later found empty. Because “on the third day” follows both death and burial in the sequence, the timing reads coherently whether reckoned from death or from burial—naturally presuming they occurred the same day.",
+                            "whyItMatters": [
+                                "The earliest stratum explicitly affirms Jesus’ burial, not merely death and resurrection.",
+                                "Formal transmission language (“received…delivered”) signals controlled, communal tradition handling very close to the events.",
+                                "The burial clause both undergirds the empty-tomb inference and yields an unambiguous “third day” count whether anchored to death or burial."
+                            ],
+                            "source": {
+                                "title": "1 Corinthians 15:3–4)",
+                                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-4&version=ESV"
+                            },
+                            "kind": "evidence"
+                        }
                     ],
                     "kind": "collection"
                 },
@@ -165,10 +165,10 @@
                     "children": [
                         {
                             "name": "Hebrew Bible",
-                            "subtitle": "Foundational Jewish scriptures; source of the law requiring same-day burial for the executed.",
+                            "subtitle": "Foundational Jewish scriptures; source of the law requiring same-day burial for the executed",
                             "children": [
-                                {
-                                    "name": "Deuteronomy 21:22–23",
+                                        {
+                                            "name": "Deuteronomy 21:22–23",
                                     "subtitle": "Remove the body the same day",
                                     "date": "c. 7th–5th century BC ",
                                     "details": "The law commands that if someone is executed and their body is displayed, it must not remain overnight; they must be buried the same day so the land is not defiled.",
@@ -188,7 +188,7 @@
                         },
                         {
                             "name": "Josephus",
-                            "subtitle": "First-century Jewish historian; provides direct testimony and legal context for Jewish burial customs.",
+                            "subtitle": "First-century Jewish historian; provides direct testimony and legal context for Jewish burial customs",
                             "children": [
                                 {
                                     "name": "Jewish War 4.317",
@@ -227,7 +227,7 @@
                         },
                         {
                             "name": "Philo",
-                            "subtitle": "Alexandrian Jewish philosopher; describes burial practices and Roman policy in the first century.",
+                            "subtitle": "Alexandrian Jewish philosopher; describes burial practices and Roman policy in the first century",
                             "children": [
                                 {
                                     "name": "Against Flaccus 83–84",
@@ -251,7 +251,7 @@
                         },
                         {
                             "name": "Roman Law",
-                            "subtitle": "Legal principles from the Roman Empire; codified burial permissions for the executed, influencing local practice.",
+                            "subtitle": "Legal principles from the Roman Empire; codified burial permissions for the executed, influencing local practice",
                             "children": [
                                 {
                                     "name": "Digest of Justinian 48.24.1–3",
@@ -292,8 +292,8 @@
                                     },
                                     "kind": "evidence"
                                 },
-                                {
-                                    "name": "Matthew 27:57–61",
+                                        {
+                                            "name": "Matthew 27:57–61",
                                     "subtitle": "Joseph of Arimathea's tomb; women sit opposite the tomb (v.61)",
                                     "date": "c. AD 80–90 (traditional dating of Matthew)",
                                     "details": "Joseph of Arimathea asks for the body and lays Jesus in his own new rock-hewn tomb, rolling a great stone to the entrance. Mary Magdalene and “the other Mary” were there, sitting opposite the tomb (v.61), marking its location.",
@@ -308,8 +308,8 @@
                                     },
                                     "kind": "evidence"
                                 },
-                                {
-                                    "name": "Luke 23:50–56",
+                                        {
+                                            "name": "Luke 23:50–56",
                                     "subtitle": "Council member buries Jesus; women see the tomb and how the body was laid (vv.55–56)",
                                     "date": "c. AD 80–90 (traditional dating of Luke)",
                                     "details": "Joseph of Arimathea, a council member who had not consented to the decision, wraps Jesus in linen and places him in a rock-hewn tomb. The women who had come from Galilee saw the tomb and how his body was laid (vv.55–56), then prepare spices and rest on the Sabbath.",
@@ -348,11 +348,11 @@
                 },
                 {
                     "name": "Empty Tomb",
-                    "subtitle": "Early Christians used ‘resurrection’ in the bodily sense recognized in Judaism and Greco-Roman contexts. As N. T. Wright puts it: “when the early Christians said ‘resurrection’ … ‘resurrection’ meant bodily resurrection; and that is what the early Christians affirmed.” (Christian Origins, 3:209).",
+                    "subtitle": "Early Christians used ‘resurrection’ in the bodily sense recognized in Judaism and Greco-Roman contexts. As N. T. Wright puts it: “when the early Christians said ‘resurrection’ … ‘resurrection’ meant bodily resurrection; and that is what the early Christians affirmed.” (Christian Origins, 3:209)",
                     "children": [
                         {
                             "name": "Jerusalem Factor",
-                            "subtitle": "The message began in Jerusalem, where authorities could have refuted it by producing a body.",
+                            "subtitle": "The message began in Jerusalem, where authorities could have refuted it by producing a body",
                             "children": [
                                 {
                                     "name": "Paul’s Letters",
@@ -521,8 +521,8 @@
                             "name": "Enemy Attestation",
                             "subtitle": "Assertion and counter-assertion: the Jewish ‘stolen body’ explanation and Christian replies across the 2nd–3rd centuries",
                             "children": [
-                                {
-                                    "name": "Matthew 28:11–15",
+                                        {
+                                            "name": "Matthew 28:11–15",
                                     "subtitle": "“His disciples came by night and stole him away”",
                                     "date": "c. AD 80–90 (traditional dating of Matthew)",
                                     "details": "Matthew preserves the earliest Jewish polemic: a bribed guard is to report that the disciples stole the body while the soldiers slept. The narrative both records the opposing claim and implies that, on all sides, the body was not in the tomb.",
@@ -565,7 +565,7 @@
                             "children": [
                                 {
                                     "name": "Luke",
-                                    "subtitle": "Author of the third Gospel; provides a narrative of the resurrection and the role of women witnesses.",
+                                    "subtitle": "Author of the third Gospel; provides a narrative of the resurrection and the role of women witnesses",
                                     "children": [
                                         {
                                             "name": "Luke 24:11",
@@ -583,7 +583,7 @@
                                 },
                                 {
                                     "name": "Josephus",
-                                    "subtitle": "First-century Jewish historian; summarizes Mosaic law and Jewish legal practice.",
+                                    "subtitle": "First-century Jewish historian; summarizes Mosaic law and Jewish legal practice",
                                     "children": [
                                         {
                                             "name": "Antiquities 4.8.15 (§219)",
@@ -601,7 +601,7 @@
                                 },
                                 {
                                     "name": "Mishnah",
-                                    "subtitle": "Foundational compilation of Jewish oral law, redacted c. AD 200; sets legal standards for testimony.",
+                                    "subtitle": "Foundational compilation of Jewish oral law, redacted c. AD 200; sets legal standards for testimony",
                                     "children": [
                                         {
                                             "name": "Rosh Hashanah 1:8–1:9",
@@ -635,7 +635,7 @@
                                 },
                                 {
                                     "name": "Jerusalem Talmud",
-                                    "subtitle": "Early rabbinic commentary on the Mishnah, compiled c. AD 350–400; reflects attitudes toward women’s roles.",
+                                    "subtitle": "Early rabbinic commentary on the Mishnah, compiled c. AD 350–400; reflects attitudes toward women’s roles",
                                     "children": [
                                         {
                                             "name": "Sotah 3:4 (19a)",
@@ -653,7 +653,7 @@
                                 },
                                 {
                                     "name": "Babylonian Talmud",
-                                    "subtitle": "Later rabbinic commentary on the Mishnah, compiled c. AD 450–550; illustrates gendered legal and social norms.",
+                                    "subtitle": "Later rabbinic commentary on the Mishnah, compiled c. AD 450–550; illustrates gendered legal and social norms",
                                     "children": [
                                         {
                                             "name": "Kiddushin 82b",
@@ -671,7 +671,7 @@
                                 },
                                 {
                                     "name": "Origen",
-                                    "subtitle": "Third-century Christian scholar and apologist; preserves Celsus’s critiques of Christian claims.",
+                                    "subtitle": "Third-century Christian scholar and apologist; preserves Celsus’s critiques of Christian claims",
                                     "children": [
                                         {
                                             "name": "Contra Celsum 2.59",
@@ -702,7 +702,7 @@
                                 },
                                 {
                                     "name": "Suetonius",
-                                    "subtitle": "Roman historian and biographer, early 2nd century; documents social/legal norms in the Roman Empire.",
+                                    "subtitle": "Roman historian and biographer, early 2nd century; documents social/legal norms in the Roman Empire",
                                     "children": [
                                         {
                                             "name": "Augustus 44",
@@ -744,7 +744,7 @@
                                     "subtitle": "Paul’s epistolary testimony and confirmation of apostolic resurrection witness",
                                     "children": [
                                         {
-                                            "name": "Galatians 1:18-19",
+                                            "name": "Galatians 1:18–19",
                                             "subtitle": "Paul Meets Peter and James",
                                             "date": "c. AD 48–50",
                                             "details": "Paul recalls that three years after his conversion, he went to Jerusalem and stayed with Peter (Cephas) for fifteen days, also meeting James, the Lord’s brother. This brief but historically significant remark shows that Paul personally encountered leading figures who were eyewitnesses of the risen Jesus. While Paul insists elsewhere that his gospel was received by revelation, his deliberate visit (Greek historeō, 'to inquire or investigate') indicates that he sought direct acquaintance with Peter’s testimony. In doing so, Paul implicitly authenticates that the resurrection witness of the apostles was consistent with his own proclamation.",
@@ -754,7 +754,7 @@
                                                 "Paul’s independent gospel proclamation aligns with the testimony of those who had seen the risen Christ firsthand."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:18-19",
+                                                "title": "Galatians 1:18–19",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A18-19&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -763,14 +763,14 @@
                                             "name": "Galatians 2:1–10",
                                             "subtitle": "Unity of the Apostolic Witness",
                                             "date": "c. AD 48–50",
-                                            "details": "Paul recounts a later visit to Jerusalem where he met with the 'pillars',James, Peter, and John,and presented the gospel he preached among the Gentiles. These leaders extended to him the 'right hand of fellowship,' confirming the authenticity of his mission. This episode highlights that the apostolic leaders who had been eyewitnesses recognized Paul’s message as consistent with their own proclamation of the risen Christ.",
+                                            "details": "Paul recounts a later visit to Jerusalem, where he met with the 'pillars'—James, Peter, and John—and presented the gospel he preached among the Gentiles. These leaders extended to him the 'right hand of fellowship,' confirming the authenticity of his mission. This episode highlights that the apostolic leaders, who had been eyewitnesses, recognized Paul’s message as consistent with their own proclamation of the risen Christ.",
                                             "whyItMatters": [
                                                 "Independent but unified proclamation: Paul’s gospel, received by revelation, was nonetheless confirmed by those who had seen the risen Jesus.",
                                                 "Apostolic agreement: The Jerusalem leaders affirmed Paul’s message, showing continuity and unity in the resurrection proclamation.",
                                                 "Shared mission: Their giving of the 'right hand of fellowship' demonstrates trust and cooperation rooted in the common resurrection witness."
                                             ],
                                             "source": {
-                                                "title": "Galatians 2:1-10",
+                                                "title": "Galatians 2:1–10",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+2%3A1-10&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -786,7 +786,7 @@
                                                 "Highlights divine initiative: Paul’s transformation from persecutor to preacher underscores the power of the resurrection message."
                                             ],
                                             "source": {
-                                                "title": "1 Corinthians 15:9-11",
+                                                "title": "1 Corinthians 15:9–11",
                                                 "url": "https://www.biblegateway.com/passage/?search=1%20Corinthians%2015%3A9%E2%80%9311&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -803,7 +803,7 @@
                                             "subtitle": "An early creed Paul received and passed on, summarizing eyewitness claims of the risen Jesus",
                                             "children": [
                                                 {
-                                                    "name": "1 Corinthians 15:3-7",
+                                                    "name": "1 Corinthians 15:3–7",
                                                     "subtitle": "An early creed Paul received and passed on, summarizing eyewitness claims of the risen Jesus",
                                                     "date": "c. AD 30s",
                                                     "details": "The Early Creed is an early resurrection creed cited by Paul in 1 Corinthians 15:3-7. It is believed to have been formulated in the AD 30s, predating the letter written around AD 55. This creed is an oral tradition designed for easy memorization and communal recitation, with a formulaic structure rooted in parallelism, repetition, and careful sequencing. It includes core elements of the gospel, stating that Christ died for sins, was buried, was raised on the third day, and appeared to various individuals and groups.",
@@ -813,7 +813,7 @@
                                                         "The transmission formula (\"received\" and \"delivered\") is similar to how Jewish rabbis passed on sacred tradition, and the use of the Aramaic name \"Cephas\" points to a Semitic style and Jewish-Christian origins in Jerusalem."
                                                     ],
                                                     "source": {
-                                                        "title": "1 Corinthians 15:3-7",
+                                                        "title": "1 Corinthians 15:3–7",
                                                         "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3%E2%80%937&version=ESV"
                                                     },
                                                     "kind": "evidence"
@@ -826,7 +826,7 @@
                                             "subtitle": "Sermon summaries in Acts may preserve the earliest resurrection preaching, distinct from Luke’s surrounding narrative",
                                             "children": [
                                                 {
-                                                    "name": "Acts 2:22-36",
+                                                    "name": "Acts 2:22–36",
                                                     "subtitle": "Peter’s Pentecost Sermon",
                                                     "date": "Event: c. AD 30; Composition: c. AD 60–80",
                                                     "details": "Peter proclaims Jesus’ resurrection as the fulfillment of Scripture and firsthand apostolic testimony, appealing to the crowd’s knowledge of Jesus’ miracles and crucifixion. He declares that “God raised him up,” citing Psalm 16 and stating, “this Jesus God raised up, and of that we all are witnesses.”",
@@ -836,7 +836,7 @@
                                                         "Claim of eyewitnesses: “We all are witnesses” shows collective apostolic affirmation."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 2:22-36",
+                                                        "title": "Acts 2:22–36",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts+2%3A22-36&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -875,7 +875,7 @@
                                                         "Fulfillment of Scripture: Peter cites Psalm 118:22, identifying Jesus as the rejected cornerstone."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 4:8-12, 33",
+                                                        "title": "Acts 4:8–12, 33",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts%204%3A8-12%2C%2033&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -894,7 +894,7 @@
                                                         "Repetition and consistency: The message is again that of resurrection and the guilt of the hearers."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 5:30-32",
+                                                        "title": "Acts 5:30–32",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts+5%3A30-32&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -913,7 +913,7 @@
                                                         "Focus on God’s initiative: The witnesses were “chosen by God.”"
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 10:39-41",
+                                                        "title": "Acts 10:39–41",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts+10%3A39-41&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -932,7 +932,7 @@
                                                         "Transmission of testimony: Highlights that the eyewitnesses now preach this message."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 13:26-37",
+                                                        "title": "Acts 13:26–37",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts+13%3A26-37&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -952,7 +952,7 @@
                                                         "Universal significance: Paul links the resurrection to a future judgment of all people, reinforcing its cosmic importance."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 17:2-3, 30-31",
+                                                        "title": "Acts 17:2–3, 30–31",
                                                         "url": "https://www.biblegateway.com/passage/?search=Acts+17%3A2-3%2C30-31&version=ESV"
                                                     },
                                                     "kind": "evidence",
@@ -977,7 +977,7 @@
                                             "children": [
                                                 {
                                                     "name": "Matthew",
-                                                    "subtitle": "Traditionally regarded as the author of the first Gospel; one of the twelve apostles.",
+                                                    "subtitle": "Traditionally regarded as the author of the first Gospel; one of the twelve apostles",
                                                     "children": [
                                                         {
                                                             "name": "Matthew 28:1–10",
@@ -990,7 +990,7 @@
                                                                 "Immediate worship highlights recognition of Jesus as the risen Lord."
                                                             ],
                                                             "source": {
-                                                                "title": "Matthew 28:1-10",
+                                                                "title": "Matthew 28:1–10",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A1-10&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1006,7 +1006,7 @@
                                                                 "Promise of ongoing presence ties the church’s mission to the living, active Lord."
                                                             ],
                                                             "source": {
-                                                                "title": "Matthew 28:16-20",
+                                                                "title": "Matthew 28:16–20",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A16-20&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1016,7 +1016,7 @@
                                                 },
                                                 {
                                                     "name": "Mark",
-                                                    "subtitle": "Traditionally identified as John Mark, companion of Peter; author of the earliest Gospel.",
+                                                    "subtitle": "Traditionally identified as John Mark, companion of Peter; author of the earliest Gospel",
                                                     "children": [
                                                         {
                                                             "name": "Mark 16:1–8",
@@ -1029,7 +1029,7 @@
                                                                 "The use of women as the first witnesses is significant because their testimony had little legal weight in the ancient world, making it an unlikely fabrication."
                                                             ],
                                                             "source": {
-                                                                "title": "Mark 16:1-8",
+                                                                "title": "Mark 16:1–8",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Mark+16%3A1-8&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1052,7 +1052,7 @@
                                                                 "Jesus interprets the Scriptures about himself, rooting the event in prophetic fulfillment."
                                                             ],
                                                             "source": {
-                                                                "title": "Luke 24:13-35",
+                                                                "title": "Luke 24:13–35",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A13-35&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1084,7 +1084,7 @@
                                                                 "Highlights the disciples’ transformation to worship and joy."
                                                             ],
                                                             "source": {
-                                                                "title": "Luke 24:50-53",
+                                                                "title": "Luke 24:50–53",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A50-53&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1100,7 +1100,7 @@
                                                                 "Lays the foundation for apostolic witness throughout Acts."
                                                             ],
                                                             "source": {
-                                                                "title": "Acts 1:1-3",
+                                                                "title": "Acts 1:1–3",
                                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+1%3A1-3&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1110,7 +1110,7 @@
                                                 },
                                                 {
                                                     "name": "John",
-                                                    "subtitle": "Traditionally the author of the fourth Gospel; one of the twelve apostles and close associate of Jesus.",
+                                                    "subtitle": "Traditionally the author of the fourth Gospel; one of the twelve apostles and close associate of Jesus",
                                                     "children": [
                                                         {
                                                             "name": "John 20:11–18",
@@ -1123,7 +1123,7 @@
                                                                 "Commissioning of Mary makes her the “apostle to the apostles.”"
                                                             ],
                                                             "source": {
-                                                                "title": "John 20:11-18",
+                                                                "title": "John 20:11–18",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+20%3A11-18&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1139,7 +1139,7 @@
                                                                 "“Peace be with you” and the sending mirror the Father’s mission for Jesus."
                                                             ],
                                                             "source": {
-                                                                "title": "John 20:19-23",
+                                                                "title": "John 20:19–23",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+20%3A19-23&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1155,7 +1155,7 @@
                                                                 "Shared meal emphasizes embodied, bodily presence—not a mere vision."
                                                             ],
                                                             "source": {
-                                                                "title": "John 21:1-14",
+                                                                "title": "John 21:1–14",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+21%3A1-14&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1171,7 +1171,7 @@
                                                                 "Love expressed through obedience links affection and action."
                                                             ],
                                                             "source": {
-                                                                "title": "John 21:15-19",
+                                                                "title": "John 21:15–19",
                                                                 "url": "https://www.biblegateway.com/passage/?search=John+21%3A15-19&version=ESV"
                                                             },
                                                             "kind": "evidence"
@@ -1187,7 +1187,7 @@
                                             "subtitle": "Early church leaders who preserved and transmitted the apostles' resurrection testimony",
                                             "children": [
                                                 {
-                                                    "name": "1 Clement 42:1-3",
+                                                    "name": "1 Clement 42:1–3",
                                                     "subtitle": "The Apostles Sent by the Risen Christ",
                                                     "date": "c. AD 95",
                                                     "details": "The author, traditionally identified as Clement of Rome, writing to the Corinthian church, describes a chain of authority beginning with Jesus: “The apostles received the gospel for us from the Lord Jesus Christ; Jesus the Christ was sent from God. So then Christ is from God, and the apostles are from Christ.” He goes on to state that they were fully convinced by Jesus' resurrection and empowered by the Holy Spirit.",
@@ -1214,7 +1214,7 @@
                                                         "Connects resurrection with endurance and eschatological hope."
                                                     ],
                                                     "source": {
-                                                        "title": "Polycarp to the Philippians 9:1-2",
+                                                        "title": "Polycarp to the Philippians 9:1–2",
                                                         "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html",
                                                         "highlightedUrl": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
                                                     },
@@ -1235,7 +1235,7 @@
                             "children": [
                                 {
                                     "name": "Luke",
-                                    "subtitle": "Physician, companion of Paul, and author of Luke-Acts; documents apostolic suffering and resurrection faith.",
+                                    "subtitle": "Physician, companion of Paul, and author of Luke-Acts; documents apostolic suffering and resurrection faith",
                                     "children": [
                                         {
                                             "name": "Acts 4:1–22",
@@ -1248,7 +1248,7 @@
                                                 "Both affirmed the same message of resurrection, showing a unity of witness"
                                             ],
                                             "source": {
-                                                "title": "Acts 4:1-22",
+                                                "title": "Acts 4:1–22",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+4%3A1-22&version=ESV"
                                             },
                                             "kind": "evidence",
@@ -1268,7 +1268,7 @@
                                                 "They persisted in teaching daily despite repeated threats"
                                             ],
                                             "source": {
-                                                "title": "Acts 5:17-42",
+                                                "title": "Acts 5:17–42",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+5%3A17-42&version=ESV"
                                             },
                                             "kind": "evidence",
@@ -1288,7 +1288,7 @@
                                                 "His prayer for his killers paralleled Jesus' own crucifixion words"
                                             ],
                                             "source": {
-                                                "title": "Acts 7:54-60",
+                                                "title": "Acts 7:54–60",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+7%3A54-60&version=ESV"
                                             },
                                             "kind": "evidence",
@@ -1308,7 +1308,7 @@
                                                 "Peter's imprisonment shows the ongoing danger to church leaders"
                                             ],
                                             "source": {
-                                                "title": "Acts 12:1-5",
+                                                "title": "Acts 12:1–5",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+12%3A1-5&version=ESV"
                                             },
                                             "kind": "evidence",
@@ -1322,7 +1322,7 @@
                                 },
                                 {
                                     "name": "Clement of Rome",
-                                    "subtitle": "Early bishop of Rome (c. AD 95–97); provides the earliest non-biblical account of Peter and Paul's martyrdom.",
+                                    "subtitle": "Early bishop of Rome (c. AD 95–97); provides the earliest non-biblical account of Peter and Paul's martyrdom",
                                     "children": [
                                         {
                                             "name": "1 Clement 5:2–7",
@@ -1346,7 +1346,7 @@
                                 },
                                 {
                                     "name": "Ignatius of Antioch",
-                                    "subtitle": "Bishop of Antioch (c. AD 107–110); martyred church leader who affirmed the bodily resurrection.",
+                                    "subtitle": "Bishop of Antioch (c. AD 107–110); martyred church leader who affirmed the bodily resurrection",
                                     "children": [
                                         {
                                             "name": "Ignatius to the Smyrnaeans 3:1–2 ",
@@ -1370,7 +1370,7 @@
                                 },
                                 {
                                     "name": "Polycarp",
-                                    "subtitle": "Bishop of Smyrna (c. AD 110–140), traditionally associated with the Apostle John; early witness to apostolic endurance and resurrection faith.",
+                                    "subtitle": "Bishop of Smyrna (c. AD 110–140), traditionally associated with the Apostle John; early witness to apostolic endurance and resurrection faith",
                                     "children": [
                                         {
                                             "name": "Polycarp to the Philippians 9:1–2",
@@ -1394,7 +1394,7 @@
                                 },
                                 {
                                     "name": "Tertullian",
-                                    "subtitle": "North African Christian apologist (late 2nd–early 3rd c.); used martyrdom as evidence for resurrection faith.",
+                                    "subtitle": "North African Christian apologist (late 2nd–early 3rd c.); used martyrdom as evidence for resurrection faith",
                                     "children": [
                                         {
                                             "name": "Scorpiace 15",
@@ -1418,7 +1418,7 @@
                                 },
                                 {
                                     "name": "Dionysius of Corinth",
-                                    "subtitle": "Bishop of Corinth (c. AD 170); attested to the unified martyrdom of Peter and Paul.",
+                                    "subtitle": "Bishop of Corinth (c. AD 170); attested to the unified martyrdom of Peter and Paul",
                                     "children": [
                                         {
                                             "name": "Ecclesiastical History, Book 2, Chapter 25",
@@ -1442,7 +1442,7 @@
                                 },
                                 {
                                     "name": "Origen",
-                                    "subtitle": "Alexandrian scholar and theologian (c. 185–254); cited apostolic suffering as proof of resurrection conviction.",
+                                    "subtitle": "Alexandrian scholar and theologian (c. 185–254); cited apostolic suffering as proof of resurrection conviction",
                                     "children": [
                                         {
                                             "name": "Ecclesiastical History, Book 3, Chapter 1",
@@ -1513,7 +1513,7 @@
                             "children": [
                                 {
                                     "name": "Gospels",
-                                    "subtitle": "Gospels note Jesus’ brothers were skeptics before the resurrection, implying a later change in belief.",
+                                    "subtitle": "Gospels note Jesus’ brothers were skeptics before the resurrection, implying a later change in belief",
                                     "children": [
                                         {
                                             "name": "Mark 3:21",
@@ -1552,7 +1552,7 @@
                                                 "This passage places James within a context of familial and communal rejection, which makes his later leadership role in the church more significant."
                                             ],
                                             "source": {
-                                                "title": "Mark 6:3-4",
+                                                "title": "Mark 6:3–4",
                                                 "url": "https://www.biblegateway.com/passage/?search=Mark+6%3A3-4&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1576,7 +1576,7 @@
                                 },
                                 {
                                     "name": "Early Creed",
-                                    "subtitle": "Early creed includes a specific post-resurrection appearance to James, Jesus’ once-skeptical brother.",
+                                    "subtitle": "Early creed includes a specific post-resurrection appearance to James, Jesus’ once-skeptical brother",
                                     "children": [
                                         {
                                             "name": "1 Corinthians 15:7",
@@ -1599,7 +1599,7 @@
                                 },
                                 {
                                     "name": "Paul & Acts",
-                                    "subtitle": "Acts and Paul highlight James’ leadership in the early church after the resurrection.",
+                                    "subtitle": "Acts and Paul highlight James’ leadership in the early church after the resurrection",
                                     "children": [
                                         {
                                             "name": "Acts 15:12–21",
@@ -1612,7 +1612,7 @@
                                                 "Scriptural discernment: By interpreting the inclusion of Gentiles in light of Old Testament prophecy, James demonstrates theological maturity and pastoral sensitivity."
                                             ],
                                             "source": {
-                                                "title": "Acts 15:12-21",
+                                                "title": "Acts 15:12–21",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+15%3A12-21&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1645,7 +1645,7 @@
                             "children": [
                                 {
                                     "name": "Josephus",
-                                    "subtitle": "Josephus records James’ martyrdom, confirming his leadership and death for the faith.",
+                                    "subtitle": "Josephus records James’ martyrdom, confirming his leadership and death for the faith",
                                     "children": [
                                         {
                                             "name": "Antiquities of the Jews, Book 20, Section 200",
@@ -1729,9 +1729,10 @@
                             "name": "Converted",
                             "subtitle": "Accounts of Paul’s transformation from persecutor to apostle after encountering the risen Jesus",
                             "children": [
-                                {
-                                    "name": "Paul's Letters",
-                                    "children": [
+                                        {
+                                            "name": "Paul's Letters",
+                                            "subtitle": "Paul's letters documenting his conversion and early testimony",
+                                            "children": [
                                         {
                                             "name": "1 Corinthians 15:9–10",
                                             "subtitle": "Paul’s Unworthiness and God’s Grace",
@@ -1743,7 +1744,7 @@
                                                 "Link to resurrection testimony: Reinforces that Paul saw himself as a direct witness to the risen Lord."
                                             ],
                                             "source": {
-                                                "title": "1 Corinthians 15:9-10",
+                                                "title": "1 Corinthians 15:9–10",
                                                 "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A9%E2%80%9310&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1759,7 +1760,7 @@
                                                 "Transformation as evidence: His shift from persecutor to preacher reinforces the sincerity and conviction behind his proclamation."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:13-16",
+                                                "title": "Galatians 1:13–16",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A13%E2%80%9316&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1775,7 +1776,7 @@
                                                 "Consistency with other letters: This aligns with Paul's other autobiographical reflections, reinforcing a coherent testimony rooted in a personal encounter with the risen Christ."
                                             ],
                                             "source": {
-                                                "title": "Philippians 3:6-7",
+                                                "title": "Philippians 3:6–7",
                                                 "url": "https://www.biblegateway.com/passage/?search=Philippians+3%3A6%E2%80%937&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1784,7 +1785,8 @@
                                     "kind": "collection"
                                 },
                                 {
-                                    "name": "Acts",
+                                    "name": "Luke",
+                                    "subtitle": "Traditionally attributed to Luke — a physician and companion of Paul — Acts narrates Paul’s conversion, defenses, and public testimony",
                                     "children": [
                                         {
                                             "name": "Acts 9",
@@ -1839,6 +1841,7 @@
                                 },
                                 {
                                     "name": "Oral Tradition",
+                                    "subtitle": "Early oral reports and community memories (non‑literary traditions) documenting Paul’s transformation and reputation across churches",
                                     "children": [
                                         {
                                             "name": "Galatians 1:22–23",
@@ -1851,7 +1854,7 @@
                                                 "Paul’s reversal from persecutor to preacher serves as compelling evidence for the sincerity of his testimony."
                                             ],
                                             "source": {
-                                                "title": "Galatians 1:22-23",
+                                                "title": "Galatians 1:22–23",
                                                 "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A22-23&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1881,7 +1884,7 @@
                                                 "Public, verifiable hardship: His sufferings were public and could be confirmed by others, reinforcing the credibility of his witness."
                                             ],
                                             "source": {
-                                                "title": "2 Corinthians 11:23-28",
+                                                "title": "2 Corinthians 11:23–28",
                                                 "url": "https://www.biblegateway.com/passage/?search=2+Corinthians+11%3A23-28&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1897,7 +1900,7 @@
                                                 "Ministry shaped by conviction: He chooses to remain alive for the sake of others, motivated by resurrection hope."
                                             ],
                                             "source": {
-                                                "title": "Philippians 1:21-23",
+                                                "title": "Philippians 1:21–23",
                                                 "url": "https://www.biblegateway.com/passage/?search=Philippians+1%3A21-23&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1936,7 +1939,7 @@
                                                 "Resurrection conviction: Their courage indicates confidence grounded in a real encounter with the risen Christ."
                                             ],
                                             "source": {
-                                                "title": "Acts 16:19-24",
+                                                "title": "Acts 16:19–24",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+16%3A19-24&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1968,7 +1971,7 @@
                                                 "Enduring resolve: Continues preaching despite sustained opposition."
                                             ],
                                             "source": {
-                                                "title": "Acts 17:13-15",
+                                                "title": "Acts 17:13–15",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+17%3A13-15&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -1984,7 +1987,7 @@
                                                 "Unshaken boldness: Persisted despite facing formal accusations."
                                             ],
                                             "source": {
-                                                "title": "Acts 18:12-13",
+                                                "title": "Acts 18:12–13",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+18%3A12-13&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -2000,7 +2003,7 @@
                                                 "Conviction under fire: Faces a violent mob without recanting his testimony."
                                             ],
                                             "source": {
-                                                "title": "Acts 21:27-36",
+                                                "title": "Acts 21:27–36",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+21%3A27-36&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -2016,7 +2019,7 @@
                                                 "Unwavering mission: Presses on despite direct threats to his life."
                                             ],
                                             "source": {
-                                                "title": "Acts 23:12-35",
+                                                "title": "Acts 23:12–35",
                                                 "url": "https://www.biblegateway.com/passage/?search=Acts+23%3A12-35&version=ESV"
                                             },
                                             "kind": "evidence"
@@ -2026,7 +2029,7 @@
                                 },
                                 {
                                     "name": "Clement of Rome",
-                                    "subtitle": "Early bishop of Rome (c. AD 95–97); author of the letter '1 Clement', a late-1st-century epistle that recalls Peter and Paul's martyrdom and affirms apostolic witness.",
+                                    "subtitle": "Early bishop of Rome (c. AD 95–97); author of the letter '1 Clement', a late-1st-century epistle that recalls Peter and Paul's martyrdom and affirms apostolic witness",
                                     "children": [
                                         {
                                             "name": "1 Clement, Chapter 5, Verses 2–7",
@@ -2074,7 +2077,7 @@
                                 },
                                 {
                                     "name": "Tertullian",
-                                    "subtitle": "North African Christian apologist (c. AD 155–240); prolific author (e.g., Apologeticum, Scorpiace) who appealed to apostolic martyrdom and public records as evidence for the resurrection and Christian truth.",
+                                    "subtitle": "North African Christian apologist (c. AD 155–240); prolific author (e.g., Apologeticum, Scorpiace) who appealed to apostolic martyrdom and public records as evidence for the resurrection and Christian truth",
                                     "children": [
                                         {
                                             "name": "Scorpiace, Chapter 15",
@@ -2122,7 +2125,7 @@
                                 },
                                 {
                                     "name": "Origen",
-                                    "subtitle": "Alexandrian scholar and theologian (c. AD 185–254); prolific commentator and exegete who affirmed apostolic suffering and the tradition of Peter and Paul's martyrdom.",
+                                    "subtitle": "Alexandrian scholar and theologian (c. AD 185–254); prolific commentator and exegete who affirmed apostolic suffering and the tradition of Peter and Paul's martyrdom",
                                     "children": [
                                         {
                                             "name": "Ecclesiastical History, Book 3, Chapter 1",
