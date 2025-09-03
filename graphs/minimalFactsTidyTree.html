@@ -248,6 +248,29 @@
             fill: #005fa3;
             text-decoration: none;
         }
+        /* ESV credit footnote (small, unobtrusive, respects dark mode) */
+        .esv-credit {
+            position: fixed;
+            left: 12px;
+            bottom: 8px;
+            z-index: 2000;
+            font-size: 12px;
+            line-height: 1.2;
+            padding: 6px 8px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.92);
+            color: #333;
+            border: 1px solid #e6e6e6;
+            opacity: 0.95;
+            pointer-events: none;
+            max-width: calc(100vw - 40px);
+        }
+
+        body.dark-mode .esv-credit {
+            background: rgba(24,26,32,0.7);
+            color: var(--text-secondary-dark);
+            border: 1px solid rgba(255,255,255,0.04);
+        }
     </style>
 </head>
 
@@ -806,6 +829,10 @@
             document.body.classList.toggle('dark-mode', darkModeToggle.checked);
         });
     </script>
+
+    <!-- ESV credit: Crossway recommended short credit for using ESV text -->
+    <div class="esv-credit" aria-hidden="true">Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®), copyright © 2001, 2007, 2011, 2016 by Crossway. Used by permission. All rights reserved.</div>
+
 </body>
 
 </html>
