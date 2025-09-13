@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Historical Hypotheses — Radar & Heatmap (JSON loader)</title>
+<style>
+:root{ --bg:#ffffff; --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb; --accent:#334155; --primary:#0b5fff; --primary-600:#084fd6; --panel-bg:#ffffff; --modal-shadow:0 20px 60px rgba(0,0,0,.2); --cell-mid:#9ca3af; --cell-high:#374151; --control-accent:#111 }
+html,body{height:100%}
+body{margin:0; font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif; color:var(--ink); background:var(--bg)}
+#topbar{position:sticky; top:0; z-index:10; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 14px; display:flex; gap:16px; align-items:center; flex-wrap:wrap}
+#topbar h1{font-size:16px; margin:0 8px 0 0; font-weight:600; color:var(--accent)}
+#loaders{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+/* base button */
+button, .btn{border:1px solid var(--line); background:var(--panel-bg); padding:6px 10px; border-radius:8px; cursor:pointer; font-size:14px}
+input[type="text"]{border:1px solid var(--line); border-radius:8px; padding:6px 10px; min-width:280px}
+#hypotheses{display:flex; gap:10px; flex-wrap:wrap; margin-left:auto}
+.pill{display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); padding:6px 10px; border-radius:999px}
+.pill .sw{width:12px; height:12px; border-radius:3px}
+.pill input{accent-color:var(--control-accent)}
+.viewtabs{display:flex; gap:6px}
+.viewtabs button.active{background:var(--control-accent); color:var(--panel-bg)}
+#main{display:grid; grid-template-rows:auto 1fr auto; gap:10px}
+#chart{width:100%; height:72vh}
+#chart svg{display:block; width:100%; height:100%}
+.help{margin-left:8px}
+.legend{display:none}
+.tooltip{position:fixed; pointer-events:auto; z-index:9999; background:var(--panel-bg); border:1px solid var(--line); padding:8px 10px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,.12); max-width:360px; font-size:12px}
+.tooltip .q{margin-top:6px; font-style:italic}
+.tooltip .src{color:var(--muted)}
+.modalOverlay{position:fixed; inset:0; background:rgba(0,0,0,.35); display:none; align-items:center; justify-content:center; z-index:9998}
+.modal{background:var(--panel-bg); border:1px solid var(--line); border-radius:12px; padding:16px 18px; width:min(720px, calc(100% - 40px)); max-height:80vh; overflow:auto; box-shadow:var(--modal-shadow)}
+.modalHeader{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px}
+.modalHeader h2{font-size:16px; margin:0}
+.modalHeader button{border:1px solid var(--line); background:var(--panel-bg); border-radius:8px; padding:4px 8px; cursor:pointer}
+.modalBody p{margin:8px 0}
+#drop{border:1px dashed var(--line); border-radius:10px; padding:8px 10px}
+.small{font-size:12px; color:var(--muted)}
+
+/* Prominent action styles for Help / Facts buttons */
+.btn.primary{background:var(--primary); border-color:var(--primary); color:#fff; padding:10px 14px; border-radius:12px; font-weight:600; box-shadow:0 8px 20px rgba(11,95,255,0.14); transition:transform .12s ease, box-shadow .12s ease, background-color .12s ease}
+.btn.primary:hover{background:var(--primary-600); transform:translateY(-1px); box-shadow:0 12px 30px rgba(11,79,255,0.18)}
+.btn.primary:active{transform:translateY(0); box-shadow:0 6px 14px rgba(11,79,255,0.12)}
+
+/* Help button is positioned right but styled as a clear primary-outline */
+#helpBtn{padding:8px 12px; border-radius:12px; font-weight:600; font-size:14px; color:var(--primary); border:2px solid var(--primary); background:transparent; box-shadow:none; transition:background .12s ease, color .12s ease, transform .12s ease}
+#themeToggle{color:var(--muted)}
+#helpBtn:hover{background:var(--primary); color:#fff; transform:translateY(-1px); box-shadow:0 10px 28px rgba(11,95,255,0.10)}
+#helpBtn:active{transform:translateY(0)}
+#helpBtn:focus, .btn.primary:focus{outline:3px solid rgba(11,95,255,0.16); outline-offset:2px}
+
+/* Slightly larger click targets for accessibility */
+button, .btn, #helpBtn{min-height:40px}
+
+/* smooth color transitions when switching themes */
+body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-color .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease; }
+
+/* Theme toggle icon visibility */
+#icon-moon{display:inline-block; vertical-align:middle}
+#icon-sun{display:none; vertical-align:middle}
+:root[data-theme="dark"] #icon-moon{display:none}
+:root[data-theme="dark"] #icon-sun{display:inline-block}
+
+/* Dark-theme overrides */
+:root[data-theme="dark"]{
+  --bg:#071022;
+  --ink:#e6eef8;
+  /* brighter muted color so labels are legible on dark backgrounds */
+  --muted:#cbd6e1;
+  /* stronger grid/axis stroke for contrast in dark mode */
+  --line:rgba(255,255,255,0.14);
+  --accent:#93c5fd;
+  --primary:#3b82f6;
+  --primary-600:#2563eb;
+  --panel-bg:#0f1724;
+  --modal-shadow:0 20px 60px rgba(0,0,0,.6);
+  --cell-mid:#7b8794;
+  --cell-high:#a3b0c0;
+  --control-accent:#cbd6e1;
+}
+
+/* Make links inside floating UI readable; use primary color by default and a lighter tint in dark mode */
+.tooltip a, .modal a { color: var(--primary); text-decoration: underline; }
+:root[data-theme="dark"] .tooltip a, :root[data-theme="dark"] .modal a { color: #9ec6ff; }
+
+/* Header/title color adjustments for dark mode:
+  - Keep the non-link title text high-contrast (var(--ink)).
+  - Make the linked part of the title use the lighter tint used for tooltip links so the link stands out. */
+:root[data-theme="dark"] #topbar h1 { color: var(--ink); }
+:root[data-theme="dark"] #topbar h1 a, :root[data-theme="dark"] #topbar h1 a:visited { color: #9ec6ff; text-decoration: underline; }
+
+/* Make chart axis labels and grid lines use the theme variables so they remain visible in dark mode.
+  IMPORTANT: avoid overriding vertex marker strokes (they live inside the .vertices group). */
+:root[data-theme="dark"] #chart svg text { fill: var(--muted); font-size:12px; }
+:root[data-theme="dark"] #chart svg line { stroke: var(--line); }
+/* Target only circles that are not inside the .vertices group (grid/axis dots) */
+:root[data-theme="dark"] #chart svg g:not(.vertices) circle { stroke: var(--line); }
+:root[data-theme="dark"] #chart svg path { stroke-opacity: 0.9; }
+
+</style>
+</head>
+<body>
+  <div id="topbar">
+  <h1>Compare Historical Hypotheses (<a href="https://www.amazon.com/Justifying-Historical-Descriptions-Cambridge-Philosophy/dp/0521318300" target="_blank" rel="noopener">C. Behan McCullagh</a>)</h1>
+  <button id="factsBtn" class="btn primary" aria-expanded="false" aria-controls="factsOverlay">Facts</button>
+  <button id="helpBtn" role="button" aria-haspopup="dialog" aria-controls="helpOverlay" class="help">? Help</button>
+  <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle dark mode" style="margin-left:8px">
+    <span id="icon-moon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></span>
+    <span id="icon-sun" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+  </button>
+  <div id="loaders">
+  </div>
+    <div id="hypotheses"></div>
+  </div>
+
+  <div id="main">
+    <div id="chart" aria-live="polite">
+      <div id="loader" class="small">Loading data from <code>data/resurrection-data.json</code>…</div>
+    </div>
+    <!-- Facts modal overlay (opened by Facts button) -->
+    <div id="factsOverlay" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="factsTitle" style="display:none">
+      <div class="modal">
+        <div class="modalHeader">
+          <h2 id="factsTitle">Key facts and supporting reasons</h2>
+          <button id="factsClose" aria-label="Close facts">×</button>
+        </div>
+        <div class="modalBody">
+          <p><strong>Source</strong>: <a href="https://www.reasonablefaith.org/" target="_blank" rel="noopener">reasonablefaith.org</a></p>
+
+          <h4>Burial of Jesus by Joseph of Arimathea</h4>
+          <p>After the crucifixion, Jesus was buried in a tomb by Joseph of Arimathea.</p>
+          <ul>
+            <li>Paul’s early tradition (1 Corinthians 15:3-5) mentions that Jesus “was buried.”</li>
+            <li>The burial account is part of the early source material used by Mark.</li>
+            <li>Joseph of Arimathea was on the Jewish council that condemned Jesus, so inventing him as someone who gives Jesus a proper burial would be unlikely.</li>
+            <li>There is no competing burial story.</li>
+          </ul>
+
+          <h4>The Empty Tomb</h4>
+          <p>On the Sunday following the Crucifixion, the tomb of Jesus was found empty by a group of women followers.</p>
+          <ul>
+            <li>The empty tomb story is part of the old passion tradition in Mark.</li>
+            <li>Paul’s tradition implies a vacant tomb (buried then raised).</li>
+            <li>The story is relatively simple and lacks legendary embellishment compared to apocryphal stories.</li>
+            <li>Women as the discoverers is significant, because women’s testimony was less valued in that culture — a detail harder to invent.</li>
+            <li>Early opponents of Christianity admitted the tomb was empty and claimed disciples stole the body.</li>
+          </ul>
+
+          <h4>Post-Mortem Appearances</h4>
+          <p>On multiple occasions, different individuals and groups experienced appearances of Jesus alive after his death.</p>
+          <ul>
+            <li>Paul’s list of witnesses in 1 Corinthians 15 mentions appearances to Peter, the Twelve, 500 brethren, James, etc.</li>
+            <li>Gospel tradition gives multiple, independent attestations of appearances.</li>
+            <li>The transformation of people who had been skeptical (e.g. Jesus’ family—James) after having seen him.</li>
+          </ul>
+
+          <h4>The Origin of the Disciples’ Belief in the Resurrection</h4>
+          <p>The original disciples came to believe that Jesus rose from the dead, even though they had strong reasons to the contrary.</p>
+          <ul>
+            <li>Their leader was dead; Jewish expectations did not include a suffering Messiah who dies.</li>
+            <li>The crucifixion made them look like they were following a heretic.</li>
+            <li>Jewish belief in resurrection was of a future general resurrection, not an individual resurrection to glory before the end of the world.</li>
+          </ul>
+          <p>Yet, despite these strong obstacles, they were willing to suffer (and in many cases die) for their belief.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Modal -->
+  <div id="helpOverlay" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="modal">
+      <div class="modalHeader">
+        <h2 id="helpTitle">How to read this chart</h2>
+        <button id="helpClose" aria-label="Close help">×</button>
+      </div>
+      <div class="modalBody">
+  <p><strong>Purpose</strong><br>Compare hypotheses using C. Behan McCullagh’s criteria as <em>ordinal bands</em> (Low · Medium · High). Scores here are shown relative to a set of reference assessments used by the author for orientation — specifically, assessments published by William Lane Craig, a contemporary philosopher and scholar whose work addresses historical methods and early Christian history. See <a href="https://www.amazon.com/Justifying-Historical-Descriptions-Cambridge-Philosophy/dp/0521318300" target="_blank" rel="noopener">McCullagh, Justifying Historical Descriptions (1984)</a> for the original formulation of the seven conditions for the best explanation.</p>
+        <p><strong>Rings & levels</strong><br>The three rings mark midpoints of bands: Low (0.25), Medium (0.50), High (0.75). Scores snap to these bands.</p>
+        <p><strong>Axes</strong> (each shows its anchors): 1. Derivation; 2. Scope; 3. Power; 4. Plausibility; 5. Fewer assumptions; 6. Fewer conflicts; 7. Overall vs. rivals.</p>
+        <p><strong>Colors</strong><br>Colors distinguish hypotheses (not values). Heatmap uses grayscale fill with colored borders.</p>
+  <p><strong>Tooltips</strong><br>Hover a dot (vertex) → Level + short note + source quote w/ link. Click to pin; Esc/outside click closes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tooltip -->
+  <div id="tt" class="tooltip" style="display:none"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+  let Data = null; // loaded JSON
+  const state = {
+    view:'radar',
+    selected:new Set(),
+    showQuotes:true,
+    applyWeights:false,
+    showAxisTicks:true,
+    pinned:null
+  };
+
+  // ---------- UI: loading
+  const loader = document.getElementById('loader');
+  // drag/drop removed; page will attempt to auto-load `data/resurrection-data.json` on load
+
+  function loadFromText(txt){
+    try{
+      const json = JSON.parse(txt);
+      validate(json);
+      initialize(json);
+    }catch(err){ alert('Invalid JSON: '+err.message); }
+  }
+
+  function validate(j){
+    if(!j.criteria || !Array.isArray(j.criteria)) throw new Error('Missing criteria[]');
+    if(!j.hypotheses || !Array.isArray(j.hypotheses)) throw new Error('Missing hypotheses[]');
+    j.criteria.forEach(c=>{ if(!c.id||!c.label||!c.short||!c.anchors) throw new Error('Each criterion needs id,label,short,anchors'); });
+  }
+
+  // ---------- helpers
+  const byId = arr=>Object.fromEntries(arr.map(d=>[d.id,d]));
+  const clamp01 = x=> Math.max(0, Math.min(1, x));
+  const avg = a=> d3.mean(a);
+  const ordinalLabel = (crit,val,Criteria)=>{ const a=Criteria[crit].anchors; if(val<1/3) return a[0]; if(val<2/3) return a[1]; return a[2]; };
+  function quantize(v){ if(v<1/3) return 0.25; if(v<2/3) return 0.5; return 0.75; }
+
+  // ---------- tooltip plumbing
+  const tt = d3.select('#tt'); let hideTimer=null;
+  function showTTAt(html, svgEl, sx, sy, dy=-10){
+    clearTimeout(hideTimer);
+    const r = svgEl.getBoundingClientRect();
+    tt.html(html).style('left', (r.left+sx)+'px').style('top', (r.top+sy+dy)+'px').style('display','block');
+  }
+  function scheduleHide(delay=200){ clearTimeout(hideTimer); hideTimer=setTimeout(()=>{ if(!state.pinned) tt.style('display','none'); }, delay); }
+  function hideTT(){ tt.style('display','none'); }
+  tt.on('mouseenter', ()=> clearTimeout(hideTimer)).on('mouseleave', ()=> scheduleHide());
+
+  // ---------- render UI
+  function initialize(json){
+    Data = json;
+  if(typeof loader !== 'undefined' && loader) loader.style.display = 'none';
+    state.selected = new Set(Data.hypotheses.map(h=>h.id));
+    state.weights = {...(Data.weights||{})};
+    renderControls();
+    render();
+  }
+
+  function renderControls(){
+    const wrap = d3.select('#hypotheses');
+    wrap.selectAll('*').remove();
+    const C = byId(Data.criteria), Hy = byId(Data.hypotheses);
+    const pill = wrap.selectAll('.pill').data(Data.hypotheses).join('label').attr('class','pill');
+    pill.append('span').attr('class','sw').style('background', d=>d.color);
+    pill.append('input').attr('type','checkbox').attr('checked', true)
+      .on('change', (e,d)=>{ e.target.checked? state.selected.add(d.id) : state.selected.delete(d.id); render(); });
+    pill.append('span').attr('class','txt').text(d=>{
+      const rawAvg = avg(Object.keys(C).map(k=>Hy[d.id].scores[k]));
+      const lvl = rawAvg < 0.4 ? 'Low' : (rawAvg < 0.7 ? 'Medium' : 'High');
+      return `${d.label} — Overall: ${lvl}`;
+    });
+
+    // only bind view switching to buttons that declare a data-view (help button is not a view)
+    d3.selectAll('.viewtabs button[data-view]').on('click', (e)=>{
+      d3.selectAll('.viewtabs button[data-view]').classed('active', false).attr('aria-selected', false);
+      d3.select(e.currentTarget).classed('active', true).attr('aria-selected', true);
+      state.view = e.currentTarget.dataset.view; render();
+    });
+
+    d3.select('#helpBtn').on('click', ()=>{ d3.select('#helpOverlay').style('display','flex'); d3.select('#helpClose').node().focus();});
+    d3.select('#helpClose').on('click', ()=> d3.select('#helpOverlay').style('display','none'));
+    d3.select('#helpOverlay').on('click', function(e){ if(e.target===this) d3.select('#helpOverlay').style('display','none'); });
+  d3.select('#factsBtn').on('click', ()=>{ d3.select('#factsOverlay').style('display','flex'); d3.select('#factsClose').node().focus(); d3.select('#factsBtn').attr('aria-expanded', 'true'); });
+  d3.select('#factsClose').on('click', ()=> d3.select('#factsOverlay').style('display','none'));
+  d3.select('#factsOverlay').on('click', function(e){ if(e.target===this) d3.select('#factsOverlay').style('display','none'); });
+
+  // Consolidated Escape handling: close overlays and tooltips
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ state.pinned=null; hideTT(); d3.select('#helpOverlay').style('display','none'); d3.select('#factsOverlay').style('display','none'); d3.select('#factsBtn').attr('aria-expanded','false'); } });
+    document.addEventListener('click', (e)=>{ const node=tt.node(); if(node && !node.contains(e.target)){ if(state.pinned){ state.pinned=null; hideTT(); } } });
+  }
+
+  // Theme handling: toggle and persist theme in localStorage
+  const themeKey = 'pv_theme';
+  function applyTheme(t){ if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); else document.documentElement.removeAttribute('data-theme'); }
+  function initTheme(){ const stored = localStorage.getItem(themeKey); if(stored){ applyTheme(stored); d3.select('#themeToggle').attr('aria-pressed', stored==='dark'?'true':'false'); } else {
+      // respect prefers-color-scheme as default
+      const prefers = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; applyTheme(prefers); d3.select('#themeToggle').attr('aria-pressed', prefers==='dark'?'true':'false'); }
+    d3.select('#themeToggle').on('click', ()=>{ const cur = document.documentElement.getAttribute('data-theme')==='dark' ? 'dark' : 'light'; const next = cur==='dark' ? 'light' : 'dark'; applyTheme(next); localStorage.setItem(themeKey, next); d3.select('#themeToggle').attr('aria-pressed', next==='dark'?'true':'false'); });
+  }
+  // initialize theme immediately so colors are correct before UI paints
+  try{ initTheme(); }catch(e){/* ignore */}
+
+  function quoteHTML(Hy, hypId, crit){
+    if(state.showQuotes!==true) return '';
+    const a = (Hy[hypId].quotes && Hy[hypId].quotes[crit]) || null;
+    const q = a && a[0];
+    if(!q) return '';
+    const safe = (q.t||'').replace(/\"/g,'&quot;');
+    const srcHTML = q.url ? `<a href='${q.url}' target='_blank' rel='noopener'>${q.src||''}</a>` : (q.src||'');
+    return `<div class='q'>&ldquo;${safe}&rdquo;</div><div class='src'>— ${srcHTML}</div>`;
+  }
+
+  function render(){
+    const el = document.getElementById('chart'); d3.select(el).selectAll('*').remove();
+    const C = byId(Data.criteria), Hy = byId(Data.hypotheses);
+    if(state.view==='radar') renderRadar(el, C, Hy); else renderHeatmap(el, C, Hy);
+  }
+
+  // ---------- Radar
+  function renderRadar(container, C, Hy){
+    const pad=36, w=container.clientWidth, h=container.clientHeight, r=Math.min(w,h)/2 - pad;
+    const svg=d3.select(container).append('svg');
+    const g=svg.append('g').attr('transform',`translate(${w/2},${h/2})`);
+    const axes=Data.criteria.map((d,i)=>{ const ang=(Math.PI*2*i)/Data.criteria.length - Math.PI/2; return {...d, angle:ang, x:Math.cos(ang), y:Math.sin(ang)}; });
+    const rScale=d3.scaleLinear().domain([0,1]).range([0,r]);
+
+    // grid + axes (no pointer capture)
+  const grid=g.append('g').style('pointer-events','none');
+  grid.selectAll('circle').data([0.25,0.5,0.75]).join('circle').attr('r',d=>rScale(d)).attr('fill','none').style('stroke','var(--line)');
+    // level labels along each axis using the criterion anchors (Low/Medium/High)
+    const levels = [0.25, 0.5, 0.75];
+    const levelLabels = axes.flatMap(a => levels.map((lv, i) => ({axis: a, lv, i})));
+    const labelOffset = 12; // pixels inward from the ring intersection
+    grid.selectAll('.level-label').data(levelLabels).join('text')
+      .attr('class','level-label')
+      .attr('x', d=> d.axis.x * (rScale(d.lv) - labelOffset))
+      .attr('y', d=> d.axis.y * (rScale(d.lv) - labelOffset))
+      .attr('font-size', 10)
+      .style('fill', 'var(--muted)')
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'central')
+      .text(d=> (d.axis.anchors && d.axis.anchors[d.i]) ? d.axis.anchors[d.i] : '');
+  const ax=g.append('g').selectAll('g').data(axes).join('g').style('pointer-events','none');
+  ax.append('line').attr('x1',0).attr('y1',0).attr('x2',d=>d.x*r).attr('y2',d=>d.y*r).style('stroke','var(--line)');
+    ax.append('text').attr('x',d=>d.x*(r+14)).attr('y',d=>d.y*(r+14))
+      .attr('text-anchor',d=> Math.abs(d.x)<0.3 ? 'middle' : (d.x>0?'start':'end'))
+      .attr('dominant-baseline','central').attr('font-size',12)
+      .text(d=>d.short);
+
+    const sel = Data.hypotheses.filter(h=>state.selected.has(h.id));
+    const pointsFor = (h)=> axes.map(a=>{ const vv=quantize(Hy[h.id].scores[a.id]); const rr=rScale(vv); return [a.x*rr, a.y*rr]; });
+
+    // polygons (no tooltip)
+    g.append('g').selectAll('path').data(sel, d=>d.id).join('path')
+      .attr('d', d=> d3.line().curve(d3.curveLinearClosed)(pointsFor(d)))
+      .attr('fill', d=> d3.color(d.color).copy({opacity:0.15}))
+      .attr('stroke', d=> d.color).attr('stroke-width',2);
+
+    // axis-end info dots
+    const helpG=g.append('g');
+    helpG.selectAll('circle').data(axes).join('circle')
+      .attr('cx', d=>d.x*r).attr('cy', d=>d.y*r).attr('r',5)
+      .style('fill','var(--panel-bg)').style('stroke','var(--muted)').attr('stroke-width',2)
+      .on('mouseenter mousemove', (e,d)=>{
+        const html = `<div><strong>${d.label}</strong></div>`+
+          `<div style='color:var(--muted)'>${d.desc||''}</div>`+
+          `<div style='margin-top:4px'>Levels: <strong>${d.anchors.join(' • ')}</strong></div>`;
+        const svgEl = svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect();
+        showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
+      }).on('mouseleave', ()=> scheduleHide())
+  .on('click', (e,d)=>{ e.stopPropagation(); state.pinned={key:'axis|'+d.id}; const svgEl=svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect(); showTTAt(`<div><strong>${d.label}</strong></div><div style='color:var(--muted)'>${d.desc||''}</div><div style='margin-top:4px'>Levels: <strong>${d.anchors.join(' • ')}</strong></div>`, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10); });
+
+    // vertex dots
+    const vertexData = sel.flatMap(hh => axes.map(a=>{ const raw=Hy[hh.id].scores[a.id]; const vv=quantize(raw); const rr=rScale(vv); return {h:hh, c:a, raw, x:a.x*rr, y:a.y*rr}; }));
+    g.append('g').attr('class','vertices').selectAll('circle').data(vertexData).join('circle')
+      .attr('cx',d=>d.x).attr('cy',d=>d.y).attr('r',6)
+      .style('fill','var(--panel-bg)')
+      .style('stroke', d=>d.h.color)
+      .style('stroke-width', 2)
+      .style('stroke-opacity', 1)
+      .on('mouseenter mousemove', (e,d)=>{
+        const level=ordinalLabel(d.c.id, d.raw, byId(Data.criteria));
+        const note=(byId(Data.hypotheses)[d.h.id].notes||{})[d.c.id]||'';
+        const qhtml=quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
+  const html=`<div><strong>${d.h.label}</strong></div><div>${d.c.label}</div><div>Level: <strong>${level}</strong></div>`+(note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'')+qhtml;
+        const svgEl=svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect();
+        showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
+      })
+      .on('mouseleave', ()=> scheduleHide())
+  .on('click', (e,d)=>{ e.stopPropagation(); const svgEl=svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect(); state.pinned={key:d.h.id+'|'+d.c.id}; const level=ordinalLabel(d.c.id, d.raw, byId(Data.criteria)); const note=(byId(Data.hypotheses)[d.h.id].notes||{})[d.c.id]||''; const qhtml=quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id); const html=`<div><strong>${d.h.label}</strong></div><div>${d.c.label}</div><div>Level: <strong>${level}</strong></div>`+(note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'')+qhtml; showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10); });
+  }
+
+  // ---------- Heatmap
+  function renderHeatmap(container, C, Hy){
+    const pad={t:30,r:10,b:30,l:180}; const w=container.clientWidth, h=container.clientHeight; const svg=d3.select(container).append('svg');
+    const hySel=Data.hypotheses.filter(h=>state.selected.has(h.id));
+    const x=d3.scaleBand().domain(hySel.map(d=>d.id)).range([pad.l,w-pad.r]).padding(0.08);
+    const y=d3.scaleBand().domain(Data.criteria.map(d=>d.id)).range([pad.t,h-pad.b]).padding(0.08);
+  const cellFill=v=> v<1/3?'var(--line)':(v<2/3?'var(--cell-mid)':'var(--cell-high)');
+
+    svg.append('g').selectAll('text').data(Data.criteria).join('text')
+      .attr('x', pad.l-8).attr('y', d=> y(d.id)+y.bandwidth()/2)
+      .attr('text-anchor','end').attr('dominant-baseline','middle').style('fill','var(--muted)').text(d=>d.short).append('title').text(d=>d.anchors.join(' / '));
+    svg.append('g').selectAll('text').data(hySel).join('text')
+      .attr('x', d=> x(d.id)+x.bandwidth()/2).attr('y', pad.t-10)
+      .attr('text-anchor','middle').attr('fill', d=>d.color).text(d=>d.label);
+
+    svg.append('g').selectAll('rect').data(Data.criteria.flatMap(c=>hySel.map(h=>({c,h}))))
+      .join('rect').attr('x', d=>x(d.h.id)).attr('y', d=>y(d.c.id)).attr('width', x.bandwidth()).attr('height', y.bandwidth()).attr('rx',4)
+      .attr('fill', d=> cellFill(Hy[d.h.id].scores[d.c.id])).attr('stroke', d=>Hy[d.h.id].color)
+      .on('mousemove', (e,d)=>{
+        const raw=Hy[d.h.id].scores[d.c.id]; const level=ordinalLabel(d.c.id, raw, C); const note=(Hy[d.h.id].notes||{})[d.c.id]||''; const qhtml=quoteHTML(Hy, d.h.id, d.c.id);
+  const html=`<div style='font-weight:600'>${d.h.label}</div><div>${C[d.c.id].label}</div><div>Level: <strong>${level}</strong></div>`+(note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'')+qhtml;
+        tt.html(html).style('left', (e.clientX+12)+'px').style('top', (e.clientY-12)+'px').style('display','block');
+      })
+      .on('mouseleave', ()=> scheduleHide());
+  }
+
+  // try to auto-load the local data file; fall back to a brief instruction if fetch fails
+  (async function(){
+    try{
+      const resp = await fetch('data/resurrection-data.json');
+      if(!resp.ok) throw new Error(resp.status + ' ' + resp.statusText);
+      const txt = await resp.text();
+      loadFromText(txt);
+  if(loader) loader.style.display = 'none';
+    }catch(err){
+      const exampleHint = document.createElement('div');
+      exampleHint.className='small';
+      exampleHint.style.padding='10px 14px';
+      exampleHint.innerHTML = 'Failed to load <code>data/resurrection-data.json</code>. Use <b>Load JSON file</b> or paste a URL into the input.';
+      document.getElementById('main').prepend(exampleHint);
+      if(loader) loader.style.display = 'none';
+      console.warn('Auto-load failed:', err);
+    }
+  })();
+
+  // Recenter / re-render the chart when the window is resized (debounced)
+  let _resizeTimer = null;
+  window.addEventListener('resize', ()=>{
+    clearTimeout(_resizeTimer);
+    _resizeTimer = setTimeout(()=>{ if(Data) render(); }, 150);
+  });
+  </script>
+</body>
+</html>
