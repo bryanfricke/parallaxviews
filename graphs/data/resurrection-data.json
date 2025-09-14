@@ -2,8 +2,8 @@
   "criteria": [
     {
       "id": "derivation",
-      "label": "1. Derivation (implies present data)",
-      "short": "1. Derivation",
+  "label": "1. Observable Implications (implies present data)",
+  "short": "1. Observable Implications",
       "desc": "The hypothesis + other truths implies further statements describing present observable data.",
       "anchors": [
         "Weak",

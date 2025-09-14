@@ -14,8 +14,29 @@ body{margin:0; font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,sans
 /* base button */
 button, .btn{border:1px solid var(--line); background:var(--panel-bg); padding:6px 10px; border-radius:8px; cursor:pointer; font-size:14px}
 input[type="text"]{border:1px solid var(--line); border-radius:8px; padding:6px 10px; min-width:280px}
-#hypotheses{display:flex; gap:10px; flex-wrap:wrap; margin-left:auto}
-.pill{display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); padding:6px 10px; border-radius:999px}
+#hypotheses{
+  display:flex;
+  gap:10px;
+  /* keep legend on a single row and center it in the topbar */
+  flex-wrap:nowrap;
+  margin-left:0;
+  flex:1 1 auto;
+  justify-content:center;
+  /* allow horizontal scrolling on narrow viewports instead of wrapping to extra rows */
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:6px 8px;
+}
+.pill{display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); padding:6px 10px; border-radius:999px; flex:0 0 auto}
+
+/* Prevent the horizontal scroller from showing a large scrollbar in most browsers while keeping it usable on touch devices */
+#hypotheses::-webkit-scrollbar{ height:8px }
+#hypotheses::-webkit-scrollbar-thumb{ background: rgba(0,0,0,0.12); border-radius:6px }
+
+@media (max-width:520px){
+  /* Slightly reduce pill padding on small screens so more fit before scrolling */
+  .pill{ padding:6px 8px; font-size:13px }
+}
 .pill .sw{width:12px; height:12px; border-radius:3px}
 .pill input{accent-color:var(--control-accent)}
 .viewtabs{display:flex; gap:6px}
@@ -103,6 +124,7 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   <div id="topbar">
   <h1>Compare Historical Hypotheses (<a href="https://www.amazon.com/Justifying-Historical-Descriptions-Cambridge-Philosophy/dp/0521318300" target="_blank" rel="noopener">C. Behan McCullagh</a>)</h1>
   <button id="factsBtn" class="btn primary" aria-expanded="false" aria-controls="factsOverlay">Facts</button>
+  <button id="dimsBtn" class="btn primary" aria-expanded="false" aria-haspopup="dialog" aria-controls="dimsOverlay" title="About the seven dimensions">Dimensions</button>
   <button id="helpBtn" role="button" aria-haspopup="dialog" aria-controls="helpOverlay" class="help">? Help</button>
   <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle dark mode" style="margin-left:8px">
     <span id="icon-moon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></span>
@@ -177,9 +199,32 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
       <div class="modalBody">
   <p><strong>Purpose</strong><br>Compare hypotheses using C. Behan McCullagh’s criteria as <em>ordinal bands</em> (Low · Medium · High). Scores here are shown relative to a set of reference assessments used by the author for orientation — specifically, assessments published by William Lane Craig, a contemporary philosopher and scholar whose work addresses historical methods and early Christian history. See <a href="https://www.amazon.com/Justifying-Historical-Descriptions-Cambridge-Philosophy/dp/0521318300" target="_blank" rel="noopener">McCullagh, Justifying Historical Descriptions (1984)</a> for the original formulation of the seven conditions for the best explanation.</p>
         <p><strong>Rings & levels</strong><br>The three rings mark midpoints of bands: Low (0.25), Medium (0.50), High (0.75). Scores snap to these bands.</p>
-        <p><strong>Axes</strong> (each shows its anchors): 1. Derivation; 2. Scope; 3. Power; 4. Plausibility; 5. Fewer assumptions; 6. Fewer conflicts; 7. Overall vs. rivals.</p>
+  <p><strong>Axes</strong> (each shows its anchors): 1. Observable Implications; 2. Scope; 3. Power; 4. Plausibility; 5. Fewer assumptions; 6. Fewer conflicts; 7. Overall vs. rivals.</p>
         <p><strong>Colors</strong><br>Colors distinguish hypotheses (not values). Heatmap uses grayscale fill with colored borders.</p>
   <p><strong>Tooltips</strong><br>Hover a dot (vertex) → Level + short note + source quote w/ link. Click to pin; Esc/outside click closes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dimensions Modal -->
+  <div id="dimsOverlay" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="dimsTitle" style="display:none">
+    <div class="modal">
+      <div class="modalHeader">
+        <h2 id="dimsTitle">The seven dimensions (framework consistency)</h2>
+        <button id="dimsClose" aria-label="Close dimensions">×</button>
+      </div>
+      <div class="modalBody">
+        <p>This visualization uses C. Behan McCullagh’s seven criteria (as applied by comparative historians) to assess hypotheses about historical events. The seven dimensions are used consistently as ordinal bands (Low · Medium · High) across hypotheses so relative strengths and trade-offs are comparable.</p>
+        <ol>
+          <li><strong>Observable Implications</strong> — How directly does the hypothesis produce observable consequences in the primary material?</li>
+          <li><strong>Scope</strong> — How wide an explanatory reach does the hypothesis have?</li>
+          <li><strong>Power</strong> — How well does it account for the specific facts under consideration?</li>
+          <li><strong>Plausibility</strong> — Consistency with background knowledge and auxiliary hypotheses.</li>
+          <li><strong>Fewer assumptions</strong> — Simplicity and fewer ad-hoc auxiliaries.</li>
+          <li><strong>Fewer conflicts</strong> — Compatibility with other accepted facts.</li>
+          <li><strong>Overall vs. rivals</strong> — Comparative explanatory superiority.</li>
+        </ol>
+        <p>The chart snaps scores to three ordinal bands so comparisons emphasize consistent, repeatable judgments rather than fine-grained numeric precision.</p>
       </div>
     </div>
   </div>
@@ -269,12 +314,15 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     d3.select('#helpBtn').on('click', ()=>{ d3.select('#helpOverlay').style('display','flex'); d3.select('#helpClose').node().focus();});
     d3.select('#helpClose').on('click', ()=> d3.select('#helpOverlay').style('display','none'));
     d3.select('#helpOverlay').on('click', function(e){ if(e.target===this) d3.select('#helpOverlay').style('display','none'); });
+  d3.select('#dimsBtn').on('click', ()=>{ d3.select('#dimsOverlay').style('display','flex'); d3.select('#dimsClose').node().focus(); d3.select('#dimsBtn').attr('aria-expanded','true'); });
+  d3.select('#dimsClose').on('click', ()=>{ d3.select('#dimsOverlay').style('display','none'); d3.select('#dimsBtn').attr('aria-expanded','false'); });
+  d3.select('#dimsOverlay').on('click', function(e){ if(e.target===this){ d3.select('#dimsOverlay').style('display','none'); d3.select('#dimsBtn').attr('aria-expanded','false'); } });
   d3.select('#factsBtn').on('click', ()=>{ d3.select('#factsOverlay').style('display','flex'); d3.select('#factsClose').node().focus(); d3.select('#factsBtn').attr('aria-expanded', 'true'); });
-  d3.select('#factsClose').on('click', ()=> d3.select('#factsOverlay').style('display','none'));
-  d3.select('#factsOverlay').on('click', function(e){ if(e.target===this) d3.select('#factsOverlay').style('display','none'); });
+  d3.select('#factsClose').on('click', ()=>{ d3.select('#factsOverlay').style('display','none'); d3.select('#factsBtn').attr('aria-expanded','false'); });
+  d3.select('#factsOverlay').on('click', function(e){ if(e.target===this){ d3.select('#factsOverlay').style('display','none'); d3.select('#factsBtn').attr('aria-expanded','false'); } });
 
   // Consolidated Escape handling: close overlays and tooltips
-  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ state.pinned=null; hideTT(); d3.select('#helpOverlay').style('display','none'); d3.select('#factsOverlay').style('display','none'); d3.select('#factsBtn').attr('aria-expanded','false'); } });
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ state.pinned=null; hideTT(); d3.select('#helpOverlay').style('display','none'); d3.select('#factsOverlay').style('display','none'); d3.select('#dimsOverlay').style('display','none'); d3.select('#factsBtn').attr('aria-expanded','false'); d3.select('#dimsBtn').attr('aria-expanded','false'); } });
     document.addEventListener('click', (e)=>{ const node=tt.node(); if(node && !node.contains(e.target)){ if(state.pinned){ state.pinned=null; hideTT(); } } });
   }
 
@@ -308,8 +356,22 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   // ---------- Radar
   function renderRadar(container, C, Hy){
     const pad=36, w=container.clientWidth, h=container.clientHeight, r=Math.min(w,h)/2 - pad;
-    const svg=d3.select(container).append('svg');
-    const g=svg.append('g').attr('transform',`translate(${w/2},${h/2})`);
+    const svg=d3.select(container).append('svg').attr('width', w).attr('height', h);
+    // viewport receives the zoom transform; content is centered inside the viewport so zooming is anchored to cursor
+    const viewport = svg.append('g');
+    const g = viewport.append('g').attr('transform', `translate(${w/2},${h/2})`);
+
+    // D3 zoom: apply transform to viewport so zoom is centered on pointer location
+    const zoom = d3.zoom().scaleExtent([0.6, 4]).on('zoom', (e)=>{
+      viewport.attr('transform', e.transform);
+    });
+    // Only enable zoom when interacting with the SVG background (not when interacting with interactive elements)
+    svg.call(zoom.filter(function(event){
+      const t = event.target;
+      return t === svg.node() || t.tagName === 'svg' || (t.closest && !t.closest('.vertices') && !t.closest('.pill'));
+    }));
+    // double-click to reset zoom
+    svg.on('dblclick', ()=>{ svg.transition().duration(350).call(zoom.transform, d3.zoomIdentity); });
     const axes=Data.criteria.map((d,i)=>{ const ang=(Math.PI*2*i)/Data.criteria.length - Math.PI/2; return {...d, angle:ang, x:Math.cos(ang), y:Math.sin(ang)}; });
     const rScale=d3.scaleLinear().domain([0,1]).range([0,r]);
 
