@@ -42,9 +42,7 @@ input[type="text"]{border:1px solid var(--line); border-radius:8px; padding:6px 
 .viewtabs{display:flex; gap:6px}
 .viewtabs button.active{background:var(--control-accent); color:var(--panel-bg)}
 #main{display:grid; grid-template-rows:auto 1fr auto; gap:10px}
-/* Make the chart occupy most of the viewport height while leaving room for the topbar
-  (use calc so it adapts to different topbar heights). Keep a minimum height for small screens. */
-#chart{width:100%; height:calc(100vh - 72px); min-height:420px}
+#chart{width:100%; /* use a CSS variable for mobile-safe viewport height (see JS below) */ height:calc(var(--vh, 1vh) * 100 - 72px); min-height:420px}
 #chart svg{display:block; width:100%; height:100%}
 .help{margin-left:8px}
 .legend{display:none}
@@ -203,7 +201,7 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
         <p><strong>Rings & levels</strong><br>The three rings mark midpoints of bands: Low (0.25), Medium (0.50), High (0.75). Scores snap to these bands.</p>
   <p><strong>Axes</strong> (each shows its anchors): 1. Observable Implications; 2. Scope; 3. Power; 4. Plausibility; 5. Fewer assumptions; 6. Fewer conflicts; 7. Overall vs. rivals.</p>
         <p><strong>Colors</strong><br>Colors distinguish hypotheses (not values). Heatmap uses grayscale fill with colored borders.</p>
-  <p><strong>Tooltips</strong><br>Hover a dot (vertex) → Level + short note + source quote w/ link. Click to pin; Esc/outside click closes.</p>
+  <p><strong>Tooltips</strong><br>Hover a dot (vertex) → Level + short note + source quote w/ link. Tooltips appear while hovering; press Esc or click outside to close.</p>
       </div>
     </div>
   </div>
@@ -357,7 +355,12 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
 
   // ---------- Radar
   function renderRadar(container, C, Hy){
-    const pad=36, w=container.clientWidth, h=container.clientHeight, r=Math.min(w,h)/2 - pad;
+  const w = container.clientWidth, h = container.clientHeight;
+  // responsive padding: give more horizontal padding on narrow viewports so outer axis labels don't get clipped
+  const padY = 36;
+  // padX scales with width; ensure a reasonable min/max so labels have room
+  const padX = Math.max(40, Math.min(140, Math.round(w * 0.25)));
+  const r = Math.min(w/2 - padX, h/2 - padY);
     const svg=d3.select(container).append('svg').attr('width', w).attr('height', h);
     // viewport receives the zoom transform; content is centered inside the viewport so zooming is anchored to cursor
     const viewport = svg.append('g');
@@ -494,6 +497,25 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     clearTimeout(_resizeTimer);
     _resizeTimer = setTimeout(()=>{ if(Data) render(); }, 150);
   });
+  // Mobile viewport fix: set a CSS variable --vh to the actual viewport height
+  // This prevents issues on iOS/Chrome where 100vh includes browser chrome and can push content off-screen.
+  (function(){
+    function setVh(){
+      const h = (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight;
+      document.documentElement.style.setProperty('--vh', (h * 0.01) + 'px');
+      // re-render to respect the new height
+      if(Data) render();
+    }
+    // initial
+    setVh();
+    // update on relevant events
+    if(window.visualViewport){
+      window.visualViewport.addEventListener('resize', setVh);
+      window.visualViewport.addEventListener('scroll', setVh);
+    }
+    window.addEventListener('orientationchange', setVh);
+    window.addEventListener('resize', setVh);
+  })();
   </script>
 </body>
 </html>
