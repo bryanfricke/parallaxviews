@@ -42,7 +42,9 @@ input[type="text"]{border:1px solid var(--line); border-radius:8px; padding:6px 
 .viewtabs{display:flex; gap:6px}
 .viewtabs button.active{background:var(--control-accent); color:var(--panel-bg)}
 #main{display:grid; grid-template-rows:auto 1fr auto; gap:10px}
-#chart{width:100%; height:72vh}
+/* Make the chart occupy most of the viewport height while leaving room for the topbar
+  (use calc so it adapts to different topbar heights). Keep a minimum height for small screens. */
+#chart{width:100%; height:calc(100vh - 72px); min-height:420px}
 #chart svg{display:block; width:100%; height:100%}
 .help{margin-left:8px}
 .legend{display:none}
