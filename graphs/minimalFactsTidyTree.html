@@ -34,7 +34,7 @@
             color: #fff;
             border: none;
             border-radius: 6px;
-            padding: 6px 16px;
+            padding: 8px 14px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -121,6 +121,38 @@
             height: 100%;
             display: block;
             background: transparent;
+            touch-action: none; /* allow d3-zoom to handle gestures on mobile */
+        }
+
+        /* Small-screen adjustments */
+        @media (max-width: 600px) {
+            #topbar {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 8px 12px;
+                overflow-x: auto; /* allow horizontal scroll if too many controls */
+                -webkit-overflow-scrolling: touch;
+            }
+            #topbar button { min-width: 110px; }
+            #topbar > * { margin-right: 8px; }
+            #topbar strong { font-size: 16px; }
+            #topbar button {
+                padding: 8px 10px;
+                font-size: 15px;
+                min-height: 40px;
+            }
+            .tooltip, .popup-help {
+                max-width: calc(100vw - 24px);
+                font-size: 15px;
+                padding: 10px;
+            }
+            .esv-credit {
+                left: 8px;
+                right: 8px;
+                bottom: 8px;
+                max-width: none;
+                font-size: 12px;
+            }
         }
 
         .link {
@@ -299,11 +331,13 @@
 
             // === 2) Basic settings ===
             const container = document.getElementById('chart');
-            const width = container.clientWidth;
-            const height = container.clientHeight;
+            let width = container.clientWidth;
+            let height = container.clientHeight;
 
             const svg = d3.select("#chart").append("svg")
-                .attr("width", width).attr("height", height);
+                .attr("width", width).attr("height", height)
+                .attr('role', 'img')
+                .attr('aria-label', 'Tidy tree visualization');
 
             // Create a main group for zoom/pan
             const g = svg.append("g");
@@ -311,11 +345,38 @@
             const linkGroup = g.append("g").attr("class", "links");
             const nodeGroup = g.append("g").attr("class", "nodes");
 
-            const zoom = d3.zoom().scaleExtent([0.4, 2.5]).on("zoom", (event) => {
+            // allow broader zoom on touch devices for easier pinch-zooming
+            const zoom = d3.zoom().scaleExtent([0.3, 4]).on("zoom", (event) => {
                 g.attr("transform", event.transform);
                 updatePopupHelpPosition();
             });
             svg.call(zoom);
+
+            // Handle resizing: keep SVG sized to container and re-layout tree
+            function resizeHandler() {
+                width = container.clientWidth;
+                height = container.clientHeight;
+                svg.attr('width', width).attr('height', height);
+                // Recompute layout origin so root remains roughly centered vertically
+                if (root) {
+                    root.x0 = height / 2;
+                }
+                update(root);
+                // Maintain a sensible transform after resize
+                const currentTransform = d3.zoomTransform(svg.node());
+                // if transform is identity, re-center root
+                if (currentTransform.k === 1 && Math.abs(currentTransform.x) < 1 && Math.abs(currentTransform.y) < 1) {
+                    svg.call(zoom.transform, d3.zoomIdentity.translate(Math.min(220, width * 0.25), height / 2).scale(1));
+                }
+            }
+
+            // Debounced resize
+            let resizeTimer = null;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(resizeHandler, 150);
+            });
+
 
             const tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip").style("opacity", 0);
@@ -517,7 +578,8 @@
                         return "node";
                     })
                     .attr("transform", d => `translate(${source.y0},${source.x0})`)
-                    .on("click", (event, d) => {
+                    .on("pointerdown", (event, d) => {
+                        // Normalize pointerdown for taps vs clicks. We still treat it like a click handler.
                         if (!d.children && !d._children && d.data.source && d.data.source.url) {
                             let html = `<strong>${d.data.name}</strong>`;
                             if (d.data.date) html += `<div style='margin-top:4px; font-weight:bold;'>${d.data.date}</div>`;
@@ -545,19 +607,19 @@
                             popupHelpNode = null;
                         }
                     })
-                    .on("mouseenter", (event, d) => {
+                    .on("pointerenter", (event, d) => {
+                        // show subtitle on hover/enter (pointer-aware)
                         const txt = d.data.subtitle || "";
                         if (!txt) return;
                         tooltip.html(txt)
                             .style("opacity", 1)
                             .style("pointer-events", "none");
-                        // Clamp tooltip to viewport
                         clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
                     })
-                    .on("mousemove", (event) => {
-                            clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
+                    .on("pointermove", (event) => {
+                        clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
                     })
-                    .on("mouseleave", () => {
+                    .on("pointerleave", () => {
                         tooltip.style("opacity", 0);
                     });
                 // Remove mouseleave handler so tooltip doesn't disappear immediately
@@ -581,6 +643,10 @@
                         popupHelpNode = null;
                     }
                 }
+
+                // Adjust node radius for small touch screens to improve tap targets
+                const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                const targetRadius = isSmall ? 8 : 6;
 
                 nodeEnter.append("circle")
                     .attr("r", 1e-6)
@@ -611,7 +677,7 @@
                     .attr("transform", d => `translate(${d.y},${d.x})`)
                     .on("end", () => { updatePopupHelpPosition(); });
                 nodeUpdate.select("circle").transition().duration(350)
-                    .attr("r", 6)
+                    .attr("r", targetRadius)
                     .attr("fill", d => (d._children ? nodeColor(d) : "#fff"))
                     .attr("stroke", d => nodeColor(d));
                 nodeUpdate.select("text").transition().duration(350)

@@ -7,8 +7,10 @@
 <style>
 :root{ --bg:#ffffff; --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb; --accent:#334155; --primary:#0b5fff; --primary-600:#084fd6; --panel-bg:#ffffff; --modal-shadow:0 20px 60px rgba(0,0,0,.2); --cell-mid:#9ca3af; --cell-high:#374151; --control-accent:#111 }
 html,body{height:100%}
+/* Reserve scrollbar gutter to avoid layout shifts when scrollbars appear/disappear */
+html{ scrollbar-gutter: stable; }
 body{margin:0; font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif; color:var(--ink); background:var(--bg)}
-#topbar{position:sticky; top:0; z-index:10; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 14px; display:flex; gap:16px; align-items:center; flex-wrap:wrap}
+#topbar{position:sticky; top:0; z-index:10; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 14px; display:flex; gap:16px; align-items:center; flex-wrap:wrap; min-height:56px}
 #topbar h1{font-size:16px; margin:0 8px 0 0; font-weight:600; color:var(--accent)}
 #loaders{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
 /* base button */
@@ -22,12 +24,17 @@ input[type="text"]{border:1px solid var(--line); border-radius:8px; padding:6px 
   margin-left:0;
   flex:1 1 auto;
   justify-content:center;
-  /* allow horizontal scrolling on narrow viewports instead of wrapping to extra rows */
+  /* fixed-height single-line scroller so it cannot grow and push the chart down */
+  height:44px;
+  line-height:44px;
   overflow-x:auto;
+  overflow-y:hidden;
   -webkit-overflow-scrolling:touch;
-  padding:6px 8px;
+  padding:6px 8px 0 8px;
 }
 .pill{display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); padding:6px 10px; border-radius:999px; flex:0 0 auto}
+/* prevent pill contents from wrapping and increasing vertical size */
+.pill{white-space:nowrap}
 
 /* Prevent the horizontal scroller from showing a large scrollbar in most browsers while keeping it usable on touch devices */
 #hypotheses::-webkit-scrollbar{ height:8px }
@@ -42,13 +49,16 @@ input[type="text"]{border:1px solid var(--line); border-radius:8px; padding:6px 
 .viewtabs{display:flex; gap:6px}
 .viewtabs button.active{background:var(--control-accent); color:var(--panel-bg)}
 #main{display:grid; grid-template-rows:auto 1fr auto; gap:10px}
-#chart{width:100%; /* use a CSS variable for mobile-safe viewport height (see JS below) */ height:calc(var(--vh, 1vh) * 100 - 72px); min-height:420px}
+#chart{width:100%; /* use a CSS variable for mobile-safe viewport height (see JS below) */ height:calc(var(--vh, 1vh) * 100 - 92px); min-height:380px; padding-top:14px; box-sizing:border-box}
 #chart svg{display:block; width:100%; height:100%}
 .help{margin-left:8px}
 .legend{display:none}
-.tooltip{position:fixed; pointer-events:auto; z-index:9999; background:var(--panel-bg); border:1px solid var(--line); padding:8px 10px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,.12); max-width:360px; font-size:12px}
+.tooltip{position:fixed; pointer-events:auto; z-index:9999; background:var(--panel-bg); border:1px solid var(--line); padding:8px 10px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,.12); max-width:360px; font-size:12px; contain:paint; will-change:transform; max-height:calc(100vh - 96px); overflow:auto}
 .tooltip .q{margin-top:6px; font-style:italic}
 .tooltip .src{color:var(--muted)}
+/* Pager buttons inside the tooltip (left/right) - ensure visibility in dark mode */
+.tooltip button{ background:transparent; border:1px solid var(--line); color:var(--ink); width:36px; height:36px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; font-size:16px; line-height:1 }
+.tooltip button:focus{ outline:3px solid rgba(0,0,0,0.08); outline-offset:2px }
 .modalOverlay{position:fixed; inset:0; background:rgba(0,0,0,.35); display:none; align-items:center; justify-content:center; z-index:9998}
 .modal{background:var(--panel-bg); border:1px solid var(--line); border-radius:12px; padding:16px 18px; width:min(720px, calc(100% - 40px)); max-height:80vh; overflow:auto; box-shadow:var(--modal-shadow)}
 .modalHeader{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px}
@@ -117,6 +127,20 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
 /* Target only circles that are not inside the .vertices group (grid/axis dots) */
 :root[data-theme="dark"] #chart svg g:not(.vertices) circle { stroke: var(--line); }
 :root[data-theme="dark"] #chart svg path { stroke-opacity: 0.9; }
+
+/* Tooltip pinned visual state */
+.tooltip.pinned { border-color: var(--primary); box-shadow: 0 14px 40px rgba(11,95,255,0.18); border-width:2px; }
+:root[data-theme="dark"] .tooltip.pinned { border-color: #fff; box-shadow: 0 14px 40px rgba(0,0,0,0.6); }
+
+/* Pinned vertex state: make the outer ring stand out when pinned */
+.vertex.pinned .vertex-ring { stroke: #fff !important; stroke-width: 3px !important; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.28)); }
+.vertex.pinned .vertex-dot { r: 5; }
+/* close button inside tooltip */
+.tooltip .tt-close { position:absolute; top:8px; right:8px; z-index:2; display:none; }
+.tooltip.pinned .tt-close { display:block; }
+/* cursor hint when tooltip is pinned and draggable */
+.tooltip.pinned { cursor: grab; }
+.tooltip.pinned:active { cursor: grabbing; }
 
 </style>
 </head>
@@ -241,8 +265,14 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     showQuotes:true,
     applyWeights:false,
     showAxisTicks:true,
-    pinned:null
+  pinned:null,
+  pagerActive:null,
+  lastActiveHypothesis:null,
+  _highlightClearTimer:null
   };
+  // flags to track pointer location for auto-hide logic
+  state.isOverChart = false;
+  state.isOverTT = false;
 
   // ---------- UI: loading
   const loader = document.getElementById('loader');
@@ -268,17 +298,149 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   const avg = a=> d3.mean(a);
   const ordinalLabel = (crit,val,Criteria)=>{ const a=Criteria[crit].anchors; if(val<1/3) return a[0]; if(val<2/3) return a[1]; return a[2]; };
   function quantize(v){ if(v<1/3) return 0.25; if(v<2/3) return 0.5; return 0.75; }
+  // point-in-polygon (ray-casting)
+  function pointInPoly(x, y, vs){
+    let inside = false;
+    for(let i=0, j=vs.length-1; i<vs.length; j=i++){
+      const xi = vs[i][0], yi = vs[i][1];
+      const xj = vs[j][0], yj = vs[j][1];
+      const intersect = ((yi>y) !== (yj>y)) && (x < (xj - xi) * (y - yi) / (yj - yi + 0.0) + xi);
+      if(intersect) inside = !inside;
+    }
+    return inside;
+  }
 
   // ---------- tooltip plumbing
   const tt = d3.select('#tt'); let hideTimer=null;
+  // flag to suppress the next tooltip click if it immediately follows a drag
+  let _suppressTTClick = false;
+  // timestamp of last drag end used to ignore synthetic click events
+  let _lastDragTime = 0;
+  // create a single close button inside the tooltip; shown only when tooltip has .pinned
+  try{
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'tt-close';
+    closeBtn.setAttribute('aria-label','Close');
+    closeBtn.innerText = '×';
+    closeBtn.addEventListener('click', (ev)=>{ ev.stopPropagation(); state.pinned = null; state.pagerActive = null; tt.classed('pinned', false); try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}; hideTT(); });
+    const ttNode = tt.node(); if(ttNode) ttNode.appendChild(closeBtn);
+  }catch(e){}
+
+  // Dragging for pinned tooltip
+  (function(){
+    let dragging = false; let startX=0, startY=0, origLeft=0, origTop=0; let dragMoved = false;
+    const ttNode = tt.node();
+    if(!ttNode) return;
+    ttNode.addEventListener('pointerdown', (ev)=>{
+      // only start drag when tooltip is pinned and left mouse or primary pointer
+      if(!state.pinned) return;
+      if(ev.button !== 0) return;
+      dragging = true;
+      startX = ev.clientX; startY = ev.clientY;
+      // read current computed left/top
+      const rect = ttNode.getBoundingClientRect();
+      origLeft = rect.left; origTop = rect.top;
+      ttNode.setPointerCapture && ttNode.setPointerCapture(ev.pointerId);
+      ev.preventDefault();
+    });
+    window.addEventListener('pointermove', (ev)=>{
+      if(!dragging) return;
+      const dx = ev.clientX - startX; const dy = ev.clientY - startY;
+      if(Math.hypot(dx, dy) > 3) dragMoved = true;
+      let left = origLeft + dx; let top = origTop + dy;
+      // clamp to viewport
+      const pad = 8; const vw = window.innerWidth, vh = window.innerHeight;
+      const tr = tt.node().getBoundingClientRect();
+      if(left < pad) left = pad; if(left + tr.width + pad > vw) left = Math.max(pad, vw - tr.width - pad);
+      if(top < pad) top = pad; if(top + tr.height + pad > vh) top = Math.max(pad, vh - tr.height - pad);
+      tt.style('left', left + 'px').style('top', top + 'px').style('transform','translateZ(0)');
+    });
+    window.addEventListener('pointerup', (ev)=>{
+      if(!dragging) return; dragging = false;
+      try{ tt.node().releasePointerCapture && tt.node().releasePointerCapture(ev.pointerId); }catch(e){}
+  if(dragMoved){ _suppressTTClick = true; _lastDragTime = Date.now(); }
+      if(dragMoved){ 
+        setTimeout(()=>{ _suppressTTClick = false; }, 300);
+        // swallow the next click event (capturing) to avoid synthetic clicks from unpinning
+        const suppressOnce = function(ev2){ ev2.stopPropagation(); ev2.preventDefault(); document.removeEventListener('click', suppressOnce, true); };
+        document.addEventListener('click', suppressOnce, true);
+      }
+  dragMoved = false;
+    });
+    // cancel drag on Escape/unpin
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ dragging=false; } });
+  })();
   function showTTAt(html, svgEl, sx, sy, dy=-10){
     clearTimeout(hideTimer);
+    // Save scroll position to avoid any reflow caused by inserting tooltip content
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
     const r = svgEl.getBoundingClientRect();
-    tt.html(html).style('left', (r.left+sx)+'px').style('top', (r.top+sy+dy)+'px').style('display','block');
+    // Use transform for compositing where possible to avoid layout jumps
+    tt.html(html).style('display','block').style('left', (r.left+sx)+'px').style('top', (r.top+sy+dy)+'px').style('transform','translateZ(0)');
+    // ensure the tooltip has a close button (show/hide handled by CSS .tooltip.pinned)
+    try{
+      const ttNode = tt.node();
+      if(ttNode && !ttNode.querySelector('.tt-close')){
+        const cb = document.createElement('button');
+        cb.className = 'tt-close';
+        cb.setAttribute('aria-label','Close');
+        cb.innerText = '×';
+        cb.addEventListener('click', (ev)=>{ ev.stopPropagation(); state.pinned = null; state.pagerActive = null; tt.classed('pinned', false); try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}; hideTT(); });
+        ttNode.appendChild(cb);
+      }
+    }catch(e){}
+    // clamp tooltip so it doesn't force scrollbars on small viewports
+    const ttNode = tt.node();
+    if(ttNode){
+      const ttr = ttNode.getBoundingClientRect();
+      let left = parseFloat(tt.style('left')) || ttr.left;
+      let top = parseFloat(tt.style('top')) || ttr.top;
+      const pad = 8;
+      const vw = window.innerWidth, vh = window.innerHeight;
+      // shift horizontally if overflowing
+      if(left + ttr.width + pad > vw) left = Math.max(pad, vw - ttr.width - pad);
+      if(left < pad) left = pad;
+      // shift vertically if overflowing
+      if(top + ttr.height + pad > vh) top = Math.max(pad, vh - ttr.height - pad);
+      if(top < pad) top = pad;
+      tt.style('left', left + 'px').style('top', top + 'px');
+    }
+    // restore scroll position in case browser adjusted it
+    window.scrollTo(scrollLeft, scrollTop);
   }
-  function scheduleHide(delay=200){ clearTimeout(hideTimer); hideTimer=setTimeout(()=>{ if(!state.pinned) tt.style('display','none'); }, delay); }
-  function hideTT(){ tt.style('display','none'); }
-  tt.on('mouseenter', ()=> clearTimeout(hideTimer)).on('mouseleave', ()=> scheduleHide());
+  function scheduleHide(delay=200){ clearTimeout(hideTimer); hideTimer=setTimeout(()=>{ // hide only if not pinned and pointer is not over chart or tooltip
+      if(!state.pinned && !state.isOverChart && !state.isOverTT){ tt.style('display','none'); state.pagerActive = null; clearHighlight(); }
+    }, delay); }
+  function hideTT(){ tt.style('display','none'); state.pinned = null; state.pagerActive = null; clearHighlight(); try{ tt.classed('pinned', false); d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){} }
+  // allow clicking the tooltip itself to pin/unpin it
+  tt.on('click', (event)=>{
+    // ignore click fired immediately after a drag (pointerup generates a click)
+    if(_suppressTTClick){ _suppressTTClick = false; return; }
+    // also ignore clicks that happen within a short window after drag end (timestamp-based)
+    if(_lastDragTime && (Date.now() - _lastDragTime) < 300){ _lastDragTime = 0; return; }
+    // toggle pinned when tooltip is clicked
+    if(state.pinned){
+      // unpin
+      state.pinned = null;
+      tt.classed('pinned', false);
+      try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}
+      // hide immediately when unpinned via tooltip click
+      hideTT();
+      return;
+    }
+    // otherwise pin the tooltip without a vertex-specific key
+    state.pinned = { key: 'tooltip' };
+    tt.classed('pinned', true);
+    event.stopPropagation();
+  }).on('mouseenter', ()=>{ state.isOverTT = true; clearTimeout(hideTimer); }).on('mouseleave', ()=>{
+    state.isOverTT = false;
+    // when leaving the tooltip, schedule hide; also clear pagerActive after the delay so pager behavior reverts
+    scheduleHide();
+    if(state.pagerActive){
+      setTimeout(()=>{ if(!state.isOverTT && !state.isOverChart){ state.pagerActive = null; clearHighlight(); } }, 250);
+    }
+  });
 
   // ---------- render UI
   function initialize(json){
@@ -323,7 +485,21 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
 
   // Consolidated Escape handling: close overlays and tooltips
   window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ state.pinned=null; hideTT(); d3.select('#helpOverlay').style('display','none'); d3.select('#factsOverlay').style('display','none'); d3.select('#dimsOverlay').style('display','none'); d3.select('#factsBtn').attr('aria-expanded','false'); d3.select('#dimsBtn').attr('aria-expanded','false'); } });
-    document.addEventListener('click', (e)=>{ const node=tt.node(); if(node && !node.contains(e.target)){ if(state.pinned){ state.pinned=null; hideTT(); } } });
+    document.addEventListener('click', (e)=>{
+      const node = tt.node();
+      // If tooltip is pinned, do not close it via outside clicks; user must press Escape or click tooltip to unpin
+      if(state.pinned){
+        const clickedVertex = e.target && e.target.closest && e.target.closest('.vertex');
+        if(clickedVertex) return; // let vertex click handlers run
+        // clicking outside when pinned should do nothing
+        return;
+      }
+      // if click is outside the tooltip, close it (clear pager state)
+      if(node && !node.contains(e.target)){
+        state.pagerActive = null;
+        hideTT();
+      }
+    });
   }
 
   // Theme handling: toggle and persist theme in localStorage
@@ -347,6 +523,88 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     return `<div class='q'>&ldquo;${safe}&rdquo;</div><div class='src'>— ${srcHTML}</div>`;
   }
 
+  // Highlight a hypothesis series (polygon and pill) by id
+  function highlightSeries(hypId){
+    // record last active
+    state.lastActiveHypothesis = hypId;
+    // cancel any pending clear timer
+    if(state._highlightClearTimer){ clearTimeout(state._highlightClearTimer); state._highlightClearTimer = null; }
+    // dim all polygons and pills, then highlight the selected
+  d3.selectAll('.hyp-polygon').style('opacity', 0.12).style('filter', null);
+  d3.selectAll('.pill').style('opacity', 0.5);
+  // dim vertices (inner colored dots)
+  d3.selectAll('.vertices .vertex-dot').style('opacity', 0.4).attr('r',5);
+    d3.selectAll('.hyp-polygon').filter(function(d){ return d && d.id===hypId; }).style('opacity', 1).style('filter', 'drop-shadow(0 6px 18px rgba(0,0,0,0.12))');
+  d3.selectAll('.pill').filter(function(d){ return d && d.id===hypId; }).style('opacity', 1);
+  // highlight vertices for this hypothesis (inner dot larger)
+  d3.selectAll('.vertices .vertex-dot').filter(function(d){ return d && d.h && d.h.id===hypId; }).style('opacity', 1).attr('r',6).each(function(d){
+    try{ this.parentNode && this.parentNode.parentNode && d3.select(this.parentNode).raise(); }catch(e){}
+    // ensure inner fill and outer ring stroke match hypothesis color
+    d3.select(this).attr('fill', d.h.color);
+    d3.select(this.parentNode).select('.vertex-ring').attr('stroke', d.h.color);
+  });
+  }
+
+  function clearHighlight(){
+    // delay returning to default to allow quick move to another vertex of same hypothesis
+    if(state._highlightClearTimer) clearTimeout(state._highlightClearTimer);
+    state._highlightClearTimer = setTimeout(()=>{
+      d3.selectAll('.hyp-polygon').style('opacity', null).style('filter', null);
+      d3.selectAll('.pill').style('opacity', null);
+  d3.selectAll('.vertices .vertex-dot').style('opacity', null).attr('r',5);
+      state._highlightClearTimer = null;
+      // reset lastActiveHypothesis after clearing
+      state.lastActiveHypothesis = null;
+    }, 450); // 450ms grace period
+  }
+
+  // Show a tooltip with pager controls for overlapping vertices
+  function showPagedTooltip(list, startIndex, svgEl, br, sr){
+    let idx = startIndex || 0;
+  // If pager is already active for the same list and index, avoid re-rendering
+  const key = list.map(i=>i.h.id+'@'+i.c.id).join('|');
+  if(state.pagerActive && state.pagerActive.key === key && state.pagerActive.idx === idx) return;
+    function renderAt(i){
+      const item = list[i];
+      const level = ordinalLabel(item.c.id, item.raw, byId(Data.criteria));
+      const note = (byId(Data.hypotheses)[item.h.id].notes||{})[item.c.id]||'';
+      const qhtml = quoteHTML(byId(Data.hypotheses), item.h.id, item.c.id);
+      // pager at top to avoid vertical shift when content changes
+  let content = `<div style='position:relative;display:flex;flex-direction:column;gap:8px;min-width:220px;padding-right:48px'>`+
+        `<div style='display:flex;align-items:center;justify-content:space-between'>`+
+          `<div style='font-weight:600'>Hypothesis ${i+1}/${list.length}</div>`+
+          `<div style='display:flex;align-items:center;gap:6px'>`+
+            `<button id='pager-left' aria-label='Previous' style='width:32px;height:32px;margin-left:6px'>&#9664;</button>`+
+            `<button id='pager-right' aria-label='Next' style='width:32px;height:32px;margin-left:6px'>&#9654;</button>`+
+          `</div>`+
+        `</div>`+
+        `<div id='pager-body' style='min-height:56px'>`+
+          `<div style='font-weight:600'>${item.h.label}</div><div>${item.c.label}</div><div>Level: <strong>${level}</strong></div>`;
+      if(note) content += `<div style='margin-top:4px;color:var(--muted)'>${note}</div>`;
+      content += qhtml;
+      content += `</div></div>`;
+      showTTAt(content, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
+      // highlight current series
+      highlightSeries(item.h.id);
+      // wire pager buttons (delegated via document since TT content is HTML string)
+      setTimeout(()=>{
+        const left = document.getElementById('pager-left');
+        const right = document.getElementById('pager-right');
+  if(left) {
+          // stop propagation so the document click handler doesn't close the tooltip
+          left.addEventListener('click', (ev)=>{ ev.stopPropagation(); idx = (idx - 1 + list.length) % list.length; renderAt(idx); });
+        }
+        if(right) {
+          right.addEventListener('click', (ev)=>{ ev.stopPropagation(); idx = (idx + 1) % list.length; renderAt(idx); });
+        }
+        
+      }, 0);
+    }
+    renderAt(idx);
+  // mark pager as active so hover handlers won't override it
+  state.pagerActive = { key, ids: list.map(i=>i.h.id), idx };
+  }
+
   function render(){
     const el = document.getElementById('chart'); d3.select(el).selectAll('*').remove();
     const C = byId(Data.criteria), Hy = byId(Data.hypotheses);
@@ -361,7 +619,9 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   // padX scales with width; ensure a reasonable min/max so labels have room
   const padX = Math.max(40, Math.min(140, Math.round(w * 0.25)));
   const r = Math.min(w/2 - padX, h/2 - padY);
-    const svg=d3.select(container).append('svg').attr('width', w).attr('height', h);
+  const svg=d3.select(container).append('svg').attr('width', w).attr('height', h);
+  // track pointer presence over chart to control tooltip auto-hide
+  svg.on('mouseenter', ()=>{ state.isOverChart = true; clearTimeout(hideTimer); }).on('mouseleave', ()=>{ state.isOverChart = false; scheduleHide(); });
     // viewport receives the zoom transform; content is centered inside the viewport so zooming is anchored to cursor
     const viewport = svg.append('g');
     const g = viewport.append('g').attr('transform', `translate(${w/2},${h/2})`);
@@ -377,6 +637,29 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     }));
     // double-click to reset zoom
     svg.on('dblclick', ()=>{ svg.transition().duration(350).call(zoom.transform, d3.zoomIdentity); });
+    // hide tooltip when pointer leaves the active hypothesis polygon
+    svg.on('mousemove.pointercheck', (event)=>{
+      if(!state.lastActiveHypothesis) return;
+      const poly = state.currentPolygons && state.currentPolygons[state.lastActiveHypothesis];
+      if(!poly) return;
+      // if pointer is over a vertex or the tooltip, don't hide (prevents races)
+      const el = document.elementFromPoint(event.clientX, event.clientY);
+      try{
+        if(el && el.closest && (el.closest('.vertices') || el.closest('#tt'))){ return; }
+      }catch(e){}
+      const rect = svg.node().getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      if(!pointInPoly(x, y, poly)){
+        // if a tooltip is pinned, don't hide it when leaving the polygon
+        if(state.pinned) return;
+        // schedule an immediate hide that ignores isOverChart but respects if pointer moved into tooltip
+        setTimeout(()=>{
+          const el2 = document.elementFromPoint(event.clientX, event.clientY);
+          if(!(el2 && el2.closest && el2.closest('#tt'))){ state.pagerActive = null; hideTT(); }
+        }, 40);
+      }
+    });
     const axes=Data.criteria.map((d,i)=>{ const ang=(Math.PI*2*i)/Data.criteria.length - Math.PI/2; return {...d, angle:ang, x:Math.cos(ang), y:Math.sin(ang)}; });
     const rScale=d3.scaleLinear().domain([0,1]).range([0,r]);
 
@@ -406,11 +689,17 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     const sel = Data.hypotheses.filter(h=>state.selected.has(h.id));
     const pointsFor = (h)=> axes.map(a=>{ const vv=quantize(Hy[h.id].scores[a.id]); const rr=rScale(vv); return [a.x*rr, a.y*rr]; });
 
-    // polygons (no tooltip)
+    // polygons (no tooltip) -- record polygon points for pointer-in-polygon checks
+    state.currentPolygons = {};
     g.append('g').selectAll('path').data(sel, d=>d.id).join('path')
+      .attr('class','hyp-polygon')
       .attr('d', d=> d3.line().curve(d3.curveLinearClosed)(pointsFor(d)))
       .attr('fill', d=> d3.color(d.color).copy({opacity:0.15}))
-      .attr('stroke', d=> d.color).attr('stroke-width',2);
+      .attr('stroke', d=> d.color).attr('stroke-width',2)
+      .each(function(d){
+        const pts = pointsFor(d).map(p=>[p[0] + w/2, p[1] + h/2]);
+        state.currentPolygons[d.id] = pts;
+      });
 
     // axis-end info dots
     const helpG=g.append('g');
@@ -418,32 +707,114 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
       .attr('cx', d=>d.x*r).attr('cy', d=>d.y*r).attr('r',5)
       .style('fill','var(--panel-bg)').style('stroke','var(--muted)').attr('stroke-width',2)
       .on('mouseenter mousemove', (e,d)=>{
+        // don't show hover tooltips when a tooltip is pinned
+        if(state.pinned) return;
         const html = `<div><strong>${d.label}</strong></div>`+
           `<div style='color:var(--muted)'>${d.desc||''}</div>`+
           `<div style='margin-top:4px'>Levels: <strong>${d.anchors.join(' • ')}</strong></div>`;
         const svgEl = svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect();
         showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
       }).on('mouseleave', ()=> scheduleHide())
-  .on('click', (e,d)=>{ e.stopPropagation(); state.pinned={key:'axis|'+d.id}; const svgEl=svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect(); showTTAt(`<div><strong>${d.label}</strong></div><div style='color:var(--muted)'>${d.desc||''}</div><div style='margin-top:4px'>Levels: <strong>${d.anchors.join(' • ')}</strong></div>`, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10); });
+  .on('click', (e,d)=>{ 
+    e.stopPropagation();
+    // toggle pin for axis tooltip
+    const key = 'axis|'+d.id;
+    if(state.pinned && state.pinned.key === key){
+      state.pinned = null; tt.classed('pinned', false); hideTT(); return;
+    }
+    state.pinned={key};
+    // ensure any vertex pinned visuals are cleared
+    try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}
+    const svgEl=svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect();
+    showTTAt(`<div><strong>${d.label}</strong></div><div style='color:var(--muted)'>${d.desc||''}</div><div style='margin-top:4px'>Levels: <strong>${d.anchors.join(' • ')}</strong></div>`, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
+    tt.classed('pinned', true);
+  });
 
     // vertex dots
     const vertexData = sel.flatMap(hh => axes.map(a=>{ const raw=Hy[hh.id].scores[a.id]; const vv=quantize(raw); const rr=rScale(vv); return {h:hh, c:a, raw, x:a.x*rr, y:a.y*rr}; }));
-    g.append('g').attr('class','vertices').selectAll('circle').data(vertexData).join('circle')
-      .attr('cx',d=>d.x).attr('cy',d=>d.y).attr('r',6)
-      .style('fill','var(--panel-bg)')
-      .style('stroke', d=>d.h.color)
-      .style('stroke-width', 2)
-      .style('stroke-opacity', 1)
+    const vwrap = g.append('g').attr('class','vertices').selectAll('g.vertex').data(vertexData).join('g').attr('class','vertex')
+      .attr('transform', d=>`translate(${d.x},${d.y})`)
       .on('mouseenter mousemove', (e,d)=>{
+        // don't override a pinned tooltip with hover
+        if(state.pinned) return;
+        const svgEl=svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect();
+        // find overlapping vertices
+        const tol = 2.5; // pixels (more permissive for touch)
+        const overlapping = vertexData.filter(v => Math.hypot(v.x - d.x, v.y - d.y) <= tol);
+        // If a pager is active for this group, don't let normal hover override it
+        if(state.pagerActive){ const key = overlapping.map(i=>i.h.id+'@'+i.c.id).join('|'); if(state.pagerActive.key === key) return; }
+        if(overlapping.length>1){
+          // prefer lastActiveHypothesis when choosing start index
+          let startIdx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
+          if(state.lastActiveHypothesis){ const pref = overlapping.findIndex(v => v.h.id === state.lastActiveHypothesis); if(pref>=0) startIdx = pref; }
+          // show pager on hover (don't pin)
+          if(!state.pinned) showPagedTooltip(overlapping, startIdx, svgEl, br, sr);
+          return;
+        }
         const level=ordinalLabel(d.c.id, d.raw, byId(Data.criteria));
         const note=(byId(Data.hypotheses)[d.h.id].notes||{})[d.c.id]||'';
         const qhtml=quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
-  const html=`<div><strong>${d.h.label}</strong></div><div>${d.c.label}</div><div>Level: <strong>${level}</strong></div>`+(note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'')+qhtml;
-        const svgEl=svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect();
-        showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
+        const html=`<div><strong>${d.h.label}</strong></div><div>${d.c.label}</div><div>Level: <strong>${level}</strong></div>`+(note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'')+qhtml;
+  showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
+        highlightSeries(d.h.id);
       })
       .on('mouseleave', ()=> scheduleHide())
-  .on('click', (e,d)=>{ e.stopPropagation(); const svgEl=svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect(); state.pinned={key:d.h.id+'|'+d.c.id}; const level=ordinalLabel(d.c.id, d.raw, byId(Data.criteria)); const note=(byId(Data.hypotheses)[d.h.id].notes||{})[d.c.id]||''; const qhtml=quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id); const html=`<div><strong>${d.h.label}</strong></div><div>${d.c.label}</div><div>Level: <strong>${level}</strong></div>`+(note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'')+qhtml; showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10); });
+      .on('click', (e,d)=>{
+        e.stopPropagation();
+        const svgEl = svg.node();
+        const br = e.currentTarget.getBoundingClientRect();
+        const sr = svgEl.getBoundingClientRect();
+        // find nearby vertices (same position within a small tolerance)
+        const tol = 2.5; // pixels
+        const overlapping = vertexData.filter(v => Math.hypot(v.x - d.x, v.y - d.y) <= tol);
+        if(overlapping.length > 1){
+          // prefer lastActiveHypothesis when selecting the initial index
+          let startIdx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
+          if(state.lastActiveHypothesis){ const pref = overlapping.findIndex(v => v.h.id === state.lastActiveHypothesis); if(pref>=0) startIdx = pref; }
+          // pin the tooltip for the selected overlapping item and show pager
+          try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}
+          const selItem = overlapping[startIdx] || overlapping[0];
+          const listKey = overlapping.map(i=>i.h.id+'@'+i.c.id).join('|');
+          state.pinned = { key: listKey };
+          // add pinned class to the chosen vertex group so it visually indicates pin
+          try{
+            d3.selectAll('.vertex').filter(function(dd){ return dd && dd.h && dd.c && dd.h.id===selItem.h.id && dd.c.id===selItem.c.id; }).classed('pinned', true);
+          }catch(e){}
+          tt.classed('pinned', true);
+          // show paged tooltip
+          showPagedTooltip(overlapping, startIdx, svgEl, br, sr);
+        }else{
+          // single vertex: toggle pin on click
+          const group = d3.select(e.currentTarget);
+          const myKey = d.h.id+'|'+d.c.id;
+          const alreadyPinned = state.pinned && state.pinned.key === myKey;
+          if(alreadyPinned){
+            state.pinned = null;
+            group.classed('pinned', false);
+            tt.classed('pinned', false);
+            hideTT();
+            return;
+          }
+          // pin this vertex
+          state.pinned = {key: myKey};
+          // clear other pinned visuals and apply to this group
+          try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}
+          group.classed('pinned', true);
+          const level = ordinalLabel(d.c.id, d.raw, byId(Data.criteria));
+          const note = (byId(Data.hypotheses)[d.h.id].notes||{})[d.c.id]||'';
+          const qhtml = quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
+          const html = `<div><strong>${d.h.label}</strong></div><div>${d.c.label}</div><div>Level: <strong>${level}</strong></div>` + (note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'') + qhtml;
+          showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
+          highlightSeries(d.h.id);
+          tt.classed('pinned', true);
+        }
+      });
+
+  // draw ring + dot inside each vertex group
+  vwrap.append('circle').attr('class','vertex-ring').attr('r',7).attr('fill','#fff').attr('stroke', d=>d.h.color).attr('stroke-width',2).style('stroke-opacity',0.95);
+  vwrap.append('circle').attr('class','vertex-dot').attr('r',5).attr('fill', d=>d.h.color).attr('stroke','none');
+  // ensure vertex groups render on top of polygons/axes
+  try{ vwrap.raise(); }catch(e){}
   }
 
   // ---------- Heatmap
@@ -464,11 +835,12 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     svg.append('g').selectAll('rect').data(Data.criteria.flatMap(c=>hySel.map(h=>({c,h}))))
       .join('rect').attr('x', d=>x(d.h.id)).attr('y', d=>y(d.c.id)).attr('width', x.bandwidth()).attr('height', y.bandwidth()).attr('rx',4)
       .attr('fill', d=> cellFill(Hy[d.h.id].scores[d.c.id])).attr('stroke', d=>Hy[d.h.id].color)
-      .on('mousemove', (e,d)=>{
-        const raw=Hy[d.h.id].scores[d.c.id]; const level=ordinalLabel(d.c.id, raw, C); const note=(Hy[d.h.id].notes||{})[d.c.id]||''; const qhtml=quoteHTML(Hy, d.h.id, d.c.id);
+  .on('mousemove', (e,d)=>{
+    if(state.pinned) return; // don't override a pinned tooltip
+    const raw=Hy[d.h.id].scores[d.c.id]; const level=ordinalLabel(d.c.id, raw, C); const note=(Hy[d.h.id].notes||{})[d.c.id]||''; const qhtml=quoteHTML(Hy, d.h.id, d.c.id);
   const html=`<div style='font-weight:600'>${d.h.label}</div><div>${C[d.c.id].label}</div><div>Level: <strong>${level}</strong></div>`+(note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'')+qhtml;
-        tt.html(html).style('left', (e.clientX+12)+'px').style('top', (e.clientY-12)+'px').style('display','block');
-      })
+    tt.html(html).style('left', (e.clientX+12)+'px').style('top', (e.clientY-12)+'px').style('display','block');
+  })
       .on('mouseleave', ()=> scheduleHide());
   }
 
