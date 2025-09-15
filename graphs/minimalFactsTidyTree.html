@@ -153,6 +153,11 @@
                 max-width: none;
                 font-size: 12px;
             }
+            /* Controls toggle and bottom-sheet */
+            #controlsToggle { display: inline-block; }
+            #controls { display: none; width: 100%; }
+            #controls.open { display: flex; flex-wrap: wrap; gap: 8px; }
+            .bottom-sheet { background: var(--bg-dark); color: var(--text-dark); }
         }
 
         .link {
@@ -309,18 +314,24 @@
 <body class="dark-mode">
     <div id="topbar">
         <strong style="font-size:18px; letter-spacing:0.5px; margin-right:16px;">Tidy Tree</strong>
-        <label style="display:none;"><input type="checkbox" id="wrap"> Wrap labels</label>
-        <label><input type="checkbox" id="clusterToggle"> Cluster layout</label>
-        <label style="display:none;">Node size: <input type="range" id="nodesize" min="10" max="100" value="20"></label>
-        <label style="display:none;">Vertical spacing: <input type="range" id="nodesizeY" min="10" max="150" value="60"></label>
-        <label style="display:none;">Horizontal spacing: <input type="range" id="nodesizeX" min="10" max="300" value="180"></label>
-        <button id="collapseAll">Collapse All</button>
-        <button id="expandAll">Expand All</button>
-        <button id="collapseOneLevel">Collapse One Level</button>
-        <button id="expandOneLevel">Expand One Level</button>
+        <button id="controlsToggle" aria-expanded="false" style="display:none; margin-left:12px;">Controls ▾</button>
+        <div id="controls" style="display:flex; align-items:center; gap:12px;">
+            <label style="display:none;"><input type="checkbox" id="wrap"> Wrap labels</label>
+            <label><input type="checkbox" id="clusterToggle"> Cluster layout</label>
+            <label style="display:none;">Node size: <input type="range" id="nodesize" min="10" max="100" value="20"></label>
+            <label style="display:none;">Vertical spacing: <input type="range" id="nodesizeY" min="10" max="150" value="60"></label>
+            <label style="display:none;">Horizontal spacing: <input type="range" id="nodesizeX" min="10" max="300" value="180"></label>
+            <button id="collapseAll">Collapse All</button>
+            <button id="expandAll">Expand All</button>
+            <button id="collapseOneLevel">Collapse One Level</button>
+            <button id="expandOneLevel">Expand One Level</button>
+        </div>
         <label style="margin-left:auto;"><input type="checkbox" id="darkModeToggle"> Dark mode</label>
     </div>
     <div id="chart"></div>
+
+    <!-- bottom sheet for mobile node details -->
+    <div id="bottomSheet" class="bottom-sheet" role="dialog" aria-hidden="true"></div>
 
     <!-- D3 v7 -->
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
@@ -333,6 +344,50 @@
             const container = document.getElementById('chart');
             let width = container.clientWidth;
             let height = container.clientHeight;
+
+                // Compute chart height based on topbar height so content isn't hidden under it on small screens
+                function computeChartHeight() {
+                    const topbar = document.getElementById('topbar');
+                    const rect = topbar ? topbar.getBoundingClientRect() : { height: 48 };
+                    const hh = Math.max(48, rect.height);
+                    const chartEl = document.getElementById('chart');
+                    chartEl.style.height = `calc(100vh - ${hh}px)`;
+                    width = chartEl.clientWidth;
+                    height = chartEl.clientHeight;
+                    svg.attr('width', width).attr('height', height);
+                }
+
+                // Create bottom-sheet element for mobile node details
+                const bottomSheet = document.getElementById('bottomSheet');
+                function openBottomSheet(html) {
+                    bottomSheet.innerHTML = html;
+                    bottomSheet.classList.add('open');
+                    bottomSheet.setAttribute('aria-hidden', 'false');
+                }
+                function closeBottomSheet() {
+                    bottomSheet.classList.remove('open');
+                    bottomSheet.setAttribute('aria-hidden', 'true');
+                }
+                bottomSheet.addEventListener('click', (e)=>{
+                    // allow clicking outside content to close if needed; a close button could be added
+                    if (e.target === bottomSheet) closeBottomSheet();
+                });
+
+                // Controls toggle for small screens
+                const controlsToggle = document.getElementById('controlsToggle');
+                const controls = document.getElementById('controls');
+                function updateControlsVisibility() {
+                    const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                    controlsToggle.style.display = isSmall ? 'inline-block' : 'none';
+                    if (!isSmall) { controls.classList.add('open'); controls.style.display = 'flex'; }
+                    else { controls.classList.remove('open'); controls.style.display = 'none'; }
+                }
+                controlsToggle.addEventListener('click', ()=>{
+                    const open = controls.classList.toggle('open');
+                    controls.style.display = open ? 'flex' : 'none';
+                    controlsToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                });
+                updateControlsVisibility();
 
             const svg = d3.select("#chart").append("svg")
                 .attr("width", width).attr("height", height)
@@ -352,11 +407,14 @@
             });
             svg.call(zoom);
 
+            // ensure chart height computed initially (now that svg exists)
+            computeChartHeight();
+
             // Handle resizing: keep SVG sized to container and re-layout tree
             function resizeHandler() {
-                width = container.clientWidth;
-                height = container.clientHeight;
-                svg.attr('width', width).attr('height', height);
+                // recompute chart height using topbar
+                computeChartHeight();
+                updateControlsVisibility();
                 // Recompute layout origin so root remains roughly centered vertically
                 if (root) {
                     root.x0 = height / 2;
@@ -376,6 +434,9 @@
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(resizeHandler, 150);
             });
+
+            // ensure chart height computed initially
+            computeChartHeight();
 
 
             const tooltip = d3.select("body").append("div")
@@ -579,20 +640,25 @@
                     })
                     .attr("transform", d => `translate(${source.y0},${source.x0})`)
                     .on("pointerdown", (event, d) => {
-                        // Normalize pointerdown for taps vs clicks. We still treat it like a click handler.
+                        // Normalize pointerdown for taps vs clicks. On small screens show a bottom-sheet
+                        const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
                         if (!d.children && !d._children && d.data.source && d.data.source.url) {
                             let html = `<strong>${d.data.name}</strong>`;
                             if (d.data.date) html += `<div style='margin-top:4px; font-weight:bold;'>${d.data.date}</div>`;
                             if (d.data.details) html += `<div style='margin-top:6px;'>${d.data.details}</div>`;
-                            html += `<div style='margin-top:10px;'><a href='${d.data.source.url}' target='_blank' style='color:blue;text-decoration:underline;'>${d.data.source.title || "View Source"}</a></div>`;
-                                    popupHelp.html(html)
-                                        .style("opacity", 1)
-                                        .style("pointer-events", "auto");
-                                    popupHelpNode = d;
-                                    updatePopupHelpPosition();
-                            setTimeout(() => {
-                                document.addEventListener('mousedown', popupHelpOutsideClickHandler, true);
-                            }, 0);
+                            html += `<div style='margin-top:10px;'><a href='${d.data.source.url}' target='_blank' style='color:var(--accent-dark);text-decoration:underline'>${d.data.source.title || "View Source"}</a></div>`;
+                            if (isSmall) {
+                                openBottomSheet(html);
+                            } else {
+                                popupHelp.html(html)
+                                    .style("opacity", 1)
+                                    .style("pointer-events", "auto");
+                                popupHelpNode = d;
+                                updatePopupHelpPosition();
+                                setTimeout(() => {
+                                    document.addEventListener('pointerdown', popupHelpOutsideClickHandler, true);
+                                }, 0);
+                            }
                         } else {
                             if (!d.children && d._children) {
                                 expand(d);
@@ -603,7 +669,7 @@
                             update(d);
                             popupHelp.style("opacity", 0)
                                 .style("pointer-events", "none");
-                            document.removeEventListener('mousedown', popupHelpOutsideClickHandler, true);
+                            document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true);
                             popupHelpNode = null;
                         }
                     })
@@ -630,7 +696,7 @@
                     if (popupHelp.style("opacity") === "1" && (!popupEl || (e.target !== popupEl && !popupEl.contains(e.target)))) {
                         popupHelp.style("opacity", 0)
                             .style("pointer-events", "none");
-                        document.removeEventListener('mousedown', popupHelpOutsideClickHandler, true);
+                        document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true);
                         // Quickfix: dispatch mouseleave to node under popup
                         if (popupHelpNode) {
                             // Find the corresponding SVG node group
