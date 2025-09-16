@@ -136,8 +136,8 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
 .vertex.pinned .vertex-ring { stroke: #fff !important; stroke-width: 3px !important; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.28)); }
 .vertex.pinned .vertex-dot { r: 5; }
 /* close button inside tooltip */
-.tooltip .tt-close { position:absolute; top:8px; right:8px; z-index:2; display:none; }
-.tooltip.pinned .tt-close { display:block; }
+.tooltip .tt-close { position:absolute; top:8px; right:8px; z-index:2; display:block; background:transparent; border:1px solid var(--line); border-radius:8px; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+.tooltip.pinned .tt-close { /* visually emphasized when pinned */ border-color: var(--primary); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
 /* cursor hint when tooltip is pinned and draggable */
 .tooltip.pinned { cursor: grab; }
 .tooltip.pinned:active { cursor: grabbing; }
@@ -320,9 +320,28 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   try{
     const closeBtn = document.createElement('button');
     closeBtn.className = 'tt-close';
-    closeBtn.setAttribute('aria-label','Close');
-    closeBtn.innerText = '×';
-    closeBtn.addEventListener('click', (ev)=>{ ev.stopPropagation(); state.pinned = null; state.pagerActive = null; tt.classed('pinned', false); try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}; hideTT(); });
+    // helper to update button text/label depending on pinned state
+    const updateCloseBtn = (btn)=>{
+      try{
+        if(state.pinned){ btn.innerText = '×'; btn.setAttribute('aria-label','Close'); }
+        else { btn.innerText = '📌'; btn.setAttribute('aria-label','Pin'); }
+      }catch(e){}
+    };
+    updateCloseBtn(closeBtn);
+    closeBtn.addEventListener('click', (ev)=>{
+      ev.stopPropagation();
+      // Toggle pinned state: if pinned -> close; if not pinned -> pin
+      if(state.pinned){
+        state.pinned = null; state.pagerActive = null; tt.classed('pinned', false);
+        try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}
+        hideTT();
+        return;
+      }
+      state.pinned = { key: 'tooltip' };
+      tt.classed('pinned', true);
+      updateCloseBtn(closeBtn);
+    });
+    // keep button state in sync when other code pins/unpins the tooltip
     const ttNode = tt.node(); if(ttNode) ttNode.appendChild(closeBtn);
   }catch(e){}
 
@@ -384,9 +403,13 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
       if(ttNode && !ttNode.querySelector('.tt-close')){
         const cb = document.createElement('button');
         cb.className = 'tt-close';
-        cb.setAttribute('aria-label','Close');
-        cb.innerText = '×';
-        cb.addEventListener('click', (ev)=>{ ev.stopPropagation(); state.pinned = null; state.pagerActive = null; tt.classed('pinned', false); try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}; hideTT(); });
+        const updateCB = (btn)=>{ if(state.pinned){ btn.innerText='×'; btn.setAttribute('aria-label','Close'); } else { btn.innerText='📌'; btn.setAttribute('aria-label','Pin'); } };
+        updateCB(cb);
+        cb.addEventListener('click', (ev)=>{
+          ev.stopPropagation();
+          if(state.pinned){ state.pinned = null; state.pagerActive = null; tt.classed('pinned', false); try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}; hideTT(); return; }
+          state.pinned = { key: 'tooltip' }; tt.classed('pinned', true); updateCB(cb);
+        });
         ttNode.appendChild(cb);
       }
     }catch(e){}
@@ -413,33 +436,14 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
       if(!state.pinned && !state.isOverChart && !state.isOverTT){ tt.style('display','none'); state.pagerActive = null; clearHighlight(); }
     }, delay); }
   function hideTT(){ tt.style('display','none'); state.pinned = null; state.pagerActive = null; clearHighlight(); try{ tt.classed('pinned', false); d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){} }
-  // allow clicking the tooltip itself to pin/unpin it
+  // tooltip clicks are no-ops; pinning/unpinning is handled only by the pin/close control
   tt.on('click', (event)=>{
     // ignore click fired immediately after a drag (pointerup generates a click)
     if(_suppressTTClick){ _suppressTTClick = false; return; }
     // also ignore clicks that happen within a short window after drag end (timestamp-based)
     if(_lastDragTime && (Date.now() - _lastDragTime) < 300){ _lastDragTime = 0; return; }
-    // don't toggle pin when clicking interactive controls inside the tooltip
-    // (pager buttons, links, inputs, close button). These should be handled
-    // by their own handlers and must not fall through to the tooltip click
-    // toggle which would unpin/hide the tooltip.
-    if(event.target && event.target.closest && event.target.closest('button, a, input, .tt-close, #pager-left, #pager-right')){
-      return;
-    }
-    // toggle pinned when tooltip is clicked
-    if(state.pinned){
-      // unpin
-      state.pinned = null;
-      tt.classed('pinned', false);
-      try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}
-      // hide immediately when unpinned via tooltip click
-      hideTT();
-      return;
-    }
-    // otherwise pin the tooltip without a vertex-specific key
-    state.pinned = { key: 'tooltip' };
-    tt.classed('pinned', true);
-    event.stopPropagation();
+    // do nothing here — pin/unpin is performed by the pin/close button only
+    return;
   }).on('mouseenter', ()=>{ state.isOverTT = true; clearTimeout(hideTimer); }).on('mouseleave', ()=>{
     state.isOverTT = false;
     // when leaving the tooltip, schedule hide; also clear pagerActive after the delay so pager behavior reverts
