@@ -153,11 +153,60 @@
                 max-width: none;
                 font-size: 12px;
             }
+            /* hide the footer on small screens to avoid overlaying the chart and bottom-sheet */
+            .esv-credit { display: none; }
             /* Controls toggle and bottom-sheet */
-            #controlsToggle { display: inline-block; }
+            /* make toggle fixed so it doesn't get scrolled/hidden on small screens */
+            #controlsToggle { display: inline-block !important; position: fixed !important; left: 12px; top: calc(env(safe-area-inset-top, 0px) + 8px); z-index: 9000; }
             #controls { display: none; width: 100%; }
             #controls.open { display: flex; flex-wrap: wrap; gap: 8px; }
             .bottom-sheet { background: var(--bg-dark); color: var(--text-dark); }
+            /* when JS positions the controls as fixed, improve scrolling and backdrop */
+            #controls[style] {
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+                background-clip: padding-box;
+                backdrop-filter: blur(6px) saturate(80%);
+            }
+        }
+
+        /* hide the large page title on small screens (we show controls instead) */
+        @media (max-width: 600px) {
+            #topbar strong { display: none; }
+            /* compact mobile controls panel will be positioned by JS to avoid overlapping the divider */
+        }
+
+        /* keep topbar above floating bottom-sheet */
+        #topbar { position: relative; z-index: 5000; }
+
+        /* bottom-sheet base styles (works on all sizes but optimized for mobile) */
+        .bottom-sheet {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: -100%;
+            background: var(--bg-dark);
+            color: var(--text-dark);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.32);
+            padding: 16px;
+            z-index: 2500;
+            transition: bottom 260ms ease;
+            max-height: 70vh;
+            overflow: auto;
+        }
+        .bottom-sheet.open { bottom: 0; }
+        .bottom-sheet .close-btn {
+            position: absolute;
+            right: 12px;
+            top: 8px;
+            background: transparent;
+            border: none;
+            color: var(--text-dark);
+            font-size: 20px;
+            padding: 6px;
+            cursor: pointer;
         }
 
         .link {
@@ -313,8 +362,8 @@
 
 <body class="dark-mode">
     <div id="topbar">
-        <strong style="font-size:18px; letter-spacing:0.5px; margin-right:16px;">Tidy Tree</strong>
-        <button id="controlsToggle" aria-expanded="false" style="display:none; margin-left:12px;">Controls ▾</button>
+    <strong style="font-size:18px; letter-spacing:0.5px; margin-right:16px;">Tidy Tree</strong>
+    <button id="controlsToggle" aria-expanded="false">Controls ▾</button>
         <div id="controls" style="display:flex; align-items:center; gap:12px;">
             <label style="display:none;"><input type="checkbox" id="wrap"> Wrap labels</label>
             <label><input type="checkbox" id="clusterToggle"> Cluster layout</label>
@@ -360,9 +409,18 @@
                 // Create bottom-sheet element for mobile node details
                 const bottomSheet = document.getElementById('bottomSheet');
                 function openBottomSheet(html) {
-                    bottomSheet.innerHTML = html;
+                    // hide other transient UI
+                    tooltip.style('opacity', 0);
+                    popupHelp.style('opacity', 0).style('pointer-events', 'none');
+                    bottomSheet.innerHTML = `<button class="close-btn" aria-label="Close">×</button><div class="bottom-content">${html}</div>`;
                     bottomSheet.classList.add('open');
                     bottomSheet.setAttribute('aria-hidden', 'false');
+                    // ensure visible on small screens
+                    setTimeout(() => {
+                        bottomSheet.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                        const btn = bottomSheet.querySelector('.close-btn');
+                        if (btn) { btn.focus({ preventScroll: true }); btn.addEventListener('click', closeBottomSheet, { once: true }); }
+                    }, 50);
                 }
                 function closeBottomSheet() {
                     bottomSheet.classList.remove('open');
@@ -378,7 +436,7 @@
                 const controls = document.getElementById('controls');
                 function updateControlsVisibility() {
                     const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
-                    controlsToggle.style.display = isSmall ? 'inline-block' : 'none';
+                    // rely on CSS for toggle visibility to avoid inline style flashing
                     if (!isSmall) { controls.classList.add('open'); controls.style.display = 'flex'; }
                     else { controls.classList.remove('open'); controls.style.display = 'none'; }
                 }
@@ -386,6 +444,35 @@
                     const open = controls.classList.toggle('open');
                     controls.style.display = open ? 'flex' : 'none';
                     controlsToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                    // position controls right below topbar on small screens
+                    const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                    if (isSmall && open) {
+                        // anchor the panel to the controls toggle so it appears directly under the button
+                        const toggleRect = controlsToggle.getBoundingClientRect();
+                        controls.style.position = 'fixed';
+                        controls.style.left = Math.max(8, toggleRect.left) + 'px';
+                        controls.style.top = (toggleRect.bottom + 6) + 'px';
+                        controls.style.background = 'linear-gradient(90deg, rgba(0,191,174,0.04), rgba(0,116,217,0.04))';
+                        controls.style.padding = '8px';
+                        controls.style.borderRadius = '10px';
+                        controls.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)';
+                        controls.style.maxWidth = 'calc(100vw - 32px)';
+                        // limit height so it doesn't sit on top of the tree; allow internal scrolling
+                        controls.style.maxHeight = '38vh';
+                        controls.style.overflow = 'auto';
+                        controls.style.zIndex = 8600;
+                    } else {
+                        // reset inline positioning
+                        controls.style.position = '';
+                        controls.style.left = '';
+                        controls.style.top = '';
+                        controls.style.background = '';
+                        controls.style.padding = '';
+                        controls.style.borderRadius = '';
+                        controls.style.boxShadow = '';
+                        controls.style.maxWidth = '';
+                        controls.style.zIndex = '';
+                    }
                 });
                 updateControlsVisibility();
 
@@ -499,6 +586,42 @@
                 }
             }
 
+            // Ensure the rendered tree fits horizontally in the viewport by nudging the zoom transform
+            // so the left/right visible node extents don't fall outside the screen on small devices.
+        function ensureTreeVisible(margin = 24) {
+                try {
+            // on narrow phones give a larger margin to avoid nodes being too close to the edge
+            const small = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+            if (small) margin = Math.max(margin, 48);
+                    const nodes = root.descendants().filter(d => !(d.x == null || d.y == null));
+                    if (!nodes || nodes.length === 0) return;
+                    const transform = d3.zoomTransform(svg.node());
+                    // compute screen X (horizontal) for each node (svg coords are [y,x])
+                    let minScreenX = Infinity, maxScreenX = -Infinity;
+                    nodes.forEach(d => {
+                        const pt = transform.apply([d.y, d.x]);
+                        const sx = pt[0];
+                        if (sx < minScreenX) minScreenX = sx;
+                        if (sx > maxScreenX) maxScreenX = sx;
+                    });
+                    const leftLimit = margin;
+                    const rightLimit = window.innerWidth - margin;
+                    let dx = 0;
+                    if (maxScreenX > rightLimit) {
+                        dx = rightLimit - maxScreenX; // negative value moves tree left
+                    } else if (minScreenX < leftLimit) {
+                        dx = leftLimit - minScreenX; // positive moves tree right
+                    }
+                    if (dx !== 0) {
+                        const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y).scale(transform.k);
+                        svg.transition().duration(300).call(zoom.transform, newTransform);
+                    }
+                } catch (e) {
+                    // non-fatal
+                    console.warn('ensureTreeVisible failed', e);
+                }
+            }
+
             // Collapsible tree helpers
             function collapse(d) {
                 if (d.children) { d._children = d.children; d._children.forEach(collapse); d.children = null; }
@@ -547,8 +670,10 @@
             const wrapToggle = document.getElementById('wrap');
 
             // Initialize layout sizing to the denser defaults used previously
-            const initialVertical = 17; // vertical spacing (denser)
-            const initialHorizontal = 200; // horizontal spacing
+            // But increase vertical spacing on narrow/tall mobile screens so nodes don't overlap
+            const initialVertical = (height && height < 700) ? 28 : 17; // vertical spacing (larger on phones)
+            // Slightly reduce horizontal spacing on narrow screens so the tree fits
+            const initialHorizontal = (width && width < 480) ? 160 : 200; // horizontal spacing
             // Sync hidden UI controls to reflect these defaults so toggling preserves expected spacing
             if (nodeSizeYInput) nodeSizeYInput.value = initialVertical;
             if (nodeSizeXInput) nodeSizeXInput.value = initialHorizontal;
@@ -631,47 +756,72 @@
                 // NODES (drawn above links)
                 const node = nodeGroup.selectAll("g.node").data(nodes, d => d.id || (d.id = crypto.randomUUID()));
 
-                const nodeEnter = node.enter().append("g")
-                    .attr("class", d => {
-                        if (!d.children && !d._children && d.data.source && d.data.source.url) {
-                            return "node clickable";
-                        }
-                        return "node";
-                    })
-                    .attr("transform", d => `translate(${source.y0},${source.x0})`)
-                    .on("pointerdown", (event, d) => {
-                        // Normalize pointerdown for taps vs clicks. On small screens show a bottom-sheet
-                        const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
-                        if (!d.children && !d._children && d.data.source && d.data.source.url) {
-                            let html = `<strong>${d.data.name}</strong>`;
-                            if (d.data.date) html += `<div style='margin-top:4px; font-weight:bold;'>${d.data.date}</div>`;
-                            if (d.data.details) html += `<div style='margin-top:6px;'>${d.data.details}</div>`;
-                            html += `<div style='margin-top:10px;'><a href='${d.data.source.url}' target='_blank' style='color:var(--accent-dark);text-decoration:underline'>${d.data.source.title || "View Source"}</a></div>`;
-                            if (isSmall) {
-                                openBottomSheet(html);
-                            } else {
-                                popupHelp.html(html)
-                                    .style("opacity", 1)
-                                    .style("pointer-events", "auto");
-                                popupHelpNode = d;
-                                updatePopupHelpPosition();
-                                setTimeout(() => {
-                                    document.addEventListener('pointerdown', popupHelpOutsideClickHandler, true);
-                                }, 0);
-                            }
+                // Shared activation logic for nodes (click or tap)
+                function handleNodeActivate(event, d) {
+                    const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                    if (!d.children && !d._children && d.data.source && d.data.source.url) {
+                        let html = `<strong>${d.data.name}</strong>`;
+                        if (d.data.date) html += `<div style='margin-top:4px; font-weight:bold;'>${d.data.date}</div>`;
+                        if (d.data.details) html += `<div style='margin-top:6px;'>${d.data.details}</div>`;
+                        html += `<div style='margin-top:10px;'><a href='${d.data.source.url}' target='_blank' style='color:var(--accent-dark);text-decoration:underline'>${d.data.source.title || "View Source"}</a></div>`;
+                        if (isSmall) {
+                            openBottomSheet(html);
                         } else {
-                            if (!d.children && d._children) {
-                                expand(d);
-                                if (d.children) d.children.forEach(expandAllRecursive);
-                            } else {
-                                collapse(d);
-                            }
-                            update(d);
-                            popupHelp.style("opacity", 0)
-                                .style("pointer-events", "none");
-                            document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true);
-                            popupHelpNode = null;
+                            popupHelp.html(html)
+                                .style("opacity", 1)
+                                .style("pointer-events", "auto");
+                            popupHelpNode = d;
+                            updatePopupHelpPosition();
+                            setTimeout(() => {
+                                document.addEventListener('pointerdown', popupHelpOutsideClickHandler, true);
+                            }, 0);
                         }
+                    } else {
+                        if (!d.children && d._children) {
+                            expand(d);
+                            if (d.children) d.children.forEach(expandAllRecursive);
+                        } else {
+                            collapse(d);
+                        }
+                        update(d);
+                        popupHelp.style("opacity", 0)
+                            .style("pointer-events", "none");
+                        document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true);
+                        popupHelpNode = null;
+                    }
+                }
+
+                // tap detection: small movement + short time -> treat as tap
+                const pointerStarts = new Map();
+
+                const nodeEnter = node.enter().append("g")
+                    .attr("class", d => (!d.children && !d._children && d.data.source && d.data.source.url) ? "node clickable" : "node")
+                    .attr("transform", d => `translate(${source.y0},${source.x0})`)
+                    .on('pointerdown', (event, d) => {
+                        try { if (event.isPrimary) pointerStarts.set(event.pointerId, { x: event.clientX, y: event.clientY, t: Date.now() }); } catch (e) { /* ignore */ }
+                    })
+                    .on('pointerup', (event, d) => {
+                        const s = pointerStarts.get(event.pointerId);
+                        if (s) {
+                            const dx = event.clientX - s.x;
+                            const dy = event.clientY - s.y;
+                            const dist = Math.hypot(dx, dy);
+                            const dt = Date.now() - s.t;
+                            pointerStarts.delete(event.pointerId);
+                            if (dist < 8 && dt < 400) {
+                                // mark tapped to avoid duplicate click handling
+                                d._handledTap = Date.now();
+                                handleNodeActivate(event, d);
+                                event.preventDefault();
+                                return;
+                            }
+                        }
+                    })
+                    .on('pointercancel', (event) => { pointerStarts.delete(event.pointerId); })
+                    .on('click', (event, d) => {
+                        // avoid duplicate when pointerup already handled the tap
+                        if (d._handledTap && (Date.now() - d._handledTap) < 600) { d._handledTap = 0; return; }
+                        handleNodeActivate(event, d);
                     })
                     .on("pointerenter", (event, d) => {
                         // show subtitle on hover/enter (pointer-aware)
@@ -757,13 +907,20 @@
 
                 // Stash positions for smooth transitions next time
                 nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+                // Make sure the tree fits the viewport (esp. on narrow phones where right nodes can be off-screen)
+                ensureTreeVisible();
             }
 
             update(root);
 
             // Center root nicely
             // Shift right so root node is visible
-            svg.call(zoom.transform, d3.zoomIdentity.translate(220, height / 2).scale(1));
+            // Use a smaller left translate on small screens so we don't leave excessive blank space on the left
+            const smallScreen = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+            const initialTranslateX = smallScreen ? Math.min(120, Math.max(40, width * 0.12)) : 220;
+            svg.call(zoom.transform, d3.zoomIdentity.translate(initialTranslateX, height / 2).scale(1));
+            // Ensure nodes fit the viewport after initial centering
+            setTimeout(() => ensureTreeVisible(), 120);
 
             // Collapse or expand all nodes
             function collapseAll(d) {

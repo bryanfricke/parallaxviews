@@ -419,6 +419,13 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     if(_suppressTTClick){ _suppressTTClick = false; return; }
     // also ignore clicks that happen within a short window after drag end (timestamp-based)
     if(_lastDragTime && (Date.now() - _lastDragTime) < 300){ _lastDragTime = 0; return; }
+    // don't toggle pin when clicking interactive controls inside the tooltip
+    // (pager buttons, links, inputs, close button). These should be handled
+    // by their own handlers and must not fall through to the tooltip click
+    // toggle which would unpin/hide the tooltip.
+    if(event.target && event.target.closest && event.target.closest('button, a, input, .tt-close, #pager-left, #pager-right')){
+      return;
+    }
     // toggle pinned when tooltip is clicked
     if(state.pinned){
       // unpin
