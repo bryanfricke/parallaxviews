@@ -352,8 +352,17 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     if(!ttNode) return;
     ttNode.addEventListener('pointerdown', (ev)=>{
       // only start drag when tooltip is pinned and left mouse or primary pointer
+      // but do not start drag when the pointerdown is on interactive controls
+      // (buttons, links, inputs, the pin/close control, or pager buttons).
       if(!state.pinned) return;
       if(ev.button !== 0) return;
+      try{
+        const tgt = ev.target;
+        if(tgt && tgt.closest && tgt.closest('button, a, input, .tt-close, #pager-left, #pager-right')){
+          // let the control handle the pointer event; don't preventDefault or capture
+          return;
+        }
+      }catch(e){}
       dragging = true;
       startX = ev.clientX; startY = ev.clientY;
       // read current computed left/top
