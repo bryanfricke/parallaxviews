@@ -670,8 +670,17 @@
             const wrapToggle = document.getElementById('wrap');
 
             // Initialize layout sizing to the denser defaults used previously
-            // But increase vertical spacing on narrow/tall mobile screens so nodes don't overlap
-            const initialVertical = (height && height < 700) ? 28 : 17; // vertical spacing (larger on phones)
+            // Detect iOS (covers Mobile Safari and Chrome on iOS) and treat it as a small/tall mobile
+            // so we increase vertical spacing there as well. This avoids relying solely on
+            // the computed chart height which can differ across browsers on iOS.
+            const isIOS = (() => {
+                const ua = navigator.userAgent || '';
+                const platform = navigator.platform || '';
+                // iPhone/iPad/iPod in UA, or iPad on modern iPadOS which reports MacIntel but has touch
+                return /iPad|iPhone|iPod/.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            })();
+            // But increase vertical spacing on narrow/tall mobile screens (or iOS browsers)
+            const initialVertical = (isIOS || (height && height < 700)) ? 28 : 17; // vertical spacing (larger on phones)
             // Slightly reduce horizontal spacing on narrow screens so the tree fits
             const initialHorizontal = (width && width < 480) ? 160 : 200; // horizontal spacing
             // Sync hidden UI controls to reflect these defaults so toggling preserves expected spacing
