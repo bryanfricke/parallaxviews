@@ -160,7 +160,7 @@
             #controlsToggle { display: inline-block !important; position: fixed !important; left: 12px; top: calc(env(safe-area-inset-top, 0px) + 8px); z-index: 9000; }
             #controls { display: none; width: 100%; }
             #controls.open { display: flex; flex-wrap: wrap; gap: 8px; }
-            .bottom-sheet { background: var(--bg-dark); color: var(--text-dark); }
+            /* bottom-sheet styles use the base .bottom-sheet rules (theme-aware) */
             /* when JS positions the controls as fixed, improve scrolling and backdrop */
             #controls[style] {
                 -webkit-overflow-scrolling: touch;
@@ -185,16 +185,27 @@
             left: 0;
             right: 0;
             bottom: -100%;
-            background: var(--bg-dark);
-            color: var(--text-dark);
+            /* Default: light-panel style so it reads well on light pages
+               and doesn't appear as a deep black in dark mode. Dark mode
+               override below sets a softer panel color. */
+            background: rgba(255,255,255,0.98);
+            color: #222;
             border-top-left-radius: 12px;
             border-top-right-radius: 12px;
-            box-shadow: 0 -8px 24px rgba(0,0,0,0.32);
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.06);
             padding: 16px;
             z-index: 2500;
             transition: bottom 260ms ease;
             max-height: 70vh;
             overflow: auto;
+        }
+        /* Dark-mode variant: use a muted panel color instead of pure black */
+        body.dark-mode .bottom-sheet {
+            background: var(--panel-dark);
+            color: var(--text-dark);
+            border: 1px solid rgba(255,255,255,0.04);
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.32);
         }
         .bottom-sheet.open { bottom: 0; }
         .bottom-sheet .close-btn {
@@ -203,9 +214,10 @@
             position: absolute;
             right: -6px; /* move slightly outside */
             top: -6px;   /* lift above the sheet edge */
-            background: rgba(0,0,0,0.12);
+            /* default (light-mode): subtle dark button on light panel */
+            background: rgba(0,0,0,0.06);
             border: none;
-            color: var(--text-dark);
+            color: #222;
             font-size: 20px;
             padding: 6px;
             border-radius: 8px;
@@ -215,6 +227,13 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        /* Dark-mode variant for the close button */
+        body.dark-mode .bottom-sheet .close-btn {
+            background: rgba(0,0,0,0.12);
+            color: var(--text-dark);
             box-shadow: 0 2px 8px rgba(0,0,0,0.12);
         }
 
