@@ -198,15 +198,39 @@
         }
         .bottom-sheet.open { bottom: 0; }
         .bottom-sheet .close-btn {
+            /* nudge the control slightly outside the rounded sheet so it doesn't overlap
+               the first lines of content while remaining visually attached */
             position: absolute;
-            right: 12px;
-            top: 8px;
-            background: transparent;
+            right: -6px; /* move slightly outside */
+            top: -6px;   /* lift above the sheet edge */
+            background: rgba(0,0,0,0.12);
             border: none;
             color: var(--text-dark);
             font-size: 20px;
             padding: 6px;
+            border-radius: 8px;
             cursor: pointer;
+            min-width: 32px;
+            min-height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        /* Remove the iOS blue focus ring / highlight for the close button in the bottom sheet.
+           Keep this narrowly scoped to the close button since focus rings are useful elsewhere
+           for keyboard users. On touch devices the blue ring is visual noise. */
+        .bottom-sheet .close-btn {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Keep tappable appearance but do not show an additional glow on focus */
+        .bottom-sheet .close-btn:focus {
+            outline: none;
+            box-shadow: none;
         }
 
         .link {
@@ -334,6 +358,28 @@
             fill: #005fa3;
             text-decoration: none;
         }
+        /* stronger visual ring for selected node (set via data-selected attribute) */
+        g.node[data-selected="true"] circle {
+            /* default (dark-mode friendly) selection ring */
+            stroke: #00E6B2 !important;
+            stroke-width: 2.6px !important;
+            transition: stroke 180ms, stroke-width 180ms;
+        }
+        /* subtle halo around selected node group to increase contrast without changing fill (dark-mode) */
+        g.node[data-selected="true"] {
+            filter: drop-shadow(0 6px 10px rgba(0,230,178,0.06));
+        }
+
+        /* Light-mode specific selection styling: use a slightly darker, high-contrast ring
+           and a faint cool-blue halo so the ring reads well on a white background. */
+        body:not(.dark-mode) g.node[data-selected="true"] circle {
+            stroke: #0074d9 !important; /* blue that matches other light-mode accents */
+            stroke-width: 2.6px !important;
+            transition: stroke 180ms, stroke-width 180ms;
+        }
+        body:not(.dark-mode) g.node[data-selected="true"] {
+            filter: drop-shadow(0 6px 10px rgba(0,116,217,0.06));
+        }
         /* ESV credit footnote (small, unobtrusive, respects dark mode) */
         .esv-credit {
             position: fixed;
@@ -408,19 +454,52 @@
 
                 // Create bottom-sheet element for mobile node details
                 const bottomSheet = document.getElementById('bottomSheet');
-                function openBottomSheet(html) {
+                function openBottomSheet(html, node) {
                     // hide other transient UI
                     tooltip.style('opacity', 0);
                     popupHelp.style('opacity', 0).style('pointer-events', 'none');
                     bottomSheet.innerHTML = `<button class="close-btn" aria-label="Close">×</button><div class="bottom-content">${html}</div>`;
                     bottomSheet.classList.add('open');
                     bottomSheet.setAttribute('aria-hidden', 'false');
-                    // ensure visible on small screens
+
+                    // After the sheet is open, ensure the clicked node isn't obscured on small screens.
+                    const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
                     setTimeout(() => {
+                        // scrollIntoView as before to bring sheet into view
                         bottomSheet.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+                        // If a node was provided and we're on a small screen, check if it will be
+                        // covered by the sheet. If so, pan the svg up so the node sits above the sheet.
+                        if (isSmall && node && svg && typeof d3 !== 'undefined') {
+                            try {
+                                const sheetRect = bottomSheet.getBoundingClientRect();
+                                const margin = 12; // spacing above sheet
+                                // Compute node screen coords (similar to updatePopupHelpPosition)
+                                const transform = d3.zoomTransform(svg.node());
+                                const transformed = transform.apply([node.y, node.x]);
+                                const point = svg.node().createSVGPoint();
+                                point.x = transformed[0];
+                                point.y = transformed[1];
+                                const ctm = svg.node().getScreenCTM();
+                                if (ctm) {
+                                    const screenPoint = point.matrixTransform(ctm);
+                                    const nodeScreenY = screenPoint.y;
+                                    const availableTop = window.innerHeight - sheetRect.height - margin;
+                                    if (nodeScreenY > availableTop) {
+                                        const dy = availableTop - nodeScreenY; // negative value will move content up
+                                        const newTransform = d3.zoomIdentity.translate(transform.x, transform.y + dy).scale(transform.k);
+                                        svg.interrupt();
+                                        svg.transition().duration(320).call(zoom.transform, newTransform);
+                                    }
+                                }
+                            } catch (e) {
+                                console.warn('openBottomSheet: failed to reposition for node visibility', e);
+                            }
+                        }
+
                         const btn = bottomSheet.querySelector('.close-btn');
                         if (btn) { btn.focus({ preventScroll: true }); btn.addEventListener('click', closeBottomSheet, { once: true }); }
-                    }, 50);
+                    }, 60);
                 }
                 function closeBottomSheet() {
                     bottomSheet.classList.remove('open');
@@ -541,7 +620,8 @@
                 sel.style('left', desiredLeft + 'px').style('top', desiredTop + 'px');
                 const rect = el.getBoundingClientRect();
                 const maxTop = Math.max(margin, window.innerHeight - rect.height - margin);
-                const maxLeft = Math.max(margin, window.innerWidth - rect.width - margin);
+                // use chart width for horizontal clamping so popups align with the svg area
+                const maxLeft = Math.max(margin, width - rect.width - margin);
                 const left = Math.min(Math.max(desiredLeft, margin), maxLeft);
                 const top = Math.min(Math.max(desiredTop, margin), maxTop);
                 sel.style('left', left + 'px').style('top', top + 'px');
@@ -576,7 +656,8 @@
                         const rect = popupEl.getBoundingClientRect();
                         const margin = 8;
                         const maxTop = Math.max(margin, window.innerHeight - rect.height - margin);
-                        const maxLeft = Math.max(margin, window.innerWidth - rect.width - margin);
+                        // align popup clamping with the SVG/chart width rather than full window
+                        const maxLeft = Math.max(margin, width - rect.width - margin);
                         const left = Math.min(Math.max(desiredLeft, margin), maxLeft);
                         const top = Math.min(Math.max(desiredTop, margin), maxTop);
                         popupHelp.style("left", left + "px").style("top", top + "px");
@@ -589,6 +670,7 @@
             // Ensure the rendered tree fits horizontally in the viewport by nudging the zoom transform
             // so the left/right visible node extents don't fall outside the screen on small devices.
         function ensureTreeVisible(margin = 24) {
+                if (typeof suppressAutoEnsure !== 'undefined' && suppressAutoEnsure) return;
                 try {
             // on narrow phones give a larger margin to avoid nodes being too close to the edge
             const small = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
@@ -605,7 +687,8 @@
                         if (sx > maxScreenX) maxScreenX = sx;
                     });
                     const leftLimit = margin;
-                    const rightLimit = window.innerWidth - margin;
+                    // use the chart width (container) as the horizontal limit
+                    const rightLimit = width - margin;
                     let dx = 0;
                     if (maxScreenX > rightLimit) {
                         dx = rightLimit - maxScreenX; // negative value moves tree left
@@ -631,6 +714,9 @@
             }
 
             const root = d3.hierarchy(data);
+            // When true, prevent ensureTreeVisible from nudging the view while we perform
+            // a deliberate centering animation (avoids competing transitions).
+            let suppressAutoEnsure = false;
             root.x0 = height / 2;
             root.y0 = 0;
             // Collapse the 'Death', 'Burial', and 'Resurrection' nodes themselves so only those are visible under the root
@@ -768,13 +854,18 @@
                 // Shared activation logic for nodes (click or tap)
                 function handleNodeActivate(event, d) {
                     const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                    try {
+                        // mark only the activated node's group with data-selected="true"
+                        d3.selectAll('g.node').attr('data-selected', 'false');
+                        d3.selectAll('g.node').filter(n => n === d).attr('data-selected', 'true');
+                    } catch (e) { /* ignore if d3 not present */ }
                     if (!d.children && !d._children && d.data.source && d.data.source.url) {
                         let html = `<strong>${d.data.name}</strong>`;
                         if (d.data.date) html += `<div style='margin-top:4px; font-weight:bold;'>${d.data.date}</div>`;
                         if (d.data.details) html += `<div style='margin-top:6px;'>${d.data.details}</div>`;
                         html += `<div style='margin-top:10px;'><a href='${d.data.source.url}' target='_blank' style='color:var(--accent-dark);text-decoration:underline'>${d.data.source.title || "View Source"}</a></div>`;
                         if (isSmall) {
-                            openBottomSheet(html);
+                            openBottomSheet(html, d);
                         } else {
                             popupHelp.html(html)
                                 .style("opacity", 1)
@@ -786,13 +877,111 @@
                             }, 0);
                         }
                     } else {
-                        if (!d.children && d._children) {
+                        // Determine whether this interaction will expand or collapse the node
+                        const willExpand = !d.children && d._children;
+                        if (willExpand) {
+                            // Only expand the clicked node's immediate children.
+                            // Previously we expanded all descendants via expandAllRecursive;
+                            // remove that so a click only toggles the immediate level.
                             expand(d);
-                            if (d.children) d.children.forEach(expandAllRecursive);
                         } else {
                             collapse(d);
                         }
+
+                        // Perform the update and then, on small screens, center the newly-exposed
+                        // deepest-level nodes (after an expand) or center on the parent (after a collapse).
+                        // Suppress automatic ensureTreeVisible nudges while we do our manual centering.
+                        suppressAutoEnsure = true;
                         update(d);
+
+                        // Always run centering code after the update/transition. On small screens we
+                        // preserve the existing full-centering behavior. On larger screens we apply
+                        // a softer, clamped nudge so the viewport moves toward the selected area
+                        // without fully recentring (less jarring on desktop).
+                        const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                        setTimeout(() => {
+                            try {
+                                const transform = d3.zoomTransform(svg.node());
+                                if (isSmall) {
+                                    // original mobile behavior: center fully on the target
+                                    if (willExpand) {
+                                        const desc = d.descendants();
+                                        if (!desc || desc.length === 0) { suppressAutoEnsure = false; return; }
+                                        let maxDepth = -Infinity;
+                                        desc.forEach(n => { if (n.depth > maxDepth) maxDepth = n.depth; });
+                                        const deepest = desc.filter(n => n.depth === maxDepth);
+                                        if (!deepest || deepest.length === 0) { suppressAutoEnsure = false; return; }
+                                        const avgX = d3.mean(deepest, n => n.x);
+                                        const avgY = d3.mean(deepest, n => n.y);
+                                        const screen = transform.apply([avgY, avgX]);
+                                        // use chart width for horizontal centering
+                                        const dx = (width / 2) - screen[0];
+                                        const dy = (height / 2) - screen[1];
+                                        const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
+                                        svg.interrupt();
+                                        svg.transition().duration(360).call(zoom.transform, newTransform)
+                                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                                    } else {
+                                        const avgX = d.x;
+                                        const avgY = d.y;
+                                        const screen = transform.apply([avgY, avgX]);
+                                        // use chart width for horizontal centering
+                                        const dx = (width / 2) - screen[0];
+                                        const dy = (height / 2) - screen[1];
+                                        const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
+                                        svg.interrupt();
+                                        svg.transition().duration(360).call(zoom.transform, newTransform)
+                                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                                    }
+                                } else {
+                                    // Desktop/large-screen behavior: apply a fraction of the computed delta
+                                    // and clamp to reasonable maximums so motion is subtle.
+                                    const duration = 260;
+                                        const fraction = 1.0; // apply full computed shift on desktop (match mobile)
+                                    if (willExpand) {
+                                        const desc = d.descendants();
+                                        if (!desc || desc.length === 0) { suppressAutoEnsure = false; return; }
+                                        let maxDepth = -Infinity;
+                                        desc.forEach(n => { if (n.depth > maxDepth) maxDepth = n.depth; });
+                                        const deepest = desc.filter(n => n.depth === maxDepth);
+                                        if (!deepest || deepest.length === 0) { suppressAutoEnsure = false; return; }
+                                        const avgX = d3.mean(deepest, n => n.x);
+                                        const avgY = d3.mean(deepest, n => n.y);
+                                        const screen = transform.apply([avgY, avgX]);
+                                        // use the computed chart `width` (container) rather than the full window
+                                        let dx = ((width / 2) - screen[0]) * fraction;
+                                        let dy = ((height / 2) - screen[1]) * fraction;
+                                        const maxMoveX = width * 0.35;
+                                        const maxMoveY = height * 0.35;
+                                        dx = Math.max(-maxMoveX, Math.min(maxMoveX, dx));
+                                        dy = Math.max(-maxMoveY, Math.min(maxMoveY, dy));
+                                        const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
+                                        svg.interrupt();
+                                        svg.transition().duration(duration).call(zoom.transform, newTransform)
+                                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                                    } else {
+                                        const avgX = d.x;
+                                        const avgY = d.y;
+                                        const screen = transform.apply([avgY, avgX]);
+                                        // use chart `width` for horizontal centering
+                                        let dx = ((width / 2) - screen[0]) * fraction;
+                                        let dy = ((height / 2) - screen[1]) * fraction;
+                                        const maxMoveX = width * 0.35;
+                                        const maxMoveY = height * 0.35;
+                                        dx = Math.max(-maxMoveX, Math.min(maxMoveX, dx));
+                                        dy = Math.max(-maxMoveY, Math.min(maxMoveY, dy));
+                                        const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
+                                        svg.interrupt();
+                                        svg.transition().duration(duration).call(zoom.transform, newTransform)
+                                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                                    }
+                                }
+                            } catch (e) {
+                                console.warn('centering after expand/collapse failed', e);
+                                suppressAutoEnsure = false;
+                            }
+                        }, isSmall ? 380 : 220);
+
                         popupHelp.style("opacity", 0)
                             .style("pointer-events", "none");
                         document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true);
@@ -836,13 +1025,22 @@
                         // show subtitle on hover/enter (pointer-aware)
                         const txt = d.data.subtitle || "";
                         if (!txt) return;
+                        const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                        if (isSmall) {
+                            // On small/touch devices the tooltip often appears under the finger.
+                            // Use the bottom sheet to surface subtitle info instead.
+                            const html = `<div style="padding:4px 2px;">${txt}</div>`;
+                            openBottomSheet(html, d);
+                            return;
+                        }
                         tooltip.html(txt)
                             .style("opacity", 1)
                             .style("pointer-events", "none");
                         clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
                     })
                     .on("pointermove", (event) => {
-                        clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
+                        const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                        if (!isSmall) clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
                     })
                     .on("pointerleave", () => {
                         tooltip.style("opacity", 0);
@@ -923,13 +1121,25 @@
             update(root);
 
             // Center root nicely
-            // Shift right so root node is visible
-            // Use a smaller left translate on small screens so we don't leave excessive blank space on the left
+            // Shift right so root node is visible. Use the same centering helpers that
+            // programmatic actions (like Collapse All / Expand All) use so desktop
+            // initial centering matches later behavior.
             const smallScreen = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
             const initialTranslateX = smallScreen ? Math.min(120, Math.max(40, width * 0.12)) : 220;
+            // Apply a sensible starting transform, then run the smoother centering
             svg.call(zoom.transform, d3.zoomIdentity.translate(initialTranslateX, height / 2).scale(1));
-            // Ensure nodes fit the viewport after initial centering
-            setTimeout(() => ensureTreeVisible(), 120);
+            // After layout settles, run centering that focuses on the deepest visible nodes
+            setTimeout(() => {
+                try {
+                    if (smallScreen) {
+                        try { centerAfterUpdate(root); } catch (e) { /* ignore */ }
+                    } else {
+                        try { centerSmooth(root); } catch (e) { /* ignore */ }
+                    }
+                } catch (e) { /* non-fatal */ }
+                // Ensure nodes fit the viewport after centering
+                ensureTreeVisible();
+            }, 140);
 
             // Collapse or expand all nodes
             function collapseAll(d) {
@@ -947,17 +1157,174 @@
                 }
             }
 
+            // Centering helper used after programmatic updates (buttons/state changes)
+            // target can be a single node or an array of nodes. If null, center on root.
+            const debugCentering = false; // set true to enable console.logs for centering/debug
+            function centerAfterUpdate(target, opts = {}) {
+                try {
+                    const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                    const transform = d3.zoomTransform(svg.node());
+                    // Choose nodes to center on
+                    let nodes = null;
+                    if (!target) {
+                        nodes = [root];
+                    } else if (Array.isArray(target)) {
+                        nodes = target;
+                    } else {
+                        // single node: if it has visible descendants prefer the deepest ones
+                        const desc = (target && typeof target.descendants === 'function') ? target.descendants() : null;
+                        if (desc && desc.length > 0) {
+                            let maxDepth = -Infinity;
+                            desc.forEach(n => { if (n.depth > maxDepth) maxDepth = n.depth; });
+                            const deepest = desc.filter(n => n.depth === maxDepth);
+                            nodes = (deepest && deepest.length > 0) ? deepest : [target];
+                        } else {
+                            nodes = [target];
+                        }
+                    }
+
+                    // compute average coordinates in layout space
+                    const avgX = d3.mean(nodes, n => n.x);
+                    const avgY = d3.mean(nodes, n => n.y);
+
+                    if (isSmall) {
+                        // full-centering behavior (preserve original mobile UX)
+                        const screen = transform.apply([avgY, avgX]);
+                        if (debugCentering) console.log('centerAfterUpdate mobile avg', { avgX, avgY, screen });
+                        // use chart width for horizontal centering
+                        const dx = (width / 2) - screen[0];
+                        const dy = (height / 2) - screen[1];
+                        const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
+                        suppressAutoEnsure = true;
+                        svg.interrupt();
+                        svg.transition().duration(360).call(zoom.transform, newTransform)
+                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                    } else {
+                        // gentle, clamped nudge on larger screens
+                        if (debugCentering) console.log('centerAfterUpdate desktop avg', { avgX, avgY });
+                        const fraction = (opts.fraction != null) ? opts.fraction : 0.45;
+                        const duration = (opts.duration != null) ? opts.duration : 260;
+                        const screen = transform.apply([avgY, avgX]);
+                        // use chart width for horizontal centering
+                        let dx = ((width / 2) - screen[0]) * fraction;
+                        let dy = ((height / 2) - screen[1]) * fraction;
+                        const maxMoveX = width * 0.35;
+                        const maxMoveY = height * 0.35;
+                        dx = Math.max(-maxMoveX, Math.min(maxMoveX, dx));
+                        dy = Math.max(-maxMoveY, Math.min(maxMoveY, dy));
+                        const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
+                        if (debugCentering) console.log('centerAfterUpdate transform', { dx, dy, newTransform });
+                        suppressAutoEnsure = true;
+                        svg.interrupt();
+                        svg.transition().duration(duration).call(zoom.transform, newTransform)
+                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                    }
+                } catch (e) {
+                    console.warn('centerAfterUpdate failed', e);
+                    suppressAutoEnsure = false;
+                }
+            }
+
+            // Immediate centering (no animation) used for desktop programmatic actions
+            function centerImmediate(target) {
+                try {
+                    const transform = d3.zoomTransform(svg.node());
+                    // select nodes to center on (reuse logic from centerAfterUpdate)
+                    let nodes = null;
+                    if (!target) nodes = [root];
+                    else if (Array.isArray(target)) nodes = target;
+                    else {
+                        const desc = (target && typeof target.descendants === 'function') ? target.descendants() : null;
+                        if (desc && desc.length > 0) {
+                            let maxDepth = -Infinity;
+                            desc.forEach(n => { if (n.depth > maxDepth) maxDepth = n.depth; });
+                            const deepest = desc.filter(n => n.depth === maxDepth);
+                            nodes = (deepest && deepest.length > 0) ? deepest : [target];
+                        } else {
+                            nodes = [target];
+                        }
+                    }
+                    const avgX = d3.mean(nodes, n => n.x);
+                    const avgY = d3.mean(nodes, n => n.y);
+                    // compute desired dx/dy to center on avg
+                    const screen = transform.apply([avgY, avgX]);
+                    // use chart width for horizontal centering
+                    const dx = (width / 2) - screen[0];
+                    const dy = (height / 2) - screen[1];
+                    const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
+                    // apply immediately
+                    suppressAutoEnsure = true;
+                    svg.interrupt();
+                    svg.call(zoom.transform, newTransform);
+                    suppressAutoEnsure = false;
+                } catch (e) { console.warn('centerImmediate failed', e); suppressAutoEnsure = false; }
+            }
+
+            // Smooth centering (animated) used for desktop programmatic actions
+            function centerSmooth(target, opts = {}) {
+                const duration = (opts && opts.duration) ? opts.duration : 420;
+                try {
+                    const transform = d3.zoomTransform(svg.node());
+                    // select nodes to center on (reuse logic from centerAfterUpdate)
+                    let nodes = null;
+                    if (!target) nodes = [root];
+                    else if (Array.isArray(target)) nodes = target;
+                    else {
+                        const desc = (target && typeof target.descendants === 'function') ? target.descendants() : null;
+                        if (desc && desc.length > 0) {
+                            let maxDepth = -Infinity;
+                            desc.forEach(n => { if (n.depth > maxDepth) maxDepth = n.depth; });
+                            const deepest = desc.filter(n => n.depth === maxDepth);
+                            nodes = (deepest && deepest.length > 0) ? deepest : [target];
+                        } else {
+                            nodes = [target];
+                        }
+                    }
+                    const avgX = d3.mean(nodes, n => n.x);
+                    const avgY = d3.mean(nodes, n => n.y);
+                    const screen = transform.apply([avgY, avgX]);
+                    // use chart width for horizontal centering
+                    const dx = (width / 2) - screen[0];
+                    const dy = (height / 2) - screen[1];
+                    const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
+                    suppressAutoEnsure = true;
+                    svg.interrupt();
+                    svg.transition().duration(duration).call(zoom.transform, newTransform)
+                        .on('end interrupt', () => { suppressAutoEnsure = false; });
+                } catch (e) { console.warn('centerSmooth failed', e); suppressAutoEnsure = false; }
+            }
+
+            
+
             document.getElementById('collapseAll').onclick = () => {
                 root.children && root.children.forEach(collapseAll);
                 update(root);
                 // update tracked index
                 currentExpansionIndex = findMatchingStateIndex();
+                // center after collapse all: on small screens keep immediate/animated behavior,
+                // on desktop wait briefly for layout transitions to finish then center so a
+                // single click is sufficient.
+                if (smallScreen) {
+                    try { centerAfterUpdate(root); } catch (e) { /* ignore */ }
+                } else {
+                    setTimeout(() => { try { centerSmooth(root); } catch (e) { /* ignore */ } }, 380);
+                }
             };
             document.getElementById('expandAll').onclick = () => {
-                root.children && root.children.forEach(expandAll);
+                // Ensure we expand the entire tree even when nodes are collapsed into `_children`.
+                // Call the recursive helper on the root itself instead of iterating `root.children`.
+                try { expandAll(root); } catch (e) { /* ignore */ }
                 update(root);
                 // update tracked index
                 currentExpansionIndex = findMatchingStateIndex();
+                // center after expand all: on small screens keep immediate/animated behavior,
+                // on desktop wait briefly for layout transitions to finish then center so a
+                // single click is sufficient.
+                if (smallScreen) {
+                    try { centerAfterUpdate(root); } catch (e) { /* ignore */ }
+                } else {
+                    setTimeout(() => { try { centerSmooth(root); } catch (e) { /* ignore */ } }, 380);
+                }
             };
 
             // State machine for one-level expand/collapse
@@ -1019,7 +1386,34 @@
                         if (d.children) { d._children = d.children; d.children = null; }
                     }
                 });
-                update(root);
+        // Prevent the automatic ensureTreeVisible from scheduling its own transform
+        // while we intend to run a deliberate centering animation below.
+        suppressAutoEnsure = true;
+        update(root);
+                // After a programmatic state change, softly center on the deepest visible nodes
+                try {
+                    const visible = root.descendants().filter(n => !(n.x == null || n.y == null));
+                    if (visible && visible.length > 0) {
+                        let maxDepth = -Infinity;
+                        visible.forEach(n => { if (n.depth > maxDepth) maxDepth = n.depth; });
+                        const deepest = visible.filter(n => n.depth === maxDepth);
+                        if (debugCentering) {
+                            const avgX = d3.mean(deepest, n => n.x);
+                            const avgY = d3.mean(deepest, n => n.y);
+                            console.log('applyExpansionStateToLiveRoot: visible', visible.length, 'deepest', deepest.length, { avgX, avgY });
+                        }
+                        // For programmatic 'expand one level' actions, wait for update() transitions
+                        // to finish and then apply an immediate recenter on desktop to avoid
+                        // requiring multiple clicks; on small screens keep the animated centering.
+                        if (smallScreen) {
+                            try { centerAfterUpdate(deepest, { fraction: 1.0, duration: 360 }); } catch (e) { /* ignore */ }
+                        } else {
+                            setTimeout(() => { try { centerSmooth(deepest); } catch (e) { /* ignore */ } }, 380);
+                        }
+                    }
+                } catch (e) { /* non-fatal */ }
+                // Defensive: ensure the suppression is cleared if centering didn't run for some reason
+                setTimeout(() => { suppressAutoEnsure = false; }, 700);
             }
 
             // Build expansion states from the original raw data
