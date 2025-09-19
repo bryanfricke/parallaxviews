@@ -208,49 +208,27 @@
             box-shadow: 0 -8px 24px rgba(0,0,0,0.32);
         }
         .bottom-sheet.open { bottom: 0; }
-        .bottom-sheet .close-btn {
-            /* nudge the control slightly outside the rounded sheet so it doesn't overlap
-               the first lines of content while remaining visually attached */
-            position: absolute;
-            right: -6px; /* move slightly outside */
-            top: -6px;   /* lift above the sheet edge */
-            /* default (light-mode): subtle dark button on light panel */
-            background: rgba(0,0,0,0.06);
-            border: none;
-            color: #222;
-            font-size: 20px;
-            padding: 6px;
-            border-radius: 8px;
-            cursor: pointer;
-            min-width: 32px;
-            min-height: 32px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-        }
+    /* Keep tappable appearance but do not show an additional glow on focus */
 
-        /* Dark-mode variant for the close button */
-        body.dark-mode .bottom-sheet .close-btn {
-            background: rgba(0,0,0,0.12);
-            color: var(--text-dark);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-        }
-
-        /* Remove the iOS blue focus ring / highlight for the close button in the bottom sheet.
-           Keep this narrowly scoped to the close button since focus rings are useful elsewhere
-           for keyboard users. On touch devices the blue ring is visual noise. */
-        .bottom-sheet .close-btn {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        /* Keep tappable appearance but do not show an additional glow on focus */
-        .bottom-sheet .close-btn:focus {
+        /* Centered swipe handle used to dismiss the bottom sheet on mobile.
+           Large hit area, visually a small rounded pill centered at the top. */
+        .sheet-handle {
+            width: 44px;
+            height: 6px;
+            border-radius: 6px;
+            background: rgba(0,0,0,0.18);
+            margin: -10px auto 10px auto; /* lift slightly above sheet edge visually */
+            display: block;
+            cursor: grab;
+            touch-action: none; /* allow custom pointer handling */
+            -webkit-user-select: none;
+            user-select: none;
             outline: none;
-            box-shadow: none;
         }
+        /* Make the handle easier to tap while keeping visual smallness */
+        .sheet-handle::after { content: ''; display: block; height: 28px; margin-top: -16px; }
+        .sheet-handle:focus { box-shadow: 0 0 0 3px rgba(0,116,217,0.12); }
+        body.dark-mode .sheet-handle { background: rgba(255,255,255,0.08); }
 
         .link {
             fill: none;
@@ -477,7 +455,8 @@
                     // hide other transient UI
                     tooltip.style('opacity', 0);
                     popupHelp.style('opacity', 0).style('pointer-events', 'none');
-                    bottomSheet.innerHTML = `<button class="close-btn" aria-label="Close">×</button><div class="bottom-content">${html}</div>`;
+                    // use a centered handle bar at the top of the sheet (common mobile pattern)
+                    bottomSheet.innerHTML = `<div class="sheet-handle" role="button" tabindex="0" aria-label="Close sheet"></div><div class="bottom-content">${html}</div>`;
                     bottomSheet.classList.add('open');
                     bottomSheet.setAttribute('aria-hidden', 'false');
 
@@ -516,8 +495,77 @@
                             }
                         }
 
-                        const btn = bottomSheet.querySelector('.close-btn');
-                        if (btn) { btn.focus({ preventScroll: true }); btn.addEventListener('click', closeBottomSheet, { once: true }); }
+                        const handle = bottomSheet.querySelector('.sheet-handle');
+                        if (handle) {
+                            try { handle.focus({ preventScroll: true }); } catch (e) { /* ignore */ }
+                            // close on click (fallback) or keyboard activation
+                            handle.addEventListener('click', closeBottomSheet, { once: true });
+                            handle.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); closeBottomSheet(); } }, { once: true });
+
+                            // Pointer drag (swipe down) to dismiss behavior
+                            let dragging = false;
+                            let startY = 0;
+                            let startTime = 0;
+                            function onPointerDown(e) {
+                                if (!e.isPrimary) return;
+                                dragging = true;
+                                startY = e.clientY;
+                                startTime = Date.now();
+                                // stop CSS transition while dragging
+                                bottomSheet.style.transition = 'none';
+                                // capture pointer to ensure we get pointermove/up
+                                try { handle.setPointerCapture && handle.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+                                document.addEventListener('pointermove', onPointerMove);
+                                document.addEventListener('pointerup', onPointerUp);
+                                document.addEventListener('pointercancel', onPointerUp);
+                                // visual cue
+                                handle.style.cursor = 'grabbing';
+                            }
+                            function onPointerMove(e) {
+                                if (!dragging) return;
+                                const dy = Math.max(0, e.clientY - startY);
+                                // translate the sheet down while dragging
+                                bottomSheet.style.transform = `translateY(${dy}px)`;
+                            }
+                            function onPointerUp(e) {
+                                if (!dragging) return;
+                                dragging = false;
+                                const endY = e.clientY;
+                                const dy = Math.max(0, endY - startY);
+                                const dt = (Date.now() - startTime) / 1000;
+                                const velocity = dy / Math.max(dt, 0.001); // px/s
+                                // Decide to close if dragged far enough or quickly flicked
+                                const shouldClose = dy > 120 || velocity > 1500;
+                                // animate to target
+                                bottomSheet.style.transition = 'transform 260ms ease';
+                                if (shouldClose) {
+                                    // slide the sheet fully off-screen then close
+                                    bottomSheet.style.transform = `translateY(100%)`;
+                                    const onEnd = () => {
+                                        bottomSheet.style.transform = '';
+                                        bottomSheet.removeEventListener('transitionend', onEnd);
+                                        closeBottomSheet();
+                                    };
+                                    bottomSheet.addEventListener('transitionend', onEnd);
+                                } else {
+                                    // snap back
+                                    bottomSheet.style.transform = '';
+                                    const onEnd = () => {
+                                        bottomSheet.style.transition = '';
+                                        bottomSheet.removeEventListener('transitionend', onEnd);
+                                    };
+                                    bottomSheet.addEventListener('transitionend', onEnd);
+                                }
+                                try { handle.releasePointerCapture && handle.releasePointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+                                document.removeEventListener('pointermove', onPointerMove);
+                                document.removeEventListener('pointerup', onPointerUp);
+                                document.removeEventListener('pointercancel', onPointerUp);
+                                handle.style.cursor = 'grab';
+                            }
+
+                            // attach pointer listener
+                            handle.addEventListener('pointerdown', onPointerDown);
+                        }
                     }, 60);
                 }
                 function closeBottomSheet() {
