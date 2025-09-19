@@ -798,8 +798,10 @@
                     const text = d3.select(this);
                     const words = (text.text() || "").split(/\s+/).reverse();
                     let line = [], lineNumber = 0;
-                    // Set x based on node type
-                    const x = (d.children || d._children) ? -10 : 10;
+                    // Prefer the already-set x attribute (so wrapping honors dynamic offsets),
+                    // otherwise fall back to the original +/-10 defaults.
+                    const xAttr = text.attr('x');
+                    const x = (xAttr != null && xAttr !== '') ? parseFloat(xAttr) : ((d.children || d._children) ? -10 : 10);
                     let tspan = text.text(null).append("tspan").attr("x", x).attr("dy", "0em");
                     let word, lineHeight = 1.1;
                     while (word = words.pop()) {
@@ -1070,6 +1072,9 @@
                 // Adjust node radius for small touch screens to improve tap targets
                 const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
                 const targetRadius = isSmall ? 8 : 6;
+                // Compute a label offset that keeps text a comfortable distance from the node.
+                // This scales with the node radius so larger nodes on small screens push labels further out.
+                const labelOffset = targetRadius + 8; // px gap from node edge to first text baseline
 
                 nodeEnter.append("circle")
                     .attr("r", 1e-6)
@@ -1078,7 +1083,7 @@
 
                 const labels = nodeEnter.append("text")
                     .attr("dy", "0em")
-                    .attr("x", d => (d.children || d._children) ? -10 : 10)
+                    .attr("x", d => (d.children || d._children) ? -labelOffset : labelOffset)
                     .attr("text-anchor", d => (d.children || d._children) ? "end" : "start")
                     .html(d => d.data.link
                         ? `<a href="${d.data.link}" target="_blank" style="fill:blue;text-decoration:underline">${d.data.name}</a>`
@@ -1104,7 +1109,7 @@
                     .attr("fill", d => (d._children ? nodeColor(d) : "#fff"))
                     .attr("stroke", d => nodeColor(d));
                 nodeUpdate.select("text").transition().duration(350)
-                    .attr("x", d => (d.children || d._children) ? -10 : 10)
+                    .attr("x", d => (d.children || d._children) ? -labelOffset : labelOffset)
                     .attr("text-anchor", d => (d.children || d._children) ? "end" : "start");
 
                 const nodeExit = node.exit().transition().duration(250)
