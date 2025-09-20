@@ -15,13 +15,17 @@
             border-bottom: 1px solid #e0e0e0;
             min-height: 48px;
         }
+
         body.dark-mode #topbar {
             background: var(--bg-dark);
             border-bottom: 1px solid var(--link-dark);
         }
-        #topbar label, #topbar button {
+
+        #topbar label,
+        #topbar button {
             margin: 0 4px;
         }
+
         #topbar label {
             font-weight: 500;
             color: inherit;
@@ -29,8 +33,11 @@
             align-items: center;
             gap: 4px;
         }
+
+        /* Topbar buttons: subtle vertical (top-to-bottom) mint gradient to match nodes/checkbox.
+           Light mode tint deepened for better contrast. */
         #topbar button {
-            background: linear-gradient(90deg, #00BFAE 0%, #0074d9 100%);
+            background: linear-gradient(180deg, #33cdbf 0%, #009f92 100%);
             color: #fff;
             border: none;
             border-radius: 6px;
@@ -38,37 +45,93 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 159, 146, 0.16);
+            transition: background 0.18s ease, box-shadow 0.18s ease, color 0.12s ease, transform 0.08s;
         }
-        #topbar button:hover, #topbar button:focus {
-            background: linear-gradient(90deg, #00E6B2 0%, #005fa3 100%);
+
+        /* Hover / focus: slightly deeper mint and subtle lift */
+        #topbar button:hover,
+        #topbar button:focus {
+            background: linear-gradient(180deg, #22bfae 0%, #007f6f 100%);
             color: #fff;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+            box-shadow: 0 6px 18px rgba(0, 159, 146, 0.24);
         }
+
+        /* Dark mode variant: tuned for dark backgrounds but keep the mint tint */
         body.dark-mode #topbar button {
-            background: linear-gradient(90deg, var(--accent-dark) 0%, #005fa3 100%);
+            background: linear-gradient(180deg, #2bd1b0 0%, #007a67 100%);
             color: var(--text-dark);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.36);
         }
-        body.dark-mode #topbar button:hover, body.dark-mode #topbar button:focus {
-            background: linear-gradient(90deg, var(--node-hover-stroke-dark) 0%, #003d5c 100%);
+
+        body.dark-mode #topbar button:hover,
+        body.dark-mode #topbar button:focus {
+            background: linear-gradient(180deg, #35d8bd 0%, #00604f 100%);
             color: var(--text-dark);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.44);
         }
+
         #topbar input[type="checkbox"] {
             accent-color: #00BFAE;
             width: 16px;
             height: 16px;
             margin-right: 4px;
         }
+
         body.dark-mode #topbar input[type="checkbox"] {
             accent-color: var(--accent-dark);
         }
-        #topbar > * {
+
+        #topbar>* {
             margin-right: 8px;
         }
-        #topbar > *:last-child {
+
+        #topbar>*:last-child {
             margin-right: 0;
         }
+
+        /* Keep related control buttons adjacent when the controls wrap (mobile)
+           Each pair will stay together and wrap as a unit. */
+        .control-pair {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            white-space: nowrap;
+            /* prevent inner buttons from breaking onto separate lines */
+        }
+
+        /* Controls toggle icon: rotate when the toggle is opened (aria-expanded=true)
+           Use inline-flex on the wrapper and inline-block+vertical-align on the SVG
+           so the chevron sits vertically centered next to the text baseline. */
+        #controlsToggle .controls-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+            transition: transform 160ms ease;
+            transform-origin: center;
+            height: 1em;
+            /* match the font-size to align with the label */
+        }
+
+        #controlsToggle[aria-expanded="true"] .controls-icon {
+            transform: rotate(180deg);
+        }
+
+        /* SVG sizing/styling for the chevron icon */
+        #controlsToggle .controls-icon svg {
+            width: 0.88em;
+            /* slightly under 1em to line up optically */
+            height: 0.88em;
+            display: inline-block;
+            vertical-align: middle;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
         :root {
             --bg-light: #fff;
             --bg-dark: #181A20;
@@ -125,31 +188,56 @@
             height: 100%;
             display: block;
             background: transparent;
-            touch-action: none; /* allow d3-zoom to handle gestures on mobile */
+            touch-action: none;
+            /* allow d3-zoom to handle gestures on mobile */
         }
 
         /* Small-screen adjustments */
         @media (max-width: 600px) {
             #topbar {
-                flex-wrap: wrap;
+                /* keep items on one line; allow horizontal scroll if content exceeds width */
+                flex-wrap: nowrap;
                 gap: 8px;
                 padding: 8px 12px;
-                overflow-x: auto; /* allow horizontal scroll if too many controls */
+                /* Reserve space for the fixed toggle using the runtime-updated var */
+                padding-left: calc(var(--controls-reserve, 140px) + env(safe-area-inset-left, 0px));
+                overflow-x: auto;
+                /* allow horizontal scroll if too many controls */
                 -webkit-overflow-scrolling: touch;
             }
-            #topbar button { min-width: 110px; }
-            #topbar > * { margin-right: 8px; }
-            #topbar strong { font-size: 16px; }
+
+            /* When the controls toggle is pinned fixed on small screens, reserve
+               space on the left so it doesn't visually overlap other topbar items
+               (iOS portrait frequently pins the toggle into the safe-area). */
+            /* Reserve horizontal space for the fixed controls toggle by offsetting the
+               first child (usually the page title). This avoids increasing the topbar's
+               vertical size or forcing wrapped lines on narrow screens. */
+            /* first-child margin removed; padding-left on #topbar now reserves space */
+            #topbar button {
+                min-width: 110px;
+            }
+
+            #topbar>* {
+                margin-right: 8px;
+            }
+
+            #topbar strong {
+                font-size: 16px;
+            }
+
             #topbar button {
                 padding: 8px 10px;
                 font-size: 15px;
                 min-height: 40px;
             }
-            .tooltip, .popup-help {
+
+            .tooltip,
+            .popup-help {
                 max-width: calc(100vw - 24px);
                 font-size: 15px;
                 padding: 10px;
             }
+
             .esv-credit {
                 left: 8px;
                 right: 8px;
@@ -157,13 +245,33 @@
                 max-width: none;
                 font-size: 12px;
             }
+
             /* hide the footer on small screens to avoid overlaying the chart and bottom-sheet */
-            .esv-credit { display: none; }
+            .esv-credit {
+                display: none;
+            }
+
             /* Controls toggle and bottom-sheet */
             /* make toggle fixed so it doesn't get scrolled/hidden on small screens */
-            #controlsToggle { display: inline-block !important; position: fixed !important; left: 12px; top: calc(env(safe-area-inset-top, 0px) + 8px); z-index: 9000; }
-            #controls { display: none; width: 100%; }
-            #controls.open { display: flex; flex-wrap: wrap; gap: 8px; }
+            #controlsToggle {
+                display: inline-block !important;
+                position: fixed !important;
+                left: 12px;
+                top: calc(env(safe-area-inset-top, 0px) + 8px);
+                z-index: 9000;
+            }
+
+            #controls {
+                display: none;
+                width: 100%;
+            }
+
+            #controls.open {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
             /* bottom-sheet styles use the base .bottom-sheet rules (theme-aware) */
             /* when JS positions the controls as fixed, improve scrolling and backdrop */
             #controls[style] {
@@ -174,19 +282,54 @@
             }
         }
 
+        /* Also apply the same backdrop effect for small-height landscape viewports
+           (covers phones/tablets held in landscape where width may exceed 600px). */
+        @media (orientation: landscape) and (max-height: 600px) {
+            #controls[style],
+            #controls.open {
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+                background-clip: padding-box;
+                -webkit-backdrop-filter: blur(6px) saturate(80%);
+                backdrop-filter: blur(6px) saturate(80%);
+            }
+        }
+
+        /* On small devices when in landscape, shift the controls toggle and reserve
+           extra left padding so the fixed toggle/panel doesn't overlap the main
+           topbar content or the rounded device chrome (helps on iPhone landscape). */
+        @media (max-width: 600px) and (orientation: landscape) {
+            #controlsToggle {
+                left: 12px; /* base */
+                    transform: translateX(-56px); /* visual shift inward (left) */
+            }
+            /* increase reserved padding so the topbar content moves right and avoids overlap */
+            :root {
+                --controls-reserve: 220px;
+            }
+        }
+
         /* hide the large page title on small screens (we show controls instead) */
         @media (max-width: 600px) {
-            #topbar strong { display: none; }
+            #topbar strong {
+                display: none;
+            }
+
             /* compact mobile controls panel will be positioned by JS to avoid overlapping the divider */
         }
 
         /* hide the page title on large screens per user request */
         @media (min-width: 601px) {
-            #topbar strong { display: none; }
+            #topbar strong {
+                display: none;
+            }
         }
 
         /* keep topbar above floating bottom-sheet */
-        #topbar { position: relative; z-index: 5000; }
+        #topbar {
+            position: relative;
+            z-index: 5000;
+        }
 
         /* bottom-sheet base styles (works on all sizes but optimized for mobile) */
         .bottom-sheet {
@@ -197,76 +340,140 @@
             /* Default: light-panel style so it reads well on light pages
                and doesn't appear as a deep black in dark mode. Dark mode
                override below sets a softer panel color. */
-            background: rgba(255,255,255,0.98);
+            background: rgba(255, 255, 255, 0.98);
             color: #222;
             border-top-left-radius: 12px;
             border-top-right-radius: 12px;
-            box-shadow: 0 -8px 24px rgba(0,0,0,0.08);
-            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.06);
             padding: 16px;
             z-index: 2500;
             transition: bottom 260ms ease;
             max-height: 70vh;
             overflow: auto;
         }
+
+        /* Constrain typography inside the bottom-sheet so headings and body
+           text do not appear oversized on mobile browsers (e.g. iPhone Safari).
+           Provide a small, consistent title style for leaf popups. */
+        .bottom-sheet .bottom-content {
+            /* Prevent iOS Safari text-size-adjust (font boosting) inside the sheet
+               and ensure consistent rendering across platforms. */
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            -webkit-font-smoothing: antialiased;
+            font-size: 14px;
+            line-height: 1.45;
+            color: inherit;
+        }
+
+        .bottom-sheet .bottom-content .sheet-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .bottom-sheet .bottom-content a {
+            font-size: 14px;
+        }
+
+        /* Specific styles for leaf node popups (keeps non-leaf help unchanged) */
+        .bottom-sheet .bottom-content .leaf-content {
+            /* Force the leaf body to a consistent, readable size and prevent
+               browser text-size adjustments from enlarging it unexpectedly. */
+            font-size: 14px !important;
+            line-height: 1.45 !important;
+            color: inherit;
+        }
+
+        .bottom-sheet .bottom-content .leaf-content .leaf-date {
+            margin-top: 6px;
+            font-weight: 700;
+            font-size: 14px !important;
+        }
+
+        .bottom-sheet .bottom-content .leaf-content .leaf-details {
+            margin-top: 8px;
+            font-size: 14px !important;
+        }
+
+        .bottom-sheet .bottom-content .leaf-content .leaf-link {
+            margin-top: 10px;
+            font-size: 14px !important;
+        }
+
         /* Reserve horizontal space only for the first block (usually the heading)
            so the close button won't overlap the first line or two. Subsequent
            paragraphs keep the normal left-aligned width. */
-        .bottom-sheet .bottom-content > *:first-child {
-            padding-right: 56px; /* button width (32) + gap */
+        .bottom-sheet .bottom-content>*:first-child {
+            padding-right: 56px;
+            /* button width (32) + gap */
         }
+
         @media (max-width: 420px) {
-            .bottom-sheet .bottom-content > *:first-child { padding-right: 48px; }
+            .bottom-sheet .bottom-content>*:first-child {
+                padding-right: 48px;
+            }
         }
+
         /* Dark-mode variant: use a muted panel color instead of pure black */
         body.dark-mode .bottom-sheet {
             background: var(--panel-dark);
             color: var(--text-dark);
-            border: 1px solid rgba(255,255,255,0.04);
-            box-shadow: 0 -8px 24px rgba(0,0,0,0.32);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.32);
         }
-        .bottom-sheet.open { bottom: 0; }
+
+        .bottom-sheet.open {
+            bottom: 0;
+        }
+
         .bottom-sheet .close-btn {
             /* nudge the control slightly outside the rounded sheet so it doesn't overlap
                the first lines of content while remaining visually attached */
             position: absolute;
-                /* place the button fully inside the rounded sheet so it won't be clipped
+            /* place the button fully inside the rounded sheet so it won't be clipped
                     by the sheet's scrolling/overflow; keeps a comfortable inset from edges */
-                right: 12px;
-                top: 12px;
+            right: 12px;
+            top: 12px;
             /* light-mode: rounded, subtle light-gray circle with centered X */
             width: 32px;
             height: 32px;
             padding: 0;
-            background: rgba(0,0,0,0.035);
-            border: 1px solid rgba(0,0,0,0.06);
-            color: rgba(0,0,0,0.65);
-            font-size: 20px;
+            background: rgba(0, 0, 0, 0.035);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            color: rgba(0, 0, 0, 0.65);
+            /* slightly smaller font and zero line-height helps the glyph sit visually centered
+                    across browsers and fonts (fixes vertical centering issues with the × character) */
+            font-size: 18px;
             font-weight: 700;
-            line-height: 1;
-            border-radius: 999px; /* fully round */
+            line-height: 0;
+            border-radius: 999px;
+            /* fully round */
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.7);
-            z-index: 2600; /* ensure button appears above sheet content */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+            z-index: 2600;
+            /* ensure button appears above sheet content */
         }
 
         /* Dark-mode variant for the close button */
         body.dark-mode .bottom-sheet .close-btn {
-            background: rgba(255,255,255,0.04);
+            background: rgba(255, 255, 255, 0.04);
             color: var(--text-dark);
-            border: 1px solid rgba(255,255,255,0.06);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.02);
         }
 
         .bottom-sheet .close-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.7);
         }
+
         .bottom-sheet .close-btn:focus {
-            outline: 2px solid rgba(0,116,217,0.12);
+            outline: 2px solid rgba(0, 116, 217, 0.12);
             outline-offset: 2px;
         }
 
@@ -279,10 +486,142 @@
             -moz-appearance: none;
             -webkit-tap-highlight-color: transparent;
         }
+
         /* Keep tappable appearance but do not show an additional glow on focus */
         .bottom-sheet .close-btn:focus {
             outline: none;
             box-shadow: none;
+        }
+
+        /* Simple modal for the Minimal Facts background */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 24px;
+            /* ensure the backdrop uses the visual viewport when available to avoid
+               being covered by iOS browser chrome; padding keeps a gap from edges */
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-light);
+            color: inherit;
+            max-width: 820px;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.32);
+            padding: 20px 20px 18px 20px;
+            position: relative;
+            /* Allow the modal body to scroll when its content exceeds the available
+                    vertical space (important on iOS where browser chrome reduces viewport).
+                    Use safe-area insets to avoid overlapping the notch / dynamic island. */
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            box-sizing: border-box;
+            /* Provide a reasonable max-height to keep the modal readable on phones;
+                    use viewport-relative sizing with safe-area inset fallbacks. */
+            max-height: calc(100vh - 96px);
+        }
+
+        body.dark-mode .modal-content {
+            background: var(--panel-dark);
+            color: var(--text-dark);
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .modal-content p {
+            margin: 8px 0;
+        }
+
+        /* Reduce modal body typography in landscape on phones/tablets so text
+           doesn't appear oversized compared with the title. Keeps the h2 size. */
+        @media (orientation: landscape) and (max-height: 700px) {
+            .modal-content {
+                padding: 14px 14px 12px 14px;
+                max-height: calc(100vh - 56px);
+            }
+            .modal-content .modal-body,
+            .modal-content .modal-body p,
+            .modal-content .modal-body li,
+            .modal-content .modal-body ol,
+            .modal-content .modal-body ul {
+                font-size: 13px;
+                line-height: 1.35;
+            }
+            .modal-content .modal-body .sheet-title {
+                font-size: 15px;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            border: none;
+            background: rgba(0, 0, 0, 0.06);
+            /* dark glyph on light backgrounds by default */
+            color: rgba(0,0,0,0.72);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* stronger, high-contrast info icon used inside modal text */
+        .modal-body .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 12px;
+            vertical-align: middle;
+            flex: 0 0 24px;
+            /* Use the accent color as the SVG's currentColor so the outer circle
+               fills with the accent and the inner glyph stays white. */
+            color: var(--link-accent);
+            background: transparent;
+            box-shadow: none;
+            border: none;
+        }
+
+        /* ensure icon contrasts in dark mode as well (uses same accent variable)
+           but provide a subtle outline to improve separation on very dark panels */
+        body.dark-mode .modal-body .info-icon {
+            color: var(--link-accent);
+            background: transparent;
+            box-shadow: none;
+            border: none;
+        }
+
+        body.dark-mode .modal-close {
+            background: rgba(255, 255, 255, 0.04);
+            /* light glyph on dark backgrounds */
+            color: var(--text-dark);
+        }
+
+        /* accessible focus state for the modal close button */
+        .modal-close:focus {
+            outline: 2px solid rgba(0,116,217,0.12);
+            outline-offset: 2px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
         }
 
         .link {
@@ -403,6 +742,18 @@
             color: var(--node-hover-stroke-dark) !important;
         }
 
+        /* Modal links should use the shared link accent so they look correct in dark mode */
+        .modal-content a {
+            color: var(--link-accent) !important;
+            text-decoration: underline;
+        }
+        .modal-content a:hover {
+            opacity: 0.92;
+        }
+        body.dark-mode .modal-content a {
+            color: var(--link-accent) !important;
+        }
+
         .node.clickable text {
             fill: #0074d9;
             cursor: pointer;
@@ -413,6 +764,7 @@
             fill: #005fa3;
             text-decoration: none;
         }
+
         /* stronger visual ring for selected node (set via data-selected attribute) */
         g.node[data-selected="true"] circle {
             /* default (dark-mode friendly) selection ring */
@@ -420,21 +772,25 @@
             stroke-width: 2.6px !important;
             transition: stroke 180ms, stroke-width 180ms;
         }
+
         /* subtle halo around selected node group to increase contrast without changing fill (dark-mode) */
         g.node[data-selected="true"] {
-            filter: drop-shadow(0 6px 10px rgba(0,230,178,0.06));
+            filter: drop-shadow(0 6px 10px rgba(0, 230, 178, 0.06));
         }
 
         /* Light-mode specific selection styling: use a slightly darker, high-contrast ring
            and a faint cool-blue halo so the ring reads well on a white background. */
         body:not(.dark-mode) g.node[data-selected="true"] circle {
-            stroke: #0074d9 !important; /* blue that matches other light-mode accents */
+            stroke: #0074d9 !important;
+            /* blue that matches other light-mode accents */
             stroke-width: 2.6px !important;
             transition: stroke 180ms, stroke-width 180ms;
         }
+
         body:not(.dark-mode) g.node[data-selected="true"] {
-            filter: drop-shadow(0 6px 10px rgba(0,116,217,0.06));
+            filter: drop-shadow(0 6px 10px rgba(0, 116, 217, 0.06));
         }
+
         /* ESV credit footnote (small, unobtrusive, respects dark mode) */
         .esv-credit {
             position: fixed;
@@ -445,7 +801,7 @@
             line-height: 1.2;
             padding: 6px 8px;
             border-radius: 6px;
-            background: rgba(255,255,255,0.92);
+            background: rgba(255, 255, 255, 0.92);
             color: #333;
             border: 1px solid #e6e6e6;
             opacity: 0.95;
@@ -454,27 +810,38 @@
         }
 
         body.dark-mode .esv-credit {
-            background: rgba(24,26,32,0.7);
+            background: rgba(24, 26, 32, 0.7);
             color: var(--text-secondary-dark);
-            border: 1px solid rgba(255,255,255,0.04);
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
     </style>
 </head>
 
 <body class="dark-mode">
     <div id="topbar">
-    <strong style="font-size:18px; letter-spacing:0.5px; margin-right:16px;">Tidy Tree</strong>
-    <button id="controlsToggle" aria-expanded="false">Controls ▾</button>
+        <strong style="font-size:18px; letter-spacing:0.5px; margin-right:16px;">Tidy Tree</strong>
+        <button id="factsAboutBtn" aria-haspopup="dialog">4+1 Facts</button>
+        <button id="controlsToggle" aria-expanded="false">Controls <span class="controls-icon" aria-hidden="true"><svg
+                    viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6"></path>
+                </svg></span></button>
         <div id="controls" style="display:flex; align-items:center; gap:12px;">
             <label style="display:none;"><input type="checkbox" id="wrap"> Wrap labels</label>
             <label><input type="checkbox" id="clusterToggle"> Cluster layout</label>
-            <label style="display:none;">Node size: <input type="range" id="nodesize" min="10" max="100" value="20"></label>
-            <label style="display:none;">Vertical spacing: <input type="range" id="nodesizeY" min="10" max="150" value="60"></label>
-            <label style="display:none;">Horizontal spacing: <input type="range" id="nodesizeX" min="10" max="300" value="180"></label>
-            <button id="collapseAll">Collapse All</button>
-            <button id="expandAll">Expand All</button>
-            <button id="collapseOneLevel">Collapse One Level</button>
-            <button id="expandOneLevel">Expand One Level</button>
+            <label style="display:none;">Node size: <input type="range" id="nodesize" min="10" max="100"
+                    value="20"></label>
+            <label style="display:none;">Vertical spacing: <input type="range" id="nodesizeY" min="10" max="150"
+                    value="60"></label>
+            <label style="display:none;">Horizontal spacing: <input type="range" id="nodesizeX" min="10" max="300"
+                    value="180"></label>
+            <div class="control-pair">
+                <button id="collapseAll">Collapse All</button>
+                <button id="expandAll">Expand All</button>
+            </div>
+            <div class="control-pair">
+                <button id="collapseOneLevel">Collapse One Level</button>
+                <button id="expandOneLevel">Expand One Level</button>
+            </div>
         </div>
         <label style="margin-left:auto;"><input type="checkbox" id="darkModeToggle"> Dark mode</label>
     </div>
@@ -482,6 +849,53 @@
 
     <!-- bottom sheet for mobile node details -->
     <div id="bottomSheet" class="bottom-sheet" role="dialog" aria-hidden="true"></div>
+
+    <!-- modal backdrop for Minimal Facts background -->
+    <div id="factsModal" class="modal-backdrop" role="dialog" aria-hidden="true" aria-modal="true"
+        aria-labelledby="factsModalTitle">
+        <div class="modal-content" tabindex="-1" role="document">
+            <button class="modal-close" aria-label="Close">×</button>
+            <h2 id="factsModalTitle">The "Minimal Facts" (4 + 1)</h2>
+            <div class="modal-body">
+                <p>The “Minimal Facts” approach, developed by Gary Habermas and expanded with Michael Licona in <em>The
+                        Case for the Resurrection of Jesus</em>, identifies a handful of historical claims about Jesus
+                    that meet two criteria:</p>
+                <ul>
+                    <li>They are supported by strong historical evidence.</li>
+                    <li>They are accepted by the majority of scholars writing on the subject, including many who are not
+                        Christians.</li>
+                </ul>
+                <p>The standard list is:</p>
+                <ol>
+                    <li><strong>Jesus died by crucifixion.</strong><br>Jesus of Nazareth was executed under the Roman
+                        governor Pontius Pilate.</li>
+                    <li><strong>Jesus’ disciples believed that he rose and appeared to them.</strong><br>They were
+                        convinced they had real post-mortem encounters with him.</li>
+                    <li><strong>The church persecutor Paul was suddenly changed.</strong><br>Saul of Tarsus, once an
+                        enemy of the early Christian movement, became its leading missionary after what he described as
+                        a resurrection appearance.</li>
+                    <li><strong>The skeptic James, the brother of Jesus, was suddenly changed.</strong><br>Initially an
+                        unbeliever, James became the leader of the Jerusalem church following what he took to be an
+                        encounter with the risen Jesus.</li>
+                    <li><strong>The empty tomb (the “+1”).</strong><br>Many scholars accept that Jesus’ tomb was found
+                        empty by women followers, though this point is debated more than the four above.</li>
+                </ol>
+                <p><em>There is broad scholarly agreement on these core facts. The resurrection of Jesus best explains
+                        them, as competing theories such as hallucination or conspiracy quickly collapse under scrutiny.
+                        Objections usually arise not from the evidence itself but from worldview assumptions that rule
+                        out the possibility of God and miracles in advance.</em></p>
+                <hr style="margin-top:12px; margin-bottom:12px; border:none; border-top:1px solid rgba(0,0,0,0.06);">
+                <div class="modal-credit" style="font-size:13px; color:inherit;">
+                    <div>Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®),
+                        copyright © 2001, 2007, 2011, 2016 by Crossway. Used by permission. All rights reserved.</div>
+                    <div style="margin-top:6px;">The "Minimal Facts" approach is adapted from: Gary R. Habermas and
+                        Michael R. Licona, <em><a href="https://en.wikipedia.org/wiki/The_Case_for_the_Resurrection_of_Jesus" target="_blank" rel="noopener">The Case for the Resurrection of Jesus</a></em> (B&amp;H Academic, 2004).
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <!-- D3 v7 -->
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
@@ -495,164 +909,332 @@
             let width = container.clientWidth;
             let height = container.clientHeight;
 
-                // Compute chart height based on topbar height so content isn't hidden under it on small screens
-                function computeChartHeight() {
-                    const topbar = document.getElementById('topbar');
-                    const rect = topbar ? topbar.getBoundingClientRect() : { height: 48 };
-                    const hh = Math.max(48, rect.height);
-                    const chartEl = document.getElementById('chart');
-                    chartEl.style.height = `calc(100vh - ${hh}px)`;
-                    width = chartEl.clientWidth;
-                    height = chartEl.clientHeight;
-                    svg.attr('width', width).attr('height', height);
+            // Compute chart height based on topbar height so content isn't hidden under it on small screens
+            function computeChartHeight() {
+                const topbar = document.getElementById('topbar');
+                const rect = topbar ? topbar.getBoundingClientRect() : { height: 48 };
+                const hh = Math.max(48, rect.height);
+                const chartEl = document.getElementById('chart');
+                chartEl.style.height = `calc(100vh - ${hh}px)`;
+                width = chartEl.clientWidth;
+                height = chartEl.clientHeight;
+                svg.attr('width', width).attr('height', height);
+            }
+
+            // Create bottom-sheet element for mobile node details
+            const bottomSheet = document.getElementById('bottomSheet');
+            // Helper: use visualViewport when available so we position stuff relative
+            // to the *visible* viewport (this fixes Safari on iOS where the
+            // bottom URL/search bar reduces the visual viewport height).
+            function getViewportRect() {
+                if (window.visualViewport) {
+                    return {
+                        top: window.visualViewport.offsetTop || 0,
+                        left: window.visualViewport.offsetLeft || 0,
+                        width: window.visualViewport.width,
+                        height: window.visualViewport.height
+                    };
                 }
+                return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+            }
 
-                // Create bottom-sheet element for mobile node details
-                const bottomSheet = document.getElementById('bottomSheet');
-                function openBottomSheet(html, node) {
-                    // hide other transient UI
-                    tooltip.style('opacity', 0);
-                    popupHelp.style('opacity', 0).style('pointer-events', 'none');
-                    bottomSheet.innerHTML = `<button class="close-btn" aria-label="Close">×</button><div class="bottom-content">${html}</div>`;
-                    bottomSheet.classList.add('open');
-                    bottomSheet.setAttribute('aria-hidden', 'false');
+            // Return the desired center in screen coordinates for the visible portion
+            // of the chart area. This uses the intersection between the chart's
+            // bounding rect and the visual viewport so iOS Safari's bottom URL
+            // sheet / chrome is correctly accounted for.
+            function getDesiredScreenCenter() {
+                const chartRect = container.getBoundingClientRect();
+                const vp = getViewportRect();
+                // Compute horizontal center clamped to chart area
+                const centerX = chartRect.left + (chartRect.width / 2);
 
-                    // Ensure the first block of content doesn't sit underneath the close button
-                    // Only add padding when the first block is short (one or two lines).
-                    function adjustSheetHeaderPadding() {
-                        try {
-                            const btn = bottomSheet.querySelector('.close-btn');
-                            const content = bottomSheet.querySelector('.bottom-content');
-                            if (!content) return;
-                            // find first element child inside bottom-content, fallback to content itself
-                            let first = Array.from(content.childNodes).find(n => n.nodeType === 1);
-                            if (!first) first = content;
-                            // reset prior padding so measurement is accurate
-                            first.style.paddingRight = '';
-                            // measure and decide
-                            const rect = first.getBoundingClientRect();
-                            const lineHeight = parseFloat(window.getComputedStyle(first).lineHeight) || 18;
-                            // treat 'short' as up to two lines tall
-                            if (rect.height <= (lineHeight * 2.2) && btn) {
-                                const gap = 12; // px spacing between text and button
-                                const pad = (btn.offsetWidth || 32) + gap;
-                                first.style.paddingRight = pad + 'px';
-                            }
-                        } catch (e) { /* non-fatal */ }
-                    }
-                    // Run once now, and re-run on a short delay to allow rendering/styling to settle
-                    setTimeout(adjustSheetHeaderPadding, 40);
-                    setTimeout(adjustSheetHeaderPadding, 280);
-                    // If the window resizes while sheet is open, recompute
-                    const resizeHandlerForSheet = () => { if (bottomSheet.classList.contains('open')) adjustSheetHeaderPadding(); };
-                    __sheetResizeHandler = resizeHandlerForSheet;
-                    window.addEventListener('resize', resizeHandlerForSheet);
-                    // After the sheet is open, ensure the clicked node isn't obscured on small screens.
-                    const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
-                    setTimeout(() => {
-                        // scrollIntoView as before to bring sheet into view
-                        bottomSheet.scrollIntoView({ behavior: 'smooth', block: 'end' });
-
-                        // If a node was provided and we're on a small screen, check if it will be
-                        // covered by the sheet. If so, pan the svg up so the node sits above the sheet.
-                        if (isSmall && node && svg && typeof d3 !== 'undefined') {
-                            try {
-                                const sheetRect = bottomSheet.getBoundingClientRect();
-                                const margin = 12; // spacing above sheet
-                                // Compute node screen coords (similar to updatePopupHelpPosition)
-                                const transform = d3.zoomTransform(svg.node());
-                                const transformed = transform.apply([node.y, node.x]);
-                                const point = svg.node().createSVGPoint();
-                                point.x = transformed[0];
-                                point.y = transformed[1];
-                                const ctm = svg.node().getScreenCTM();
-                                if (ctm) {
-                                    const screenPoint = point.matrixTransform(ctm);
-                                    const nodeScreenY = screenPoint.y;
-                                    const availableTop = window.innerHeight - sheetRect.height - margin;
-                                    if (nodeScreenY > availableTop) {
-                                        const dy = availableTop - nodeScreenY; // negative value will move content up
-                                        const newTransform = d3.zoomIdentity.translate(transform.x, transform.y + dy).scale(transform.k);
-                                        svg.interrupt();
-                                        svg.transition().duration(320).call(zoom.transform, newTransform);
-                                    }
-                                }
-                            } catch (e) {
-                                console.warn('openBottomSheet: failed to reposition for node visibility', e);
-                            }
-                        }
-
-                        const btn = bottomSheet.querySelector('.close-btn');
-                        if (btn) { btn.focus({ preventScroll: true }); btn.addEventListener('click', closeBottomSheet, { once: true }); }
-                    }, 60);
+                // Compute the visible vertical span of the chart within the visual viewport
+                const visibleTop = Math.max(chartRect.top, vp.top);
+                // If the bottom sheet is open, reduce the visible bottom by its height so
+                // centering keeps nodes above the sheet. Also keep a small margin.
+                const sheetHeight = (typeof bottomSheet !== 'undefined' && bottomSheet && bottomSheet.classList.contains('open')) ? (bottomSheet.getBoundingClientRect().height || 0) : 0;
+                const margin = 12;
+                const visibleBottom = Math.min(chartRect.bottom, vp.top + vp.height - sheetHeight - margin);
+                let visibleHeight = visibleBottom - visibleTop;
+                if (visibleHeight <= 0) {
+                    // fallback to visual viewport center if there's no overlap
+                    return { centerX, centerY: vp.top + (vp.height / 2) };
                 }
-                // keep a reference to the resize handler so we can remove it when closing
-                let __sheetResizeHandler = null;
-                function closeBottomSheet() {
-                    bottomSheet.classList.remove('open');
-                    bottomSheet.setAttribute('aria-hidden', 'true');
+                // Apply a small upward bias on small screens so the focused node sits
+                // comfortably above mobile chrome (URL bar / bottom sheet).
+                const isSmall = isMobileLike();
+                const upwardBias = isSmall ? 24 : 0; // px
+                let centerY = visibleTop + (visibleHeight / 2) - upwardBias;
+                // Clamp into the visible area
+                const minY = vp.top + 8;
+                const maxY = vp.top + vp.height - 8;
+                centerY = Math.min(Math.max(centerY, minY), maxY);
+                return { centerX, centerY };
+            }
+
+            // Improved mobile detection helper:
+            // Treat a device as "mobile-like" if it matches the small-width media
+            // query OR if it has a coarse pointer (touch) and the visual viewport's
+            // smaller dimension is phone-sized. This handles iPhone landscape where
+            // the width can be >600px but the device is still a phone and should
+            // use mobile behaviors (bottom-sheet tooltips).
+            function isMobileLike() {
+                try {
+                    const smallWidth = (window.matchMedia && window.matchMedia('(max-width: 600px)').matches);
+                    const coarsePointer = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+                    const vp = getViewportRect();
+                    const smallerDim = Math.min(vp.width || window.innerWidth, vp.height || window.innerHeight);
+                    // treat as mobile-like when either smallWidth, or a touch device with
+                    // a phone-sized smaller dimension (conservative threshold)
+                    return smallWidth || (coarsePointer && smallerDim < 520);
+                } catch (e) {
+                    return (window.matchMedia && window.matchMedia('(max-width: 600px)').matches);
+                }
+            }
+            function openBottomSheet(html, node) {
+                // hide other transient UI
+                tooltip.style('opacity', 0);
+                popupHelp.style('opacity', 0).style('pointer-events', 'none');
+                bottomSheet.innerHTML = `<button class="close-btn" aria-label="Close">×</button><div class="bottom-content">${html}</div>`;
+                bottomSheet.classList.add('open');
+                bottomSheet.setAttribute('aria-hidden', 'false');
+
+                // Ensure the first block of content doesn't sit underneath the close button
+                // Only add padding when the first block is short (one or two lines).
+                function adjustSheetHeaderPadding() {
                     try {
-                        // clear any padding we added to the first element
+                        const btn = bottomSheet.querySelector('.close-btn');
                         const content = bottomSheet.querySelector('.bottom-content');
-                        if (content) {
-                            const first = Array.from(content.childNodes).find(n => n.nodeType === 1);
-                            if (first) first.style.paddingRight = '';
-                        }
-                        if (__sheetResizeHandler) {
-                            window.removeEventListener('resize', __sheetResizeHandler);
-                            __sheetResizeHandler = null;
+                        if (!content) return;
+                        // find first element child inside bottom-content, fallback to content itself
+                        let first = Array.from(content.childNodes).find(n => n.nodeType === 1);
+                        if (!first) first = content;
+                        // reset prior padding so measurement is accurate
+                        first.style.paddingRight = '';
+                        // measure and decide
+                        const rect = first.getBoundingClientRect();
+                        const lineHeight = parseFloat(window.getComputedStyle(first).lineHeight) || 18;
+                        // treat 'short' as up to two lines tall
+                        if (rect.height <= (lineHeight * 2.2) && btn) {
+                            const gap = 12; // px spacing between text and button
+                            const pad = (btn.offsetWidth || 32) + gap;
+                            first.style.paddingRight = pad + 'px';
                         }
                     } catch (e) { /* non-fatal */ }
                 }
-                bottomSheet.addEventListener('click', (e)=>{
-                    // allow clicking outside content to close if needed; a close button could be added
-                    if (e.target === bottomSheet) closeBottomSheet();
-                });
+                // Run once now, and re-run on a short delay to allow rendering/styling to settle
+                setTimeout(adjustSheetHeaderPadding, 40);
+                setTimeout(adjustSheetHeaderPadding, 280);
+                // If the window resizes while sheet is open, recompute
+                const resizeHandlerForSheet = () => { if (bottomSheet.classList.contains('open')) adjustSheetHeaderPadding(); };
+                __sheetResizeHandler = resizeHandlerForSheet;
+                window.addEventListener('resize', resizeHandlerForSheet);
+                // After the sheet is open, ensure the clicked node isn't obscured on small screens.
+                const isSmall = isMobileLike();
+                setTimeout(() => {
+                    // scrollIntoView as before to bring sheet into view
+                    bottomSheet.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
-                // Controls toggle for small screens
-                const controlsToggle = document.getElementById('controlsToggle');
-                const controls = document.getElementById('controls');
-                function updateControlsVisibility() {
-                    const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
-                    // rely on CSS for toggle visibility to avoid inline style flashing
-                    if (!isSmall) { controls.classList.add('open'); controls.style.display = 'flex'; }
-                    else { controls.classList.remove('open'); controls.style.display = 'none'; }
-                }
-                controlsToggle.addEventListener('click', ()=>{
-                    const open = controls.classList.toggle('open');
-                    controls.style.display = open ? 'flex' : 'none';
-                    controlsToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-                    // position controls right below topbar on small screens
-                    const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
-                    if (isSmall && open) {
-                        // anchor the panel to the controls toggle so it appears directly under the button
-                        const toggleRect = controlsToggle.getBoundingClientRect();
-                        controls.style.position = 'fixed';
-                        controls.style.left = Math.max(8, toggleRect.left) + 'px';
-                        controls.style.top = (toggleRect.bottom + 6) + 'px';
-                        controls.style.background = 'linear-gradient(90deg, rgba(0,191,174,0.04), rgba(0,116,217,0.04))';
-                        controls.style.padding = '8px';
-                        controls.style.borderRadius = '10px';
-                        controls.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)';
-                        controls.style.maxWidth = 'calc(100vw - 32px)';
-                        // limit height so it doesn't sit on top of the tree; allow internal scrolling
-                        controls.style.maxHeight = '38vh';
-                        controls.style.overflow = 'auto';
-                        controls.style.zIndex = 8600;
+                    // If a node was provided and we're on a small screen, check if it will be
+                    // covered by the sheet. If so, pan the svg up so the node sits above the sheet.
+                    if (isSmall && node && svg && typeof d3 !== 'undefined') {
+                        try {
+                            const sheetRect = bottomSheet.getBoundingClientRect();
+                            const margin = 12; // spacing above sheet
+                            // Compute node screen coords (similar to updatePopupHelpPosition)
+                            const transform = d3.zoomTransform(svg.node());
+                            const transformed = transform.apply([node.y, node.x]);
+                            const point = svg.node().createSVGPoint();
+                            point.x = transformed[0];
+                            point.y = transformed[1];
+                            const ctm = svg.node().getScreenCTM();
+                            if (ctm) {
+                                const screenPoint = point.matrixTransform(ctm);
+                                const nodeScreenY = screenPoint.y;
+                                const vp = getViewportRect();
+                                const availableTop = vp.top + vp.height - sheetRect.height - margin;
+                                if (nodeScreenY > availableTop) {
+                                    const dy = availableTop - nodeScreenY; // negative value will move content up
+                                    const newTransform = d3.zoomIdentity.translate(transform.x, transform.y + dy).scale(transform.k);
+                                    svg.interrupt();
+                                    svg.transition().duration(320).call(zoom.transform, newTransform);
+                                }
+                            }
+                        } catch (e) {
+                            console.warn('openBottomSheet: failed to reposition for node visibility', e);
+                        }
+                    }
+
+                    const btn = bottomSheet.querySelector('.close-btn');
+                    if (btn) { btn.focus({ preventScroll: true }); btn.addEventListener('click', closeBottomSheet, { once: true }); }
+                }, 60);
+            }
+            // keep a reference to the resize handler so we can remove it when closing
+            let __sheetResizeHandler = null;
+            function closeBottomSheet() {
+                bottomSheet.classList.remove('open');
+                bottomSheet.setAttribute('aria-hidden', 'true');
+                try {
+                    // clear any padding we added to the first element
+                    const content = bottomSheet.querySelector('.bottom-content');
+                    if (content) {
+                        const first = Array.from(content.childNodes).find(n => n.nodeType === 1);
+                        if (first) first.style.paddingRight = '';
+                    }
+                    if (__sheetResizeHandler) {
+                        window.removeEventListener('resize', __sheetResizeHandler);
+                        __sheetResizeHandler = null;
+                    }
+                } catch (e) { /* non-fatal */ }
+            }
+            bottomSheet.addEventListener('click', (e) => {
+                // allow clicking outside content to close if needed; a close button could be added
+                if (e.target === bottomSheet) closeBottomSheet();
+            });
+
+            // Controls toggle for small screens
+            const controlsToggle = document.getElementById('controlsToggle');
+            const controls = document.getElementById('controls');
+            function updateControlsVisibility() {
+                const isSmall = isMobileLike();
+                // rely on CSS for toggle visibility to avoid inline style flashing
+                if (!isSmall) { controls.classList.add('open'); controls.style.display = 'flex'; }
+                else { controls.classList.remove('open'); controls.style.display = 'none'; }
+                // Ensure the toggle's aria-expanded reflects the actual state so the
+                // chevron icon rotates correctly (desktop shows controls by default).
+                try {
+                    controlsToggle.setAttribute('aria-expanded', !isSmall ? 'true' : 'false');
+                } catch (e) { /* non-fatal */ }
+            }
+            // Apply small, conservative UI tweaks for mobile-like devices so controls and footer
+            // don't overlap the chart. Pin the toggle only on portrait mobile devices.
+            function applyMobileLikeUI() {
+                try {
+                    const mobile = isMobileLike();
+                    const isPortrait = (window.visualViewport ? (window.visualViewport.height > window.visualViewport.width) : (window.innerHeight > window.innerWidth));
+                    // hide footer credit on mobile-like screens to avoid covering content
+                    const esv = document.querySelector('.esv-credit');
+                    if (esv) esv.style.display = mobile ? 'none' : '';
+
+                    // ensure controls toggle is reachable: pin it to safe area on portrait mobile
+                    const ctrl = document.getElementById('controlsToggle');
+                    if (!ctrl) return;
+                    if (mobile && isPortrait) {
+                        ctrl.style.display = 'inline-block';
+                        ctrl.style.position = 'fixed';
+                        ctrl.style.left = '12px';
+                        // vertical position will be computed and centered
+                        positionControlsToggle();
+                        ctrl.style.zIndex = 9000;
                     } else {
                         // reset inline positioning
-                        controls.style.position = '';
-                        controls.style.left = '';
-                        controls.style.top = '';
-                        controls.style.background = '';
-                        controls.style.padding = '';
-                        controls.style.borderRadius = '';
-                        controls.style.boxShadow = '';
-                        controls.style.maxWidth = '';
-                        controls.style.zIndex = '';
+                        ctrl.style.position = '';
+                        ctrl.style.left = '';
+                        ctrl.style.top = '';
+                        ctrl.style.zIndex = '';
+                        ctrl.style.display = '';
                     }
-                });
-                updateControlsVisibility();
+                } catch (e) { /* non-fatal */ }
+            }
+            // Position the fixed controls toggle vertically centered to the topbar
+            function positionControlsToggle() {
+                try {
+                    const btn = document.getElementById('controlsToggle');
+                    const topbar = document.getElementById('topbar');
+                    if (!btn || !topbar) return;
+                    // measure and compute centered top relative to viewport
+                    const tbRect = topbar.getBoundingClientRect();
+                    const btnRect = btn.getBoundingClientRect();
+                    // center within topbar
+                    const centeredTop = tbRect.top + Math.max(0, (tbRect.height - btnRect.height) / 2);
+                    // ensure the value is within the visual viewport if available
+                    const vpOffset = (window.visualViewport && window.visualViewport.offsetTop) ? window.visualViewport.offsetTop : 0;
+                    const finalTop = Math.max(centeredTop, vpOffset + 6);
+                    btn.style.top = finalTop + 'px';
+                } catch (e) { /* non-fatal */ }
+            }
+            // Compute and set the CSS variable that reserves space for the fixed toggle.
+            function updateControlsReserve() {
+                try {
+                    const root = document.documentElement;
+                    const btn = document.getElementById('controlsToggle');
+                    if (!btn) {
+                        root.style.removeProperty('--controls-reserve');
+                        return;
+                    }
+                    // Measure the rendered width and include horizontal margins via computed style.
+                    const rect = btn.getBoundingClientRect();
+                    const cs = window.getComputedStyle(btn);
+                    const marginLeft = parseFloat(cs.marginLeft) || 0;
+                    const marginRight = parseFloat(cs.marginRight) || 0;
+                    // Add a slightly larger safety gap to avoid overlap on devices with shadow/blur
+                    const safety = 28;
+                    const reserve = Math.ceil(rect.width + marginLeft + marginRight + safety);
+                    root.style.setProperty('--controls-reserve', reserve + 'px');
+                } catch (e) { /* non-fatal */ }
+            }
+
+            // Update reserve on relevant events
+            window.addEventListener('resize', updateControlsReserve);
+            window.addEventListener('orientationchange', updateControlsReserve);
+            window.addEventListener('resize', positionControlsToggle);
+            window.addEventListener('orientationchange', positionControlsToggle);
+            // Also re-run mobile UI adjustments when orientation/size changes
+            window.addEventListener('resize', applyMobileLikeUI);
+            window.addEventListener('orientationchange', applyMobileLikeUI);
+            // call initially after a short delay to ensure styles computed
+            setTimeout(updateControlsReserve, 220);
+            controlsToggle.addEventListener('click', () => {
+                const open = controls.classList.toggle('open');
+                controls.style.display = open ? 'flex' : 'none';
+                controlsToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                // position controls right below topbar on small screens
+                const isSmall = isMobileLike();
+                if (isSmall && open) {
+                    // anchor the panel to the controls toggle so it appears directly under the button
+                    const toggleRect = controlsToggle.getBoundingClientRect();
+                    controls.style.position = 'fixed';
+                    // Compute base left from the toggle. On small devices in landscape
+                    // the toggle may sit near the left edge or under UI chrome — add a
+                    // small extra offset in that case so the panel doesn't collide with
+                    // the rounded viewport edges / browser chrome (iPhone notch/home).
+                    let leftPos = Math.max(8, toggleRect.left);
+                    try {
+                        if (window.matchMedia && window.matchMedia('(orientation: landscape)').matches) {
+                            // shift slightly to the right in landscape on small screens
+                                leftPos -= 64; // tuned empirically; conservative value
+                        }
+                    } catch (e) { /* non-fatal */ }
+                    controls.style.left = leftPos + 'px';
+                    controls.style.top = (toggleRect.bottom + 6) + 'px';
+                    controls.style.background = 'linear-gradient(90deg, rgba(0,191,174,0.04), rgba(0,116,217,0.04))';
+                    controls.style.padding = '8px';
+                    controls.style.borderRadius = '10px';
+                    controls.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)';
+                    controls.style.maxWidth = 'calc(100vw - 32px)';
+                    // limit height so it doesn't sit on top of the tree; allow internal scrolling
+                    controls.style.maxHeight = '38vh';
+                    controls.style.overflow = 'auto';
+                    controls.style.zIndex = 8600;
+                } else {
+                    // reset inline positioning
+                    controls.style.position = '';
+                    controls.style.left = '';
+                    controls.style.top = '';
+                    controls.style.background = '';
+                    controls.style.padding = '';
+                    controls.style.borderRadius = '';
+                    controls.style.boxShadow = '';
+                    controls.style.maxWidth = '';
+                    controls.style.zIndex = '';
+                }
+            });
+            updateControlsVisibility();
+            // initial application of mobile-like UI tweaks
+            applyMobileLikeUI();
+            // ensure the CSS reserve is populated early and position the toggle
+            if (typeof updateControlsReserve === 'function') updateControlsReserve();
+            if (typeof positionControlsToggle === 'function') positionControlsToggle();
 
             const svg = d3.select("#chart").append("svg")
                 .attr("width", width).attr("height", height)
@@ -689,7 +1271,10 @@
                 const currentTransform = d3.zoomTransform(svg.node());
                 // if transform is identity, re-center root
                 if (currentTransform.k === 1 && Math.abs(currentTransform.x) < 1 && Math.abs(currentTransform.y) < 1) {
-                    svg.call(zoom.transform, d3.zoomIdentity.translate(Math.min(220, width * 0.25), height / 2).scale(1));
+                    // use visual viewport center vertically so resize-triggered recentering
+                    // doesn't place content underneath mobile browser chrome
+                    const _c = getDesiredScreenCenter();
+                    svg.call(zoom.transform, d3.zoomIdentity.translate(Math.min(220, width * 0.25), _c.centerY).scale(1));
                 }
             }
 
@@ -699,6 +1284,12 @@
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(resizeHandler, 150);
             });
+
+            // Also update mobile-like UI on orientation/viewport changes (important on iOS)
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', () => { applyMobileLikeUI(); });
+            }
+            window.addEventListener('orientationchange', () => { setTimeout(applyMobileLikeUI, 80); });
 
             // ensure chart height computed initially
             computeChartHeight();
@@ -718,9 +1309,10 @@
                 // Temporarily set to desired position so getBoundingClientRect reports correct size
                 sel.style('left', desiredLeft + 'px').style('top', desiredTop + 'px');
                 const rect = el.getBoundingClientRect();
-                const maxTop = Math.max(margin, window.innerHeight - rect.height - margin);
-                // use chart width for horizontal clamping so popups align with the svg area
-                const maxLeft = Math.max(margin, width - rect.width - margin);
+                const vp = getViewportRect();
+                const maxTop = Math.max(margin, vp.top + vp.height - rect.height - margin);
+                // use chart width (clamped to visual viewport) for horizontal clamping so popups align with the svg area
+                const maxLeft = Math.max(margin, (vp.left + Math.min(width, vp.width)) - rect.width - margin);
                 const left = Math.min(Math.max(desiredLeft, margin), maxLeft);
                 const top = Math.min(Math.max(desiredTop, margin), maxTop);
                 sel.style('left', left + 'px').style('top', top + 'px');
@@ -747,6 +1339,7 @@
                 if (ctm) {
                     const screenPoint = point.matrixTransform(ctm);
                     // Calculate desired position with offset
+                    const vp = getViewportRect();
                     const desiredLeft = screenPoint.x + 24;
                     const desiredTop = screenPoint.y + 24;
                     // Clamp to viewport so popup doesn't go below the bottom (or off the right)
@@ -754,11 +1347,11 @@
                     if (popupEl) {
                         const rect = popupEl.getBoundingClientRect();
                         const margin = 8;
-                        const maxTop = Math.max(margin, window.innerHeight - rect.height - margin);
+                        const maxTop = Math.max(margin, vp.top + vp.height - rect.height - margin);
                         // align popup clamping with the SVG/chart width rather than full window
-                        const maxLeft = Math.max(margin, width - rect.width - margin);
+                        const maxLeft = Math.max(margin, (vp.left + Math.min(width, vp.width)) - rect.width - margin);
                         const left = Math.min(Math.max(desiredLeft, margin), maxLeft);
-                        const top = Math.min(Math.max(desiredTop, margin), maxTop);
+                        const top = Math.min(Math.max(desiredTop, vp.top + margin), maxTop);
                         popupHelp.style("left", left + "px").style("top", top + "px");
                     } else {
                         popupHelp.style("left", (screenPoint.x + 24) + "px").style("top", (screenPoint.y + 24) + "px");
@@ -768,12 +1361,12 @@
 
             // Ensure the rendered tree fits horizontally in the viewport by nudging the zoom transform
             // so the left/right visible node extents don't fall outside the screen on small devices.
-        function ensureTreeVisible(margin = 24) {
+            function ensureTreeVisible(margin = 24) {
                 if (typeof suppressAutoEnsure !== 'undefined' && suppressAutoEnsure) return;
                 try {
-            // on narrow phones give a larger margin to avoid nodes being too close to the edge
-            const small = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
-            if (small) margin = Math.max(margin, 48);
+                    // on narrow phones give a larger margin to avoid nodes being too close to the edge
+                    const small = isMobileLike();
+                    if (small) margin = Math.max(margin, 48);
                     const nodes = root.descendants().filter(d => !(d.x == null || d.y == null));
                     if (!nodes || nodes.length === 0) return;
                     const transform = d3.zoomTransform(svg.node());
@@ -794,6 +1387,32 @@
                     } else if (minScreenX < leftLimit) {
                         dx = leftLimit - minScreenX; // positive moves tree right
                     }
+                    // Additionally, consider the text label bounding boxes. On mobile the
+                    // node center may be visible while the label (which extends left)
+                    // is clipped off-screen. Inspect rendered text elements and nudge
+                    // the view so the left-most text bounding rect is at least `margin`
+                    // pixels from the viewport's left edge.
+                    try {
+                        const nodeElems = nodeGroup.selectAll('g.node').nodes();
+                        let minLabelLeft = Infinity;
+                        nodeElems.forEach(gEl => {
+                            try {
+                                const textEl = gEl.querySelector && gEl.querySelector('text');
+                                if (!textEl) return;
+                                const rect = textEl.getBoundingClientRect();
+                                if (rect.left < minLabelLeft) minLabelLeft = rect.left;
+                            } catch (e) { /* ignore individual node read errors */ }
+                        });
+                        if (minLabelLeft !== Infinity) {
+                            const vp = getViewportRect();
+                            const desiredLeft = (vp.left || 0) + margin;
+                            if (minLabelLeft < desiredLeft) {
+                                // move content right by the pixel difference
+                                const needed = desiredLeft - minLabelLeft;
+                                dx = (dx || 0) + needed;
+                            }
+                        }
+                    } catch (e) { /* non-fatal */ }
                     if (dx !== 0) {
                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y).scale(transform.k);
                         svg.transition().duration(300).call(zoom.transform, newTransform);
@@ -865,7 +1484,7 @@
                 return /iPad|iPhone|iPod/.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             })();
             // But increase vertical spacing on narrow/tall mobile screens (or iOS browsers)
-            const initialVertical = (isIOS || (height && height < 700)) ? 28 : 17; // vertical spacing (larger on phones)
+            const initialVertical = (isIOS || (height && height < 700)) ? 28 : 22; // vertical spacing (larger on phones)
             // Slightly reduce horizontal spacing on narrow screens so the tree fits
             const initialHorizontal = (width && width < 480) ? 160 : 200; // horizontal spacing
             // Sync hidden UI controls to reflect these defaults so toggling preserves expected spacing
@@ -954,19 +1573,23 @@
 
                 // Shared activation logic for nodes (click or tap)
                 function handleNodeActivate(event, d) {
-                    const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                    const isSmall = isMobileLike();
                     try {
                         // mark only the activated node's group with data-selected="true"
                         d3.selectAll('g.node').attr('data-selected', 'false');
                         d3.selectAll('g.node').filter(n => n === d).attr('data-selected', 'true');
                     } catch (e) { /* ignore if d3 not present */ }
-                        if (!d.children && !d._children && d.data.source && (d.data.source.highlightedUrl || d.data.source.url)) {
-                            // Prefer a highlightedUrl when authors provided one in the source group; fall back to url
-                            const href = d.data.source.highlightedUrl || d.data.source.url;
-                            let html = `<strong>${d.data.name}</strong>`;
-                            if (d.data.date) html += `<div style='margin-top:4px; font-weight:bold;'>${d.data.date}</div>`;
-                            if (d.data.details) html += `<div style='margin-top:6px;'>${d.data.details}</div>`;
-                            html += `<div style='margin-top:10px;'><a href='${href}' target='_blank' style='color:var(--link-accent);text-decoration:underline'>${d.data.source.title || "View Source"}</a></div>`;
+                    if (!d.children && !d._children && d.data.source && (d.data.source.highlightedUrl || d.data.source.url)) {
+                        // Prefer a highlightedUrl when authors provided one in the source group; fall back to url
+                        const href = d.data.source.highlightedUrl || d.data.source.url;
+                        // Build a leaf-specific content block so we can style date/details/link
+                        // separately without affecting non-leaf popup-help UI.
+                        let html = `<div class="sheet-title">${d.data.name}</div>`;
+                        html += `<div class="leaf-content">`;
+                        if (d.data.date) html += `<div class="leaf-date">${d.data.date}</div>`;
+                        if (d.data.details) html += `<div class="leaf-details">${d.data.details}</div>`;
+                        html += `<div class="leaf-link"><a href='${href}' target='_blank' style='color:var(--link-accent);text-decoration:underline'>${d.data.source.title || "View Source"}</a></div>`;
+                        html += `</div>`;
                         if (isSmall) {
                             openBottomSheet(html, d);
                         } else {
@@ -1001,7 +1624,7 @@
                         // preserve the existing full-centering behavior. On larger screens we apply
                         // a softer, clamped nudge so the viewport moves toward the selected area
                         // without fully recentring (less jarring on desktop).
-                        const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                        const isSmall = isMobileLike();
                         setTimeout(() => {
                             try {
                                 const transform = d3.zoomTransform(svg.node());
@@ -1018,8 +1641,15 @@
                                         const avgY = d3.mean(deepest, n => n.y);
                                         const screen = transform.apply([avgY, avgX]);
                                         // use chart width for horizontal centering
-                                        const dx = (width / 2) - screen[0];
-                                        const dy = (height / 2) - screen[1];
+                                        const center = getDesiredScreenCenter();
+                                        // Bias horizontally on portrait mobile so labels that extend
+                                        // left of the node remain visible after centering.
+                                        const vp = getViewportRect();
+                                        const isPortrait = (vp.height || window.innerHeight) > (vp.width || window.innerWidth);
+                                        const biasFrac = (isPortrait && isMobileLike()) ? 0.12 : 0; // fraction of width to nudge right
+                                        const desiredScreenX = width * (0.5 + biasFrac);
+                                        const dx = desiredScreenX - screen[0];
+                                        const dy = center.centerY - screen[1];
                                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                                         svg.interrupt();
                                         svg.transition().duration(360).call(zoom.transform, newTransform)
@@ -1029,8 +1659,13 @@
                                         const avgY = d.y;
                                         const screen = transform.apply([avgY, avgX]);
                                         // use chart width for horizontal centering
-                                        const dx = (width / 2) - screen[0];
-                                        const dy = (height / 2) - screen[1];
+                                        const center = getDesiredScreenCenter();
+                                        const vp = getViewportRect();
+                                        const isPortrait = (vp.height || window.innerHeight) > (vp.width || window.innerWidth);
+                                        const biasFrac = (isPortrait && isMobileLike()) ? 0.12 : 0;
+                                        const desiredScreenX = width * (0.5 + biasFrac);
+                                        const dx = desiredScreenX - screen[0];
+                                        const dy = center.centerY - screen[1];
                                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                                         svg.interrupt();
                                         svg.transition().duration(360).call(zoom.transform, newTransform)
@@ -1040,7 +1675,7 @@
                                     // Desktop/large-screen behavior: apply a fraction of the computed delta
                                     // and clamp to reasonable maximums so motion is subtle.
                                     const duration = 260;
-                                        const fraction = 1.0; // apply full computed shift on desktop (match mobile)
+                                    const fraction = 1.0; // apply full computed shift on desktop (match mobile)
                                     if (willExpand) {
                                         const desc = d.descendants();
                                         if (!desc || desc.length === 0) { suppressAutoEnsure = false; return; }
@@ -1053,7 +1688,7 @@
                                         const screen = transform.apply([avgY, avgX]);
                                         // use the computed chart `width` (container) rather than the full window
                                         let dx = ((width / 2) - screen[0]) * fraction;
-                                        let dy = ((height / 2) - screen[1]) * fraction;
+                                        let dy = (getDesiredScreenCenter().centerY - screen[1]) * fraction;
                                         const maxMoveX = width * 0.35;
                                         const maxMoveY = height * 0.35;
                                         dx = Math.max(-maxMoveX, Math.min(maxMoveX, dx));
@@ -1068,7 +1703,7 @@
                                         const screen = transform.apply([avgY, avgX]);
                                         // use chart `width` for horizontal centering
                                         let dx = ((width / 2) - screen[0]) * fraction;
-                                        let dy = ((height / 2) - screen[1]) * fraction;
+                                        let dy = (getDesiredScreenCenter().centerY - screen[1]) * fraction;
                                         const maxMoveX = width * 0.35;
                                         const maxMoveY = height * 0.35;
                                         dx = Math.max(-maxMoveX, Math.min(maxMoveX, dx));
@@ -1128,7 +1763,7 @@
                         // show subtitle on hover/enter (pointer-aware)
                         const txt = d.data.subtitle || "";
                         if (!txt) return;
-                        const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                        const isSmall = isMobileLike();
                         if (isSmall) {
                             // On small/touch devices the tooltip often appears under the finger.
                             // Use the bottom sheet to surface subtitle info instead.
@@ -1142,7 +1777,7 @@
                         clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
                     })
                     .on("pointermove", (event) => {
-                        const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                        const isSmall = isMobileLike();
                         if (!isSmall) clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
                     })
                     .on("pointerleave", () => {
@@ -1171,7 +1806,7 @@
                 }
 
                 // Adjust node radius for small touch screens to improve tap targets
-                const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                const isSmall = isMobileLike();
                 const targetRadius = isSmall ? 8 : 6;
                 // Compute a label offset that keeps text a comfortable distance from the node.
                 // This scales with the node radius so larger nodes on small screens push labels further out.
@@ -1182,12 +1817,12 @@
                     .attr("fill", d => (d._children ? nodeColor(d) : "#fff"))
                     .attr("stroke", d => nodeColor(d));
 
-        const labels = nodeEnter.append("text")
+                const labels = nodeEnter.append("text")
                     .attr("dy", "0em")
                     .attr("x", d => (d.children || d._children) ? -labelOffset : labelOffset)
                     .attr("text-anchor", d => (d.children || d._children) ? "end" : "start")
                     .html(d => d.data.link
-            ? `<a href="${d.data.link}" target="_blank" style="fill:var(--link-accent);text-decoration:underline">${d.data.name}</a>`
+                        ? `<a href="${d.data.link}" target="_blank" style="fill:var(--link-accent);text-decoration:underline">${d.data.name}</a>`
                         : d.data.name);
 
                 function applyLabelWrapping() {
@@ -1230,10 +1865,12 @@
             // Shift right so root node is visible. Use the same centering helpers that
             // programmatic actions (like Collapse All / Expand All) use so desktop
             // initial centering matches later behavior.
-            const smallScreen = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+            const smallScreen = isMobileLike();
             const initialTranslateX = smallScreen ? Math.min(120, Math.max(40, width * 0.12)) : 220;
             // Apply a sensible starting transform, then run the smoother centering
-            svg.call(zoom.transform, d3.zoomIdentity.translate(initialTranslateX, height / 2).scale(1));
+            // Use visual viewport vertical center so initial centering accounts for mobile browser chrome
+            const _initialCenter = getDesiredScreenCenter();
+            svg.call(zoom.transform, d3.zoomIdentity.translate(initialTranslateX, _initialCenter.centerY).scale(1));
             // After layout settles, run centering that focuses on the deepest visible nodes
             setTimeout(() => {
                 try {
@@ -1268,7 +1905,7 @@
             const debugCentering = false; // set true to enable console.logs for centering/debug
             function centerAfterUpdate(target, opts = {}) {
                 try {
-                    const isSmall = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+                    const isSmall = isMobileLike();
                     const transform = d3.zoomTransform(svg.node());
                     // Choose nodes to center on
                     let nodes = null;
@@ -1297,9 +1934,13 @@
                         // full-centering behavior (preserve original mobile UX)
                         const screen = transform.apply([avgY, avgX]);
                         if (debugCentering) console.log('centerAfterUpdate mobile avg', { avgX, avgY, screen });
-                        // use chart width for horizontal centering
-                        const dx = (width / 2) - screen[0];
-                        const dy = (height / 2) - screen[1];
+                        // use chart width for horizontal centering and visual viewport for vertical
+                        const vp = getViewportRect();
+                        const isPortrait = (vp.height || window.innerHeight) > (vp.width || window.innerWidth);
+                        const biasFrac = (isPortrait && isMobileLike()) ? 0.12 : 0;
+                        const desiredScreenX = width * (0.5 + biasFrac);
+                        const dx = desiredScreenX - screen[0];
+                        const dy = getDesiredScreenCenter().centerY - screen[1];
                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                         suppressAutoEnsure = true;
                         svg.interrupt();
@@ -1313,7 +1954,7 @@
                         const screen = transform.apply([avgY, avgX]);
                         // use chart width for horizontal centering
                         let dx = ((width / 2) - screen[0]) * fraction;
-                        let dy = ((height / 2) - screen[1]) * fraction;
+                        let dy = (getDesiredScreenCenter().centerY - screen[1]) * fraction;
                         const maxMoveX = width * 0.35;
                         const maxMoveY = height * 0.35;
                         dx = Math.max(-maxMoveX, Math.min(maxMoveX, dx));
@@ -1354,9 +1995,13 @@
                     const avgY = d3.mean(nodes, n => n.y);
                     // compute desired dx/dy to center on avg
                     const screen = transform.apply([avgY, avgX]);
-                    // use chart width for horizontal centering
-                    const dx = (width / 2) - screen[0];
-                    const dy = (height / 2) - screen[1];
+                    // use chart width for horizontal centering and visual viewport for vertical
+                    const vp = getViewportRect();
+                    const isPortrait = (vp.height || window.innerHeight) > (vp.width || window.innerWidth);
+                    const biasFrac = (isPortrait && isMobileLike()) ? 0.12 : 0;
+                    const desiredScreenX = width * (0.5 + biasFrac);
+                    const dx = desiredScreenX - screen[0];
+                    const dy = getDesiredScreenCenter().centerY - screen[1];
                     const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                     // apply immediately
                     suppressAutoEnsure = true;
@@ -1389,9 +2034,9 @@
                     const avgX = d3.mean(nodes, n => n.x);
                     const avgY = d3.mean(nodes, n => n.y);
                     const screen = transform.apply([avgY, avgX]);
-                    // use chart width for horizontal centering
+                    // use chart width for horizontal centering and visual viewport for vertical
                     const dx = (width / 2) - screen[0];
-                    const dy = (height / 2) - screen[1];
+                    const dy = getDesiredScreenCenter().centerY - screen[1];
                     const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                     suppressAutoEnsure = true;
                     svg.interrupt();
@@ -1400,7 +2045,7 @@
                 } catch (e) { console.warn('centerSmooth failed', e); suppressAutoEnsure = false; }
             }
 
-            
+
 
             document.getElementById('collapseAll').onclick = () => {
                 root.children && root.children.forEach(collapseAll);
@@ -1492,10 +2137,10 @@
                         if (d.children) { d._children = d.children; d.children = null; }
                     }
                 });
-        // Prevent the automatic ensureTreeVisible from scheduling its own transform
-        // while we intend to run a deliberate centering animation below.
-        suppressAutoEnsure = true;
-        update(root);
+                // Prevent the automatic ensureTreeVisible from scheduling its own transform
+                // while we intend to run a deliberate centering animation below.
+                suppressAutoEnsure = true;
+                update(root);
                 // After a programmatic state change, softly center on the deepest visible nodes
                 try {
                     const visible = root.descendants().filter(n => !(n.x == null || n.y == null));
@@ -1626,13 +2271,61 @@
         darkModeToggle.addEventListener('change', function () {
             document.body.classList.toggle('dark-mode', darkModeToggle.checked);
         });
+
+        // Minimal Facts modal behavior
+        (function () {
+            const factsBtn = document.getElementById('factsAboutBtn');
+            const modal = document.getElementById('factsModal');
+            const closeBtn = modal && modal.querySelector('.modal-close');
+            let lastFocused = null;
+
+            function openModal() {
+                if (!modal) return;
+                lastFocused = document.activeElement;
+                modal.classList.add('open');
+                modal.setAttribute('aria-hidden', 'false');
+                // ensure modal content is scrolled to top and focused so iOS doesn't
+                // leave the dialog scrolled halfway underneath the browser chrome
+                try {
+                    const content = modal.querySelector('.modal-content');
+                    if (content) {
+                        content.scrollTop = 0;
+                        // focus the content region (not the button) to avoid jumping
+                        content.focus({ preventScroll: true });
+                        // also move visual viewport to top of modal on next frame
+                        requestAnimationFrame(() => { content.scrollIntoView({ block: 'start', behavior: 'instant' }); });
+                    }
+                } catch (e) { /* non-fatal */ }
+                // focus first focusable inside modal (close button)
+                if (closeBtn) closeBtn.focus();
+                document.addEventListener('keydown', keyHandler);
+            }
+            function closeModal() {
+                if (!modal) return;
+                modal.classList.remove('open');
+                modal.setAttribute('aria-hidden', 'true');
+                document.removeEventListener('keydown', keyHandler);
+                if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+            }
+            function keyHandler(e) {
+                if (e.key === 'Escape') { closeModal(); }
+                // simple focus trap: keep focus inside modal when open
+                if (e.key === 'Tab' && modal.classList.contains('open')) {
+                    const focusables = modal.querySelectorAll('a[href], button:not([disabled]), textarea, input, select');
+                    if (!focusables || focusables.length === 0) { e.preventDefault(); return; }
+                    const first = focusables[0];
+                    const last = focusables[focusables.length - 1];
+                    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+                    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+                }
+            }
+            if (factsBtn) factsBtn.addEventListener('click', openModal);
+            if (closeBtn) closeBtn.addEventListener('click', closeModal);
+            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        })();
     </script>
 
-    <!-- ESV credit: Crossway recommended short credit for using ESV text -->
-    <div class="esv-credit" aria-hidden="true">
-        <div>Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®), copyright © 2001, 2007, 2011, 2016 by Crossway. Used by permission. All rights reserved.</div>
-    <div>The "Minimal Facts" approach is adapted from: Gary R. Habermas and Michael R. Licona, <em>The Case for the Resurrection of Jesus</em> (B&amp;H Academic, 2004).</div>
-    </div>
+    <!-- footer credit removed (moved into About modal) -->
 
 </body>
 
