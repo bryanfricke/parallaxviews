@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Tidy Tree</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
     <style>
         #topbar {
             display: flex;
@@ -918,7 +918,8 @@
                 chartEl.style.height = `calc(100vh - ${hh}px)`;
                 width = chartEl.clientWidth;
                 height = chartEl.clientHeight;
-                svg.attr('width', width).attr('height', height);
+                    svg.attr('width', width).attr('height', height)
+                        .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } });
             }
 
             // Create bottom-sheet element for mobile node details
@@ -991,7 +992,22 @@
                     return (window.matchMedia && window.matchMedia('(max-width: 600px)').matches);
                 }
             }
+            // Fraction of horizontal width to bias centering toward the right on mobile
+            // Increase this to move the tree slightly to the right so left-most labels
+            // remain visible on small/tall viewports (tuned empirically).
+            const MOBILE_BIAS_FRAC = 0.18;
             function openBottomSheet(html, node) {
+                // Prevent subtitle-only hover opens from overwriting a full "sheet-title" view.
+                // If the sheet is already open and currently showing a .sheet-title, and the
+                // incoming html does not include a .sheet-title, keep the existing content.
+                try {
+                    const incomingHasTitle = (typeof html === 'string') && html.indexOf('sheet-title') !== -1;
+                    const existingHasTitle = bottomSheet && bottomSheet.classList.contains('open') && bottomSheet.querySelector && bottomSheet.querySelector('.bottom-content .sheet-title');
+                    if (existingHasTitle && !incomingHasTitle) {
+                        // preserve existing full-content sheet (do not override with subtitle-only)
+                        return;
+                    }
+                } catch (e) { /* non-fatal */ }
                 // hide other transient UI
                 tooltip.style('opacity', 0);
                 popupHelp.style('opacity', 0).style('pointer-events', 'none');
@@ -1057,7 +1073,9 @@
                                     const dy = availableTop - nodeScreenY; // negative value will move content up
                                     const newTransform = d3.zoomIdentity.translate(transform.x, transform.y + dy).scale(transform.k);
                                     svg.interrupt();
-                                    svg.transition().duration(320).call(zoom.transform, newTransform);
+                                    hideTransientUI();
+                                    svg.transition().duration(320).call(zoom.transform, newTransform)
+                                        .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } });
                                 }
                             }
                         } catch (e) {
@@ -1301,6 +1319,57 @@
             const popupHelp = d3.select("body").append("div")
                 .attr("class", "popup-help").style("opacity", 0).style("position", "fixed");
 
+            // Track last known pointer position so we can re-evaluate hover after programmatic moves
+            let lastPointer = { x: null, y: null };
+            try {
+                document.addEventListener('pointermove', (e) => {
+                    lastPointer.x = e.clientX; lastPointer.y = e.clientY;
+                }, { passive: true });
+            } catch (e) { /* non-fatal */ }
+
+            // Helper to hide transient UI (tooltip or popup) before programmatic viewport moves
+            function hideTransientUI() {
+                try { tooltip.style('opacity', 0); } catch (e) { }
+                try { popupHelp.style('opacity', 0).style('pointer-events', 'none'); } catch (e) { }
+                try { document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true); } catch (e) { }
+                popupHelpNode = null;
+            }
+
+            // After a programmatic pan/zoom, re-evaluate what's under the pointer and show
+            // the appropriate tooltip/popup as if the pointer moved there. This keeps the
+            // UI consistent when the chart recenters under a stationary mouse.
+            function revealHoverAtPointer() {
+                try {
+                    if (lastPointer.x == null || lastPointer.y == null) return;
+                    const el = document.elementFromPoint(lastPointer.x, lastPointer.y);
+                    if (!el) return;
+                    // Find the nearest ancestor group for a node
+                    const g = el.closest && el.closest('g.node');
+                    if (!g) return;
+                    // Use d3 to obtain the datum
+                    let d = null;
+                    try { d = d3.select(g).datum(); } catch (e) { d = null; }
+                    if (!d) return;
+                    const isSmall = isMobileLike();
+                    // If the bottom sheet is already open on mobile, keep it as-is so
+                    // the selected node's details remain visible after recentering.
+                    if (isSmall && bottomSheet && bottomSheet.classList.contains('open')) return;
+                    // If there's a subtitle, surface it; otherwise hide transient UI
+                    const txt = d.data && (d.data.subtitle || '');
+                    if (!txt) {
+                        // do not show empty tooltips; keep popup closed
+                        hideTransientUI();
+                        return;
+                    }
+                    if (isSmall) {
+                        openBottomSheet(`<div style="padding:4px 2px;">${txt}</div>`, d);
+                    } else {
+                        tooltip.html(txt).style('opacity', 1).style('pointer-events', 'none');
+                        clampToViewport(tooltip, lastPointer.x + 24, lastPointer.y + 24);
+                    }
+                } catch (e) { /* non-fatal */ }
+            }
+
             // Helper to clamp a fixed-position element to the viewport (keeps a small margin)
             function clampToViewport(sel, desiredLeft, desiredTop) {
                 const el = sel.node();
@@ -1415,7 +1484,9 @@
                     } catch (e) { /* non-fatal */ }
                     if (dx !== 0) {
                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y).scale(transform.k);
-                        svg.transition().duration(300).call(zoom.transform, newTransform);
+                        hideTransientUI();
+                        svg.transition().duration(300).call(zoom.transform, newTransform)
+                            .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } });
                     }
                 } catch (e) {
                     // non-fatal
@@ -1646,14 +1717,15 @@
                                         // left of the node remain visible after centering.
                                         const vp = getViewportRect();
                                         const isPortrait = (vp.height || window.innerHeight) > (vp.width || window.innerWidth);
-                                        const biasFrac = (isPortrait && isMobileLike()) ? 0.12 : 0; // fraction of width to nudge right
+                                        const biasFrac = (isPortrait && isMobileLike()) ? MOBILE_BIAS_FRAC : 0; // fraction of width to nudge right
                                         const desiredScreenX = width * (0.5 + biasFrac);
                                         const dx = desiredScreenX - screen[0];
                                         const dy = center.centerY - screen[1];
                                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                                         svg.interrupt();
+                                        hideTransientUI();
                                         svg.transition().duration(360).call(zoom.transform, newTransform)
-                                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                                            .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
                                     } else {
                                         const avgX = d.x;
                                         const avgY = d.y;
@@ -1662,14 +1734,15 @@
                                         const center = getDesiredScreenCenter();
                                         const vp = getViewportRect();
                                         const isPortrait = (vp.height || window.innerHeight) > (vp.width || window.innerWidth);
-                                        const biasFrac = (isPortrait && isMobileLike()) ? 0.12 : 0;
+                                        const biasFrac = (isPortrait && isMobileLike()) ? MOBILE_BIAS_FRAC : 0;
                                         const desiredScreenX = width * (0.5 + biasFrac);
                                         const dx = desiredScreenX - screen[0];
                                         const dy = center.centerY - screen[1];
                                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                                         svg.interrupt();
+                                        hideTransientUI();
                                         svg.transition().duration(360).call(zoom.transform, newTransform)
-                                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                                            .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
                                     }
                                 } else {
                                     // Desktop/large-screen behavior: apply a fraction of the computed delta
@@ -1695,8 +1768,9 @@
                                         dy = Math.max(-maxMoveY, Math.min(maxMoveY, dy));
                                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                                         svg.interrupt();
+                                        hideTransientUI();
                                         svg.transition().duration(duration).call(zoom.transform, newTransform)
-                                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                                            .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
                                     } else {
                                         const avgX = d.x;
                                         const avgY = d.y;
@@ -1710,8 +1784,9 @@
                                         dy = Math.max(-maxMoveY, Math.min(maxMoveY, dy));
                                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                                         svg.interrupt();
+                                        hideTransientUI();
                                         svg.transition().duration(duration).call(zoom.transform, newTransform)
-                                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                                            .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
                                     }
                                 }
                             } catch (e) {
@@ -1724,6 +1799,16 @@
                             .style("pointer-events", "none");
                         document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true);
                         popupHelpNode = null;
+                        // For toggles, only surface the bottom-sheet/popup on mobile-like devices.
+                        // Desktop/large-screen toggles should not open additional popups to avoid
+                        // stacking multiple tooltip boxes.
+                        try {
+                            const infoHtml = `<div class="sheet-title">${d.data.name}</div>` +
+                                (d.data.subtitle ? `<div style="margin-top:6px;">${d.data.subtitle}</div>` : (d.data.details ? `<div style="margin-top:6px;">${d.data.details}</div>` : ``));
+                            if (isSmall) {
+                                openBottomSheet(infoHtml, d);
+                            }
+                        } catch (e) { /* non-fatal */ }
                     }
                 }
 
@@ -1866,7 +1951,7 @@
             // programmatic actions (like Collapse All / Expand All) use so desktop
             // initial centering matches later behavior.
             const smallScreen = isMobileLike();
-            const initialTranslateX = smallScreen ? Math.min(120, Math.max(40, width * 0.12)) : 220;
+            const initialTranslateX = smallScreen ? Math.min(140, Math.max(48, width * MOBILE_BIAS_FRAC)) : 220;
             // Apply a sensible starting transform, then run the smoother centering
             // Use visual viewport vertical center so initial centering accounts for mobile browser chrome
             const _initialCenter = getDesiredScreenCenter();
@@ -1937,15 +2022,16 @@
                         // use chart width for horizontal centering and visual viewport for vertical
                         const vp = getViewportRect();
                         const isPortrait = (vp.height || window.innerHeight) > (vp.width || window.innerWidth);
-                        const biasFrac = (isPortrait && isMobileLike()) ? 0.12 : 0;
+                        const biasFrac = (isPortrait && isMobileLike()) ? MOBILE_BIAS_FRAC : 0;
                         const desiredScreenX = width * (0.5 + biasFrac);
                         const dx = desiredScreenX - screen[0];
                         const dy = getDesiredScreenCenter().centerY - screen[1];
                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                         suppressAutoEnsure = true;
                         svg.interrupt();
+                        hideTransientUI();
                         svg.transition().duration(360).call(zoom.transform, newTransform)
-                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                            .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
                     } else {
                         // gentle, clamped nudge on larger screens
                         if (debugCentering) console.log('centerAfterUpdate desktop avg', { avgX, avgY });
@@ -1963,8 +2049,9 @@
                         if (debugCentering) console.log('centerAfterUpdate transform', { dx, dy, newTransform });
                         suppressAutoEnsure = true;
                         svg.interrupt();
+                        hideTransientUI();
                         svg.transition().duration(duration).call(zoom.transform, newTransform)
-                            .on('end interrupt', () => { suppressAutoEnsure = false; });
+                            .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
                     }
                 } catch (e) {
                     console.warn('centerAfterUpdate failed', e);
@@ -1998,7 +2085,7 @@
                     // use chart width for horizontal centering and visual viewport for vertical
                     const vp = getViewportRect();
                     const isPortrait = (vp.height || window.innerHeight) > (vp.width || window.innerWidth);
-                    const biasFrac = (isPortrait && isMobileLike()) ? 0.12 : 0;
+                    const biasFrac = (isPortrait && isMobileLike()) ? MOBILE_BIAS_FRAC : 0;
                     const desiredScreenX = width * (0.5 + biasFrac);
                     const dx = desiredScreenX - screen[0];
                     const dy = getDesiredScreenCenter().centerY - screen[1];
@@ -2006,7 +2093,9 @@
                     // apply immediately
                     suppressAutoEnsure = true;
                     svg.interrupt();
+                    hideTransientUI();
                     svg.call(zoom.transform, newTransform);
+                    try { revealHoverAtPointer(); } catch (e) { }
                     suppressAutoEnsure = false;
                 } catch (e) { console.warn('centerImmediate failed', e); suppressAutoEnsure = false; }
             }
@@ -2040,8 +2129,9 @@
                     const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                     suppressAutoEnsure = true;
                     svg.interrupt();
+                    hideTransientUI();
                     svg.transition().duration(duration).call(zoom.transform, newTransform)
-                        .on('end interrupt', () => { suppressAutoEnsure = false; });
+                        .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
                 } catch (e) { console.warn('centerSmooth failed', e); suppressAutoEnsure = false; }
             }
 
