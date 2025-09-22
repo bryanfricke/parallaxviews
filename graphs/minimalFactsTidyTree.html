@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <title>Tidy Tree</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
     <style>
         #topbar {
             display: flex;
@@ -285,6 +286,7 @@
         /* Also apply the same backdrop effect for small-height landscape viewports
            (covers phones/tablets held in landscape where width may exceed 600px). */
         @media (orientation: landscape) and (max-height: 600px) {
+
             #controls[style],
             #controls.open {
                 -webkit-overflow-scrolling: touch;
@@ -300,9 +302,12 @@
            topbar content or the rounded device chrome (helps on iPhone landscape). */
         @media (max-width: 600px) and (orientation: landscape) {
             #controlsToggle {
-                left: 12px; /* base */
-                    transform: translateX(-56px); /* visual shift inward (left) */
+                left: 12px;
+                /* base */
+                transform: translateX(-56px);
+                /* visual shift inward (left) */
             }
+
             /* increase reserved padding so the topbar content moves right and avoids overlap */
             :root {
                 --controls-reserve: 220px;
@@ -552,6 +557,7 @@
                 padding: 14px 14px 12px 14px;
                 max-height: calc(100vh - 56px);
             }
+
             .modal-content .modal-body,
             .modal-content .modal-body p,
             .modal-content .modal-body li,
@@ -560,6 +566,7 @@
                 font-size: 13px;
                 line-height: 1.35;
             }
+
             .modal-content .modal-body .sheet-title {
                 font-size: 15px;
             }
@@ -575,7 +582,7 @@
             border: none;
             background: rgba(0, 0, 0, 0.06);
             /* dark glyph on light backgrounds by default */
-            color: rgba(0,0,0,0.72);
+            color: rgba(0, 0, 0, 0.72);
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -619,9 +626,9 @@
 
         /* accessible focus state for the modal close button */
         .modal-close:focus {
-            outline: 2px solid rgba(0,116,217,0.12);
+            outline: 2px solid rgba(0, 116, 217, 0.12);
             outline-offset: 2px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
         }
 
         .link {
@@ -747,9 +754,11 @@
             color: var(--link-accent) !important;
             text-decoration: underline;
         }
+
         .modal-content a:hover {
             opacity: 0.92;
         }
+
         body.dark-mode .modal-content a {
             color: var(--link-accent) !important;
         }
@@ -884,17 +893,38 @@
                         them, as competing theories such as hallucination or conspiracy quickly collapse under scrutiny.
                         Objections usually arise not from the evidence itself but from worldview assumptions that rule
                         out the possibility of God and miracles in advance.</em></p>
+
+                <!-- Callout as a P (not div) to satisfy strict modal-body selectors -->
+                <p class="callout"
+                    style="margin:12px 0; padding:10px; background:rgba(0,0,0,0.04); border-left:4px solid #666; font-size:14px;">
+                    <strong>How this site helps:</strong> This website lets readers explore the supporting
+                    evidence directly. By clicking through an interactive tree structure, users can locate early sources
+                    that testify to the death, burial, and resurrection of Jesus. The layout reflects the approach in
+                    <em>The Case for the Resurrection of Jesus</em>, with some additions — for example, sources cited
+                    for
+                    the burial connect naturally to the resurrection claims, which themselves imply the discovery of the
+                    empty tomb.
+                </p>
+
                 <hr style="margin-top:12px; margin-bottom:12px; border:none; border-top:1px solid rgba(0,0,0,0.06);">
                 <div class="modal-credit" style="font-size:13px; color:inherit;">
                     <div>Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®),
                         copyright © 2001, 2007, 2011, 2016 by Crossway. Used by permission. All rights reserved.</div>
                     <div style="margin-top:6px;">The "Minimal Facts" approach is adapted from: Gary R. Habermas and
-                        Michael R. Licona, <em><a href="https://en.wikipedia.org/wiki/The_Case_for_the_Resurrection_of_Jesus" target="_blank" rel="noopener">The Case for the Resurrection of Jesus</a></em> (B&amp;H Academic, 2004).
+                        Michael R. Licona, <em><a
+                                href="https://en.wikipedia.org/wiki/The_Case_for_the_Resurrection_of_Jesus"
+                                target="_blank" rel="noopener">The Case for the Resurrection of Jesus</a></em> (B&amp;H
+                        Academic, 2004).
+                    </div>
+                    <div style="margin-top:6px;">
+                        Development note: Large Language Models (principally ChatGPT) and GitHub Copilot were used to
+                        assist
+                        in the development of text and code for this site.
                     </div>
                 </div>
             </div>
-
         </div>
+
     </div>
 
     <!-- D3 v7 -->
@@ -918,8 +948,8 @@
                 chartEl.style.height = `calc(100vh - ${hh}px)`;
                 width = chartEl.clientWidth;
                 height = chartEl.clientHeight;
-                    svg.attr('width', width).attr('height', height)
-                        .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } });
+                svg.attr('width', width).attr('height', height)
+                    .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } });
             }
 
             // Create bottom-sheet element for mobile node details
@@ -1220,7 +1250,7 @@
                     try {
                         if (window.matchMedia && window.matchMedia('(orientation: landscape)').matches) {
                             // shift slightly to the right in landscape on small screens
-                                leftPos -= 64; // tuned empirically; conservative value
+                            leftPos -= 64; // tuned empirically; conservative value
                         }
                     } catch (e) { /* non-fatal */ }
                     controls.style.left = leftPos + 'px';
@@ -1271,6 +1301,24 @@
                 updatePopupHelpPosition();
             });
             svg.call(zoom);
+
+            // Auto-close the controls on mobile when the user taps the chart area.
+            // We programmatically click the controls toggle so the aria state and
+            // icon animation behave the same as a user click.
+            try {
+                container.addEventListener('pointerdown', (event) => {
+                    try {
+                        // Only apply on mobile-like devices
+                        if (!isMobileLike()) return;
+                        const isOpen = controls.classList.contains('open') || controlsToggle.getAttribute('aria-expanded') === 'true';
+                        if (!isOpen) return;
+                        // Don't close if the pointerdown originated on the controls or toggle itself
+                        if (event.target && event.target.closest && (event.target.closest('#controls') || event.target.closest('#controlsToggle'))) return;
+                        // Trigger a click so the toggle's visual state and animations run
+                        controlsToggle.click();
+                    } catch (e) { /* non-fatal */ }
+                }, { passive: true });
+            } catch (e) { /* non-fatal */ }
 
             // ensure chart height computed initially (now that svg exists)
             computeChartHeight();
