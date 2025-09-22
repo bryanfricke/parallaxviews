@@ -4,6 +4,17 @@
 <head>
     <meta charset="utf-8" />
     <title>Minimal Facts Tree</title>
+    # Check for ImageMagick (magick or convert), Inkscape, rsvg-convert
+    command -v magick || command -v convert || echo \"No ImageMagick (magick/convert) found\"
+    command -v inkscape || echo \"No Inkscape found\"
+    command -v rsvg-convert || echo \"No rsvg-convert found\"    <!-- Favicons: SVG primary with PNG fallbacks and webmanifest -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/favicon-16.png" sizes="16x16" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#00BFAE">
+    <meta name="theme-color" content="#00BFAE">
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
     <style>

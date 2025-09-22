@@ -1,0 +1,14 @@
+<!-- Simple, high-contrast cross favicon for Minimal Facts site -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Minimal Facts"> 
+  <title>Minimal Facts</title>
+  <!-- Teal background to match site accent -->
+  <rect width="100%" height="100%" fill="#00BFAE" rx="8"/>
+  <!-- Minimal Latin crucifix: long vertical beam with a shorter horizontal arm placed above center -->
+  <g fill="#fff">
+    <!-- Use uniform thickness for both beams (6px) -->
+  <!-- vertical beam centered (moved down slightly) -->
+  <rect x="29" y="10" width="6" height="44" rx="1.5" />
+  <!-- shorter crossarm placed slightly above center but moved down for better balance -->
+  <rect x="14" y="24" width="36" height="6" rx="1.5" />
+  </g>
+</svg>
