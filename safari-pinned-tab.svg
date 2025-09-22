@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <mask id="m"><rect width="100%" height="100%" fill="white"/></mask>
+  <rect width="100%" height="100%" fill="#00BFAE" rx="8"/>
+  <g fill="black" mask="url(#m)">
+    <!-- white shape is inverted here because Safari uses the monochrome mask -->
+    <rect x="29" y="10" width="6" height="44" rx="1.5" />
+    <rect x="14" y="24" width="36" height="6" rx="1.5" />
+  </g>
+</svg>
