@@ -556,10 +556,7 @@
             width: 100%;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.32);
-                /* Reserve additional top padding so the absolute-positioned close
-                    button (top:12px; height:36px) does not overlap the modal's first
-                    lines of content. This shifts the content downward visually. */
-                padding: 56px 20px 18px 20px;
+            padding: 20px 20px 18px 20px;
             position: relative;
             /* Allow the modal body to scroll when its content exceeds the available
                     vertical space (important on iOS where browser chrome reduces viewport).
@@ -590,9 +587,7 @@
            doesn't appear oversized compared with the title. Keeps the h2 size. */
         @media (orientation: landscape) and (max-height: 700px) {
             .modal-content {
-                /* Keep reduced side padding in landscape but still reserve space
-                   above content so the close button doesn't overlap. */
-                padding: 54px 14px 12px 14px;
+                padding: 14px 14px 12px 14px;
                 max-height: calc(100vh - 56px);
             }
 
@@ -626,7 +621,6 @@
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            z-index: 10001;
         }
 
         /* stronger, high-contrast info icon used inside modal text */
