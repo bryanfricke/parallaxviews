@@ -288,6 +288,16 @@
                 display: flex;
                 flex-wrap: wrap;
                 gap: 8px;
+                z-index: 6000; /* above #topbar (5000) so it isn't visually clipped */
+            }
+
+            /* Ensure the controls panel uses the panel/dark styling when in dark-mode
+               so a JS fallback doesn't render an unexpected white box that hides content. */
+            body.dark-mode #controls.open,
+            body.dark-mode #controls[style] {
+                background: var(--panel-dark);
+                color: var(--text-dark);
+                border: 1px solid rgba(255,255,255,0.04);
             }
 
             /* bottom-sheet styles use the base .bottom-sheet rules (theme-aware) */
@@ -350,10 +360,13 @@
             }
         }
 
-        /* keep topbar above floating bottom-sheet */
+        /* keep topbar above floating bottom-sheet; allow overflow so floating
+           panels anchored to the toggle can escape the divider clipping seen
+           on some mobile Safari zoom states. */
         #topbar {
             position: relative;
             z-index: 5000;
+            overflow: visible;
         }
 
         /* bottom-sheet base styles (works on all sizes but optimized for mobile) */
@@ -543,7 +556,10 @@
             width: 100%;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.32);
-            padding: 20px 20px 18px 20px;
+                /* Reserve additional top padding so the absolute-positioned close
+                    button (top:12px; height:36px) does not overlap the modal's first
+                    lines of content. This shifts the content downward visually. */
+                padding: 56px 20px 18px 20px;
             position: relative;
             /* Allow the modal body to scroll when its content exceeds the available
                     vertical space (important on iOS where browser chrome reduces viewport).
@@ -574,7 +590,9 @@
            doesn't appear oversized compared with the title. Keeps the h2 size. */
         @media (orientation: landscape) and (max-height: 700px) {
             .modal-content {
-                padding: 14px 14px 12px 14px;
+                /* Keep reduced side padding in landscape but still reserve space
+                   above content so the close button doesn't overlap. */
+                padding: 54px 14px 12px 14px;
                 max-height: calc(100vh - 56px);
             }
 
@@ -608,6 +626,7 @@
             align-items: center;
             justify-content: center;
             font-size: 16px;
+            z-index: 10001;
         }
 
         /* stronger, high-contrast info icon used inside modal text */
@@ -1296,6 +1315,45 @@
                     controls.style.maxWidth = '';
                     controls.style.zIndex = '';
                 }
+                // Fallback: some browsers (mobile Safari when zoomed) can render the
+                // control panel invisible due to odd hit-testing or CSS. If the
+                // controls are still not visible after toggling, force a fixed,
+                // visible panel anchored to the toggle as a safe fallback.
+                setTimeout(() => {
+                    try {
+                        const cs = window.getComputedStyle(controls);
+                        const rect = controls.getBoundingClientRect();
+                        const hidden = (!controls || cs.display === 'none' || rect.width === 0 || rect.height === 0 || controls.offsetParent === null);
+                        if (open && hidden) {
+                            const toggleRect = controlsToggle.getBoundingClientRect();
+                            const isDark = document.body && document.body.classList && document.body.classList.contains('dark-mode');
+                            controls.style.position = 'fixed';
+                            controls.style.left = Math.max(8, toggleRect.left) + 'px';
+                            controls.style.top = (toggleRect.bottom + 6) + 'px';
+                            controls.style.display = 'flex';
+                            // Use appropriate background/border for dark-mode so content is visible
+                            if (isDark) {
+                                controls.style.background = 'var(--panel-dark)';
+                                controls.style.color = 'var(--text-dark)';
+                                controls.style.border = '1px solid rgba(255,255,255,0.04)';
+                            } else {
+                                controls.style.background = 'rgba(255,255,255,0.98)';
+                                controls.style.color = '';
+                                controls.style.border = '1px solid rgba(0,0,0,0.06)';
+                            }
+                            controls.style.padding = '8px';
+                            controls.style.borderRadius = '10px';
+                            controls.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)';
+                            controls.style.maxWidth = 'calc(100vw - 32px)';
+                            controls.style.maxHeight = '48vh';
+                            controls.style.overflow = 'auto';
+                            controls.style.zIndex = 9999;
+                            // Ensure children are laid out and visible
+                            controls.style.alignItems = 'center';
+                            controls.style.gap = '8px';
+                        }
+                    } catch (e) { /* non-fatal */ }
+                }, 60);
             });
             updateControlsVisibility();
             // initial application of mobile-like UI tweaks
