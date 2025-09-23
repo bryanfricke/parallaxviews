@@ -24,6 +24,10 @@
             background: var(--bg-light);
             border-bottom: 1px solid #e0e0e0;
             min-height: 48px;
+            /* Prevent vertical panning when user swipes near controls on iOS: allow only horizontal pan */
+            touch-action: pan-x;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         body.dark-mode #topbar {
@@ -269,6 +273,10 @@
                 left: 12px;
                 top: calc(env(safe-area-inset-top, 0px) + 8px);
                 z-index: 9000;
+                /* Stop vertical gestures on the fixed toggle from causing the visual viewport to shift */
+                touch-action: none;
+                -webkit-user-select: none;
+                user-select: none;
             }
 
             #controls {
@@ -302,6 +310,9 @@
                 scrollbar-width: thin;
                 background-clip: padding-box;
                 -webkit-backdrop-filter: blur(6px) saturate(80%);
+                     /* when positioned as a floating panel allow horizontal panning only on the parent
+                         to avoid accidental vertical browser chrome movement; internal scrolling is still allowed */
+                     touch-action: pan-x;
                 backdrop-filter: blur(6px) saturate(80%);
             }
         }
@@ -1315,16 +1326,52 @@
             // We programmatically click the controls toggle so the aria state and
             // icon animation behave the same as a user click.
             try {
+                // Smarter auto-close: only treat quick taps as requests to close the controls.
+                // Ignore pointer interactions that move more than `tapThresholdPx` (i.e. swipes/drags).
+                const tapThresholdPx = 10;
                 container.addEventListener('pointerdown', (event) => {
                     try {
-                        // Only apply on mobile-like devices
                         if (!isMobileLike()) return;
                         const isOpen = controls.classList.contains('open') || controlsToggle.getAttribute('aria-expanded') === 'true';
                         if (!isOpen) return;
-                        // Don't close if the pointerdown originated on the controls or toggle itself
+                        // Don't start if the pointerdown originated on the controls or toggle itself
                         if (event.target && event.target.closest && (event.target.closest('#controls') || event.target.closest('#controlsToggle'))) return;
-                        // Trigger a click so the toggle's visual state and animations run
-                        controlsToggle.click();
+
+                        const startX = event.clientX;
+                        const startY = event.clientY;
+                        const pid = event.pointerId;
+                        let moved = false;
+
+                        function onMove(ev) {
+                            if (ev.pointerId !== pid) return;
+                            if (Math.hypot(ev.clientX - startX, ev.clientY - startY) > tapThresholdPx) moved = true;
+                        }
+
+                        function onUp(ev) {
+                            if (ev.pointerId !== pid) return;
+                            cleanup();
+                            if (moved) return; // it was a swipe/drag, ignore
+                            try {
+                                // ensure the final target also wasn't inside controls
+                                if (ev.target && ev.target.closest && (ev.target.closest('#controls') || ev.target.closest('#controlsToggle'))) return;
+                                controlsToggle.click();
+                            } catch (e) { /* non-fatal */ }
+                        }
+
+                        function onCancel(ev) {
+                            if (ev.pointerId !== pid) return; cleanup();
+                        }
+
+                        function cleanup() {
+                            try { document.removeEventListener('pointermove', onMove, { passive: true }); } catch (e) { }
+                            try { document.removeEventListener('pointerup', onUp, true); } catch (e) { }
+                            try { document.removeEventListener('pointercancel', onCancel, true); } catch (e) { }
+                        }
+
+                        document.addEventListener('pointermove', onMove, { passive: true });
+                        document.addEventListener('pointerup', onUp, true);
+                        document.addEventListener('pointercancel', onCancel, true);
+
                     } catch (e) { /* non-fatal */ }
                 }, { passive: true });
             } catch (e) { /* non-fatal */ }
