@@ -376,6 +376,14 @@
                      touch-action: pan-x;
                 backdrop-filter: blur(6px) saturate(80%);
             }
+            
+            /* On iPhone-like landscape (short, touch devices), put Controls before 4+1 Facts
+               to match portrait ordering. Desktop remains unchanged. */
+            @media (pointer: coarse) {
+                #topbar { flex-wrap: nowrap; }
+                #controlsToggle { order: 0; }
+                #factsAboutBtn { order: 1; }
+            }
         }
 
         /* On small devices when in landscape, shift the controls toggle and reserve
