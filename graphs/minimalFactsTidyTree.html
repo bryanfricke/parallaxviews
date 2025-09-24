@@ -1096,8 +1096,10 @@
                 const hh = Math.max(48, rect.height);
                 const chartEl = document.getElementById('chart');
                 
-                // For mobile screens, keep the chart below the topbar
-                chartEl.style.height = `calc(100vh - ${hh}px)`;
+                // Use the visual viewport height when available to avoid iOS 100vh bugs
+                const vp = getViewportRect();
+                const vh = (vp && vp.height) ? vp.height : window.innerHeight;
+                chartEl.style.height = Math.max(200, vh - hh) + 'px';
                 chartEl.style.marginTop = `${hh}px`; // Adjust margin to account for fixed topbar
                 
                 // On larger screens, make sure topbar doesn't exceed reasonable height
@@ -1150,10 +1152,13 @@
                     // fallback to visual viewport center if there's no overlap
                     return { centerX, centerY: vp.top + (vp.height / 2) };
                 }
-                // Apply a small upward bias on small screens so the focused node sits
-                // comfortably above mobile chrome (URL bar / bottom sheet).
+                // Apply an upward bias on small screens only when browser chrome reduces
+                // the visual viewport height (so we don't over-bias when chrome is hidden).
                 const isSmall = isMobileLike();
-                const upwardBias = isSmall ? 24 : 0; // px
+                // const chromeDelta = Math.max(0, (window.innerHeight || vp.height) - (vp.height || 0));
+                // const upwardBias = (isSmall && chromeDelta > 16) ? 24 : 0; // px
+                const upwardBias = 40; // px
+
                 let centerY = visibleTop + (visibleHeight / 2) - upwardBias;
                 // Clamp into the visible area
                 const minY = vp.top + 8;
@@ -1646,6 +1651,23 @@
                     computeChartHeight();
                     try { scheduleRecenter(180); } catch (e) { /* non-fatal */ }
                 }, 80); 
+            });
+
+            // Handle BFCache restores and tab visibility changes (important on iOS Chrome/Safari)
+            window.addEventListener('pageshow', () => {
+                // Runs both on normal load and BFCache restore; re-measure and recenter
+                computeChartHeight();
+                applyMobileLikeUI();
+                try { positionControlsToggle(); updateControlsReserve(); } catch (e) { /* non-fatal */ }
+                try { scheduleRecenter(200); } catch (e) { /* non-fatal */ }
+            });
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                    setTimeout(() => {
+                        computeChartHeight();
+                        try { scheduleRecenter(200); } catch (e) { /* non-fatal */ }
+                    }, 60);
+                }
             });
 
             // ensure chart height computed initially
