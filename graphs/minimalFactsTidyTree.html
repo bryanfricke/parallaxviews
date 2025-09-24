@@ -652,7 +652,8 @@
             width: 100%;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.32);
-            padding: 20px 20px 18px 20px;
+            /* keep symmetric side padding; don't reserve extra width for the close button */
+            padding: 26px 20px 18px 20px;
             position: relative;
             /* Allow the modal body to scroll when its content exceeds the available
                     vertical space (important on iOS where browser chrome reduces viewport).
@@ -670,8 +671,11 @@
             color: var(--text-dark);
         }
 
-        .modal-content h2 {
-            margin-top: 0;
+          .modal-content h2 {
+                /* Push the heading far enough down to clear the close button without
+                    shrinking the text column width. This avoids the need for a large
+                    right-side padding just to make room for the control. */
+                margin-top: 32px;
             font-size: 18px;
         }
 
@@ -683,7 +687,8 @@
            doesn't appear oversized compared with the title. Keeps the h2 size. */
         @media (orientation: landscape) and (max-height: 700px) {
             .modal-content {
-                padding: 14px 14px 12px 14px;
+                /* keep symmetric padding in landscape as well */
+                padding: 22px 14px 12px 14px;
                 max-height: calc(100vh - 56px);
             }
 
@@ -699,24 +704,37 @@
             .modal-content .modal-body .sheet-title {
                 font-size: 15px;
             }
+            /* Keep the title clear of the close button in tight landscape view */
+            .modal-content h2 { margin-top: 30px; }
         }
 
+        /* Make modal close match the bottom-sheet close button */
         .modal-close {
             position: absolute;
             right: 12px;
             top: 12px;
-            width: 36px;
-            height: 36px;
-            border-radius: 999px;
-            border: none;
-            background: rgba(0, 0, 0, 0.06);
-            /* dark glyph on light backgrounds by default */
-            color: rgba(0, 0, 0, 0.72);
+            width: 32px;
+            height: 32px;
+            aspect-ratio: 1 / 1;
+            box-sizing: border-box;
+            padding: 0;
+            background: rgba(0, 0, 0, 0.035);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            color: rgba(0, 0, 0, 0.65);
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 0;
+            border-radius: 999px; /* fully round */
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+            z-index: 2600;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* stronger, high-contrast info icon used inside modal text */
@@ -749,8 +767,9 @@
 
         body.dark-mode .modal-close {
             background: rgba(255, 255, 255, 0.04);
-            /* light glyph on dark backgrounds */
             color: var(--text-dark);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.02);
         }
 
         /* accessible focus state for the modal close button */
@@ -759,6 +778,8 @@
             outline-offset: 2px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
         }
+
+    /* Container already reserves right padding; avoid per-child padding to keep the close button circular */
 
         .link {
             fill: none;
