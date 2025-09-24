@@ -61,6 +61,7 @@
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0, 159, 146, 0.16);
             transition: background 0.18s ease, box-shadow 0.18s ease, color 0.12s ease, transform 0.08s;
+            position: relative; /* Ensure buttons maintain their position */
         }
 
         /* Hover / focus: slightly deeper mint and subtle lift */
@@ -93,6 +94,40 @@
         }
 
         body.dark-mode #topbar input[type="checkbox"] {
+            accent-color: var(--accent-dark);
+        }
+        
+        /* Special styles for Dark Mode toggle to ensure visibility */
+        #darkModeToggle {
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+            position: relative;
+            flex-shrink: 0; /* Prevent checkbox from shrinking */
+        }
+        
+        /* Specific styling for dark mode label */
+        #darkModeLabel {
+            display: flex;
+            align-items: center;
+            user-select: none;
+            white-space: nowrap;
+            font-weight: 500;
+            height: 40px; /* Match the height of buttons */
+            color: inherit;
+        }
+        
+        /* Ensure dark mode toggle has consistent styling */
+        #darkModeToggle {
+            accent-color: #00BFAE;
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        body.dark-mode #darkModeToggle {
             accent-color: var(--accent-dark);
         }
 
@@ -162,6 +197,11 @@
             --tooltip-border-dark: #00BFAE;
             /* link accent (default = blue for light mode). Overridden in .dark-mode below */
             --link-accent: #0074d9;
+            /* Safe area insets for notched devices */
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
         }
 
         body {
@@ -191,6 +231,7 @@
             height: calc(100vh - 48px);
             overflow: hidden;
             background: var(--bg-light);
+            margin-top: 48px; /* Add margin to account for fixed topbar */
         }
 
         body.dark-mode #chart {
@@ -218,7 +259,12 @@
                 overflow-x: auto;
                 /* allow horizontal scroll if too many controls */
                 -webkit-overflow-scrolling: touch;
+                /* Ensure top bar respects safe area insets on mobile */
+                padding-top: calc(8px + env(safe-area-inset-top, 0px));
+                justify-content: space-between;
             }
+            
+            /* On mobile, dark mode is now in controls panel, no special positioning needed */
 
             /* When the controls toggle is pinned fixed on small screens, reserve
                space on the left so it doesn't visually overlap other topbar items
@@ -310,6 +356,11 @@
             }
         }
 
+        /* On mobile devices, dark mode will be in the controls panel, so hide it from topbar */
+        @media (max-width: 600px) {
+            /* Dark mode toggle stays in controls panel on mobile - no changes needed */
+        }
+        
         /* Also apply the same backdrop effect for small-height landscape viewports
            (covers phones/tablets held in landscape where width may exceed 600px). */
         @media (orientation: landscape) and (max-height: 600px) {
@@ -342,6 +393,8 @@
             :root {
                 --controls-reserve: 220px;
             }
+            
+            /* Dark mode is in controls panel on mobile landscape, no special positioning needed */
         }
 
         /* hide the large page title on small screens (we show controls instead) */
@@ -364,9 +417,38 @@
            panels anchored to the toggle can escape the divider clipping seen
            on some mobile Safari zoom states. */
         #topbar {
-            position: relative;
+            position: fixed;
             z-index: 5000;
             overflow: visible;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+        }
+
+        /* Special positioning for larger screens */
+        @media (min-width: 601px) {
+            #topbar {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+                padding-right: calc(24px + env(safe-area-inset-right, 0px)); /* Ensure enough padding on the right for the dark mode toggle */
+            }
+            
+            #controlsToggle {
+                position: relative !important;
+                left: auto !important;
+                top: auto !important;
+                transform: none !important;
+            }
+            
+            /* Dark mode toggle will be in controls panel for desktop too */
+        }
+
+        /* Dark mode toggle is in controls panel for all screen sizes */
+        #darkModeLabel {
+            display: flex;
+            align-items: center;
         }
 
         /* bottom-sheet base styles (works on all sizes but optimized for mobile) */
@@ -884,8 +966,8 @@
                 <button id="collapseOneLevel">Collapse One Level</button>
                 <button id="expandOneLevel">Expand One Level</button>
             </div>
+            <label id="darkModeLabel" for="darkModeToggle"><input type="checkbox" id="darkModeToggle"> Dark mode</label>
         </div>
-        <label style="margin-left:auto;"><input type="checkbox" id="darkModeToggle"> Dark mode</label>
     </div>
     <div id="chart"></div>
 
@@ -978,7 +1060,16 @@
                 const rect = topbar ? topbar.getBoundingClientRect() : { height: 48 };
                 const hh = Math.max(48, rect.height);
                 const chartEl = document.getElementById('chart');
+                
+                // For mobile screens, keep the chart below the topbar
                 chartEl.style.height = `calc(100vh - ${hh}px)`;
+                chartEl.style.marginTop = `${hh}px`; // Adjust margin to account for fixed topbar
+                
+                // On larger screens, make sure topbar doesn't exceed reasonable height
+                if (window.innerWidth > 600) {
+                    topbar.style.maxHeight = '60px'; // Prevent excessive height on desktop
+                }
+                
                 width = chartEl.clientWidth;
                 height = chartEl.clientHeight;
                 svg.attr('width', width).attr('height', height)
@@ -1461,9 +1552,18 @@
 
             // Also update mobile-like UI on orientation/viewport changes (important on iOS)
             if (window.visualViewport) {
-                window.visualViewport.addEventListener('resize', () => { applyMobileLikeUI(); });
+                window.visualViewport.addEventListener('resize', () => { 
+                    applyMobileLikeUI();
+                    // Recompute chart height when the visual viewport changes (e.g., when Safari UI shows/hides)
+                    computeChartHeight();
+                });
             }
-            window.addEventListener('orientationchange', () => { setTimeout(applyMobileLikeUI, 80); });
+            window.addEventListener('orientationchange', () => { 
+                setTimeout(() => {
+                    applyMobileLikeUI();
+                    computeChartHeight();
+                }, 80); 
+            });
 
             // ensure chart height computed initially
             computeChartHeight();
@@ -2510,13 +2610,19 @@
 
         init();
 
-        // Dark mode toggle
+        // Dark mode toggle - single toggle in controls panel for all screen sizes
         const darkModeToggle = document.getElementById('darkModeToggle');
-        darkModeToggle.checked = true;
-        document.body.classList.add('dark-mode');
-        darkModeToggle.addEventListener('change', function () {
-            document.body.classList.toggle('dark-mode', darkModeToggle.checked);
-        });
+        
+        // Set initial state
+        if (darkModeToggle) {
+            darkModeToggle.checked = true;
+            document.body.classList.add('dark-mode');
+            
+            // Add event listener
+            darkModeToggle.addEventListener('change', function () {
+                document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+            });
+        }
 
         // Minimal Facts modal behavior
         (function () {
