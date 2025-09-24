@@ -1579,6 +1579,49 @@
                     const _c = getDesiredScreenCenter();
                     svg.call(zoom.transform, d3.zoomIdentity.translate(Math.min(220, width * 0.25), _c.centerY).scale(1));
                 }
+                // Always schedule a gentle vertical recenter after resize/orientation flips
+                // so the tree doesn't end up sitting below the short landscape viewport.
+                try { scheduleRecenter(140); } catch (e) { /* non-fatal */ }
+            }
+
+            // Gentle vertical recenter after viewport changes (rotation, iOS chrome show/hide)
+            let __recenterTimer = null;
+            function scheduleRecenter(delay = 200) {
+                try { clearTimeout(__recenterTimer); } catch (e) { }
+                __recenterTimer = setTimeout(() => {
+                    try { recenterForViewportChange(); } catch (e) { /* non-fatal */ }
+                }, delay);
+            }
+            function recenterForViewportChange() {
+                try {
+                    if (!svg || !zoom || typeof d3 === 'undefined') return;
+                    const t = d3.zoomTransform(svg.node());
+                    // Prefer a currently selected node; fall back to root
+                    let anchor = null;
+                    try {
+                        const sel = d3.select('g.node[data-selected="true"]');
+                        anchor = (sel && !sel.empty()) ? sel.datum() : (typeof root !== 'undefined' ? root : null);
+                    } catch (e) { anchor = (typeof root !== 'undefined' ? root : null); }
+                    if (!anchor) return;
+
+                    // Current screen coords of the anchor
+                    const screen = t.apply([anchor.y, anchor.x]);
+                    const desired = getDesiredScreenCenter();
+
+                    // Adjust only Y; horizontal clamping is handled by ensureTreeVisible
+                    const newT = d3.zoomIdentity.translate(t.x, t.y + (desired.centerY - screen[1])).scale(t.k);
+
+                    try { if (typeof suppressAutoEnsure !== 'undefined') suppressAutoEnsure = true; } catch (e) { }
+                    svg.interrupt();
+                    hideTransientUI();
+                    svg.transition().duration(240).call(zoom.transform, newT)
+                        .on('end interrupt', () => {
+                            try { ensureTreeVisible(); revealHoverAtPointer(); } catch (e) { /* non-fatal */ }
+                            finally { try { if (typeof suppressAutoEnsure !== 'undefined') suppressAutoEnsure = false; } catch (e) { } }
+                        });
+                } catch (e) {
+                    try { if (typeof suppressAutoEnsure !== 'undefined') suppressAutoEnsure = false; } catch (_e) { }
+                }
             }
 
             // Debounced resize
@@ -1594,12 +1637,14 @@
                     applyMobileLikeUI();
                     // Recompute chart height when the visual viewport changes (e.g., when Safari UI shows/hides)
                     computeChartHeight();
+                    try { scheduleRecenter(160); } catch (e) { /* non-fatal */ }
                 });
             }
             window.addEventListener('orientationchange', () => { 
                 setTimeout(() => {
                     applyMobileLikeUI();
                     computeChartHeight();
+                    try { scheduleRecenter(180); } catch (e) { /* non-fatal */ }
                 }, 80); 
             });
 
