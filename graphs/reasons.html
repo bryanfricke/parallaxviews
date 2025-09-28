@@ -51,6 +51,12 @@ input[type="text"]{border:1px solid var(--line); border-radius:8px; padding:6px 
 #main{display:grid; grid-template-rows:auto 1fr auto; gap:10px}
 #chart{width:100%; /* use a CSS variable for mobile-safe viewport height (see JS below) */ height:calc(var(--vh, 1vh) * 100 - 92px); min-height:380px; padding-top:14px; box-sizing:border-box}
 #chart svg{display:block; width:100%; height:100%}
+/* Prevent the browser from handling pinch/zoom inside the chart area so D3 can manage gestures.
+  iOS sometimes ignores touch-action, so we also add an explicit touchstart listener in JS below. */
+#chart svg{ touch-action: none; -webkit-user-select: none; user-select: none; -ms-touch-action: none; -webkit-tap-highlight-color: transparent; }
+/* Keep strokes visually constant while zooming the chart. Target common axis/path elements and
+  the vertex outer rings; filled shapes (dots) will still scale unless adjusted in JS. */
+#chart svg path, #chart svg line, #chart svg polygon, #chart svg .vertex-ring { vector-effect: non-scaling-stroke; }
 .help{margin-left:8px}
 .legend{display:none}
 .tooltip{position:fixed; pointer-events:auto; z-index:9999; background:var(--panel-bg); border:1px solid var(--line); padding:8px 10px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,.12); max-width:360px; font-size:12px; contain:paint; will-change:transform; max-height:calc(100vh - 96px); overflow:auto}
@@ -134,7 +140,6 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
 
 /* Pinned vertex state: make the outer ring stand out when pinned */
 .vertex.pinned .vertex-ring { stroke: #fff !important; stroke-width: 3px !important; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.28)); }
-.vertex.pinned .vertex-dot { r: 5; }
 /* close button inside tooltip */
 .tooltip .tt-close { position:absolute; top:8px; right:8px; z-index:2; display:block; background:transparent; border:1px solid var(--line); border-radius:8px; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:16px; }
 .tooltip.pinned .tt-close { /* visually emphasized when pinned */ border-color: var(--primary); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
@@ -270,6 +275,8 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   lastActiveHypothesis:null,
   _highlightClearTimer:null
   };
+  // current zoom scale applied to chart (1 == identity). Updated by zoom handler.
+  state.zoomK = 1;
   // flags to track pointer location for auto-hide logic
   state.isOverChart = false;
   state.isOverTT = false;
@@ -553,11 +560,11 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   d3.selectAll('.hyp-polygon').style('opacity', 0.12).style('filter', null);
   d3.selectAll('.pill').style('opacity', 0.5);
   // dim vertices (inner colored dots)
-  d3.selectAll('.vertices .vertex-dot').style('opacity', 0.4).attr('r',5);
+  d3.selectAll('.vertices .vertex-dot').style('opacity', 0.4).attr('r', d => (d.baseR || 5) / (state.zoomK || 1));
     d3.selectAll('.hyp-polygon').filter(function(d){ return d && d.id===hypId; }).style('opacity', 1).style('filter', 'drop-shadow(0 6px 18px rgba(0,0,0,0.12))');
   d3.selectAll('.pill').filter(function(d){ return d && d.id===hypId; }).style('opacity', 1);
   // highlight vertices for this hypothesis (inner dot larger)
-  d3.selectAll('.vertices .vertex-dot').filter(function(d){ return d && d.h && d.h.id===hypId; }).style('opacity', 1).attr('r',6).each(function(d){
+  d3.selectAll('.vertices .vertex-dot').filter(function(d){ return d && d.h && d.h.id===hypId; }).style('opacity', 1).attr('r', d => Math.max(3, (d.baseR || 5) / (state.zoomK || 1) * 1.2)).each(function(d){
     try{ this.parentNode && this.parentNode.parentNode && d3.select(this.parentNode).raise(); }catch(e){}
     // ensure inner fill and outer ring stroke match hypothesis color
     d3.select(this).attr('fill', d.h.color);
@@ -571,7 +578,7 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     state._highlightClearTimer = setTimeout(()=>{
       d3.selectAll('.hyp-polygon').style('opacity', null).style('filter', null);
       d3.selectAll('.pill').style('opacity', null);
-  d3.selectAll('.vertices .vertex-dot').style('opacity', null).attr('r',5);
+  d3.selectAll('.vertices .vertex-dot').style('opacity', null).attr('r', d => (d.baseR || 5) / (state.zoomK || 1));
       state._highlightClearTimer = null;
       // reset lastActiveHypothesis after clearing
       state.lastActiveHypothesis = null;
@@ -639,7 +646,13 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   // padX scales with width; ensure a reasonable min/max so labels have room
   const padX = Math.max(40, Math.min(140, Math.round(w * 0.25)));
   const r = Math.min(w/2 - padX, h/2 - padY);
-  const svg=d3.select(container).append('svg').attr('width', w).attr('height', h);
+  // create an SVG with a viewBox so it scales nicely and we can apply transforms
+  const svg = d3.select(container).append('svg')
+    .attr('width', w).attr('height', h)
+    .attr('viewBox', `0 0 ${w} ${h}`)
+    .style('touch-action', 'none');
+  // iOS sometimes still performs page pinch-zoom; prevent default on two-finger touchstart inside the svg
+  try{ svg.node().addEventListener('touchstart', function(e){ if(e.touches && e.touches.length>1){ e.preventDefault(); } }, {passive:false}); }catch(e){}
   // track pointer presence over chart to control tooltip auto-hide
   svg.on('mouseenter', ()=>{ state.isOverChart = true; clearTimeout(hideTimer); }).on('mouseleave', ()=>{ state.isOverChart = false; scheduleHide(); });
     // viewport receives the zoom transform; content is centered inside the viewport so zooming is anchored to cursor
@@ -647,8 +660,26 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     const g = viewport.append('g').attr('transform', `translate(${w/2},${h/2})`);
 
     // D3 zoom: apply transform to viewport so zoom is centered on pointer location
+    // Configure zoom. We'll apply the transform to the viewport group, then inverse-scale
+    // certain visual attributes (node radii, text font-sizes) so they remain legible on screen.
     const zoom = d3.zoom().scaleExtent([0.6, 4]).on('zoom', (e)=>{
       viewport.attr('transform', e.transform);
+      const k = e.transform.k || 1;
+      state.zoomK = k;
+      // inverse-scale vertex dot radii so dots stay approximately the same screen size
+      try{
+        g.selectAll('.vertex-dot').attr('r', d => {
+          // store base radius on datum if not present
+          d.baseR = d.baseR || 5;
+          return Math.max(2, d.baseR / k);
+        });
+        // outer ring stroke width was non-scaling (vector-effect), but ensure its radius visually compensates
+        g.selectAll('.vertex-ring').attr('r', d=>{ d.baseRing = d.baseRing || 7; return Math.max(4, d.baseRing / k); });
+        // adjust level/axis label font sizes so they remain readable; clamp to reasonable min
+        g.selectAll('.level-label').style('font-size', d=> Math.max(8, 10 / k) + 'px');
+        g.selectAll('g > text').filter(function(){ return d3.select(this).classed('level-label') ? false : true; })
+          .style('font-size', d=> Math.max(10, 12 / k) + 'px');
+      }catch(err){ /* ignore minor runtime adjustments */ }
     });
     // Only enable zoom when interacting with the SVG background (not when interacting with interactive elements)
     svg.call(zoom.filter(function(event){
@@ -830,9 +861,9 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
         }
       });
 
-  // draw ring + dot inside each vertex group
-  vwrap.append('circle').attr('class','vertex-ring').attr('r',7).attr('fill','#fff').attr('stroke', d=>d.h.color).attr('stroke-width',2).style('stroke-opacity',0.95);
-  vwrap.append('circle').attr('class','vertex-dot').attr('r',5).attr('fill', d=>d.h.color).attr('stroke','none');
+  // draw ring + dot inside each vertex group; store base sizes on the datum for zoom math
+  vwrap.append('circle').attr('class','vertex-ring').each(function(d){ d.baseRing = d.baseRing || 7; }).attr('r', d=> d.baseRing).attr('fill','#fff').attr('stroke', d=>d.h.color).attr('stroke-width',2).style('stroke-opacity',0.95);
+  vwrap.append('circle').attr('class','vertex-dot').each(function(d){ d.baseR = d.baseR || 5; }).attr('r', d=> d.baseR).attr('fill', d=>d.h.color).attr('stroke','none');
   // ensure vertex groups render on top of polygons/axes
   try{ vwrap.raise(); }catch(e){}
   }

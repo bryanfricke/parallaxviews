@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sankey — Arguments ↔ Attributes</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --chip-bg: #e2e8f0;
+      --attr-fill: #94a3b8;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b0f1a;
+        --fg: #e5e7eb;
+        --muted: #9ca3af;
+        --accent: #60a5fa;
+        --chip-bg: #111827;
+        --attr-fill: #64748b;
+      }
+    }
+    /* explicit dark-mode override when user toggles theme via data-theme attribute */
+    :root[data-theme="dark"]{
+      --bg: #071022;
+      --fg: #e6eef8;
+      --muted: #cbd6e1;
+      --accent: #93c5fd;
+      --chip-bg: #0f1724;
+      --attr-fill: #7b8794;
+    }
+    html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial; }
+  .wrap { max-width: 1100px; margin: 24px auto; padding: 0 16px 24px 16px; }
+  .page-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:nowrap; padding:12px 0 8px 0; }
+    h1 { font-size: 20px; line-height: 1.1; margin: 0; font-weight: 700; flex: 1 1 auto; min-width: 0; }
+
+  /* Small viewport adjustments: keep header inline and reduce sizes so button doesn't wrap */
+  @media (max-width:520px){
+    .page-header{ gap:10px; }
+    .page-header h1{ font-size:16px; }
+    .theme-btn{ height:32px; width:32px }
+  }
+    p.subtitle { margin: 0 0 12px 0; color: var(--muted); font-size: 14px; }
+
+    .legend { display: flex; gap: 10px; align-items: center; font-size: 12px; color: var(--muted); margin: 8px 0 10px 0; flex-wrap: wrap; }
+    .legend .chip { display:inline-flex; align-items:center; gap:8px; background: var(--chip-bg); color: var(--fg); border: 1px solid rgba(148,163,184,.35); padding: 6px 10px; border-radius: 999px; font-size: 12px; user-select:none; }
+    .legend .swatch { width:12px; height:12px; border-radius:2px; display:inline-block; }
+
+    svg { width:100%; height:700px; display:block; border-radius:16px; overflow: visible; }
+
+    .node rect { fill-opacity: 0.9; shape-rendering: crispEdges; }
+    .node rect:hover { filter: brightness(1.08); }
+
+    .label { font-size: 16px; font-weight: 600; alignment-baseline: middle; fill: var(--fg); paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-opacity: .95; }
+
+    .link { fill: none; stroke-opacity: .7; }
+    .link:hover { stroke-opacity: .95; }
+
+    .tooltip { position: absolute; pointer-events: none; background: var(--bg); color: var(--fg); border: 1px solid rgba(148,163,184,.4); padding: 8px 10px; border-radius: 8px; font-size: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); opacity: 0; transition: opacity 80ms ease; max-width: 320px; white-space: pre-wrap; }
+
+  /* theme toggle button */
+  .theme-btn{ border:1px solid rgba(148,163,184,.35); background: var(--chip-bg); color: var(--fg); padding:0; border-radius:8px; cursor:pointer; font-size:14px; display:inline-flex; align-items:center; justify-content:center; height:36px; width:36px; box-sizing:border-box; line-height:1; z-index:11; overflow:hidden; appearance:none }
+  .theme-btn svg, .theme-btn span.icon { display:inline-block; width:16px; height:16px }
+  :root[data-theme="dark"] .theme-btn { background: var(--chip-bg); color: var(--fg); border-color: rgba(255,255,255,0.08); }
+  :root[data-theme="dark"] #icon-moon{ display:none }
+  :root[data-theme="dark"] #icon-sun{ display:inline }
+  #icon-sun{ display:none }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+  <div class="page-header">
+    <h1>Craig’s Cumulative Case • Arguments ↔ Attributes</h1>
+    <button id="themeToggle" class="theme-btn" aria-pressed="false" title="Toggle dark mode">
+      <span id="icon-moon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></span>
+      <span id="icon-sun" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+    </button>
+  </div>
+
+    <svg id="chart"></svg>
+    <div id="tooltip" class="tooltip"></div>
+  </div>
+
+  <script>
+      (async () => {
+        // Theme handling: toggle and persist theme in localStorage
+        const themeKey = 'pv_theme';
+        function applyTheme(t){ if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); else document.documentElement.removeAttribute('data-theme'); }
+        function initTheme(){ const stored = localStorage.getItem(themeKey); if(stored){ applyTheme(stored); document.getElementById('themeToggle')?.setAttribute('aria-pressed', stored==='dark'?'true':'false'); } else {
+            const prefers = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; applyTheme(prefers); document.getElementById('themeToggle')?.setAttribute('aria-pressed', prefers==='dark'?'true':'false'); }
+          document.getElementById('themeToggle')?.addEventListener('click', ()=>{ const cur = document.documentElement.getAttribute('data-theme')==='dark' ? 'dark' : 'light'; const next = cur==='dark' ? 'light' : 'dark'; applyTheme(next); localStorage.setItem(themeKey, next); document.getElementById('themeToggle')?.setAttribute('aria-pressed', next==='dark'?'true':'false'); });
+        }
+        try{ initTheme(); }catch(e){ /* ignore theme init errors */ }
+      // Load argument metadata (premises/steps) so we can show them on node hover
+      const argMetaResp = await fetch('data/arguments.json');
+      let argMeta = { arguments: [] };
+      try { argMeta = await argMetaResp.json(); } catch(e) { console.warn('Could not load arguments.json', e); }
+
+      // Arguments from JSON, but fall back to the built-in list if JSON is missing/empty
+      const fallbackArguments = [
+        { id: "ontological", title: "Ontological" },
+        { id: "kalam", title: "Kalam" },
+        { id: "leibniz", title: "Leibnizian" },
+        { id: "moral", title: "Moral" },
+        { id: "teleological", title: "Teleological" }
+      ];
+
+  const argsFromJson = (argMeta.arguments && argMeta.arguments.length) ? argMeta.arguments : fallbackArguments;
+  const argById = new Map((argsFromJson || []).map(a => [a.id, a]));
+  const attrList = argMeta.attributes || [];
+  const attrById = new Map((attrList || []).map(a => [a.id, a]));
+
+      // Use argument metadata as source of truth so IDs line up with data/arguments.json
+      const data = {
+      arguments: (argsFromJson || []).map(a => ({ id: a.id, label: a.title || (a.id.charAt(0).toUpperCase() + a.id.slice(1)) })),
+      attributes: [
+        { id: "timeless", label: "Timeless/Spaceless" },
+        { id: "personal", label: "Personal Agent" },
+        { id: "necessary", label: "Necessary" },
+        { id: "designer", label: "Designer" },
+        { id: "good", label: "Good/Perfectly Moral" },
+        { id: "max_great", label: "Maximally Great" }
+      ],
+      links: [
+        { source: "ontological", target: "max_great", value: 12, explain: "If possibly necessary being, then necessary being exists (modal ontological)." },
+        { source: "ontological", target: "necessary", value: 10, explain: "Ontological also supports necessity of being." },
+
+        { source: "kalam", target: "timeless", value: 10, explain: "Cause of space–time is not in space–time." },
+        { source: "kalam", target: "personal", value: 8, explain: "Agent causation to explain temporal effect from a timeless state." },
+
+        { source: "leibniz", target: "necessary", value: 9, explain: "Principle of Sufficient Reason (PSR) → necessary external explanation of contingent reality." },
+        { source: "leibniz", target: "personal", value: 6, explain: "Principle of Sufficient Reason (PSR) suggests a personal explanation, not just abstract." },
+
+        { source: "teleological", target: "designer", value: 12, explain: "Fine-tuning suggests purposive order." },
+        { source: "teleological", target: "personal", value: 6, explain: "Design also implies a personal mind behind it." },
+
+        { source: "moral", target: "good", value: 12, explain: "Ground of objective moral values & duties." }
+      ]
+    };
+
+    const argPalette = {
+      // ColorBrewer Set2 (muted, categorical) for arguments
+      kalam:        '#66C2A5', // teal green
+      leibniz:      '#FC8D62', // soft orange
+      teleological: '#8DA0CB', // muted periwinkle blue
+      moral:        '#E78AC3', // dusty pink/magenta
+      ontological:  '#A6D854'  // fresh lime green
+    };
+    const attrPalette = {
+      // ColorBrewer Set3 (lighter complements) for attributes
+      timeless:    '#8DD3C7', // aqua mint
+      personal:    '#FFFFB3', // light yellow
+      necessary:   '#BEBADA', // lavender
+      designer:    '#FB8072', // salmon red
+      good:        '#80B1D3', // sky blue
+      max_great:   '#FDB462'  // warm muted orange
+    };
+
+    const nodes = [
+      ...data.arguments.map(d => ({ id: d.id, label: d.label, type: 'arg', color: argPalette[d.id] || '#93c5fd' })),
+      ...data.attributes.map((d, i) => ({ id: d.id, label: d.label, type: 'attr', color: attrPalette[d.id] || 'var(--attr-fill)', order: i }))
+    ];
+
+    const indexById = new Map(nodes.map((d, i) => [d.id, i]));
+
+    // Map links to numeric indices; filter out any that refer to missing node ids
+    const links = data.links.map(l => {
+      const sIdx = indexById.get(l.source);
+      const tIdx = indexById.get(l.target);
+      if (sIdx == null || tIdx == null) {
+        console.warn('Skipping link with missing node id', l);
+        return null;
+      }
+      return {
+        source: sIdx,
+        target: tIdx,
+        value: l.value,
+        explain: l.explain || "(no further explanation)"
+      };
+    }).filter(Boolean);
+
+  const svg = d3.select('#chart');
+  const width = svg.node().clientWidth;
+  const height = svg.node().clientHeight;
+  const isMobile = width < 600; // simple breakpoint for responsive adjustments
+
+    // Ensure nodes in the same column keep a desired vertical order by using an explicit 'order' property
+    const sankey = d3.sankey()
+      .nodeId((d, i) => i)
+      .nodeAlign(d3.sankeyLeft)
+      .nodeWidth(isMobile ? 8 : 12)
+      .nodePadding(isMobile ? 12 : 28)
+      // sort nodes within each column by the 'order' property (defaults to 0)
+      .nodeSort((a, b) => ( (a.order || 0) - (b.order || 0) ))
+      .extent([[isMobile ? 60 : 140, 20], [width - (isMobile ? 60 : 140), height - 20]]);
+
+    const graph = sankey({ nodes: nodes.map(d => ({ ...d })), links: links.map(d => ({ ...d })) });
+
+    // Reposition attribute nodes according to their explicit 'order' so right-side order is enforced.
+    // Gather attribute nodes (these are sinks, typically on the right column) and re-stack them.
+    const attrNodes = graph.nodes.filter(n => n.type === 'attr').slice().sort((a,b) => (a.order || 0) - (b.order || 0));
+    if (attrNodes.length) {
+      const padTop = 20;
+      const padBottom = 20;
+      const available = height - padTop - padBottom;
+      const totalHeights = attrNodes.reduce((sum, n) => sum + (n.y1 - n.y0), 0);
+      const totalPadding = Math.max(0, (attrNodes.length - 1) * sankey.nodePadding());
+      const needed = totalHeights + totalPadding;
+      // start centered vertically
+      let y = padTop + Math.max(0, (available - needed) / 2);
+      for (const n of attrNodes) {
+        const h = n.y1 - n.y0;
+        n.y0 = y;
+        n.y1 = y + h;
+        y += h + sankey.nodePadding();
+      }
+    }
+
+    const defs = svg.append('defs');
+    graph.links.forEach((d,i) => {
+      const gradId = `grad-${i}`;
+      const sourceColor = nodes[d.source.index].color;
+      const targetColor = nodes[d.target.index].color;
+      const linearGrad = defs.append('linearGradient')
+        .attr('id', gradId)
+        .attr('gradientUnits','userSpaceOnUse')
+        .attr('x1', d.source.x1).attr('x2', d.target.x0)
+        .attr('y1', (d.source.y0 + d.source.y1)/2)
+        .attr('y2', (d.target.y0 + d.target.y1)/2);
+      linearGrad.append('stop').attr('offset','0%').attr('stop-color',sourceColor).attr('stop-opacity',0.8);
+      linearGrad.append('stop').attr('offset','100%').attr('stop-color',targetColor).attr('stop-opacity',0.8);
+      d.gradId = gradId;
+    });
+
+    // Legend and descriptive subtitle removed — labels on the graph provide the context.
+
+    const link = svg.append('g')
+      .attr('fill', 'none')
+      .selectAll('path')
+      .data(graph.links)
+      .join('path')
+      .attr('class', 'link')
+      .attr('d', d3.sankeyLinkHorizontal())
+      .attr('stroke', d => `url(#${d.gradId})`)
+      .attr('stroke-width', d => Math.max(1, d.width));
+
+    const tooltip = d3.select('#tooltip');
+    // Helper to position tooltip near the cursor and shift left if it would overflow the right edge.
+    function showTooltipAtMouse(event, html){
+      try{
+        tooltip.html(html).style('opacity', 1).style('left', '0px').style('top', (event.pageY + 12) + 'px');
+        const ttNode = tooltip.node();
+        if(!ttNode) return;
+        // measure width after content insertion
+        const w = ttNode.offsetWidth || ttNode.getBoundingClientRect().width || 0;
+        const docLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
+        // prefer to place to the right of cursor but clamp so tooltip stays inside viewport
+        const preferred = event.pageX + 12;
+        const minLeft = docLeft + 8;
+        const maxRight = docLeft + window.innerWidth - 8;
+        const maxLeft = Math.max(minLeft, maxRight - w);
+        let left = Math.min(Math.max(preferred, minLeft), maxLeft);
+        tooltip.style('left', left + 'px');
+      }catch(e){ /* ignore positioning errors */ }
+    }
+    link.on('mousemove', (event, d) => {
+        const s = nodes[d.source.index];
+        const t = nodes[d.target.index];
+        const label = `${s.label} → ${t.label}`;
+        showTooltipAtMouse(event, `<strong>${label}</strong><br/>${d.explain}`);
+      })
+      .on('mouseleave', () => tooltip.style('opacity', 0));
+
+    const node = svg.append('g')
+      .selectAll('g')
+      .data(graph.nodes)
+      .join('g')
+        .attr('class', d => `node ${d.type}`)
+        .on('click', (_, d) => isolate(d));
+
+      // Show premises when hovering over an argument node
+      node.on('mousemove', (event, d) => {
+        if (d.type !== 'arg') return;
+        const meta = argById.get(d.id);
+        if (!meta) {
+          // fallback: show the label only
+          showTooltipAtMouse(event, `<strong>${d.label}</strong>`);
+          return;
+        }
+          // Show all steps (premises + conclusions) as a single numbered list in original order
+          const steps = meta.steps || [];
+          let bodyHtml;
+          if (steps.length) {
+            const items = steps.map(s => `<li style="margin:0 0 8px 0; line-height:1.4">${s.text}</li>`).join('');
+            // Use an ordered list with left padding so wrapped lines align under the text (not the number)
+            bodyHtml = `<ol style="margin:6px 0 0 0; padding-left:20px;">${items}</ol>`;
+          } else {
+            bodyHtml = '(no steps found)';
+          }
+          showTooltipAtMouse(event, `<strong>${meta.title || d.label}</strong><br/>${bodyHtml}`);
+      }).on('mouseleave', () => tooltip.style('opacity', 0));
+
+      // Show attribute description on attribute node hover
+      node.filter(d => d.type === 'attr')
+        .on('mousemove', (event, d) => {
+          const meta = attrById.get(d.id) || {};
+          const desc = meta.description || '(no description)';
+          showTooltipAtMouse(event, `<strong>${meta.title || d.label}</strong><br/>${desc}`);
+        })
+        .on('mouseleave', () => tooltip.style('opacity', 0));
+
+    node.append('rect')
+      .attr('x', d => d.x0)
+      .attr('y', d => d.y0)
+      .attr('height', d => Math.max(6, d.y1 - d.y0))
+      .attr('width', d => d.x1 - d.x0)
+      .attr('rx', 2).attr('ry', 2)
+      .attr('fill', d => d.color)
+      ;
+
+    const labels = node.append('text')
+      .attr('class', 'label')
+      .attr('x', d => {
+        const inset = 12; // keep labels inside the canvas by insetting from node edges
+        if (d.x0 < width / 2) {
+          // left-side nodes: place text to the right of the node (inside)
+          return d.x1 + inset;
+        } else {
+          // right-side nodes: place text to the left of the node (inside)
+          return d.x0 - inset;
+        }
+      })
+      .attr('y', d => (d.y0 + d.y1) / 2)
+  .attr('text-anchor', d => d.x0 < width / 2 ? 'start' : 'end')
+  .style('fill', 'var(--fg)')
+      .text(d => {
+        if (!isMobile) return d.label;
+        // lookup abbreviation from argument or attribute metadata
+        const meta = d.type === 'arg' ? (argById.get(d.id) || {}) : (attrById.get(d.id) || {});
+        return meta.abbr || d.label;
+      })
+      .style('font-size', isMobile ? '12px' : null)
+      .style('display', isMobile ? null : null);
+
+    function isolate(n){
+      node.classed('faint', d => d !== n);
+      link.classed('faint', d => d.source !== n && d.target !== n);
+    }
+    // Hide tooltip when clicking or tapping outside nodes/links/tooltip
+    function hideTooltipIfOutside(event){
+      const el = event.target;
+      if (!el) return;
+      // if click inside a node, link, or the tooltip itself, do nothing
+      if (el.closest && (el.closest('.node') || el.closest('.link') || el.closest('#tooltip'))) return;
+      d3.select('#tooltip').style('opacity', 0);
+    }
+    document.addEventListener('click', hideTooltipIfOutside);
+    document.addEventListener('touchstart', hideTooltipIfOutside);
+
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') { node.classed('faint', false); link.classed('faint', false); d3.select('#tooltip').style('opacity', 0); }});
+      })();
+    </script>
+</body>
+</html>
