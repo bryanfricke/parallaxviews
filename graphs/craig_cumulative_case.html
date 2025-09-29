@@ -188,6 +188,7 @@
   const width = svg.node().clientWidth;
   const height = svg.node().clientHeight;
   const isMobile = width < 600; // simple breakpoint for responsive adjustments
+  const endExtra = isMobile ? 8 : 0; // extra width for end nodes on mobile
 
     // Ensure nodes in the same column keep a desired vertical order by using an explicit 'order' property
     const sankey = d3.sankey()
@@ -315,10 +316,20 @@
         .on('mouseleave', () => tooltip.style('opacity', 0));
 
     node.append('rect')
-      .attr('x', d => d.x0)
+      .attr('x', d => {
+        // For right-side attribute nodes on mobile, shift left so we can widen into link area
+        if (isMobile && d.type === 'attr') return Math.max(0, d.x0 - endExtra);
+        return d.x0;
+      })
       .attr('y', d => d.y0)
       .attr('height', d => Math.max(6, d.y1 - d.y0))
-      .attr('width', d => d.x1 - d.x0)
+      .attr('width', d => {
+        // Increase width for end nodes on mobile so they read as wider
+        if (!isMobile) return d.x1 - d.x0;
+        if (d.type === 'arg') return (d.x1 - d.x0) + endExtra; // extend right
+        if (d.type === 'attr') return (d.x1 - d.x0) + endExtra; // extended left by reducing x
+        return d.x1 - d.x0;
+      })
       .attr('rx', 2).attr('ry', 2)
       .attr('fill', d => d.color)
       ;
@@ -327,12 +338,15 @@
       .attr('class', 'label')
       .attr('x', d => {
         const inset = 12; // keep labels inside the canvas by insetting from node edges
-        if (d.x0 < width / 2) {
+        // compute effective node edges (accounting for visual widening on mobile)
+        const effX0 = (isMobile && d.type === 'attr') ? Math.max(0, d.x0 - endExtra) : d.x0;
+        const effX1 = (isMobile && d.type === 'arg') ? d.x1 + endExtra : d.x1;
+        if (effX0 < width / 2) {
           // left-side nodes: place text to the right of the node (inside)
-          return d.x1 + inset;
+          return effX1 + inset;
         } else {
           // right-side nodes: place text to the left of the node (inside)
-          return d.x0 - inset;
+          return effX0 - inset;
         }
       })
       .attr('y', d => (d.y0 + d.y1) / 2)
