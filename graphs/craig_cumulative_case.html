@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sankey — Arguments ↔ Attributes</title>
+  <title>Theistic Arguments and Divine Attributes</title>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
   <style>
@@ -14,6 +14,23 @@
       --accent: #2563eb;
       --chip-bg: #e2e8f0;
       --attr-fill: #94a3b8;
+      --text-glow-color: rgba(255, 255, 255, 0.9);
+      --node-selection-color: rgba(255, 255, 255, 0.6);
+      
+      /* Light mode argument colors (ColorBrewer Set1) - default */
+      --kalam-color: #1B9E77;
+      --leibniz-color: #D95F02;
+      --teleological-color: #7570B3;
+      --moral-color: #E7298A;
+      --ontological-color: #66A61E;
+      
+      /* Light mode attribute colors - default */
+      --timeless-color: #1F78B4;
+      --personal-color: #FDBF6F;
+      --necessary-color: #CAB2D6;
+      --designer-color: #E31A1C;
+      --good-color: #6A3D9A;
+      --max-great-color: #FF7F00;
     }
     @media (prefers-color-scheme: dark) {
       :root {
@@ -23,6 +40,23 @@
         --accent: #60a5fa;
         --chip-bg: #111827;
         --attr-fill: #64748b;
+        --text-glow-color: rgba(248, 250, 252, 0.8);
+        --node-selection-color: rgba(248, 250, 252, 0.6);
+        
+        /* Dark mode argument colors (ColorBrewer Set2) */
+        --kalam-color: #66C2A5;
+        --leibniz-color: #FC8D62;
+        --teleological-color: #8DA0CB;
+        --moral-color: #E78AC3;
+        --ontological-color: #A6D854;
+        
+        /* Dark mode attribute colors (ColorBrewer Set3) */
+        --timeless-color: #8DD3C7;
+        --personal-color: #FFFFB3;
+        --necessary-color: #BEBADA;
+        --designer-color: #FB8072;
+        --good-color: #80B1D3;
+        --max-great-color: #FDB462;
       }
     }
     /* explicit dark-mode override when user toggles theme via data-theme attribute */
@@ -33,6 +67,49 @@
       --accent: #93c5fd;
       --chip-bg: #0f1724;
       --attr-fill: #7b8794;
+      --text-glow-color: rgba(248, 250, 252, 0.8);
+      --node-selection-color: rgba(248, 250, 252, 0.6);
+      
+      /* Dark mode argument colors (existing ColorBrewer Set2) */
+      --kalam-color: #66C2A5;
+      --leibniz-color: #FC8D62;
+      --teleological-color: #8DA0CB;
+      --moral-color: #E78AC3;
+      --ontological-color: #A6D854;
+      
+      /* Dark mode attribute colors (existing ColorBrewer Set3) */
+      --timeless-color: #8DD3C7;
+      --personal-color: #FFFFB3;
+      --necessary-color: #BEBADA;
+      --designer-color: #FB8072;
+      --good-color: #80B1D3;
+      --max-great-color: #FDB462;
+    }
+    /* explicit light-mode override so user choice wins over prefers-color-scheme */
+    :root[data-theme="light"]{
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --chip-bg: #e2e8f0;
+      --attr-fill: #94a3b8;
+      --text-glow-color: rgba(255, 255, 255, 0.9);
+      --node-selection-color: rgba(255, 255, 255, 0.6);
+      
+      /* Light mode argument colors (ColorBrewer Set1) */
+      --kalam-color: #1B9E77;
+      --leibniz-color: #D95F02;
+      --teleological-color: #7570B3;
+      --moral-color: #E7298A;
+      --ontological-color: #66A61E;
+      
+      /* Light mode attribute colors */
+      --timeless-color: #1F78B4;
+      --personal-color: #FDBF6F;
+      --necessary-color: #CAB2D6;
+      --designer-color: #E31A1C;
+      --good-color: #6A3D9A;
+      --max-great-color: #FF7F00;
     }
     html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial; }
   .wrap { max-width: 1100px; margin: 24px auto; padding: 0 16px 24px 16px; }
@@ -51,17 +128,52 @@
     .legend .chip { display:inline-flex; align-items:center; gap:8px; background: var(--chip-bg); color: var(--fg); border: 1px solid rgba(148,163,184,.35); padding: 6px 10px; border-radius: 999px; font-size: 12px; user-select:none; }
     .legend .swatch { width:12px; height:12px; border-radius:2px; display:inline-block; }
 
-    svg { width:100%; height:700px; display:block; border-radius:16px; overflow: visible; }
+    svg { width:100%; height: calc(100vh - 80px); display:block; border-radius:16px; overflow: visible; }
+
+  /* Smaller chart height on narrow viewports so it fits mobile screens more comfortably */
+  @media (max-width: 600px) {
+    /* Use the smaller of a vh-based height or the dynamic viewport minus an offset
+       so the chart reliably fits on phones (accounts for browser UI chrome). */
+    svg { height: min(80vh, calc(100dvh - 50px)); }
+  }
 
     .node rect { fill-opacity: 0.9; shape-rendering: crispEdges; }
-    .node rect:hover { filter: brightness(1.08); }
+  /* Make the node bars and labels visibly interactive */
+  .node rect, .node .label { cursor: pointer; }
+  
+  /* Mobile-only interactive highlighting (click/tap feedback) */
+  @media (max-width: 600px) {
+    .node.hover rect, .node.active rect, .node.focused rect { filter: brightness(1.08); }
+    .node.focused rect, .node.active rect { stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
+    .node.hover .label, .node.active .label, .node.focused .label { filter: url(#textGlow); }
+  }
+  
+  /* Desktop: hover highlighting similar to mobile */
+  @media (min-width: 601px) {
+    .node:focus { outline: none; }
+    .node.hover rect { filter: brightness(1.08); }
+    .node.hover rect { stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
+    .node.hover .label { filter: url(#textGlow); }
+  }
+  
+  .node.focused text, .node.focused .label { outline: none; }
 
     .label { font-size: 16px; font-weight: 600; alignment-baseline: middle; fill: var(--fg); paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-opacity: .95; }
 
     .link { fill: none; stroke-opacity: .7; }
     .link:hover { stroke-opacity: .95; }
+    
+    /* Light mode: links get darker when selected (swapped opacities) */
+    :root[data-theme="light"] .link { stroke-opacity: .95; }
+    :root[data-theme="light"] .link:hover { stroke-opacity: .7; }
+    
+    /* Also apply to default light mode (no data-theme attribute) */
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme]) .link { stroke-opacity: .95; }
+      :root:not([data-theme]) .link:hover { stroke-opacity: .7; }
+    }
 
-    .tooltip { position: absolute; pointer-events: none; background: var(--bg); color: var(--fg); border: 1px solid rgba(148,163,184,.4); padding: 8px 10px; border-radius: 8px; font-size: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); opacity: 0; transition: opacity 80ms ease; max-width: 320px; white-space: pre-wrap; }
+    .tooltip { position: absolute; pointer-events: none; background: var(--bg); color: var(--fg); border: 1px solid rgba(148,163,184,.4); padding: 8px 10px; border-radius: 8px; font-size: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); opacity: 0; transition: opacity 80ms ease; max-width: 200px; white-space: pre-wrap; overflow-wrap: break-word; word-break: break-word; }
 
   /* theme toggle button */
   .theme-btn{ border:1px solid rgba(148,163,184,.35); background: var(--chip-bg); color: var(--fg); padding:0; border-radius:8px; cursor:pointer; font-size:14px; display:inline-flex; align-items:center; justify-content:center; height:36px; width:36px; box-sizing:border-box; line-height:1; z-index:11; overflow:hidden; appearance:none }
@@ -75,7 +187,7 @@
 <body>
   <div class="wrap">
   <div class="page-header">
-    <h1>Craig’s Cumulative Case • Arguments ↔ Attributes</h1>
+    <h1>Theistic Arguments and Divine Attributes</h1>
     <button id="themeToggle" class="theme-btn" aria-pressed="false" title="Toggle dark mode">
       <span id="icon-moon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></span>
       <span id="icon-sun" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
@@ -90,7 +202,15 @@
       (async () => {
         // Theme handling: toggle and persist theme in localStorage
         const themeKey = 'pv_theme';
-        function applyTheme(t){ if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); else document.documentElement.removeAttribute('data-theme'); }
+        function applyTheme(t){ 
+          if(t==='dark' || t==='light') {
+            document.documentElement.setAttribute('data-theme', t); 
+            // Update colors after theme change (if chart is already rendered)
+            if (typeof updateNodeColors === 'function') {
+              setTimeout(() => { updateNodeColors(); updateGradients(); }, 50);
+            }
+          }
+        }
         function initTheme(){ const stored = localStorage.getItem(themeKey); if(stored){ applyTheme(stored); document.getElementById('themeToggle')?.setAttribute('aria-pressed', stored==='dark'?'true':'false'); } else {
             const prefers = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; applyTheme(prefers); document.getElementById('themeToggle')?.setAttribute('aria-pressed', prefers==='dark'?'true':'false'); }
           document.getElementById('themeToggle')?.addEventListener('click', ()=>{ const cur = document.documentElement.getAttribute('data-theme')==='dark' ? 'dark' : 'light'; const next = cur==='dark' ? 'light' : 'dark'; applyTheme(next); localStorage.setItem(themeKey, next); document.getElementById('themeToggle')?.setAttribute('aria-pressed', next==='dark'?'true':'false'); });
@@ -118,52 +238,34 @@
       // Use argument metadata as source of truth so IDs line up with data/arguments.json
       const data = {
       arguments: (argsFromJson || []).map(a => ({ id: a.id, label: a.title || (a.id.charAt(0).toUpperCase() + a.id.slice(1)) })),
-      attributes: [
-        { id: "timeless", label: "Timeless/Spaceless" },
-        { id: "personal", label: "Personal Agent" },
-        { id: "necessary", label: "Necessary" },
-        { id: "designer", label: "Designer" },
-        { id: "good", label: "Good/Perfectly Moral" },
-        { id: "max_great", label: "Maximally Great" }
-      ],
-      links: [
+      attributes: (attrList || []).map(a => ({ id: a.id, label: a.title || (a.id.charAt(0).toUpperCase() + a.id.slice(1)) })),
+      links: argMeta.links || [
         { source: "ontological", target: "max_great", value: 12, explain: "If possibly necessary being, then necessary being exists (modal ontological)." },
         { source: "ontological", target: "necessary", value: 10, explain: "Ontological also supports necessity of being." },
-
         { source: "kalam", target: "timeless", value: 10, explain: "Cause of space–time is not in space–time." },
-        { source: "kalam", target: "personal", value: 8, explain: "Agent causation to explain temporal effect from a timeless state." },
-
+        { source: "kalam", target: "personal", value: 8, explain: "A timeless impersonal cause would yield no beginning, so a personal will explains the first moment." },
         { source: "leibniz", target: "necessary", value: 9, explain: "Principle of Sufficient Reason (PSR) → necessary external explanation of contingent reality." },
         { source: "leibniz", target: "personal", value: 6, explain: "Principle of Sufficient Reason (PSR) suggests a personal explanation, not just abstract." },
-
         { source: "teleological", target: "designer", value: 12, explain: "Fine-tuning suggests purposive order." },
         { source: "teleological", target: "personal", value: 6, explain: "Design also implies a personal mind behind it." },
-
         { source: "moral", target: "good", value: 12, explain: "Ground of objective moral values & duties." }
       ]
     };
 
-    const argPalette = {
-      // ColorBrewer Set2 (muted, categorical) for arguments
-      kalam:        '#66C2A5', // teal green
-      leibniz:      '#FC8D62', // soft orange
-      teleological: '#8DA0CB', // muted periwinkle blue
-      moral:        '#E78AC3', // dusty pink/magenta
-      ontological:  '#A6D854'  // fresh lime green
-    };
-    const attrPalette = {
-      // ColorBrewer Set3 (lighter complements) for attributes
-      timeless:    '#8DD3C7', // aqua mint
-      personal:    '#FFFFB3', // light yellow
-      necessary:   '#BEBADA', // lavender
-      designer:    '#FB8072', // salmon red
-      good:        '#80B1D3', // sky blue
-      max_great:   '#FDB462'  // warm muted orange
-    };
+    // Get colors from CSS custom properties (theme-aware)
+    function getArgColor(id) {
+      const style = getComputedStyle(document.documentElement);
+      return style.getPropertyValue(`--${id}-color`).trim() || '#93c5fd';
+    }
+    
+    function getAttrColor(id) {
+      const style = getComputedStyle(document.documentElement);
+      return style.getPropertyValue(`--${id}-color`).trim() || 'var(--attr-fill)';
+    }
 
     const nodes = [
-      ...data.arguments.map(d => ({ id: d.id, label: d.label, type: 'arg', color: argPalette[d.id] || '#93c5fd' })),
-      ...data.attributes.map((d, i) => ({ id: d.id, label: d.label, type: 'attr', color: attrPalette[d.id] || 'var(--attr-fill)', order: i }))
+      ...data.arguments.map(d => ({ id: d.id, label: d.label, type: 'arg' })),
+      ...data.attributes.map((d, i) => ({ id: d.id, label: d.label, type: 'attr', order: i }))
     ];
 
     const indexById = new Map(nodes.map((d, i) => [d.id, i]));
@@ -190,15 +292,27 @@
   const isMobile = width < 600; // simple breakpoint for responsive adjustments
   const endExtra = isMobile ? 8 : 0; // extra width for end nodes on mobile
 
+  // Create main group for zoom/pan functionality
+  const chartGroup = svg.append('g').attr('class', 'chart-container');
+  
+  // Add zoom behavior without strict translation constraints for more freedom
+  const zoom = d3.zoom()
+    .scaleExtent([0.3, 3])
+    .on('zoom', (event) => {
+      chartGroup.attr('transform', event.transform);
+    });
+  
+  svg.call(zoom);
+
     // Ensure nodes in the same column keep a desired vertical order by using an explicit 'order' property
     const sankey = d3.sankey()
       .nodeId((d, i) => i)
       .nodeAlign(d3.sankeyLeft)
       .nodeWidth(isMobile ? 8 : 12)
-      .nodePadding(isMobile ? 12 : 28)
+      .nodePadding(isMobile ? 12 : 16)
       // sort nodes within each column by the 'order' property (defaults to 0)
       .nodeSort((a, b) => ( (a.order || 0) - (b.order || 0) ))
-      .extent([[isMobile ? 60 : 140, 20], [width - (isMobile ? 60 : 140), height - 20]]);
+      .extent([[isMobile ? 40 : 140, 20], [width - (isMobile ? 40 : 140), height - 20]]);
 
     const graph = sankey({ nodes: nodes.map(d => ({ ...d })), links: links.map(d => ({ ...d })) });
 
@@ -222,25 +336,73 @@
       }
     }
 
-    const defs = svg.append('defs');
-    graph.links.forEach((d,i) => {
-      const gradId = `grad-${i}`;
-      const sourceColor = nodes[d.source.index].color;
-      const targetColor = nodes[d.target.index].color;
-      const linearGrad = defs.append('linearGradient')
-        .attr('id', gradId)
-        .attr('gradientUnits','userSpaceOnUse')
-        .attr('x1', d.source.x1).attr('x2', d.target.x0)
-        .attr('y1', (d.source.y0 + d.source.y1)/2)
-        .attr('y2', (d.target.y0 + d.target.y1)/2);
-      linearGrad.append('stop').attr('offset','0%').attr('stop-color',sourceColor).attr('stop-opacity',0.8);
-      linearGrad.append('stop').attr('offset','100%').attr('stop-color',targetColor).attr('stop-opacity',0.8);
-      d.gradId = gradId;
-    });
+    // Function to update gradients with current theme colors
+    function updateGradients() {
+      const defs = chartGroup.select('defs');
+      defs.selectAll('linearGradient').remove(); // Clear existing gradients
+      
+      graph.links.forEach((d,i) => {
+        const gradId = `grad-${i}`;
+        const sourceNode = nodes[d.source.index];
+        const targetNode = nodes[d.target.index];
+        const sourceColor = sourceNode.type === 'arg' ? getArgColor(sourceNode.id) : getAttrColor(sourceNode.id);
+        const targetColor = targetNode.type === 'arg' ? getArgColor(targetNode.id) : getAttrColor(targetNode.id);
+        
+        const linearGrad = defs.append('linearGradient')
+          .attr('id', gradId)
+          .attr('gradientUnits','userSpaceOnUse')
+          .attr('x1', d.source.x1).attr('x2', d.target.x0)
+          .attr('y1', (d.source.y0 + d.source.y1)/2)
+          .attr('y2', (d.target.y0 + d.target.y1)/2);
+        linearGrad.append('stop').attr('offset','0%').attr('stop-color',sourceColor).attr('stop-opacity',0.8);
+        linearGrad.append('stop').attr('offset','100%').attr('stop-color',targetColor).attr('stop-opacity',0.8);
+        d.gradId = gradId;
+      });
+    }
+
+    const defs = chartGroup.append('defs');
+    
+    // Add text glow filter for label halos - theme-aware colors
+    const textGlowFilter = defs.append('filter')
+      .attr('id', 'textGlow')
+      .attr('x', '-50%')
+      .attr('y', '-50%')
+      .attr('width', '200%')
+      .attr('height', '200%');
+      
+    // Create a flood fill with theme-aware glow color
+    const flood = textGlowFilter.append('feFlood')
+      .attr('flood-color', 'var(--text-glow-color)')
+      .attr('flood-opacity', '0.8')
+      .attr('result', 'glowColor');
+      
+    textGlowFilter.append('feMorphology')
+      .attr('operator', 'dilate')
+      .attr('radius', '2')
+      .attr('in', 'SourceGraphic')
+      .attr('result', 'dilated');
+      
+    textGlowFilter.append('feGaussianBlur')
+      .attr('stdDeviation', '3')
+      .attr('in', 'dilated')
+      .attr('result', 'blurred');
+      
+    // Composite the flood color with the blurred shape
+    textGlowFilter.append('feComposite')
+      .attr('in', 'glowColor')
+      .attr('in2', 'blurred')
+      .attr('operator', 'in')
+      .attr('result', 'coloredBlur');
+      
+    const merge = textGlowFilter.append('feMerge');
+    merge.append('feMergeNode').attr('in', 'coloredBlur');
+    merge.append('feMergeNode').attr('in', 'SourceGraphic');
+    
+    updateGradients();
 
     // Legend and descriptive subtitle removed — labels on the graph provide the context.
 
-    const link = svg.append('g')
+    const link = chartGroup.append('g')
       .attr('fill', 'none')
       .selectAll('path')
       .data(graph.links)
@@ -252,70 +414,290 @@
 
     const tooltip = d3.select('#tooltip');
     // Helper to position tooltip near the cursor and shift left if it would overflow the right edge.
-    function showTooltipAtMouse(event, html){
+    let _lastTooltipAt = 0;
+    let _hideTooltipTimeout = null;
+    
+    // Helper functions for debounced tooltip show/hide
+    function showTooltip(event, html, opts = {}) {
+      // cancel any pending hide
+      if (_hideTooltipTimeout) {
+        clearTimeout(_hideTooltipTimeout);
+        _hideTooltipTimeout = null;
+      }
+      showTooltipAtMouse(event, html, opts);
+    }
+    
+    function hideTooltipDelayed(delay = 50) {
+      if (_hideTooltipTimeout) clearTimeout(_hideTooltipTimeout);
+      _hideTooltipTimeout = setTimeout(() => {
+        tooltip.style('opacity', 0);
+        _hideTooltipTimeout = null;
+      }, delay);
+    }
+    
+    function hideTooltipImmediate() {
+      if (_hideTooltipTimeout) {
+        clearTimeout(_hideTooltipTimeout);
+        _hideTooltipTimeout = null;
+      }
+      tooltip.style('opacity', 0);
+    }
+    
+    // showTooltipAtMouse(event, html, opts?)
+    // opts: { avoidRect: DOMRect } - a client bounding rect to avoid overlapping
+    function showTooltipAtMouse(event, html, opts = {}){
       try{
-        tooltip.html(html).style('opacity', 1).style('left', '0px').style('top', (event.pageY + 12) + 'px');
+        const now = Date.now();
+        // ignore rapid successive calls (common when touch generates synthetic mouse events)
+        if (now - _lastTooltipAt < 60) return;
+        _lastTooltipAt = now;
+
+        // reset any adaptive max-width so measurement is accurate
+        tooltip.style('max-width', '200px');
+        tooltip.html(html).style('opacity', 1).style('left', '0px');
+
+        // prefer to place below the pointer/click initially
+        const pageYOffsetVal = (window.pageYOffset || document.documentElement.scrollTop || 0);
+        const pointerY = (event.pageY || (event.clientY + pageYOffsetVal));
+        const preferredTop = pointerY + 12;
+        tooltip.style('top', preferredTop + 'px');
+
         const ttNode = tooltip.node();
         if(!ttNode) return;
-        // measure width after content insertion
-        const w = ttNode.offsetWidth || ttNode.getBoundingClientRect().width || 0;
+
+        // measure width/height after content insertion
+        let rect = ttNode.getBoundingClientRect();
+        let w = rect.width || ttNode.offsetWidth || 0;
+        let h = rect.height || ttNode.offsetHeight || 0;
+
         const docLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
-        // prefer to place to the right of cursor but clamp so tooltip stays inside viewport
-        const preferred = event.pageX + 12;
         const minLeft = docLeft + 8;
         const maxRight = docLeft + window.innerWidth - 8;
-        const maxLeft = Math.max(minLeft, maxRight - w);
-        let left = Math.min(Math.max(preferred, minLeft), maxLeft);
+
+        // If avoidRect provided, compute available space on both sides of it.
+        let availableLeft = maxRight - minLeft; // fallback: whole width
+        let availableRight = maxRight - minLeft;
+        let rectLeft = null, rectRight = null;
+        if (opts.avoidRect) {
+          const r = opts.avoidRect;
+          rectLeft = r.left + (window.pageXOffset || document.documentElement.scrollLeft || 0);
+          rectRight = r.right + (window.pageXOffset || document.documentElement.scrollLeft || 0);
+          availableRight = Math.max(0, maxRight - (rectRight + 8));
+          availableLeft = Math.max(0, (rectLeft - 8) - minLeft);
+          // proactively constrain tooltip width to the larger available side so it won't overlap
+          const larger = Math.max(availableLeft, availableRight);
+          if (larger > 80) {
+            // Cap the max-width at 200px even when there's lots of space available
+            const maxWidth = Math.min(200, Math.floor(larger));
+            tooltip.style('max-width', maxWidth + 'px');
+            // re-measure after limiting width
+            rect = ttNode.getBoundingClientRect();
+            w = rect.width || ttNode.offsetWidth || 0;
+            h = rect.height || ttNode.offsetHeight || 0;
+          }
+        } else {
+          // if no rect, compute space relative to pointer
+          const pointerX = (event.pageX || (event.clientX + (window.pageXOffset || document.documentElement.scrollLeft))) || (minLeft + 12);
+          availableRight = Math.max(0, maxRight - (pointerX + 12));
+          availableLeft = Math.max(0, (pointerX - 12) - minLeft);
+        }
+
+        // Decide placement side. Prefer right side if it fits, otherwise left if it fits, else choose larger side.
+        let placeSide = 'right';
+        if (opts.avoidRect) {
+          if (availableRight >= w) placeSide = 'right';
+          else if (availableLeft >= w) placeSide = 'left';
+          else placeSide = (availableRight >= availableLeft) ? 'right' : 'left';
+        } else {
+          // prefer right of pointer
+          placeSide = (availableRight >= w) ? 'right' : ((availableLeft >= w) ? 'left' : (availableRight >= availableLeft ? 'right' : 'left'));
+        }
+
+        // If tooltip is wider than available on the chosen side, reduce max-width and re-measure
+        const desiredAvailable = (placeSide === 'right') ? availableRight : availableLeft;
+        if (w > desiredAvailable && desiredAvailable > 80) {
+          // set a new adaptive max-width (add small padding)
+          const newMax = Math.max(80, Math.floor(desiredAvailable));
+          tooltip.style('max-width', newMax + 'px');
+          // re-measure
+          rect = ttNode.getBoundingClientRect();
+          w = rect.width || ttNode.offsetWidth || 0;
+          h = rect.height || ttNode.offsetHeight || 0;
+        }
+
+        // compute left position
+        let left;
+        if (placeSide === 'right'){
+          if (opts.avoidRect && rectRight != null) left = rectRight + 8;
+          else left = (event.pageX || (event.clientX + (window.pageXOffset || document.documentElement.scrollLeft))) + 12;
+        } else {
+          if (opts.avoidRect && rectLeft != null) left = rectLeft - 8 - w;
+          else left = (event.pageX || (event.clientX + (window.pageXOffset || document.documentElement.scrollLeft))) - 12 - w;
+        }
+
+        // clamp final left to viewport
+        left = Math.min(Math.max(left, minLeft), Math.max(minLeft, maxRight - w));
         tooltip.style('left', left + 'px');
+
+        // vertical placement: prefer to place below the pointer. Only place above if it fully fits there.
+        const viewportBottom = pageYOffsetVal + window.innerHeight;
+        const preferredTopPx = pointerY + 12;
+        const maxTopAllowed = viewportBottom - 8 - h; // maximum top so tooltip bottom stays inside
+        const minTopAllowed = pageYOffsetVal + 8;
+        if (preferredTopPx <= maxTopAllowed) {
+          // there's room to place fully below
+          tooltip.style('top', preferredTopPx + 'px');
+        } else {
+          // no room to place fully below
+          const altTop = pointerY - 12 - h; // top if we place entirely above pointer
+          if (altTop >= minTopAllowed) {
+            // placing fully above is possible — do that
+            tooltip.style('top', altTop + 'px');
+          } else {
+            // neither fits fully below nor fully above; clamp to keep tooltip inside viewport
+            const clamped = Math.min(Math.max(preferredTopPx, minTopAllowed), maxTopAllowed);
+            tooltip.style('top', clamped + 'px');
+          }
+        }
       }catch(e){ /* ignore positioning errors */ }
     }
     link.on('mousemove', (event, d) => {
         const s = nodes[d.source.index];
         const t = nodes[d.target.index];
         const label = `${s.label} → ${t.label}`;
-        showTooltipAtMouse(event, `<strong>${label}</strong><br/>${d.explain}`);
+        showTooltip(event, `<strong>${label}</strong><br/>${d.explain}`);
       })
-      .on('mouseleave', () => tooltip.style('opacity', 0));
+      .on('mouseleave', () => hideTooltipDelayed(100))
+      .on('click touchstart', (event, d) => {
+        // Clear node highlighting when link is clicked/tapped (especially on mobile)
+        d3.selectAll('.node').classed('hover', false).classed('active', false).classed('focused', false);
+      });
 
-    const node = svg.append('g')
+    const node = chartGroup.append('g')
       .selectAll('g')
       .data(graph.nodes)
       .join('g')
         .attr('class', d => `node ${d.type}`)
-        .on('click', (_, d) => isolate(d));
+        // keyboard + a11y: make group focusable and act like a button
+        .attr('tabindex', 0)
+        .attr('role', 'button')
+        .attr('aria-label', d => `${d.label} ${d.type === 'arg' ? 'argument' : 'attribute'}`)
+        .on('click', function(event, d) { isolate(d); })
 
-      // Show premises when hovering over an argument node
-      node.on('mousemove', (event, d) => {
-        if (d.type !== 'arg') return;
-        const meta = argById.get(d.id);
-        if (!meta) {
-          // fallback: show the label only
-          showTooltipAtMouse(event, `<strong>${d.label}</strong>`);
-          return;
-        }
-          // Show all steps (premises + conclusions) as a single numbered list in original order
+        .on('focus', function() { d3.select(this).classed('focused', true); })
+        .on('blur', function() { d3.select(this).classed('focused', false); })
+        .on('keydown', function(event, d) {
+          if (event.key === 'Enter' || event.key === ' ' || event.code === 'Space'){
+            event.preventDefault();
+            isolate(d);
+            const el = d3.select(this);
+            el.classed('active', true);
+            setTimeout(() => el.classed('active', false), 260);
+          }
+        })
+        .on('touchstart', function(event, d){
+          // Prevent synthetic mouse events that follow touch on many browsers
+          if (event.preventDefault) event.preventDefault();
+          if (event.stopPropagation) event.stopPropagation();
+          // touch: visible active state while tooltip is open; hide elsewhere will clear
+          d3.selectAll('.node').classed('active', false);
+          const el = d3.select(this);
+          el.classed('active', true);
+          // build the same tooltip content we show on mouse so content doesn't jump
+          const touch = event.touches && event.touches[0] ? event.touches[0] : event;
+          try{
+            // compute avoid rect for this node
+            const rectEl = this.querySelector && this.querySelector('rect') ? this.querySelector('rect') : this.getBoundingClientRect();
+            const avoidRect = rectEl.getBoundingClientRect ? rectEl.getBoundingClientRect() : rectEl;
+            if (d.type === 'arg'){
+              const meta = argById.get(d.id) || {};
+              const steps = meta.steps || [];
+              let bodyHtml;
+              if (steps.length) {
+                const items = steps.map(s => `<li style="margin:0 0 8px 0; line-height:1.4">${s.text}</li>`).join('');
+                bodyHtml = `<ol style="margin:6px 0 0 0; padding-left:20px;">${items}</ol>`;
+              } else {
+                bodyHtml = '(no steps found)';
+              }
+              showTooltipAtMouse(touch, `<strong>${meta.title || d.label}</strong><br/>${bodyHtml}`, { avoidRect });
+            } else {
+              const meta = attrById.get(d.id) || {};
+              const desc = meta.description || '(no description)';
+              showTooltipAtMouse(touch, `<strong>${meta.title || d.label}</strong><br/>${desc}`, { avoidRect });
+            }
+            // move focus to the node so keyboard users and AT see it
+            try{ this.focus(); }catch(e){}
+          }catch(e){}
+        });
+
+      // Show premises on hover (desktop) or maintained by touch handler (mobile)
+      node.filter(d => d.type === 'arg')
+        .on('mouseenter', function(event, d) {
+          // only show tooltip on hover for desktop (mobile uses touch/click)
+          if (isMobile) return;
+          d3.select(this).classed('hover', true);
+        })
+        .on('mousemove', function(event, d) {
+          // only show tooltip on hover for desktop (mobile uses touch/click)
+          if (isMobile) return;
+          
+          const meta = argById.get(d.id);
+          if (!meta) {
+            showTooltip(event, `<strong>${d.label}</strong>`);
+            return;
+          }
+          // Show all steps as numbered list
           const steps = meta.steps || [];
           let bodyHtml;
           if (steps.length) {
             const items = steps.map(s => `<li style="margin:0 0 8px 0; line-height:1.4">${s.text}</li>`).join('');
-            // Use an ordered list with left padding so wrapped lines align under the text (not the number)
             bodyHtml = `<ol style="margin:6px 0 0 0; padding-left:20px;">${items}</ol>`;
           } else {
             bodyHtml = '(no steps found)';
           }
-          showTooltipAtMouse(event, `<strong>${meta.title || d.label}</strong><br/>${bodyHtml}`);
-      }).on('mouseleave', () => tooltip.style('opacity', 0));
+          
+          try{
+            const rectEl = this.querySelector && this.querySelector('rect') ? this.querySelector('rect') : this.getBoundingClientRect();
+            const avoidRect = rectEl.getBoundingClientRect ? rectEl.getBoundingClientRect() : rectEl;
+            showTooltip(event, `<strong>${meta.title || d.label}</strong><br/>${bodyHtml}`, { avoidRect });
+          }catch(e){ showTooltip(event, `<strong>${meta.title || d.label}</strong><br/>${bodyHtml}`); }
+        })
+        .on('mouseleave', function(){ 
+          d3.select(this).classed('hover', false);
+          if (!isMobile) hideTooltipDelayed(100);
+        });
 
-      // Show attribute description on attribute node hover
+      // Show attribute description on hover (desktop) or maintained by touch handler (mobile)
       node.filter(d => d.type === 'attr')
-        .on('mousemove', (event, d) => {
+        .on('mouseenter', function(event, d) {
+          // only show tooltip on hover for desktop (mobile uses touch/click)
+          if (isMobile) return;
+          d3.select(this).classed('hover', true);
+        })
+        .on('mousemove', function(event, d) {
+          // only show tooltip on hover for desktop (mobile uses touch/click)
+          if (isMobile) return;
+          
           const meta = attrById.get(d.id) || {};
           const desc = meta.description || '(no description)';
-          showTooltipAtMouse(event, `<strong>${meta.title || d.label}</strong><br/>${desc}`);
+          try{
+            const rectEl = this.querySelector && this.querySelector('rect') ? this.querySelector('rect') : this.getBoundingClientRect();
+            const avoidRect = rectEl.getBoundingClientRect ? rectEl.getBoundingClientRect() : rectEl;
+            showTooltip(event, `<strong>${meta.title || d.label}</strong><br/>${desc}`, { avoidRect });
+          }catch(e){ showTooltip(event, `<strong>${meta.title || d.label}</strong><br/>${desc}`); }
         })
-        .on('mouseleave', () => tooltip.style('opacity', 0));
+        .on('mouseleave', function(){ 
+          d3.select(this).classed('hover', false);
+          if (!isMobile) hideTooltipDelayed(100);
+        });
 
-    node.append('rect')
+    // Function to update node colors
+    function updateNodeColors() {
+      chartGroup.selectAll('.node rect')
+        .attr('fill', d => d.type === 'arg' ? getArgColor(d.id) : getAttrColor(d.id));
+    }
+
+    const nodeRects = node.append('rect')
       .attr('x', d => {
         // For right-side attribute nodes on mobile, shift left so we can widen into link area
         if (isMobile && d.type === 'attr') return Math.max(0, d.x0 - endExtra);
@@ -331,8 +713,7 @@
         return d.x1 - d.x0;
       })
       .attr('rx', 2).attr('ry', 2)
-      .attr('fill', d => d.color)
-      ;
+      .attr('fill', d => d.type === 'arg' ? getArgColor(d.id) : getAttrColor(d.id));
 
     const labels = node.append('text')
       .attr('class', 'label')
@@ -371,12 +752,14 @@
       if (!el) return;
       // if click inside a node, link, or the tooltip itself, do nothing
       if (el.closest && (el.closest('.node') || el.closest('.link') || el.closest('#tooltip'))) return;
-      d3.select('#tooltip').style('opacity', 0);
+      hideTooltipImmediate();
+      // clear visual interaction states
+      d3.selectAll('.node').classed('hover', false).classed('active', false).classed('focused', false);
     }
     document.addEventListener('click', hideTooltipIfOutside);
     document.addEventListener('touchstart', hideTooltipIfOutside);
 
-    window.addEventListener('keydown', e => { if (e.key === 'Escape') { node.classed('faint', false); link.classed('faint', false); d3.select('#tooltip').style('opacity', 0); }});
+  window.addEventListener('keydown', e => { if (e.key === 'Escape') { node.classed('faint', false); link.classed('faint', false); hideTooltipImmediate(); d3.selectAll('.node').classed('hover', false).classed('active', false).classed('focused', false); }});
       })();
     </script>
 </body>

@@ -86,11 +86,22 @@
   ]
   ,
   "attributes": [
-    { "id": "necessary", "title": "Necessary", "abbr": "Necessary", "description": "A being whose non-existence is impossible; exists in all possible worlds and does not depend on anything else." },
     { "id": "timeless", "title": "Timeless/Spaceless", "abbr": "Timeless", "description": "Not located in time or space; not subject to temporal becoming or spatial location." },
     { "id": "personal", "title": "Personal Agent", "abbr": "Agent", "description": "An agent with will and intentions (as opposed to an impersonal law or abstract principle)." },
+    { "id": "necessary", "title": "Necessary", "abbr": "Necessary", "description": "A being whose non-existence is impossible; exists in all possible worlds and does not depend on anything else." },
     { "id": "designer", "title": "Designer", "abbr": "Designer", "description": "An intelligent cause that explains apparent purpose or fine-tuning in the universe." },
     { "id": "good", "title": "Good/Perfectly Moral", "abbr": "Good", "description": "Possesses perfect moral goodness — the grounding for objective moral values and duties." },
     { "id": "max_great", "title": "Maximally Great", "abbr": "Max Great", "description": "A being possessing maximal greatness: omnipotent, omniscient, and wholly morally perfect across possible worlds." }
+  ],
+  "links": [
+    { "source": "ontological", "target": "max_great", "value": 12, "explain": "If possibly necessary being, then necessary being exists (modal ontological)." },
+    { "source": "ontological", "target": "necessary", "value": 10, "explain": "Ontological also supports necessity of being." },
+    { "source": "kalam", "target": "timeless", "value": 10, "explain": "Cause of space–time is not in space–time." },
+    { "source": "kalam", "target": "personal", "value": 8, "explain": "A timeless impersonal cause would yield no beginning, so a personal will explains the first moment." },
+    { "source": "leibniz", "target": "necessary", "value": 9, "explain": "Principle of Sufficient Reason (PSR) → necessary external explanation of contingent reality." },
+    { "source": "leibniz", "target": "personal", "value": 6, "explain": "Principle of Sufficient Reason (PSR) suggests a personal explanation, not just abstract." },
+    { "source": "teleological", "target": "designer", "value": 12, "explain": "Fine-tuning suggests purposive order." },
+    { "source": "teleological", "target": "personal", "value": 6, "explain": "Design also implies a personal mind behind it." },
+    { "source": "moral", "target": "good", "value": 12, "explain": "Ground of objective moral values & duties." }
   ]
 }
