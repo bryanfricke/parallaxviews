@@ -242,13 +242,14 @@
 
   // Tooltip helpers
   const tt = d3.select('#tt');
-  function showTT(html, mousePos){
-    // mousePos is [x, y] relative to the SVG element that triggered the event
-    // Use the correct SVG element for getBoundingClientRect
-    const svgEl = (d3.event && d3.event.target && d3.event.target.ownerSVGElement) ? d3.event.target.ownerSVGElement : document.querySelector('svg');
+  function showTT(html, evt){
+    // evt: current event; compute pointer relative to owning SVG
+    const target = evt.currentTarget || evt.target;
+    const svgEl = target && target.ownerSVGElement ? target.ownerSVGElement : document.querySelector('svg');
+    const p = d3.pointer(evt, svgEl);
     const svgRect = svgEl.getBoundingClientRect();
-    const x = svgRect.left + mousePos[0];
-    const y = svgRect.top + mousePos[1];
+    const x = svgRect.left + p[0];
+    const y = svgRect.top + p[1];
     tt.html(html)
       .style('left', x + 'px')
       .style('top', y + 'px')
@@ -312,7 +313,7 @@
           const val = weighted(c.id, raw);
           return `<div><strong>${c.short}</strong>: ${fmt(val)} <span style="color:#6b7280">(raw ${fmt(raw)})</span></div>`;
         }).join("");
-        showTT(`<div style="font-weight:600">${d.label}</div>` + scoreLines, d3.pointer(e, e.target.ownerSVGElement));
+        showTT(`<div style="font-weight:600">${d.label}</div>` + scoreLines, e);
       })
       .on('mouseleave', hideTT);
 
@@ -327,7 +328,7 @@
             const c = Data.criteria[d.i];
             const raw = Hy[d.h.id].scores[c.id];
             const val = weighted(c.id, raw);
-            showTT(`<div><strong>${d.h.label}</strong></div><div>${c.label}</div><div>Value: ${fmt(val)} <span style="color:#6b7280">(raw ${fmt(raw)})</span></div><div style="margin-top:4px;color:#6b7280">${Hy[d.h.id].notes[c.id]||''}</div>`, d3.pointer(e, e.target.ownerSVGElement));
+            showTT(`<div><strong>${d.h.label}</strong></div><div>${c.label}</div><div>Value: ${fmt(val)} <span style="color:#6b7280">(raw ${fmt(raw)})</span></div><div style="margin-top:4px;color:#6b7280">${Hy[d.h.id].notes[c.id]||''}</div>`, e);
           })
           .on('mouseleave', hideTT);
 
@@ -380,7 +381,7 @@
       .on('mousemove', (e,d)=>{
         const raw = Hy[d.h.id].scores[d.c.id];
         const val = weighted(d.c.id, raw);
-        showTT(`<div style="font-weight:600">${d.h.label}</div><div>${C[d.c.id].label}</div><div>Value: ${fmt(val)} <span style='color:#6b7280'>(raw ${fmt(raw)})</span></div><div style='margin-top:4px;color:#6b7280'>${Hy[d.h.id].notes[d.c.id]||''}</div>`, d3.pointer(e, e.target.ownerSVGElement));
+        showTT(`<div style="font-weight:600">${d.h.label}</div><div>${C[d.c.id].label}</div><div>Value: ${fmt(val)} <span style='color:#6b7280'>(raw ${fmt(raw)})</span></div><div style='margin-top:4px;color:#6b7280'>${Hy[d.h.id].notes[d.c.id]||''}</div>`, e);
       })
       .on('mouseleave', hideTT);
   }
@@ -428,8 +429,8 @@
       .selectAll('line').data(links).join('line')
       .attr('stroke-dasharray', d=> d.kind==='conflict' ? '4,4' : null)
       .on('mousemove', (e,d)=>{
-        if(d.kind==='covers') showTT(`<div><strong>Explains:</strong> ${(Facts[d.source]?.label)||''} → ${(Hy[d.target]?.label)||''}</div><div>Strength: ${fmt(d.strength)}</div><div style='color:#6b7280'>${d.tip||''}</div>`, d3.pointer(e));
-        else showTT(`<div><strong>Conflict note</strong></div><div>${d.note||''}</div><div>Weight: ${fmt(d.weight||0)}</div>`, d3.pointer(e));
+        if(d.kind==='covers') showTT(`<div><strong>Explains:</strong> ${(Facts[d.source]?.label)||''} → ${(Hy[d.target]?.label)||''}</div><div>Strength: ${fmt(d.strength)}</div><div style='color:#6b7280'>${d.tip||''}</div>`, e);
+        else showTT(`<div><strong>Conflict note</strong></div><div>${d.note||''}</div><div>Weight: ${fmt(d.weight||0)}</div>`, e);
       })
       .on('mouseleave', hideTT);
 

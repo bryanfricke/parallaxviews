@@ -1,4 +1,4 @@
-const JSON_PATH = 'data/arguments.json';
+const JSON_PATH = 'data/theistic-arguments.json';
 
 const sel = (q, el = document) => el.querySelector(q);
 const create = (tag, cls) => {

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Parallax Views – Visualization Smoke Tests</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0;background:#f5f7fa;color:#111}
+  header{padding:16px 20px;background:#603699;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.12);position:sticky;top:0;z-index:10}
+  h1{margin:0;font-size:20px}
+  main{padding:14px 20px;}
+  table{border-collapse:collapse;width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.06);border-radius:10px;overflow:hidden}
+  th,td{padding:8px 10px;font-size:13px;text-align:left;border-bottom:1px solid #e5e7eb;vertical-align:top}
+  th{background:#fafafa;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#555}
+  tr:last-child td{border-bottom:none}
+  .status{font-weight:600;display:inline-flex;align-items:center;gap:6px}
+  .status.pass{color:#15803d}
+  .status.fail{color:#b91c1c}
+  .status.pending{color:#92400e}
+  .small{font-size:11px;color:#555}
+  details{margin:8px 0}
+  iframe{width:100%;height:300px;border:1px solid #d1d5db;border-radius:8px;background:#fff}
+  .log{white-space:pre-wrap;font-family:ui-monospace,monospace;font-size:11px;max-height:160px;overflow:auto;background:#111;color:#eee;padding:10px;border-radius:8px}
+  .tag{display:inline-block;padding:2px 6px;border-radius:6px;font-size:11px;background:#e0e7ff;color:#3730a3;font-weight:500}
+  .hint{margin:12px 0 2px;font-size:12px;color:#555}
+  .ok-bg{background:#ecfdf5}
+</style>
+</head>
+<body>
+<header>
+  <h1>Visualization Smoke Tests</h1>
+</header>
+<main>
+  <p class="small">Automatic quick-load sanity checks for each HTML visualization. Heuristics: load event fires, at least one <code>&lt;svg&gt;</code> (or expected container) appears, and no immediate access errors. Open DevTools (Console + Network) for deeper inspection. This page does <strong>not</strong> guarantee correctness—only that the initial render pipeline starts without obvious blocking errors.</p>
+  <table id="results">
+    <thead>
+      <tr>
+        <th style="width:210px">Page</th>
+        <th>Status</th>
+        <th>SVG / Key El</th>
+        <th>Load (ms)</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <p class="hint">Click a row to expand and view the live iframe + captured notes.</p>
+</main>
+<script>
+const PAGES = [
+  { path:'index.html', keySelector:'body', label:'Home / Index'},
+  { path:'graphs/resurrectionHypotheses.html', keySelector:'#chart svg', label:'Resurrection Hypotheses (static data)'},
+  { path:'graphs/resurrectionHypotheses2.html', keySelector:'#chart svg', label:'Resurrection Hypotheses 2'},
+  { path:'graphs/reasons.html', keySelector:'#chart svg', label:'Reasons (JSON loader)'},
+  { path:'graphs/minimalFactsTidyTree.html', keySelector:'svg', label:'Minimal Facts Tidy Tree'},
+  { path:'graphs/minimalFactsRadialTree.html', keySelector:'svg', label:'Minimal Facts Radial Tree'},
+  { path:'graphs/minimalFactsDisjointForceDirectedGraph.html', keySelector:'svg', label:'Minimal Facts Disjoint Force Graph'},
+  { path:'graphs/indentedTree.html', keySelector:'svg', label:'Indented Tree'},
+  { path:'graphs/prophecy01.html', keySelector:'svg', label:'Prophecy Force Graph (ESV)'},
+  { path:'graphs/prophecyData.html', keySelector:'svg', label:'Prophecy Data (Core)'},
+  { path:'graphs/theistic-arguments.html', keySelector:'svg', label:'Theistic Arguments Sankey'},
+  { path:'graphs/DeDeo.html', keySelector:'svg', label:'De Deo (placeholder?)'},
+  { path:'resurrection/Ehrman_Minimal_Facts.html', keySelector:'body', label:'Ehrman Minimal Facts'}
+];
+
+const tbody = document.querySelector('#results tbody');
+
+function createRow(p){
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td><strong>${p.label}</strong><div class="small">${p.path}</div></td>`+
+    `<td class="status pending" data-status>Pending</td>`+
+    `<td data-el>—</td>`+
+    `<td data-ms>—</td>`+
+    `<td data-notes class="small">—</td>`;
+  tbody.appendChild(tr);
+  const details = document.createElement('tr');
+  details.style.display = 'none';
+  details.innerHTML = `<td colspan="5"><details open><summary>Frame & diagnostics</summary><div data-framewrap></div><div class="log" data-log></div></details></td>`;
+  tbody.appendChild(details);
+  tr.addEventListener('click', ()=>{ details.style.display = details.style.display==='none' ? '' : 'none'; });
+  return { tr, details };
+}
+
+function log(target, msg){ target.textContent += (target.textContent? '\n':'') + msg; }
+
+async function run(){
+  for(const page of PAGES){
+    const { tr, details } = createRow(page);
+    const stEl = tr.querySelector('[data-status]');
+    const elEl = tr.querySelector('[data-el]');
+    const msEl = tr.querySelector('[data-ms]');
+    const notesEl = tr.querySelector('[data-notes]');
+    const frameWrap = details.querySelector('[data-framewrap]');
+    const logEl = details.querySelector('[data-log]');
+
+    const start = performance.now();
+    const iframe = document.createElement('iframe');
+    iframe.loading = 'lazy';
+    iframe.src = page.path + (page.path.includes('?')?'':'?t=' + Date.now()); // cache-bust
+    frameWrap.appendChild(iframe);
+
+    let loaded = false; let timer = null;
+    timer = setTimeout(()=>{
+      if(!loaded){
+        stEl.textContent = 'Timeout';
+        stEl.className = 'status fail';
+        notesEl.textContent = 'No load event within 8s';
+      }
+    }, 8000);
+
+    iframe.addEventListener('load', ()=>{
+      loaded = true; clearTimeout(timer);
+      const dur = Math.round(performance.now() - start);
+      msEl.textContent = dur;
+      try {
+        const doc = iframe.contentDocument;
+        if(!doc){
+          stEl.textContent = 'Inaccessible';
+          stEl.className = 'status fail';
+          notesEl.textContent = 'Cannot access document';
+          return;
+        }
+        // heuristic: check for key element
+        const keyEl = doc.querySelector(page.keySelector);
+        if(keyEl){
+          stEl.textContent = 'PASS';
+          stEl.className = 'status pass';
+          elEl.textContent = 'Found';
+          notesEl.textContent = 'Loaded & key element present';
+        } else {
+          stEl.textContent = 'No key element';
+            stEl.className = 'status fail';
+            elEl.textContent = 'Missing';
+            notesEl.textContent = 'Page loaded but selector not found: '+page.keySelector;
+        }
+        // Additional heuristic: count SVG nodes
+        const svgCount = doc.querySelectorAll('svg').length;
+        if(svgCount){
+          log(logEl, `SVG elements: ${svgCount}`);
+        }
+        // look for error-like text nodes quickly
+        const bodyText = doc.body.innerText.slice(0,400).toLowerCase();
+        if(bodyText.includes('error')) log(logEl, 'Contains the word "error" (manual inspect).');
+      } catch(err){
+        stEl.textContent = 'Error'; stEl.className = 'status fail'; notesEl.textContent = err.message; log(logEl, err.stack||String(err));
+      }
+    });
+
+    iframe.addEventListener('error', (e)=>{
+      stEl.textContent = 'Load error';
+      stEl.className = 'status fail';
+      notesEl.textContent = 'Resource failed to load';
+      log(logEl, 'Iframe onerror fired: ' + e.message);
+    });
+  }
+}
+
+run();
+</script>
+</body>
+</html>
