@@ -1,0 +1,240 @@
+{
+  "arguments": [
+    {
+      "id": "kalam",
+      "title": "Kalam Cosmological Argument",
+      "abbr": "Kalam",
+      "abbrDesktop": "Kalam Cosmological",
+      "steps": [
+        {
+          "text": "Whatever begins to exist has a cause."
+        },
+        {
+          "text": "The universe began to exist."
+        },
+        {
+          "text": "Therefore: The universe has a cause.",
+          "conclusion": true
+        }
+      ],
+      "explanations": [
+        "A principle of metaphysics: things that come into being are contingent; denying this leads to spontaneous uncaused events, undermining science.",
+        "Supported by philosophical arguments against an actual infinite past (e.g., Hilbert’s hotel) and scientific evidence (Big Bang cosmology, second law).",
+        "If both premises hold, a transcendent cause is implied; further analysis argues this cause is timeless, spaceless, immaterial, powerful, and personal."
+      ]
+    },
+    {
+      "id": "leibniz",
+      "title": "Leibnizian Cosmological (Contingency) Argument",
+      "abbr": "Leibniz",
+      "abbrDesktop": "Leibnizian Cosmological",
+      "steps": [
+        {
+          "text": "Anything that exists has an explanation of its existence, either in the necessity of its own nature or in an external cause."
+        },
+        {
+          "text": "If the universe has an explanation of its existence, that explanation is God."
+        },
+        {
+          "text": "The universe exists."
+        },
+        {
+          "text": "Therefore: The universe has an explanation of its existence.",
+          "conclusion": true
+        },
+        {
+          "text": "Therefore: The explanation of the universe’s existence is God.",
+          "conclusion": true
+        }
+      ],
+      "explanations": [
+        "Principle of Sufficient Reason (PSR): realities are grounded either in necessity (cannot be otherwise) or by another (contingent cause).",
+        "Conditional identifies God as the only viable ultimate ground if the universe is contingent (not metaphysically necessary).",
+        "Observation: there is a universe of contingent things; the set doesn’t explain itself.",
+        "From 1 & 3: the universe has some explanation (either necessity or external).",
+        "From 2 & 4: external explanation must be a necessary being with creative will; candidate: God."
+      ]
+    },
+    {
+      "id": "teleological",
+      "title": "Teleological (Fine-Tuning) Argument",
+      "abbr": "Teleological",
+      "abbrDesktop": "Teleological",
+      "steps": [
+        {
+          "text": "The fine-tuning of the universe is due to either physical necessity, chance, or design."
+        },
+        {
+          "text": "It is not due to physical necessity or chance."
+        },
+        {
+          "text": "Therefore: The fine-tuning of the universe is due to design.",
+          "conclusion": true
+        }
+      ],
+      "explanations": [
+        "Trichotomy sets the explanatory options; fine-tuning refers to life-permitting constants and initial conditions in narrow ranges.",
+        "Necessity lacks mechanism (constants appear contingent); chance probability is astronomically low even under multiverse proposals (measure & Boltzmann brain issues).",
+        "Design hypothesis posits intentional selection; it has predictive power (order, intelligibility) without probability inflation."
+      ]
+    },
+    {
+      "id": "moral",
+      "title": "Moral Argument",
+      "abbr": "Moral",
+      "abbrDesktop": "Moral",
+      "steps": [
+        {
+          "text": "If God does not exist, objective moral values and duties do not exist."
+        },
+        {
+          "text": "Objective moral values and duties do exist."
+        },
+        {
+          "text": "Therefore: God exists.",
+          "conclusion": true
+        }
+      ],
+      "explanations": [
+        "Grounding objection: without a transcendent, personal moral lawgiver, moral facts reduce to subjective or evolutionary conventions.",
+        "Phenomenological and cross-cultural evidence: we apprehend some acts (e.g., gratuitous cruelty) as truly wrong, not just disliked.",
+        "Inference to best explanation: realism + theism better explains objective normativity than naturalistic accounts (e.g., brute moral facts)."
+      ]
+    },
+    {
+      "id": "ontological",
+      "title": "Ontological Argument (Plantinga\u2019s Modal Version)",
+      "abbr": "Ontological",
+      "abbrDesktop": "Ontological",
+      "steps": [
+        {
+          "text": "It is possible that a maximally great being exists."
+        },
+        {
+          "text": "If it is possible that a maximally great being exists, then a maximally great being exists in some possible world."
+        },
+        {
+          "text": "If a maximally great being exists in some possible world, then it exists in every possible world."
+        },
+        {
+          "text": "If a maximally great being exists in every possible world, then it exists in the actual world."
+        },
+        {
+          "text": "Therefore: A maximally great being exists.",
+          "conclusion": true
+        }
+      ],
+      "explanations": [
+        "Possibility claim asserts modal coherence of a maximally great being (omniscient, omnipotent, morally perfect in every possible world).",
+        "By the rules of modal reasoning (which studies what is necessary and what is possible), if it is even possible for such a being to exist, then there is at least one possible way reality could be where that being does exist.",
+        "Maximal greatness includes necessary existence; so existence in one possible world implies existence in all (avoids modal collapse arguments by restricting to great-making properties).",
+        "If in all possible worlds, then in the actual world (actuality is one of the possible worlds).",
+        "Conclusion follows; controversial hinge is premise 1 (modal intuition vs. parodies)."
+      ]
+    }
+  ],
+  "about": {
+    "title": "About This Visualization",
+    "paragraphs": [
+      "This visualization draws its source material from William Lane Craig’s Reasonable Faith: Christian Truth and Apologetics. Craig likens the arguments for God’s existence to a coat of chain mail, in which each link reinforces the others. No single argument is expected to carry the full weight in isolation; rather, the cumulative case grows stronger as the links interlock.",
+      "If presented with a single theistic argument, a skeptic may raise objections such as, “That argument only proves a Designer of the universe, not a Creator.” Taken alone, this objection may seem forceful. But when the arguments are viewed together, their converging lines of evidence not only reinforce shared conclusions but also round out the nature of the being whose existence they imply.",
+      "This project seeks to make that interconnection visible. By mapping arguments like the Kalam, Leibnizian Contingency, Teleological, Ontological, and Moral arguments to the divine attributes they suggest, the visualization highlights how each argument contributes a different “link” in the broader case for classical theism.",
+      "The aim is both pedagogical and clarifying: to help students, researchers, and thoughtful readers see how the arguments work together—not as isolated arguments, but as parts of a cumulative case that reinforces the coherence of belief in God.",
+      "*Source material adapted from William Lane Craig, Reasonable Faith: Christian Truth and Apologetics (Wheaton: Crossway, 2008).*"
+    ]
+  },
+  "attributes": [
+    {
+      "id": "timeless",
+      "title": "Timeless/Spaceless",
+      "abbr": "Timeless",
+      "description": "Not located in time or space; not subject to temporal becoming or spatial location."
+    },
+    {
+      "id": "personal",
+      "title": "Personal Agent",
+      "abbr": "Agent",
+      "description": "An agent with will and intentions (as opposed to an impersonal law or abstract principle)."
+    },
+    {
+      "id": "necessary",
+      "title": "Necessary",
+      "abbr": "Necessary",
+      "description": "A being whose non-existence is impossible; exists in all possible worlds and does not depend on anything else."
+    },
+    {
+      "id": "designer",
+      "title": "Designer",
+      "abbr": "Designer",
+      "description": "An intelligent cause that explains apparent purpose or fine-tuning in the universe."
+    },
+    {
+      "id": "good",
+      "title": "Good/Perfectly Moral",
+      "abbr": "Good",
+      "description": "Possesses perfect moral goodness — the grounding for objective moral values and duties."
+    },
+    {
+      "id": "max_great",
+      "title": "Maximally Great",
+      "abbr": "Max Great",
+      "description": "A being possessing maximal greatness: omnipotent, omniscient, and wholly morally perfect across possible worlds."
+    }
+  ],
+  "links": [
+    {
+      "source": "ontological",
+      "target": "max_great",
+      "value": 12,
+      "explain": "If possibly necessary being, then necessary being exists (modal ontological)."
+    },
+    {
+      "source": "ontological",
+      "target": "necessary",
+      "value": 10,
+      "explain": "Ontological also supports necessity of being."
+    },
+    {
+      "source": "kalam",
+      "target": "timeless",
+      "value": 10,
+      "explain": "Cause of space–time is not in space–time."
+    },
+    {
+      "source": "kalam",
+      "target": "personal",
+      "value": 8,
+      "explain": "A timeless impersonal cause would yield no beginning, so a personal will explains the first moment."
+    },
+    {
+      "source": "leibniz",
+      "target": "necessary",
+      "value": 9,
+      "explain": "Principle of Sufficient Reason (PSR) → necessary external explanation of contingent reality."
+    },
+    {
+      "source": "leibniz",
+      "target": "personal",
+      "value": 6,
+      "explain": "Principle of Sufficient Reason (PSR) suggests a personal explanation, not just abstract."
+    },
+    {
+      "source": "teleological",
+      "target": "designer",
+      "value": 12,
+      "explain": "Fine-tuning suggests purposive order."
+    },
+    {
+      "source": "teleological",
+      "target": "personal",
+      "value": 6,
+      "explain": "Design also implies a personal mind behind it."
+    },
+    {
+      "source": "moral",
+      "target": "good",
+      "value": 12,
+      "explain": "Ground of objective moral values & duties."
+    }
+  ]
+}
