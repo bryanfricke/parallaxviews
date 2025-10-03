@@ -1940,6 +1940,16 @@
                 const x = +nodeSizeXInput.value;
                 treeLayout.nodeSize([y, x]);
                 update(root);
+                // After switching layouts the node distribution can shift offscreen; gently recentre
+                try {
+                    const sel = d3.select('g.node[data-selected="true"]');
+                    const target = (sel && !sel.empty()) ? sel.datum() : root;
+                    // Allow the update() transition to finish before recentering (longer on desktop)
+                    const delay = (typeof isMobileLike === 'function' && isMobileLike()) ? 120 : 420;
+                    setTimeout(() => {
+                        try { centerAfterUpdate(target); } catch (e) { /* non-fatal */ }
+                    }, delay);
+                } catch (e) { /* non-fatal */ }
             });
 
             // Word wrap helper
