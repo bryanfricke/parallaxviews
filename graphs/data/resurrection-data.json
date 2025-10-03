@@ -28,9 +28,9 @@
             "short": "3. Power",
             "desc": "Makes the facts more probable than rivals do.",
             "anchors": [
-                "Weak",
-                "Adequate",
-                "Strong"
+                "Low",
+                "Medium",
+                "High"
             ]
         },
         {
@@ -82,7 +82,7 @@
         {
             "id": "resurrection",
             "label": "Resurrection",
-            "color": "#2563eb",
+            "color": "#1f77b4",
             "scores": {
                 "derivation": 0.91,
                 "scope": 0.96,
@@ -156,7 +156,7 @@
         {
             "id": "hallucination",
             "label": "Hallucination",
-            "color": "#16a34a",
+            "color": "#2ca02c",
             "scores": {
                 "derivation": 0.54,
                 "scope": 0.44,
@@ -233,7 +233,7 @@
         {
             "id": "theft",
             "label": "Theft/Conspiracy",
-            "color": "#f59e0b",
+            "color": "#ff7f0e",
             "scores": {
                 "derivation": 0.52,
                 "scope": 0.52,
@@ -307,7 +307,7 @@
         {
             "id": "wrongTomb",
             "label": "Wrong Tomb",
-            "color": "#10b981",
+            "color": "#17becf",
             "scores": {
                 "derivation": 0.39,
                 "scope": 0.32,
@@ -384,7 +384,7 @@
         {
             "id": "displaced",
             "label": "Displaced Body",
-            "color": "#8b5cf6",
+            "color": "#9467bd",
             "scores": {
                 "derivation": 0.47,
                 "scope": 0.32,
@@ -458,7 +458,7 @@
         {
             "id": "swoon",
             "label": "Apparent\u2011Death (Swoon)",
-            "color": "#ef4444",
+            "color": "#d62728",
             "scores": {
                 "derivation": 0.36,
                 "scope": 0.27,
@@ -532,7 +532,7 @@
         {
             "id": "legend",
             "label": "Legend/Myth Development",
-            "color": "#f43f5e",
+            "color": "#bcbd22",
             "scores": {
                 "derivation": 0.33,
                 "scope": 0.23,

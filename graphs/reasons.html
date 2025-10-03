@@ -10,8 +10,27 @@ html,body{height:100%}
 /* Reserve scrollbar gutter to avoid layout shifts when scrollbars appear/disappear */
 html{ scrollbar-gutter: stable; }
 body{margin:0; font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif; color:var(--ink); background:var(--bg)}
-#topbar{position:sticky; top:0; z-index:10; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 14px; display:flex; gap:16px; align-items:center; flex-wrap:wrap; min-height:56px}
-#topbar h1{font-size:16px; margin:0 8px 0 0; font-weight:600; color:var(--accent)}
+#topbar{position:sticky; top:0; z-index:10; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 14px; display:flex; align-items:flex-start; flex-wrap:nowrap; flex-direction:column; gap:0}
+#topbar h1{font-size:16px; margin:0 12px 0 0; font-weight:600; color:var(--accent)}
+.topbar-primary{display:flex; align-items:center; width:100%; min-height:56px}
+#controlsToggle{display:none; margin-left:auto}
+#controls-panel{display:flex; gap:16px; align-items:center; flex-wrap:wrap; width:100%; padding:6px 0 4px 0}
+/* Mobile layout: collapse panel without moving primary row */
+@media (max-width:768px){
+  #topbar{padding:10px 14px 6px 14px}
+  #controlsToggle{display:inline-flex; align-items:center; gap:4px; font-weight:500}
+  #topbar[data-state='collapsed'] #controls-panel{display:none}
+  #hypotheses{height:40px; line-height:40px; padding:4px 6px 0 6px}
+  .pill{padding:4px 8px; font-size:13px}
+  #chart{height:calc(var(--vh, 1vh) * 100 - var(--header-h, 60px));}
+}
+/* Desktop: row layout similar to original */
+@media (min-width:769px){
+  #topbar{flex-direction:row; align-items:center; gap:16px; padding:10px 14px;}
+  .topbar-primary{width:auto; min-height:auto}
+  #controls-panel{padding:0; width:auto}
+  #controlsToggle{display:none}
+}
 #loaders{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
 /* base button */
 button, .btn{border:1px solid var(--line); background:var(--panel-bg); padding:6px 10px; border-radius:8px; cursor:pointer; font-size:14px}
@@ -49,14 +68,15 @@ input[type="text"]{border:1px solid var(--line); border-radius:8px; padding:6px 
 .viewtabs{display:flex; gap:6px}
 .viewtabs button.active{background:var(--control-accent); color:var(--panel-bg)}
 #main{display:grid; grid-template-rows:auto 1fr auto; gap:10px}
-#chart{width:100%; /* use a CSS variable for mobile-safe viewport height (see JS below) */ height:calc(var(--vh, 1vh) * 100 - 92px); min-height:380px; padding-top:14px; box-sizing:border-box}
-#chart svg{display:block; width:100%; height:100%}
+/* Chart area: restrict touch gestures here only so D3 can manage them; leave page zoom accessible elsewhere */
+#chart{width:100%; height:calc(var(--vh, 1vh) * 100 - var(--header-h, 92px)); min-height:380px; padding-top:14px; box-sizing:border-box; touch-action:none; overscroll-behavior:contain}
+#chart svg{display:block; width:100%; height:100%; touch-action:none}
 /* Prevent the browser from handling pinch/zoom inside the chart area so D3 can manage gestures.
   iOS sometimes ignores touch-action, so we also add an explicit touchstart listener in JS below. */
 #chart svg{ touch-action: none; -webkit-user-select: none; user-select: none; -ms-touch-action: none; -webkit-tap-highlight-color: transparent; }
 /* Keep strokes visually constant while zooming the chart. Target common axis/path elements and
   the vertex outer rings; filled shapes (dots) will still scale unless adjusted in JS. */
-#chart svg path, #chart svg line, #chart svg polygon, #chart svg .vertex-ring { vector-effect: non-scaling-stroke; }
+#chart svg path, #chart svg line, #chart svg polygon, #chart svg .vertex-ring, #chart svg .axis-dot { vector-effect: non-scaling-stroke; }
 .help{margin-left:8px}
 .legend{display:none}
 .tooltip{position:fixed; pointer-events:auto; z-index:9999; background:var(--panel-bg); border:1px solid var(--line); padding:8px 10px; border-radius:8px; box-shadow:0 6px 20px rgba(0,0,0,.12); max-width:360px; font-size:12px; contain:paint; will-change:transform; max-height:calc(100vh - 96px); overflow:auto}
@@ -117,8 +137,18 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
 }
 
 /* Make links inside floating UI readable; use primary color by default and a lighter tint in dark mode */
-.tooltip a, .modal a { color: var(--primary); text-decoration: underline; }
-:root[data-theme="dark"] .tooltip a, :root[data-theme="dark"] .modal a { color: #9ec6ff; }
+.tooltip a, .modal a, .mobile-bottom-sheet a { color: var(--primary); text-decoration: underline; }
+/* Ensure visited links don't fall back to low-contrast purple */
+.tooltip a:visited, .modal a:visited, .mobile-bottom-sheet a:visited { color: var(--primary); }
+/* Stronger contrast for dark mode links across tooltip, modal, and bottom sheet */
+:root[data-theme="dark"] .tooltip a,
+:root[data-theme="dark"] .modal a,
+:root[data-theme="dark"] .mobile-bottom-sheet a { color: #9ec6ff; }
+:root[data-theme="dark"] .tooltip a:visited,
+:root[data-theme="dark"] .modal a:visited,
+:root[data-theme="dark"] .mobile-bottom-sheet a:visited { color: #9ec6ff; }
+/* Clear focus ring for keyboard users */
+.tooltip a:focus-visible, .modal a:focus-visible, .mobile-bottom-sheet a:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; border-radius: 4px; }
 
 /* Header/title color adjustments for dark mode:
   - Keep the non-link title text high-contrast (var(--ink)).
@@ -134,34 +164,57 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
 :root[data-theme="dark"] #chart svg g:not(.vertices) circle { stroke: var(--line); }
 :root[data-theme="dark"] #chart svg path { stroke-opacity: 0.9; }
 
-/* Tooltip pinned visual state */
-.tooltip.pinned { border-color: var(--primary); box-shadow: 0 14px 40px rgba(11,95,255,0.18); border-width:2px; }
-:root[data-theme="dark"] .tooltip.pinned { border-color: #fff; box-shadow: 0 14px 40px rgba(0,0,0,0.6); }
+/* (Pin functionality removed; legacy pinned styles deleted) */
 
-/* Pinned vertex state: make the outer ring stand out when pinned */
-.vertex.pinned .vertex-ring { stroke: #fff !important; stroke-width: 3px !important; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.28)); }
-/* close button inside tooltip */
-.tooltip .tt-close { position:absolute; top:8px; right:8px; z-index:2; display:block; background:transparent; border:1px solid var(--line); border-radius:8px; width:34px; height:34px; display:flex; align-items:center; justify-content:center; font-size:16px; }
-.tooltip.pinned .tt-close { /* visually emphasized when pinned */ border-color: var(--primary); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
-/* cursor hint when tooltip is pinned and draggable */
-.tooltip.pinned { cursor: grab; }
-.tooltip.pinned:active { cursor: grabbing; }
+/* Mobile bottom-sheet style for tooltips (shown only on touch / small screens) */
+.mobile-bottom-sheet{position:fixed; left:0; right:0; bottom:-100%; background:var(--panel-bg); color:var(--ink); border-top-left-radius:16px; border-top-right-radius:16px; box-shadow:0 -8px 28px rgba(0,0,0,0.28); border:1px solid var(--line); padding:18px 20px 26px 20px; z-index:11000; max-height:65vh; overflow:auto; transition:bottom .28s ease; -webkit-overflow-scrolling:touch; font-size:13px; line-height:1.45}
+.mobile-bottom-sheet.open{bottom:0}
+.mobile-bottom-sheet h3{margin:0 0 6px 0; font-size:15px; font-weight:600}
+.mobile-bottom-sheet .sheet-meta{font-size:12px; color:var(--muted); margin-bottom:6px}
+.mobile-bottom-sheet .close-btn{position:absolute; top:10px; right:10px; width:34px; height:34px; border-radius:999px; border:1px solid var(--line); background:rgba(0,0,0,0.04); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; line-height:0; color:inherit}
+.mobile-bottom-sheet .close-btn:focus{outline:2px solid rgba(0,0,0,0.2); outline-offset:2px}
+:root[data-theme="dark"] .mobile-bottom-sheet .close-btn{background:rgba(255,255,255,0.06)}
+/* Pager controls (top-left) for overlapping vertices on mobile */
+.mobile-bottom-sheet .pager{position:static; display:flex; gap:8px; margin-left:auto; z-index:2}
+.mobile-bottom-sheet .pager button{width:34px; height:34px; border-radius:999px; border:1px solid var(--line); background:var(--panel-bg); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; padding:0; line-height:0; color:var(--ink)}
+.mobile-bottom-sheet .pager button:focus{outline:2px solid rgba(0,0,0,0.25); outline-offset:2px}
+:root[data-theme="dark"] .mobile-bottom-sheet .pager button{background:rgba(255,255,255,0.06)}
+/* Ensure content doesn't sit underneath absolute pager row */
+.mobile-bottom-sheet .with-pager{padding-top:0;}
+/* Pager row now flows in normal document flow (not absolute) */
+.mobile-bottom-sheet .pager-row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:4px 0 8px 0; padding-right:60px;}
+.mobile-bottom-sheet .pager-info{font-size:13px; font-weight:600; white-space:nowrap;}
+:root[data-theme="dark"] .mobile-bottom-sheet .pager-info{color:var(--ink)}
+/* Inline header with its own close to align with pager */
+.mobile-bottom-sheet.has-inline-close > .close-btn{ display:none; }
+.mobile-bottom-sheet .hdr{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin:2px 0 8px 0; }
+.mobile-bottom-sheet .hdr-left{ display:flex; align-items:center; gap:12px; }
+.mobile-bottom-sheet .hdr .hdr-close{ width:34px; height:34px; border-radius:999px; border:1px solid var(--line); background:var(--panel-bg); display:flex; align-items:center; justify-content:center; font-size:18px; line-height:0; color:inherit; cursor:pointer; }
+:root[data-theme="dark"] .mobile-bottom-sheet .hdr .hdr-close{ background:rgba(255,255,255,0.06) }
+/* Add a divider before quotes in the mobile sheet to match desktop affordance */
+.mobile-bottom-sheet .q{ border-top:1px solid var(--line); padding-top:8px; margin-top:10px; }
+:root[data-theme="dark"] .mobile-bottom-sheet{box-shadow:0 -8px 34px rgba(0,0,0,0.6)}
+:root[data-theme="dark"] .mobile-bottom-sheet .close-btn{background:rgba(255,255,255,0.06)}
 
 </style>
 </head>
 <body>
-  <div id="topbar">
-  <h1>Compare Historical Hypotheses (<a href="https://www.amazon.com/Justifying-Historical-Descriptions-Cambridge-Philosophy/dp/0521318300" target="_blank" rel="noopener">C. Behan McCullagh</a>)</h1>
-  <button id="factsBtn" class="btn primary" aria-expanded="false" aria-controls="factsOverlay">Facts</button>
-  <button id="dimsBtn" class="btn primary" aria-expanded="false" aria-haspopup="dialog" aria-controls="dimsOverlay" title="About the seven dimensions">Dimensions</button>
-  <button id="helpBtn" role="button" aria-haspopup="dialog" aria-controls="helpOverlay" class="help">? Help</button>
-  <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle dark mode" style="margin-left:8px">
-    <span id="icon-moon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></span>
-    <span id="icon-sun" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
-  </button>
-  <div id="loaders">
-  </div>
-    <div id="hypotheses"></div>
+  <div id="topbar" data-state="collapsed">
+    <div class="topbar-primary">
+      <h1>Compare Historical Hypotheses</h1>
+      <button id="controlsToggle" class="btn" aria-expanded="false" aria-controls="controls-panel" aria-label="Show controls">Controls ▼</button>
+    </div>
+    <div id="controls-panel">
+      <button id="factsBtn" class="btn primary" aria-expanded="false" aria-controls="factsOverlay">Facts</button>
+      <button id="dimsBtn" class="btn primary" aria-expanded="false" aria-haspopup="dialog" aria-controls="dimsOverlay" title="About the seven dimensions">Dimensions</button>
+      <button id="helpBtn" role="button" aria-haspopup="dialog" aria-controls="helpOverlay" class="help">? Help</button>
+      <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle dark mode" style="margin-left:8px">
+        <span id="icon-moon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path></svg></span>
+        <span id="icon-sun" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
+      </button>
+      <div id="loaders"></div>
+      <div id="hypotheses"></div>
+    </div>
   </div>
 
   <div id="main">
@@ -230,7 +283,9 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
         <p><strong>Rings & levels</strong><br>The three rings mark midpoints of bands: Low (0.25), Medium (0.50), High (0.75). Scores snap to these bands.</p>
   <p><strong>Axes</strong> (each shows its anchors): 1. Observable Implications; 2. Scope; 3. Power; 4. Plausibility; 5. Fewer assumptions; 6. Fewer conflicts; 7. Overall vs. rivals.</p>
         <p><strong>Colors</strong><br>Colors distinguish hypotheses (not values). Heatmap uses grayscale fill with colored borders.</p>
-  <p><strong>Tooltips</strong><br>Hover a dot (vertex) → Level + short note + source quote w/ link. Tooltips appear while hovering; press Esc or click outside to close.</p>
+  <p><strong>Tooltips</strong><br>
+  Desktop: Hover a dot (vertex) to see level + note + source quote (closes when you move away / press Esc).<br>
+  Mobile: Tap a vertex to open a bottom sheet with the same details; swipe down or tap × to dismiss. If several hypotheses share the same spot, use the left/right arrows (top-left) or swipe horizontally to cycle.</p>
       </div>
     </div>
   </div>
@@ -260,6 +315,11 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
 
   <!-- Tooltip -->
   <div id="tt" class="tooltip" style="display:none"></div>
+  <!-- Mobile bottom-sheet container for tooltip content -->
+  <div id="ttSheet" class="mobile-bottom-sheet" aria-hidden="true" role="dialog" aria-modal="false">
+    <button class="close-btn" aria-label="Close" type="button">×</button>
+    <div class="sheet-inner"></div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
@@ -270,11 +330,13 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     showQuotes:true,
     applyWeights:false,
     showAxisTicks:true,
-  pinned:null,
+  // pin feature removed
   pagerActive:null,
   lastActiveHypothesis:null,
   _highlightClearTimer:null
   };
+  // Track currently active vertex (hypothesis + criterion) for precise highlighting
+  state.activeVertex = null;
   // current zoom scale applied to chart (1 == identity). Updated by zoom handler.
   state.zoomK = 1;
   // flags to track pointer location for auto-hide logic
@@ -283,6 +345,47 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
 
   // ---------- UI: loading
   const loader = document.getElementById('loader');
+  // Remove any potential heatmap UI elements (no surface per requirements)
+  document.querySelectorAll('[data-view="heatmap"], [data-feature="heatmap"], #heatmap-btn').forEach(n=> n.remove());
+  
+  // Mobile Controls toggle logic
+  const topbar = document.getElementById('topbar');
+  const controlsToggle = document.getElementById('controlsToggle');
+  const controlsPanel = document.getElementById('controls-panel');
+  function isMobile(){ return window.innerWidth <= 768; }
+  function updateHeaderHeight(){ if(topbar) document.documentElement.style.setProperty('--header-h', topbar.offsetHeight + 'px'); }
+  function setControls(open){
+    if(!topbar) return;
+    if(!isMobile()){ topbar.dataset.state = 'expanded'; controlsToggle.setAttribute('aria-expanded','true'); controlsToggle.setAttribute('aria-label','Hide controls'); updateHeaderHeight(); return; }
+    topbar.dataset.state = open? 'expanded':'collapsed';
+    controlsToggle.setAttribute('aria-expanded', open? 'true':'false');
+    controlsToggle.setAttribute('aria-label', open? 'Hide controls':'Show controls');
+    if(open){
+      // focus first interactive control inside panel
+      const first = controlsPanel.querySelector('button, input, select');
+      if(first) setTimeout(()=>{ first.focus({preventScroll:true}); }, 10);
+    } else {
+      setTimeout(()=> controlsToggle.focus({preventScroll:true}), 10);
+    }
+    updateHeaderHeight();
+    window.dispatchEvent(new Event('resize'));
+  }
+  if(controlsToggle){
+    controlsToggle.addEventListener('click', ()=>{
+      const open = topbar.dataset.state !== 'expanded';
+      setControls(open);
+    });
+  }
+  window.addEventListener('resize', ()=>{
+    if(!isMobile()){
+      setControls(true); // always expanded on desktop
+    } else {
+      // remain in whatever state currently set except initialize
+      updateHeaderHeight();
+    }
+  });
+  // Initialize state (collapsed on mobile, expanded otherwise)
+  setTimeout(()=>{ setControls(!isMobile() ? true : false); }, 0);
   // drag/drop removed; page will attempt to auto-load `data/resurrection-data.json` on load
 
   function loadFromText(txt){
@@ -319,93 +422,219 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
 
   // ---------- tooltip plumbing
   const tt = d3.select('#tt'); let hideTimer=null;
-  // flag to suppress the next tooltip click if it immediately follows a drag
-  let _suppressTTClick = false;
-  // timestamp of last drag end used to ignore synthetic click events
-  let _lastDragTime = 0;
-  // create a single close button inside the tooltip; shown only when tooltip has .pinned
-  try{
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'tt-close';
-    // helper to update button text/label depending on pinned state
-    const updateCloseBtn = (btn)=>{
-      try{
-        if(state.pinned){ btn.innerText = '×'; btn.setAttribute('aria-label','Close'); }
-        else { btn.innerText = '📌'; btn.setAttribute('aria-label','Pin'); }
-      }catch(e){}
-    };
-    updateCloseBtn(closeBtn);
-    closeBtn.addEventListener('click', (ev)=>{
-      ev.stopPropagation();
-      // Toggle pinned state: if pinned -> close; if not pinned -> pin
-      if(state.pinned){
-        state.pinned = null; state.pagerActive = null; tt.classed('pinned', false);
-        try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}
-        hideTT();
-        return;
-      }
-      state.pinned = { key: 'tooltip' };
-      tt.classed('pinned', true);
-      updateCloseBtn(closeBtn);
-    });
-    // keep button state in sync when other code pins/unpins the tooltip
-    const ttNode = tt.node(); if(ttNode) ttNode.appendChild(closeBtn);
-  }catch(e){}
+  const sheetEl = document.getElementById('ttSheet');
+  const sheetInner = sheetEl ? sheetEl.querySelector('.sheet-inner') : null;
+  const sheetClose = sheetEl ? sheetEl.querySelector('.close-btn') : null;
+  // track the bounding rect of the last tapped element so the sheet can avoid obscuring it
+  let sheetAnchorRect = null;
+  // track active chart vertical shift (pixels)
+  let chartShift = 0;
+  // last applied D3 transform so we can reapply it after re-render
+  state.lastTransform = null;
+  state.currentSvg = null;
+  state.currentZoom = null;
 
-  // Dragging for pinned tooltip
-  (function(){
-    let dragging = false; let startX=0, startY=0, origLeft=0, origTop=0; let dragMoved = false;
-    const ttNode = tt.node();
-    if(!ttNode) return;
-    ttNode.addEventListener('pointerdown', (ev)=>{
-      // only start drag when tooltip is pinned and left mouse or primary pointer
-      // but do not start drag when the pointerdown is on interactive controls
-      // (buttons, links, inputs, the pin/close control, or pager buttons).
-      if(!state.pinned) return;
-      if(ev.button !== 0) return;
-      try{
-        const tgt = ev.target;
-        if(tgt && tgt.closest && tgt.closest('button, a, input, .tt-close, #pager-left, #pager-right')){
-          // let the control handle the pointer event; don't preventDefault or capture
-          return;
-        }
-      }catch(e){}
-      dragging = true;
-      startX = ev.clientX; startY = ev.clientY;
-      // read current computed left/top
-      const rect = ttNode.getBoundingClientRect();
-      origLeft = rect.left; origTop = rect.top;
-      ttNode.setPointerCapture && ttNode.setPointerCapture(ev.pointerId);
-      ev.preventDefault();
-    });
-    window.addEventListener('pointermove', (ev)=>{
-      if(!dragging) return;
-      const dx = ev.clientX - startX; const dy = ev.clientY - startY;
-      if(Math.hypot(dx, dy) > 3) dragMoved = true;
-      let left = origLeft + dx; let top = origTop + dy;
-      // clamp to viewport
-      const pad = 8; const vw = window.innerWidth, vh = window.innerHeight;
-      const tr = tt.node().getBoundingClientRect();
-      if(left < pad) left = pad; if(left + tr.width + pad > vw) left = Math.max(pad, vw - tr.width - pad);
-      if(top < pad) top = pad; if(top + tr.height + pad > vh) top = Math.max(pad, vh - tr.height - pad);
-      tt.style('left', left + 'px').style('top', top + 'px').style('transform','translateZ(0)');
-    });
-    window.addEventListener('pointerup', (ev)=>{
-      if(!dragging) return; dragging = false;
-      try{ tt.node().releasePointerCapture && tt.node().releasePointerCapture(ev.pointerId); }catch(e){}
-  if(dragMoved){ _suppressTTClick = true; _lastDragTime = Date.now(); }
-      if(dragMoved){ 
-        setTimeout(()=>{ _suppressTTClick = false; }, 300);
-        // swallow the next click event (capturing) to avoid synthetic clicks from unpinning
-        const suppressOnce = function(ev2){ ev2.stopPropagation(); ev2.preventDefault(); document.removeEventListener('click', suppressOnce, true); };
-        document.addEventListener('click', suppressOnce, true);
+  function prefersSheet(){
+    // Use bottom sheet if viewport narrow or primary pointer coarse (touch)
+    const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    return coarse || window.innerWidth < 640; 
+  }
+
+  // Convert an SVG-bound datum anchor or an element into a screen-space rect.
+  // If the element has a D3 datum with x/y in chart-local coordinates, use the D3 zoom transform
+  // and stored chart center to map coordinates exactly to screen pixels. Otherwise fall back
+  // to getBoundingClientRect when available.
+  function getScreenRectForAnchor(anchor, svgNode){
+    if(!anchor) return null;
+    try{
+      // Prefer the browser rect when available — it reflects the post-render screen position
+      if(anchor && typeof anchor.getBoundingClientRect === 'function'){
+        return anchor.getBoundingClientRect();
       }
-  dragMoved = false;
-    });
-    // cancel drag on Escape/unpin
-    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ dragging=false; } });
-  })();
+      // Fallback: compute from datum + d3 transform when anchor is a data-bound SVG node
+      if(anchor && anchor.__data__ && svgNode){
+        const d = anchor.__data__;
+        const svgRect = svgNode.getBoundingClientRect();
+        const tcur = d3.zoomTransform(svgNode) || d3.zoomIdentity;
+        const k = tcur.k || 1;
+        const cx = (state.chartCenter && state.chartCenter.cx) ? state.chartCenter.cx : (svgRect.width/2);
+        const cy = (state.chartCenter && state.chartCenter.cy) ? state.chartCenter.cy : (svgRect.height/2);
+        const localX = (typeof d.x === 'number') ? (d.x + cx) : null;
+        const localY = (typeof d.y === 'number') ? (d.y + cy) : null;
+        if(localX !== null && localY !== null){
+          const screenX = svgRect.left + (tcur.x || 0) + localX * k;
+          const screenY = svgRect.top + (tcur.y || 0) + localY * k;
+          const r = (d.baseR || d.baseRing || 6) * k;
+          return { left: screenX - r, top: screenY - r, right: screenX + r, bottom: screenY + r, width: r*2, height: r*2 };
+        }
+      }
+    }catch(_e){}
+    return null;
+  }
+
+  // anchorRect is an optional DOMRect of the tapped item so we can shift the chart on mobile
+  function openSheet(html, highlight=null, anchorRect=null){
+    if(!sheetEl) return;
+    sheetInner.innerHTML = html;
+    sheetEl.classList.add('open');
+    sheetEl.setAttribute('aria-hidden','false');
+    // prevent background scroll while open
+    document.body.style.overflow='hidden';
+    // remember anchor for potential layout adjustments
+    sheetAnchorRect = anchorRect || sheetAnchorRect;
+    // optional debug overlay when ?pv_debug_sheet is present in URL
+    try{
+      if(window.location.search && window.location.search.indexOf('pv_debug_sheet')>=0 && sheetAnchorRect){
+        const dbg = document.createElement('div'); dbg.id='pv-sheet-anchor-debug';
+        dbg.style.position='fixed'; dbg.style.pointerEvents='none'; dbg.style.zIndex = 12000;
+        dbg.style.border = '2px dashed rgba(255,40,40,0.95)'; dbg.style.borderRadius = '6px';
+        dbg.style.left = (sheetAnchorRect.left) + 'px'; dbg.style.top = (sheetAnchorRect.top) + 'px';
+        dbg.style.width = (sheetAnchorRect.width || (sheetAnchorRect.right - sheetAnchorRect.left)) + 'px';
+        dbg.style.height = (sheetAnchorRect.height || (sheetAnchorRect.bottom - sheetAnchorRect.top)) + 'px';
+        document.body.appendChild(dbg);
+        setTimeout(()=>{ try{ dbg.remove(); }catch(e){} }, 1600);
+        try{ console.log('pv_debug_sheet anchor', sheetAnchorRect); }catch(e){}
+      }
+    }catch(e){}
+    try{
+      if(highlight){
+        if(typeof highlight === 'object' && highlight.hypId){ highlightSeries(highlight.hypId, highlight.critId || null); }
+        else { highlightSeries(highlight); }
+      }
+    }catch(e){}
+    // On mobile / coarse pointer, shift the chart up if the sheet would cover the tapped point.
+    // Measure after the sheet is painted (use two RAF ticks) so we get the final sheet position
+    if(prefersSheet() && sheetAnchorRect){
+      try{
+        const chartEl = state.chartRoot || document.getElementById('chart');
+        const anchor = sheetAnchorRect;
+        const padding = 12; // pixels of breathing room between anchor and sheet
+        // Wait for the sheet open transition to finish so getBoundingClientRect reflects the final position.
+        const doMeasure = ()=>{
+          try{
+            const sheetRect = sheetEl.getBoundingClientRect();
+            // Prefer computing anchor rect from the underlying datum when available (most robust under
+            // D3 zoom/pan). Only fall back to getBoundingClientRect when datum-based mapping isn't possible.
+            let curAnchor = anchor;
+            try{
+              if(anchor && anchor.__data__ && state.currentSvg && state.currentSvg.node()){
+                // compute screen position from datum and current D3 transform
+                const d = anchor.__data__;
+                const svgNode = state.currentSvg.node();
+                const svgRect = svgNode.getBoundingClientRect();
+                const tcur = d3.zoomTransform(svgNode) || d3.zoomIdentity;
+                const k = tcur.k || 1;
+                const cx = (state.chartCenter && state.chartCenter.cx) ? state.chartCenter.cx : (svgRect.width/2);
+                const cy = (state.chartCenter && state.chartCenter.cy) ? state.chartCenter.cy : (svgRect.height/2);
+                const localY = (typeof d.y === 'number') ? (d.y + cy) : null;
+                if(localY !== null){
+                  const screenY = svgRect.top + (tcur.y || 0) + localY * k;
+                  const screenX = svgRect.left + (tcur.x || 0) + ((d.x||0) + cx) * k;
+                  const r = (d.baseR || d.baseRing || 6) * k;
+                  curAnchor = { top: screenY - r, bottom: screenY + r, left: screenX - r, right: screenX + r, width: r*2, height: r*2 };
+                }
+              } else if(anchor && typeof anchor.getBoundingClientRect === 'function'){
+                curAnchor = anchor.getBoundingClientRect();
+              }
+            }catch(_e){}
+            const chartRect = chartEl ? chartEl.getBoundingClientRect() : null;
+            const overlap = (curAnchor && curAnchor.bottom ? curAnchor.bottom : (anchor && anchor.bottom)) - (sheetRect.top) + padding;
+            if(overlap > 0 && chartEl && chartRect){
+              // state.chartShift stores the desired total vertical shift in screen pixels
+              // Prefer to derive the current screen shift from the live D3 transform so we don't rely on stale state.
+              let currentScreen = parseFloat(state.chartShift || '0') || 0;
+              try{
+                if(state.currentSvg && state.currentSvg.node()){
+                  const tcur = d3.zoomTransform(state.currentSvg.node());
+                  if(tcur && typeof tcur.y === 'number') currentScreen = Math.max(0, -tcur.y);
+                }
+              }catch(_e){}
+              const desiredTotalUncapped = currentScreen + overlap;
+              // Allow the desired shift to be as large as needed to bring the anchor above the sheet.
+              // Previously we capped this to chartRect.height-40 which could be too small at some zoom levels.
+              const desiredTotal = desiredTotalUncapped;
+              // only increase the shift in screen pixels
+                if(desiredTotal > currentScreen){
+                state.chartShift = desiredTotal;
+                // compute applied transform in chart-local units by dividing by zoom
+                const scale = state.zoomK || 1;
+                const applied = desiredTotal / scale;
+                // Prefer composing this bump into the D3 zoom transform so it behaves like a normal pan.
+                try{
+                  if(state.currentSvg && state.currentZoom && state.currentSvg.node()){
+                    // read the current transform directly from the svg so we use the exact applied transform
+                    const t = d3.zoomTransform(state.currentSvg.node()) || state.lastTransform || d3.zoomIdentity;
+                    // desiredTotal is the total desired screen-pixel shift. Only apply the incremental delta
+                    // because t.y already includes prior programmatic pans.
+                    const delta = (desiredTotal - currentScreen) || 0;
+                    const newT = d3.zoomIdentity.translate(t.x, t.y - delta).scale(t.k || 1);
+                    // animate the transform so the chart visibly moves up
+                    state.currentSvg.transition().duration(280).call(state.currentZoom.transform, newT);
+                    // remove any leftover inline transform on the chart element to avoid double-counting
+                    try{ chartEl.style.transform = ''; chartEl.dataset.shift = ''; }catch(_e){}
+                    // remember the transform we just requested (zoom handler will also update on progress)
+                    try{ state.lastTransform = newT; }catch(_e){}
+                  } else {
+                    // fallback: directly translate the chart root element (chart-local units)
+                    chartEl.style.transition = 'transform .28s ease'; chartEl.style.transform = `translateY(-${applied}px)`; chartEl.dataset.shift = String(applied);
+                  }
+                }catch(e){
+                  try{ chartEl.style.transition = 'transform .28s ease'; chartEl.style.transform = `translateY(-${applied}px)`; chartEl.dataset.shift = String(applied); }catch(_e){}
+                }
+                chartShift = desiredTotal;
+                try{ 
+                  if(window.location.search && window.location.search.indexOf('pv_debug_sheet')>=0){
+                    const tcur = (state.currentSvg && state.currentSvg.node()) ? d3.zoomTransform(state.currentSvg.node()) : null;
+                    console.debug('openSheet shift (applied)', { anchor: curAnchor||anchor, sheetRect, chartRect, overlap, desiredTotal, applied, previous: currentScreen, scale, tcur, delta: desiredTotal-currentScreen, newTransform: state.lastTransform });
+                  }
+                }catch(e){}
+              } else {
+                try{ console.debug('openSheet shift (kept existing)', { anchor, sheetRect, chartRect, overlap, desiredTotal: currentScreen, previous: currentScreen }); }catch(e){}
+              }
+            }
+          }catch(e){}
+        };
+        let handled = false;
+        const onEnd = (ev)=>{
+          if(handled) return;
+          handled = true;
+          sheetEl.removeEventListener('transitionend', onEnd);
+          doMeasure();
+        };
+        sheetEl.addEventListener('transitionend', onEnd);
+        // fallback in case transitionend doesn't fire
+        setTimeout(()=>{ if(!handled){ handled = true; sheetEl.removeEventListener('transitionend', onEnd); doMeasure(); } }, 420);
+      }catch(e){}
+    }
+  }
+  function closeSheet(){
+    if(!sheetEl) return;
+    sheetEl.classList.remove('open');
+    sheetEl.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    // clear anchor
+    sheetAnchorRect = null;
+    // clear highlight after closing (slight delay so user perceives action end)
+    setTimeout(()=>{ clearHighlight(); }, 60);
+  }
+  if(sheetClose){ sheetClose.addEventListener('click', ()=> closeSheet()); }
+  // swipe-down gesture to close
+  (function(){ if(!sheetEl) return; let startY=null, startT=null; sheetEl.addEventListener('touchstart', e=>{ if(e.touches.length===1){ startY=e.touches[0].clientY; startT=Date.now(); }}); sheetEl.addEventListener('touchmove', e=>{ if(startY==null) return; const dy=e.touches[0].clientY-startY; if(dy>60){ closeSheet(); startY=null; }}); sheetEl.addEventListener('touchend', ()=>{ startY=null; startT=null; }); })();
   function showTTAt(html, svgEl, sx, sy, dy=-10){
+    if(prefersSheet()){
+      // compute an approximate anchor rect from svgEl + sx/sy so openSheet can shift the chart
+      try{
+        const svgRect = svgEl.getBoundingClientRect();
+        const ax = svgRect.left + sx;
+        const ay = svgRect.top + sy + dy;
+        // small rect centered on the point
+        const anchorRectApprox = { left: ax - 8, right: ax + 8, top: ay - 8, bottom: ay + 8, width:16, height:16 };
+        openSheet(html, null, anchorRectApprox);
+      }catch(e){
+        openSheet(html, null, sheetAnchorRect || null);
+      }
+      return;
+    }
     clearTimeout(hideTimer);
     // Save scroll position to avoid any reflow caused by inserting tooltip content
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -413,22 +642,8 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     const r = svgEl.getBoundingClientRect();
     // Use transform for compositing where possible to avoid layout jumps
     tt.html(html).style('display','block').style('left', (r.left+sx)+'px').style('top', (r.top+sy+dy)+'px').style('transform','translateZ(0)');
-    // ensure the tooltip has a close button (show/hide handled by CSS .tooltip.pinned)
-    try{
-      const ttNode = tt.node();
-      if(ttNode && !ttNode.querySelector('.tt-close')){
-        const cb = document.createElement('button');
-        cb.className = 'tt-close';
-        const updateCB = (btn)=>{ if(state.pinned){ btn.innerText='×'; btn.setAttribute('aria-label','Close'); } else { btn.innerText='📌'; btn.setAttribute('aria-label','Pin'); } };
-        updateCB(cb);
-        cb.addEventListener('click', (ev)=>{
-          ev.stopPropagation();
-          if(state.pinned){ state.pinned = null; state.pagerActive = null; tt.classed('pinned', false); try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}; hideTT(); return; }
-          state.pinned = { key: 'tooltip' }; tt.classed('pinned', true); updateCB(cb);
-        });
-        ttNode.appendChild(cb);
-      }
-    }catch(e){}
+  // (pin button removed)
+    // pin UI removed
     // clamp tooltip so it doesn't force scrollbars on small viewports
     const ttNode = tt.node();
     if(ttNode){
@@ -448,19 +663,14 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     // restore scroll position in case browser adjusted it
     window.scrollTo(scrollLeft, scrollTop);
   }
-  function scheduleHide(delay=200){ clearTimeout(hideTimer); hideTimer=setTimeout(()=>{ // hide only if not pinned and pointer is not over chart or tooltip
-      if(!state.pinned && !state.isOverChart && !state.isOverTT){ tt.style('display','none'); state.pagerActive = null; clearHighlight(); }
-    }, delay); }
-  function hideTT(){ tt.style('display','none'); state.pinned = null; state.pagerActive = null; clearHighlight(); try{ tt.classed('pinned', false); d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){} }
-  // tooltip clicks are no-ops; pinning/unpinning is handled only by the pin/close control
-  tt.on('click', (event)=>{
-    // ignore click fired immediately after a drag (pointerup generates a click)
-    if(_suppressTTClick){ _suppressTTClick = false; return; }
-    // also ignore clicks that happen within a short window after drag end (timestamp-based)
-    if(_lastDragTime && (Date.now() - _lastDragTime) < 300){ _lastDragTime = 0; return; }
-    // do nothing here — pin/unpin is performed by the pin/close button only
-    return;
-  }).on('mouseenter', ()=>{ state.isOverTT = true; clearTimeout(hideTimer); }).on('mouseleave', ()=>{
+  function scheduleHide(delay=200){
+    if(prefersSheet() && sheetEl && sheetEl.classList.contains('open')) return; // sheet visible; don't manage hover hide
+    clearTimeout(hideTimer);
+    hideTimer=setTimeout(()=>{ if(!state.isOverChart && !state.isOverTT){ tt.style('display','none'); state.pagerActive = null; clearHighlight(); } }, delay);
+  }
+  function hideTT(){ tt.style('display','none'); state.pagerActive = null; clearHighlight(true); }
+  tt.on('click', ()=>{ /* no-op (pin removed) */ })
+    .on('mouseenter', ()=>{ state.isOverTT = true; clearTimeout(hideTimer); }).on('mouseleave', ()=>{
     state.isOverTT = false;
     // when leaving the tooltip, schedule hide; also clear pagerActive after the delay so pager behavior reverts
     scheduleHide();
@@ -483,15 +693,12 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     const wrap = d3.select('#hypotheses');
     wrap.selectAll('*').remove();
     const C = byId(Data.criteria), Hy = byId(Data.hypotheses);
-    const pill = wrap.selectAll('.pill').data(Data.hypotheses).join('label').attr('class','pill');
-    pill.append('span').attr('class','sw').style('background', d=>d.color);
+  const pill = wrap.selectAll('.pill').data(Data.hypotheses).join('label').attr('class','pill');
+  pill.append('span').attr('class','sw').style('background', d=> getColorFor(d));
     pill.append('input').attr('type','checkbox').attr('checked', true)
       .on('change', (e,d)=>{ e.target.checked? state.selected.add(d.id) : state.selected.delete(d.id); render(); });
-    pill.append('span').attr('class','txt').text(d=>{
-      const rawAvg = avg(Object.keys(C).map(k=>Hy[d.id].scores[k]));
-      const lvl = rawAvg < 0.4 ? 'Low' : (rawAvg < 0.7 ? 'Medium' : 'High');
-      return `${d.label} — Overall: ${lvl}`;
-    });
+    // Keep legend compact: only show the hypothesis name (color shown in the sw square)
+    pill.append('span').attr('class','txt').text(d=> d.label);
 
     // only bind view switching to buttons that declare a data-view (help button is not a view)
     d3.selectAll('.viewtabs button[data-view]').on('click', (e)=>{
@@ -511,16 +718,11 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   d3.select('#factsOverlay').on('click', function(e){ if(e.target===this){ d3.select('#factsOverlay').style('display','none'); d3.select('#factsBtn').attr('aria-expanded','false'); } });
 
   // Consolidated Escape handling: close overlays and tooltips
-  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ state.pinned=null; hideTT(); d3.select('#helpOverlay').style('display','none'); d3.select('#factsOverlay').style('display','none'); d3.select('#dimsOverlay').style('display','none'); d3.select('#factsBtn').attr('aria-expanded','false'); d3.select('#dimsBtn').attr('aria-expanded','false'); } });
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ hideTT(); d3.select('#helpOverlay').style('display','none'); d3.select('#factsOverlay').style('display','none'); d3.select('#dimsOverlay').style('display','none'); d3.select('#factsBtn').attr('aria-expanded','false'); d3.select('#dimsBtn').attr('aria-expanded','false'); } });
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeSheet(); }});
+  document.addEventListener('click', (e)=>{ if(sheetEl && sheetEl.classList.contains('open')){ if(e.target===sheetEl){ closeSheet(); } } });
     document.addEventListener('click', (e)=>{
       const node = tt.node();
-      // If tooltip is pinned, do not close it via outside clicks; user must press Escape or click tooltip to unpin
-      if(state.pinned){
-        const clickedVertex = e.target && e.target.closest && e.target.closest('.vertex');
-        if(clickedVertex) return; // let vertex click handlers run
-        // clicking outside when pinned should do nothing
-        return;
-      }
       // if click is outside the tooltip, close it (clear pager state)
       if(node && !node.contains(e.target)){
         state.pagerActive = null;
@@ -540,6 +742,36 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   // initialize theme immediately so colors are correct before UI paints
   try{ initTheme(); }catch(e){/* ignore */}
 
+  // Color palettes for light and dark modes (map by hypothesis id)
+  const Palettes = {
+    light: {
+      resurrection: '#1f77b4',
+      hallucination: '#2ca02c',
+      theft: '#ff7f0e',
+      wrongTomb: '#17becf',
+      displaced: '#9467bd',
+      swoon: '#d62728',
+      legend: '#bcbd22'
+    },
+    dark: {
+      resurrection: '#4fa8f7',
+      hallucination: '#58d65b',
+      theft: '#ffa64d',
+      wrongTomb: '#4dd8e6',
+      displaced: '#b085f5',
+      swoon: '#ff4d4d',
+      legend: '#e6c229'
+    }
+  };
+
+  function currentPalette(){ return document.documentElement.getAttribute('data-theme')==='dark' ? Palettes.dark : Palettes.light; }
+  function getColorFor(h){
+    // prefer explicit mapping in the palette, fall back to hypothesis.color in data
+    const pal = currentPalette();
+    if(pal && pal[h.id]) return pal[h.id];
+    return h.color || '#999';
+  }
+
   function quoteHTML(Hy, hypId, crit){
     if(state.showQuotes!==true) return '';
     const a = (Hy[hypId].quotes && Hy[hypId].quotes[crit]) || null;
@@ -551,38 +783,79 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   }
 
   // Highlight a hypothesis series (polygon and pill) by id
-  function highlightSeries(hypId){
+  function highlightSeries(hypId, critId=null){
     // record last active
     state.lastActiveHypothesis = hypId;
+    state.activeVertex = critId ? { hypId, critId } : null;
     // cancel any pending clear timer
     if(state._highlightClearTimer){ clearTimeout(state._highlightClearTimer); state._highlightClearTimer = null; }
     // dim all polygons and pills, then highlight the selected
   d3.selectAll('.hyp-polygon').style('opacity', 0.12).style('filter', null);
   d3.selectAll('.pill').style('opacity', 0.5);
   // dim vertices (inner colored dots)
-  d3.selectAll('.vertices .vertex-dot').style('opacity', 0.4).attr('r', d => (d.baseR || 5) / (state.zoomK || 1));
-    d3.selectAll('.hyp-polygon').filter(function(d){ return d && d.id===hypId; }).style('opacity', 1).style('filter', 'drop-shadow(0 6px 18px rgba(0,0,0,0.12))');
+  d3.selectAll('.vertices .vertex-dot').style('opacity', 0.4).attr('r', d => Math.max(2, (d.baseR || 5) / (state.zoomK || 1)));
+    // emphasize the selected polygon and move it to the end of its parent so it renders on top of other polygons
+    d3.selectAll('.hyp-polygon')
+      .filter(function(d){ return d && d.id===hypId; })
+      .style('opacity', 1)
+      .style('filter', 'drop-shadow(0 6px 18px rgba(0,0,0,0.12))')
+      .each(function(){
+        try { this.parentNode.appendChild(this); } catch(e) {}
+      });
   d3.selectAll('.pill').filter(function(d){ return d && d.id===hypId; }).style('opacity', 1);
-  // highlight vertices for this hypothesis (inner dot larger)
-  d3.selectAll('.vertices .vertex-dot').filter(function(d){ return d && d.h && d.h.id===hypId; }).style('opacity', 1).attr('r', d => Math.max(3, (d.baseR || 5) / (state.zoomK || 1) * 1.2)).each(function(d){
-    try{ this.parentNode && this.parentNode.parentNode && d3.select(this.parentNode).raise(); }catch(e){}
-    // ensure inner fill and outer ring stroke match hypothesis color
-    d3.select(this).attr('fill', d.h.color);
-    d3.select(this.parentNode).select('.vertex-ring').attr('stroke', d.h.color);
+  // reset any previous selected class
+  d3.selectAll('.vertices .vertex').classed('selected', false);
+  // restore normal state (not selected) for vertices of this hypothesis
+  d3.selectAll('.vertices .vertex').filter(function(d){ return d && d.h && d.h.id===hypId; }).each(function(d){
+    const k = state.zoomK || 1;
+    d3.select(this).select('.vertex-dot').style('opacity', 1).attr('r', Math.max(2, (d.baseR || 5) / k));
+    d3.select(this).select('.vertex-ring').attr('stroke', getColorFor(d.h)).attr('stroke-width', 2);
   });
+  // shrink non-selected hypotheses to the smallest dot size for clear contrast
+  d3.selectAll('.vertices .vertex').filter(function(d){ return d && d.h && d.h.id!==hypId; }).each(function(d){
+    d3.select(this).select('.vertex-dot').style('opacity', 0.35).attr('r', 2).attr('fill', getColorFor(d.h));
+    d3.select(this).select('.vertex-ring').attr('stroke', getColorFor(d.h)).attr('stroke-width', 2);
+  });
+  // emphasize only the selected vertex within the hypothesis, if provided
+  if(critId){
+    const k = state.zoomK || 1;
+    d3.selectAll('.vertices .vertex').filter(function(d){ return d && d.h && d.c && d.h.id===hypId && d.c.id===critId; }).classed('selected', true).each(function(d){
+      d3.select(this).raise();
+  d3.select(this).select('.vertex-dot').style('opacity', 1).attr('r', Math.max(4, Math.max(2, (d.baseR || 5) / k) * 1.5)).attr('fill', getColorFor(d.h));
+      d3.select(this).select('.vertex-ring').attr('stroke', getColorFor(d.h)).attr('stroke-width', 3);
+    });
+  }
+  // Reorder all vertex groups so the selected hypothesis' vertices render on top
+  try{
+    d3.selectAll('.vertices .vertex').sort((a,b)=>{
+      const aa = a && a.h && a.h.id===hypId ? 1 : 0;
+      const bb = b && b.h && b.h.id===hypId ? 1 : 0;
+      return aa - bb; // selected (1) after non-selected (0) => on top
+    });
+  }catch(e){}
   }
 
-  function clearHighlight(){
+  function clearHighlight(immediate=false){
     // delay returning to default to allow quick move to another vertex of same hypothesis
     if(state._highlightClearTimer) clearTimeout(state._highlightClearTimer);
-    state._highlightClearTimer = setTimeout(()=>{
+    const run = ()=>{
       d3.selectAll('.hyp-polygon').style('opacity', null).style('filter', null);
       d3.selectAll('.pill').style('opacity', null);
-  d3.selectAll('.vertices .vertex-dot').style('opacity', null).attr('r', d => (d.baseR || 5) / (state.zoomK || 1));
+      // reset all vertex dots to baseline size, color, and opacity
+      d3.selectAll('.vertices .vertex-dot')
+        .style('opacity', 1)
+        .attr('r', d => Math.max(2, (d.baseR || 5) / (state.zoomK || 1)))
+        .attr('fill', d => getColorFor(d.h));
+      d3.selectAll('.vertices .vertex').classed('selected', false);
+      // restore ring stroke & width for all vertices
+      d3.selectAll('.vertices .vertex-ring').attr('stroke', d => getColorFor(d.h)).attr('stroke-width', 2);
       state._highlightClearTimer = null;
       // reset lastActiveHypothesis after clearing
       state.lastActiveHypothesis = null;
-    }, 450); // 450ms grace period
+      state.activeVertex = null;
+    };
+    if(immediate){ run(); }
+    else { state._highlightClearTimer = setTimeout(run, 450); } // 450ms grace period
   }
 
   // Show a tooltip with pager controls for overlapping vertices
@@ -597,12 +870,12 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
       const note = (byId(Data.hypotheses)[item.h.id].notes||{})[item.c.id]||'';
       const qhtml = quoteHTML(byId(Data.hypotheses), item.h.id, item.c.id);
       // pager at top to avoid vertical shift when content changes
-  let content = `<div style='position:relative;display:flex;flex-direction:column;gap:8px;min-width:220px;padding-right:48px'>`+
-        `<div style='display:flex;align-items:center;justify-content:space-between'>`+
-          `<div style='font-weight:600'>Hypothesis ${i+1}/${list.length}</div>`+
-          `<div style='display:flex;align-items:center;gap:6px'>`+
-            `<button id='pager-left' aria-label='Previous' style='width:32px;height:32px;margin-left:6px'>&#9664;</button>`+
-            `<button id='pager-right' aria-label='Next' style='width:32px;height:32px;margin-left:6px'>&#9654;</button>`+
+  let content = `<div style='position:relative;display:flex;flex-direction:column;gap:8px;min-width:220px'>`+
+        `<div style='display:flex;align-items:center;gap:12px'>`+
+          `<div style='font-weight:600;flex:1 1 auto'>Hypothesis ${i+1}/${list.length}</div>`+
+          `<div style='display:flex;align-items:center;gap:6px;flex:0 0 auto'>`+
+            `<button id='pager-left' aria-label='Previous' style='width:32px;height:32px'>&#9664;</button>`+
+            `<button id='pager-right' aria-label='Next' style='width:32px;height:32px'>&#9654;</button>`+
           `</div>`+
         `</div>`+
         `<div id='pager-body' style='min-height:56px'>`+
@@ -611,8 +884,8 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
       content += qhtml;
       content += `</div></div>`;
       showTTAt(content, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
-      // highlight current series
-      highlightSeries(item.h.id);
+  // highlight current series and selected vertex
+  highlightSeries(item.h.id, item.c.id);
       // wire pager buttons (delegated via document since TT content is HTML string)
       setTimeout(()=>{
         const left = document.getElementById('pager-left');
@@ -635,12 +908,23 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   function render(){
     const el = document.getElementById('chart'); d3.select(el).selectAll('*').remove();
     const C = byId(Data.criteria), Hy = byId(Data.hypotheses);
-    if(state.view==='radar') renderRadar(el, C, Hy); else renderHeatmap(el, C, Hy);
+  if(state.view==='radar') renderRadar(el, C, Hy); else renderHeatmap(el, C, Hy);
+  // reapply last D3 transform after re-render so pan/zoom (including bumps) persist
+  try{
+    if(state.lastTransform && state.currentSvg && state.currentZoom){
+      state.currentSvg.call(state.currentZoom.transform, state.lastTransform);
+      // clear any leftover inline transform on the chart root so we don't double-apply visual shifts
+      try{ if(state.chartRoot && state.chartRoot.style){ state.chartRoot.style.transform = ''; state.chartRoot.dataset.shift = ''; } }catch(_e){}
+    }
+  }catch(e){}
   }
 
   // ---------- Radar
   function renderRadar(container, C, Hy){
   const w = container.clientWidth, h = container.clientHeight;
+  // responsive typography: bigger base on desktop, smaller floor on mobile
+  const baseTextFont = (w >= 1280) ? 15 : (w >= 1024) ? 14 : (w >= 768) ? 13 : 12; // axis labels
+  const baseLevelFont = (w >= 1280) ? 12 : (w >= 1024) ? 11 : (w >= 768) ? 10.5 : 10; // ring labels
   // responsive padding: give more horizontal padding on narrow viewports so outer axis labels don't get clipped
   const padY = 36;
   // padX scales with width; ensure a reasonable min/max so labels have room
@@ -651,21 +935,31 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     .attr('width', w).attr('height', h)
     .attr('viewBox', `0 0 ${w} ${h}`)
     .style('touch-action', 'none');
-  // iOS sometimes still performs page pinch-zoom; prevent default on two-finger touchstart inside the svg
-  try{ svg.node().addEventListener('touchstart', function(e){ if(e.touches && e.touches.length>1){ e.preventDefault(); } }, {passive:false}); }catch(e){}
+  // Allow browser pinch zoom globally; only chart D3 gestures use pointer events via touch-action:none on container.
   // track pointer presence over chart to control tooltip auto-hide
   svg.on('mouseenter', ()=>{ state.isOverChart = true; clearTimeout(hideTimer); }).on('mouseleave', ()=>{ state.isOverChart = false; scheduleHide(); });
     // viewport receives the zoom transform; content is centered inside the viewport so zooming is anchored to cursor
-    const viewport = svg.append('g');
-    const g = viewport.append('g').attr('transform', `translate(${w/2},${h/2})`);
+  const viewport = svg.append('g');
+  // chart content root
+  const chartRoot = viewport.append('g');
+  state.chartRoot = chartRoot.node();
+  const g = chartRoot.append('g').attr('transform', `translate(${w/2},${h/2})`);
+  // remember chart center and svg size so openSheet can compute exact screen coords from datum
+  try{ state.chartCenter = { cx: w/2, cy: h/2 }; state.svgSize = { w, h }; }catch(_e){}
+  // keep references to the svg and zoom so we can reapply transforms after re-render
+  state.currentSvg = svg;
+  // state.currentZoom will be set after zoom is created
 
     // D3 zoom: apply transform to viewport so zoom is centered on pointer location
     // Configure zoom. We'll apply the transform to the viewport group, then inverse-scale
     // certain visual attributes (node radii, text font-sizes) so they remain legible on screen.
-    const zoom = d3.zoom().scaleExtent([0.6, 4]).on('zoom', (e)=>{
+  const zoom = d3.zoom().scaleExtent([0.6, 4]).on('zoom', (e)=>{
+      // Apply viewport zoom transform and update zoomK; do not mutate stored screen-pixel shift here
       viewport.attr('transform', e.transform);
       const k = e.transform.k || 1;
       state.zoomK = k;
+    // remember the last applied D3 transform so bumps and re-renders can reapply it
+    try{ state.lastTransform = e.transform; }catch(err){}
       // inverse-scale vertex dot radii so dots stay approximately the same screen size
       try{
         g.selectAll('.vertex-dot').attr('r', d => {
@@ -675,19 +969,44 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
         });
         // outer ring stroke width was non-scaling (vector-effect), but ensure its radius visually compensates
         g.selectAll('.vertex-ring').attr('r', d=>{ d.baseRing = d.baseRing || 7; return Math.max(4, d.baseRing / k); });
-        // adjust level/axis label font sizes so they remain readable; clamp to reasonable min
-        g.selectAll('.level-label').style('font-size', d=> Math.max(8, 10 / k) + 'px');
+        // dimension (axis-end) nodes: inverse-scale like hypothesis nodes
+        g.selectAll('.axis-dot').attr('r', d=>{ d.baseAxisR = d.baseAxisR || 5; return Math.max(3, d.baseAxisR / k); });
+        // adjust level/axis label font sizes so they remain readable;
+        // on small viewports allow slightly smaller minimums when zooming in so central labels don't overlap
+        const minLevelFont = (w < 520) ? 5.5 : 8; // px (smaller floor on phones)
+        const minTextFont = (w < 520) ? 7.5 : 10;  // px
+        g.selectAll('.level-label').style('font-size', d=> (k>1 ? Math.max(minLevelFont, baseLevelFont / k) : baseLevelFont) + 'px');
         g.selectAll('g > text').filter(function(){ return d3.select(this).classed('level-label') ? false : true; })
-          .style('font-size', d=> Math.max(10, 12 / k) + 'px');
+          .style('font-size', d=> (k>1 ? Math.max(minTextFont, baseTextFont / k) : baseTextFont) + 'px');
       }catch(err){ /* ignore minor runtime adjustments */ }
     });
+  // remember zoom instance so other code can programmatically change the transform
+  state.currentZoom = zoom;
+  // on zoom end ensure lastTransform is current (helps when programmatically animating transforms)
+  zoom.on('end', (e)=>{ try{ state.lastTransform = e.transform; }catch(err){} });
     // Only enable zoom when interacting with the SVG background (not when interacting with interactive elements)
     svg.call(zoom.filter(function(event){
       const t = event.target;
       return t === svg.node() || t.tagName === 'svg' || (t.closest && !t.closest('.vertices') && !t.closest('.pill'));
     }));
     // double-click to reset zoom
-    svg.on('dblclick', ()=>{ svg.transition().duration(350).call(zoom.transform, d3.zoomIdentity); });
+  svg.on('dblclick', ()=>{ svg.transition().duration(350).call(zoom.transform, d3.zoomIdentity); });
+    // single click on empty chart area should clear current highlight (mobile/desktop)
+    svg.on('click.background-clear', (e)=>{
+      const tgt = e.target;
+      try{
+        if(tgt && tgt.closest && (tgt.closest('.vertex') || tgt.closest('#tt'))) return;
+      }catch(err){}
+      // don't clear if a bottom sheet is open
+      if(prefersSheet() && sheetEl && sheetEl.classList.contains('open')) return;
+      hideTT();
+      clearHighlight(true);
+    });
+  // Auto-close controls on first chart interaction (pointerdown/zoom) when mobile
+  function maybeCloseControls(){ if(isMobile() && topbar && topbar.dataset.state==='expanded'){ setControls(false); } }
+  svg.on('pointerdown.closecontrols', maybeCloseControls);
+  svg.on('wheel.closecontrols', maybeCloseControls, {passive:true});
+  svg.on('touchstart.closecontrols', maybeCloseControls);
     // hide tooltip when pointer leaves the active hypothesis polygon
     svg.on('mousemove.pointercheck', (event)=>{
       if(!state.lastActiveHypothesis) return;
@@ -702,8 +1021,6 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
       if(!pointInPoly(x, y, poly)){
-        // if a tooltip is pinned, don't hide it when leaving the polygon
-        if(state.pinned) return;
         // schedule an immediate hide that ignores isOverChart but respects if pointer moved into tooltip
         setTimeout(()=>{
           const el2 = document.elementFromPoint(event.clientX, event.clientY);
@@ -725,7 +1042,7 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
       .attr('class','level-label')
       .attr('x', d=> d.axis.x * (rScale(d.lv) - labelOffset))
       .attr('y', d=> d.axis.y * (rScale(d.lv) - labelOffset))
-      .attr('font-size', 10)
+      .attr('font-size', baseLevelFont)
       .style('fill', 'var(--muted)')
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'central')
@@ -734,7 +1051,7 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   ax.append('line').attr('x1',0).attr('y1',0).attr('x2',d=>d.x*r).attr('y2',d=>d.y*r).style('stroke','var(--line)');
     ax.append('text').attr('x',d=>d.x*(r+14)).attr('y',d=>d.y*(r+14))
       .attr('text-anchor',d=> Math.abs(d.x)<0.3 ? 'middle' : (d.x>0?'start':'end'))
-      .attr('dominant-baseline','central').attr('font-size',12)
+      .attr('dominant-baseline','central').attr('font-size',baseTextFont)
       .text(d=>d.short);
 
     const sel = Data.hypotheses.filter(h=>state.selected.has(h.id));
@@ -745,8 +1062,8 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     g.append('g').selectAll('path').data(sel, d=>d.id).join('path')
       .attr('class','hyp-polygon')
       .attr('d', d=> d3.line().curve(d3.curveLinearClosed)(pointsFor(d)))
-      .attr('fill', d=> d3.color(d.color).copy({opacity:0.15}))
-      .attr('stroke', d=> d.color).attr('stroke-width',2)
+      .attr('fill', d=> d3.color(getColorFor(d)).copy({opacity:0.15}))
+      .attr('stroke', d=> getColorFor(d)).attr('stroke-width',2)
       .each(function(d){
         const pts = pointsFor(d).map(p=>[p[0] + w/2, p[1] + h/2]);
         state.currentPolygons[d.id] = pts;
@@ -755,40 +1072,33 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
     // axis-end info dots
     const helpG=g.append('g');
     helpG.selectAll('circle').data(axes).join('circle')
+      .attr('class','axis-dot')
       .attr('cx', d=>d.x*r).attr('cy', d=>d.y*r).attr('r',5)
       .style('fill','var(--panel-bg)').style('stroke','var(--muted)').attr('stroke-width',2)
       .on('mouseenter mousemove', (e,d)=>{
-        // don't show hover tooltips when a tooltip is pinned
-        if(state.pinned) return;
+        if(prefersSheet()) return; // ignore hover on mobile; tap opens
         const html = `<div><strong>${d.label}</strong></div>`+
           `<div style='color:var(--muted)'>${d.desc||''}</div>`+
           `<div style='margin-top:4px'>Levels: <strong>${d.anchors.join(' • ')}</strong></div>`;
-        const svgEl = svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect();
-        showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
+  const svgEl = svg.node(); const br = getScreenRectForAnchor(e.currentTarget, svgEl) || e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect();
+  showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
       }).on('mouseleave', ()=> scheduleHide())
-  .on('click', (e,d)=>{ 
-    e.stopPropagation();
-    // toggle pin for axis tooltip
-    const key = 'axis|'+d.id;
-    if(state.pinned && state.pinned.key === key){
-      state.pinned = null; tt.classed('pinned', false); hideTT(); return;
-    }
-    state.pinned={key};
-    // ensure any vertex pinned visuals are cleared
-    try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}
-    const svgEl=svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect();
-    showTTAt(`<div><strong>${d.label}</strong></div><div style='color:var(--muted)'>${d.desc||''}</div><div style='margin-top:4px'>Levels: <strong>${d.anchors.join(' • ')}</strong></div>`, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
-    tt.classed('pinned', true);
-  });
+      .on('click', (e,d)=>{
+        if(!prefersSheet()) return; // desktop already handled via hover
+        const html = `<h3>${d.label}</h3><div class='sheet-meta'>Axis</div><p style='margin-top:6px'>${d.desc||''}</p><p style='margin-top:8px'><strong>Levels</strong>: ${d.anchors.join(' • ')}</p>`;
+        // pass the clicked element bounding rect as anchor so sheet can avoid covering it
+  const anchorEl = e.currentTarget;
+  openSheet(html, null, anchorEl);
+      })
+      ;
 
     // vertex dots
     const vertexData = sel.flatMap(hh => axes.map(a=>{ const raw=Hy[hh.id].scores[a.id]; const vv=quantize(raw); const rr=rScale(vv); return {h:hh, c:a, raw, x:a.x*rr, y:a.y*rr}; }));
     const vwrap = g.append('g').attr('class','vertices').selectAll('g.vertex').data(vertexData).join('g').attr('class','vertex')
       .attr('transform', d=>`translate(${d.x},${d.y})`)
       .on('mouseenter mousemove', (e,d)=>{
-        // don't override a pinned tooltip with hover
-        if(state.pinned) return;
-        const svgEl=svg.node(); const br=e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect();
+        if(prefersSheet()) return; // disable hover tooltips on mobile; use tap
+  const svgEl=svg.node(); const br=getScreenRectForAnchor(e.currentTarget, svgEl) || e.currentTarget.getBoundingClientRect(); const sr=svgEl.getBoundingClientRect();
         // find overlapping vertices
         const tol = 2.5; // pixels (more permissive for touch)
         const overlapping = vertexData.filter(v => Math.hypot(v.x - d.x, v.y - d.y) <= tol);
@@ -799,7 +1109,7 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
           let startIdx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
           if(state.lastActiveHypothesis){ const pref = overlapping.findIndex(v => v.h.id === state.lastActiveHypothesis); if(pref>=0) startIdx = pref; }
           // show pager on hover (don't pin)
-          if(!state.pinned) showPagedTooltip(overlapping, startIdx, svgEl, br, sr);
+          showPagedTooltip(overlapping, startIdx, svgEl, br, sr);
           return;
         }
         const level=ordinalLabel(d.c.id, d.raw, byId(Data.criteria));
@@ -807,92 +1117,101 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
         const qhtml=quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
         const html=`<div><strong>${d.h.label}</strong></div><div>${d.c.label}</div><div>Level: <strong>${level}</strong></div>`+(note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'')+qhtml;
   showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
-        highlightSeries(d.h.id);
+  highlightSeries(d.h.id, d.c.id);
       })
-      .on('mouseleave', ()=> scheduleHide())
-      .on('click', (e,d)=>{
+      .on('mouseleave', ()=>{ if(!prefersSheet()) scheduleHide(); })
+      // tap/click (mobile) opens bottom sheet
+      .on('click', (e,d)=>{ 
         e.stopPropagation();
-        const svgEl = svg.node();
-        const br = e.currentTarget.getBoundingClientRect();
-        const sr = svgEl.getBoundingClientRect();
-        // find nearby vertices (same position within a small tolerance)
-        const tol = 2.5; // pixels
+        if(!prefersSheet()) return; // desktop click does nothing
+        const tol = 2.5;
         const overlapping = vertexData.filter(v => Math.hypot(v.x - d.x, v.y - d.y) <= tol);
-        if(overlapping.length > 1){
-          // prefer lastActiveHypothesis when selecting the initial index
-          let startIdx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
-          if(state.lastActiveHypothesis){ const pref = overlapping.findIndex(v => v.h.id === state.lastActiveHypothesis); if(pref>=0) startIdx = pref; }
-          // pin the tooltip for the selected overlapping item and show pager
-          try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}
-          const selItem = overlapping[startIdx] || overlapping[0];
-          const listKey = overlapping.map(i=>i.h.id+'@'+i.c.id).join('|');
-          state.pinned = { key: listKey };
-          // add pinned class to the chosen vertex group so it visually indicates pin
-          try{
-            d3.selectAll('.vertex').filter(function(dd){ return dd && dd.h && dd.c && dd.h.id===selItem.h.id && dd.c.id===selItem.c.id; }).classed('pinned', true);
-          }catch(e){}
-          tt.classed('pinned', true);
-          // show paged tooltip
-          showPagedTooltip(overlapping, startIdx, svgEl, br, sr);
-        }else{
-          // single vertex: toggle pin on click
-          const group = d3.select(e.currentTarget);
-          const myKey = d.h.id+'|'+d.c.id;
-          const alreadyPinned = state.pinned && state.pinned.key === myKey;
-          if(alreadyPinned){
-            state.pinned = null;
-            group.classed('pinned', false);
-            tt.classed('pinned', false);
-            hideTT();
-            return;
+        const C = byId(Data.criteria);
+        if(overlapping.length>1){
+          // build simple pager inside sheet (swipe left/right)
+          let idx = overlapping.findIndex(v=>v.h.id===d.h.id && v.c.id===d.c.id);
+          if(idx<0) idx=0;
+          function sheetContent(i){
+            const it = overlapping[i];
+            const level=ordinalLabel(it.c.id, it.raw, C);
+            const note=(byId(Data.hypotheses)[it.h.id].notes||{})[it.c.id]||'';
+            const qhtml=quoteHTML(byId(Data.hypotheses), it.h.id, it.c.id);
+            return `<div class='with-pager'>`+
+              `<div class='hdr'><div class='hdr-left'><div class='pager-info'>Hypothesis ${i+1}/${overlapping.length}</div><div class='pager'><button type='button' class='pg-left' aria-label='Previous'>&#9664;</button><button type='button' class='pg-right' aria-label='Next'>&#9654;</button></div></div><button type='button' class='hdr-close' aria-label='Close'>×</button></div>`+
+              `<h3 style='margin:0 0 4px 0'>${it.h.label}</h3><div class='sheet-meta'>${it.c.label}</div>`+
+              `<div><strong>Level:</strong> ${level}</div>`+
+              (note?`<div style='margin-top:6px;color:var(--muted)'>${note}</div>`:'')+qhtml+`</div>`;
           }
-          // pin this vertex
-          state.pinned = {key: myKey};
-          // clear other pinned visuals and apply to this group
-          try{ d3.selectAll('.vertex.pinned').classed('pinned', false); }catch(e){}
-          group.classed('pinned', true);
-          const level = ordinalLabel(d.c.id, d.raw, byId(Data.criteria));
-          const note = (byId(Data.hypotheses)[d.h.id].notes||{})[d.c.id]||'';
-          const qhtml = quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
-          const html = `<div><strong>${d.h.label}</strong></div><div>${d.c.label}</div><div>Level: <strong>${level}</strong></div>` + (note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'') + qhtml;
-          showTTAt(html, svgEl, (br.left+br.width/2)-sr.left, (br.top+br.height/2)-sr.top, -10);
-          highlightSeries(d.h.id);
-          tt.classed('pinned', true);
+          if(sheetEl) sheetEl.classList.add('has-inline-close');
+          // anchor the sheet to the tapped vertex so it can shift the chart if needed
+          const anchorEl = e.currentTarget;
+          openSheet(sheetContent(idx), { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }, anchorEl);
+          function wirePager(){
+            if(!sheetInner) return; const l = sheetInner.querySelector('.pg-left'); const r = sheetInner.querySelector('.pg-right');
+            if(l) l.onclick = ev=>{ ev.stopPropagation(); idx = (idx - 1 + overlapping.length)%overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); };
+            if(r) r.onclick = ev=>{ ev.stopPropagation(); idx = (idx + 1)%overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); };
+            const x = sheetInner.querySelector('.hdr-close'); if(x) x.onclick = (ev)=>{ ev.stopPropagation(); closeSheet(); };
+          }
+          wirePager();
+          // swipe gestures
+          let startX=null; const area=sheetInner; if(area){
+            area.ontouchstart = ev=>{ if(ev.touches.length===1) startX=ev.touches[0].clientX; };
+            area.ontouchend = ev=>{ if(startX==null) return; const dx=(ev.changedTouches[0].clientX-startX); if(Math.abs(dx)>50){ idx = (idx + (dx<0?1:-1) + overlapping.length)%overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); } startX=null; };
+          }
+        } else {
+          const level=ordinalLabel(d.c.id, d.raw, C);
+          const note=(byId(Data.hypotheses)[d.h.id].notes||{})[d.c.id]||'';
+          const qhtml=quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
+          const html=`<h3>${d.h.label}</h3><div class='sheet-meta'>${d.c.label}</div><div><strong>Level:</strong> ${level}</div>`+(note?`<div style='margin-top:6px;color:var(--muted)'>${note}</div>`:'')+qhtml;
+          if(sheetEl) sheetEl.classList.remove('has-inline-close');
+          const anchorEl = e.currentTarget;
+          openSheet(html, { hypId: d.h.id, critId: d.c.id }, anchorEl);
         }
       });
 
   // draw ring + dot inside each vertex group; store base sizes on the datum for zoom math
-  vwrap.append('circle').attr('class','vertex-ring').each(function(d){ d.baseRing = d.baseRing || 7; }).attr('r', d=> d.baseRing).attr('fill','#fff').attr('stroke', d=>d.h.color).attr('stroke-width',2).style('stroke-opacity',0.95);
-  vwrap.append('circle').attr('class','vertex-dot').each(function(d){ d.baseR = d.baseR || 5; }).attr('r', d=> d.baseR).attr('fill', d=>d.h.color).attr('stroke','none');
+  vwrap.append('circle').attr('class','vertex-ring').each(function(d){ d.baseRing = d.baseRing || 7; }).attr('r', d=> d.baseRing).attr('fill','#fff').attr('stroke', d=> getColorFor(d.h)).attr('stroke-width',2).style('stroke-opacity',0.95);
+  vwrap.append('circle').attr('class','vertex-dot').each(function(d){ d.baseR = d.baseR || 5; }).attr('r', d=> d.baseR).attr('fill', d=> getColorFor(d.h)).attr('stroke','none');
   // ensure vertex groups render on top of polygons/axes
   try{ vwrap.raise(); }catch(e){}
   }
 
   // ---------- Heatmap
   function renderHeatmap(container, C, Hy){
-    const pad={t:30,r:10,b:30,l:180}; const w=container.clientWidth, h=container.clientHeight; const svg=d3.select(container).append('svg');
+  const pad={t:30,r:10,b:30,l:180}; const w=container.clientWidth, h=container.clientHeight; const svg=d3.select(container).append('svg');
+  // create a chartRoot group so we can translate the SVG content upward without moving the page
+  const chartRoot = svg.append('g').attr('class','chart-root');
+  state.chartRoot = chartRoot.node();
     const hySel=Data.hypotheses.filter(h=>state.selected.has(h.id));
     const x=d3.scaleBand().domain(hySel.map(d=>d.id)).range([pad.l,w-pad.r]).padding(0.08);
     const y=d3.scaleBand().domain(Data.criteria.map(d=>d.id)).range([pad.t,h-pad.b]).padding(0.08);
   const cellFill=v=> v<1/3?'var(--line)':(v<2/3?'var(--cell-mid)':'var(--cell-high)');
 
-    svg.append('g').selectAll('text').data(Data.criteria).join('text')
+  chartRoot.append('g').selectAll('text').data(Data.criteria).join('text')
       .attr('x', pad.l-8).attr('y', d=> y(d.id)+y.bandwidth()/2)
       .attr('text-anchor','end').attr('dominant-baseline','middle').style('fill','var(--muted)').text(d=>d.short).append('title').text(d=>d.anchors.join(' / '));
-    svg.append('g').selectAll('text').data(hySel).join('text')
+  chartRoot.append('g').selectAll('text').data(hySel).join('text')
       .attr('x', d=> x(d.id)+x.bandwidth()/2).attr('y', pad.t-10)
-      .attr('text-anchor','middle').attr('fill', d=>d.color).text(d=>d.label);
+      .attr('text-anchor','middle').attr('fill', d=> currentPalette()[d.id] || d.color).text(d=>d.label);
 
-    svg.append('g').selectAll('rect').data(Data.criteria.flatMap(c=>hySel.map(h=>({c,h}))))
-      .join('rect').attr('x', d=>x(d.h.id)).attr('y', d=>y(d.c.id)).attr('width', x.bandwidth()).attr('height', y.bandwidth()).attr('rx',4)
-      .attr('fill', d=> cellFill(Hy[d.h.id].scores[d.c.id])).attr('stroke', d=>Hy[d.h.id].color)
+    chartRoot.append('g').selectAll('rect').data(Data.criteria.flatMap(c=>hySel.map(h=>({c,h}))))
+  .join('rect').attr('x', d=>x(d.h.id)).attr('y', d=>y(d.c.id)).attr('width', x.bandwidth()).attr('height', y.bandwidth()).attr('rx',4)
+  .attr('fill', d=> cellFill(Hy[d.h.id].scores[d.c.id])).attr('stroke', d=> currentPalette()[d.h.id] || Hy[d.h.id].color)
   .on('mousemove', (e,d)=>{
-    if(state.pinned) return; // don't override a pinned tooltip
+    if(prefersSheet()) return; // no hover on mobile
     const raw=Hy[d.h.id].scores[d.c.id]; const level=ordinalLabel(d.c.id, raw, C); const note=(Hy[d.h.id].notes||{})[d.c.id]||''; const qhtml=quoteHTML(Hy, d.h.id, d.c.id);
-  const html=`<div style='font-weight:600'>${d.h.label}</div><div>${C[d.c.id].label}</div><div>Level: <strong>${level}</strong></div>`+(note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'')+qhtml;
+    const html=`<div style='font-weight:600'>${d.h.label}</div><div>${C[d.c.id].label}</div><div>Level: <strong>${level}</strong></div>`+(note?`<div style='margin-top:4px;color:var(--muted)'>${note}</div>`:'')+qhtml;
     tt.html(html).style('left', (e.clientX+12)+'px').style('top', (e.clientY-12)+'px').style('display','block');
   })
-      .on('mouseleave', ()=> scheduleHide());
+      .on('mouseleave', ()=>{ if(!prefersSheet()) scheduleHide(); })
+      .on('click', (e,d)=>{
+        if(!prefersSheet()) return; // desktop click does nothing extra
+        const raw=Hy[d.h.id].scores[d.c.id]; const level=ordinalLabel(d.c.id, raw, C); const note=(Hy[d.h.id].notes||{})[d.c.id]||''; const qhtml=quoteHTML(Hy, d.h.id, d.c.id);
+        const html=`<h3>${d.h.label}</h3><div class='sheet-meta'>${C[d.c.id].label}</div><div><strong>Level:</strong> ${level}</div>`+(note?`<div style='margin-top:6px;color:var(--muted)'>${note}</div>`:'')+qhtml;
+        if(sheetEl) sheetEl.classList.remove('has-inline-close');
+  const anchorEl = e.currentTarget;
+  openSheet(html, { hypId: d.h.id, critId: d.c.id }, anchorEl);
+      });
   }
 
   // try to auto-load the local data file; fall back to a brief instruction if fetch fails
