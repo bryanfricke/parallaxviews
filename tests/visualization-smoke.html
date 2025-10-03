@@ -47,20 +47,23 @@
   <p class="hint">Click a row to expand and view the live iframe + captured notes.</p>
 </main>
 <script>
+// Because this file lives in /tests/, use ../ to reach site root items.
+const ROOT_PREFIX = '../';
+function p(rel){ return rel.startsWith('../') ? rel : ROOT_PREFIX + rel; }
 const PAGES = [
-  { path:'index.html', keySelector:'body', label:'Home / Index'},
-  { path:'graphs/resurrectionHypotheses.html', keySelector:'#chart svg', label:'Resurrection Hypotheses (static data)'},
-  { path:'graphs/resurrectionHypotheses2.html', keySelector:'#chart svg', label:'Resurrection Hypotheses 2'},
-  { path:'graphs/reasons.html', keySelector:'#chart svg', label:'Reasons (JSON loader)'},
-  { path:'graphs/minimalFactsTidyTree.html', keySelector:'svg', label:'Minimal Facts Tidy Tree'},
-  { path:'graphs/minimalFactsRadialTree.html', keySelector:'svg', label:'Minimal Facts Radial Tree'},
-  { path:'graphs/minimalFactsDisjointForceDirectedGraph.html', keySelector:'svg', label:'Minimal Facts Disjoint Force Graph'},
-  { path:'graphs/indentedTree.html', keySelector:'svg', label:'Indented Tree'},
-  { path:'graphs/prophecy01.html', keySelector:'svg', label:'Prophecy Force Graph (ESV)'},
-  { path:'graphs/prophecyData.html', keySelector:'svg', label:'Prophecy Data (Core)'},
-  { path:'graphs/theistic-arguments.html', keySelector:'svg', label:'Theistic Arguments Sankey'},
-  { path:'graphs/DeDeo.html', keySelector:'svg', label:'De Deo (placeholder?)'},
-  { path:'resurrection/Ehrman_Minimal_Facts.html', keySelector:'body', label:'Ehrman Minimal Facts'}
+  { path:p('index.html'), keySelector:'body', label:'Home / Index'},
+  { path:p('graphs/resurrectionHypotheses.html'), keySelector:'#chart svg', label:'Resurrection Hypotheses (static data)'},
+  { path:p('graphs/resurrectionHypotheses2.html'), keySelector:'#chart svg', label:'Resurrection Hypotheses 2'},
+  { path:p('graphs/reasons.html'), keySelector:'#chart svg', label:'Reasons (JSON loader)'},
+  { path:p('graphs/minimalFactsTidyTree.html'), keySelector:'svg', label:'Minimal Facts Tidy Tree'},
+  { path:p('graphs/minimalFactsRadialTree.html'), keySelector:'svg', label:'Minimal Facts Radial Tree'},
+  { path:p('graphs/minimalFactsDisjointForceDirectedGraph.html'), keySelector:'svg', label:'Minimal Facts Disjoint Force Graph'},
+  { path:p('graphs/indentedTree.html'), keySelector:'svg', label:'Indented Tree'},
+  { path:p('graphs/prophecy01.html'), keySelector:'svg', label:'Prophecy Force Graph (ESV)'},
+  { path:p('graphs/prophecyData.html'), keySelector:'svg', label:'Prophecy Data (Core)'},
+  { path:p('graphs/theistic-arguments.html'), keySelector:'svg', label:'Theistic Arguments Sankey'},
+  { path:p('graphs/DeDeo.html'), keySelector:'svg', label:'De Deo (placeholder?)'},
+  { path:p('resurrection/Ehrman_Minimal_Facts.html'), keySelector:'body', label:'Ehrman Minimal Facts'}
 ];
 
 const tbody = document.querySelector('#results tbody');
@@ -94,21 +97,20 @@ async function run(){
     const logEl = details.querySelector('[data-log]');
 
     const start = performance.now();
-    const iframe = document.createElement('iframe');
-    iframe.loading = 'lazy';
-    iframe.src = page.path + (page.path.includes('?')?'':'?t=' + Date.now()); // cache-bust
-    frameWrap.appendChild(iframe);
+  const iframe = document.createElement('iframe');
+  // NOTE: Removed iframe.loading = 'lazy' because hidden (display:none) + lazy frames were never loading,
+  // causing artificial timeouts until the user expanded the row. We attach listeners before setting src.
 
     let loaded = false; let timer = null;
     timer = setTimeout(()=>{
       if(!loaded){
         stEl.textContent = 'Timeout';
         stEl.className = 'status fail';
-        notesEl.textContent = 'No load event within 8s';
+        notesEl.textContent = 'No load event within 8s (maybe network error or blocked)';
       }
     }, 8000);
 
-    iframe.addEventListener('load', ()=>{
+  iframe.addEventListener('load', ()=>{
       loaded = true; clearTimeout(timer);
       const dur = Math.round(performance.now() - start);
       msEl.textContent = dur;
@@ -120,27 +122,37 @@ async function run(){
           notesEl.textContent = 'Cannot access document';
           return;
         }
-        // heuristic: check for key element
-        const keyEl = doc.querySelector(page.keySelector);
-        if(keyEl){
-          stEl.textContent = 'PASS';
-          stEl.className = 'status pass';
-          elEl.textContent = 'Found';
-          notesEl.textContent = 'Loaded & key element present';
-        } else {
-          stEl.textContent = 'No key element';
+        // Some pages (e.g., reasons.html) create the SVG only after async data fetch.
+        // Poll for the key selector for up to pollTimeout ms before declaring failure.
+        const pollTimeout = 5000; // ms after load
+        const pollInterval = 120; // ms
+        const t0 = performance.now();
+        function tryKey(){
+          let keyEl = null;
+          try{ keyEl = doc.querySelector(page.keySelector); }catch(e){ /* invalid selector */ }
+          if(keyEl){
+            stEl.textContent = 'PASS';
+            stEl.className = 'status pass';
+            elEl.textContent = 'Found';
+            const appearMs = Math.round(performance.now() - t0);
+            notesEl.textContent = appearMs < 50 ? 'Loaded & key element present' : `Key element appeared after ${appearMs}ms (async)`;
+            // Extra diagnostics
+            const svgCount = doc.querySelectorAll('svg').length;
+            if(svgCount){ log(logEl, `SVG elements: ${svgCount}`); }
+            const bodyText = doc.body.innerText.slice(0,400).toLowerCase();
+            if(bodyText.includes('error')) log(logEl, 'Contains the word "error" (manual inspect).');
+          } else if(performance.now() - t0 < pollTimeout){
+            setTimeout(tryKey, pollInterval);
+          } else {
+            stEl.textContent = 'No key element';
             stEl.className = 'status fail';
             elEl.textContent = 'Missing';
-            notesEl.textContent = 'Page loaded but selector not found: '+page.keySelector;
+            notesEl.textContent = `Selector not found after ${pollTimeout}ms: ${page.keySelector}`;
+            // still record how many SVGs exist (maybe alt structure)
+            try{ const svgCount = doc.querySelectorAll('svg').length; if(svgCount){ log(logEl, `SVG elements present (${svgCount}) but key selector missing.`); } }catch(e){}
+          }
         }
-        // Additional heuristic: count SVG nodes
-        const svgCount = doc.querySelectorAll('svg').length;
-        if(svgCount){
-          log(logEl, `SVG elements: ${svgCount}`);
-        }
-        // look for error-like text nodes quickly
-        const bodyText = doc.body.innerText.slice(0,400).toLowerCase();
-        if(bodyText.includes('error')) log(logEl, 'Contains the word "error" (manual inspect).');
+        tryKey();
       } catch(err){
         stEl.textContent = 'Error'; stEl.className = 'status fail'; notesEl.textContent = err.message; log(logEl, err.stack||String(err));
       }
@@ -152,6 +164,10 @@ async function run(){
       notesEl.textContent = 'Resource failed to load';
       log(logEl, 'Iframe onerror fired: ' + e.message);
     });
+
+    // Set src after listeners to avoid missing a synchronous load event (e.g., cached pages in some browsers)
+    iframe.src = page.path + (page.path.includes('?')?'':'?t=' + Date.now()); // cache-bust
+    frameWrap.appendChild(iframe);
   }
 }
 

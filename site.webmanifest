@@ -2,11 +2,11 @@
   "name": "Minimal Facts Explorer",
   "short_name": "MinimalFacts",
   "icons": [
-    { "src": "/favicon-192.png", "type": "image/png", "sizes": "192x192" },
-    { "src": "/favicon-512.png", "type": "image/png", "sizes": "512x512" }
+  { "src": "assets/icons/favicon-192.png", "type": "image/png", "sizes": "192x192" },
+  { "src": "assets/icons/favicon-512.png", "type": "image/png", "sizes": "512x512" }
   ],
   "start_url": "/",
-  "background_color": "#ffffff",
-  "theme_color": "#00BFAE",
+  "background_color": "#071022",
+  "theme_color": "#071022",
   "display": "standalone"
 }

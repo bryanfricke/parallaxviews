@@ -2,8 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Theistic Arguments and Divine Attributes</title>
+  <!-- Favicons: SVG primary with PNG fallbacks and webmanifest -->
+  <!-- Use relative paths so files resolve correctly when hosted under a repo subpath (e.g. /parallaxviews) -->
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="../assets/icons/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png" sizes="180x180">
+  <link rel="manifest" href="../site.webmanifest">
+  <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#00BFAE">
+  <meta name="theme-color" content="#071022">
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
   <style>
@@ -140,7 +149,8 @@
     }
     html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial; }
   /* Remove vertical margins to prevent cumulative height overflow and use padding instead. */
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 20px 16px; box-sizing: border-box; }
+  /* Respect safe-area insets on iOS (adds no-op 0px fallback for other browsers). */
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px calc(16px + env(safe-area-inset-right, 0px)) 20px calc(16px + env(safe-area-inset-left, 0px)); box-sizing: border-box; }
   .page-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:nowrap; padding:12px 0 8px 0; }
     h1 { font-size: 20px; line-height: 1.1; margin: 0; font-weight: 700; flex: 1 1 auto; min-width: 0; }
 
@@ -294,6 +304,12 @@
         function applyTheme(t){ 
           if(t==='dark' || t==='light') {
             document.documentElement.setAttribute('data-theme', t); 
+            // Keep the browser chrome color in sync with the page theme so mobile Safari
+            // doesn't show the bright mint color. Update the meta theme-color tag.
+            try {
+              const themeMeta = document.querySelector('meta[name="theme-color"]');
+              if (themeMeta) themeMeta.setAttribute('content', t === 'dark' ? '#071022' : '#ffffff');
+            } catch (e) { /* ignore meta update errors */ }
             // Update colors after theme change (if chart is already rendered)
             if (typeof updateNodeColors === 'function') {
               setTimeout(() => { updateNodeColors(); updateGradients(); }, 50);
@@ -668,6 +684,13 @@
       const tmp = document.createElement('div'); tmp.innerHTML = html || ''; return tmp.textContent || tmp.innerText || '';
     }
 
+    // Make the word "Therefore:" bold in tooltip step text (preserve rest of the text)
+    function formatStepHtml(text){
+      if (!text) return '';
+      // Replace a leading "Therefore:" (case-insensitive) with a bolded version
+      return String(text).replace(/^\s*(Therefore)\s*:\s*/i, '<strong>$1:</strong> ');
+    }
+
     function updateA11yLive(text){
       if (!a11yLive) return;
       a11yLive.textContent = '';
@@ -956,7 +979,7 @@
             const steps = meta.steps || [];
             let bodyHtml;
             if (steps.length) {
-              const items = steps.map(s => `<li style="margin:0 0 8px 0; line-height:1.4">${s.text}</li>`).join('');
+              const items = steps.map(s => `<li style="margin:0 0 8px 0; line-height:1.4">${formatStepHtml(s.text)}</li>`).join('');
               bodyHtml = `<ol style="margin:6px 0 0 0; padding-left:20px;">${items}</ol>`;
             } else {
               bodyHtml = '(no steps found)';
@@ -995,7 +1018,7 @@
           const steps = meta.steps || [];
           let bodyHtml;
           if (steps.length) {
-            const items = steps.map(s => `<li style="margin:0 0 8px 0; line-height:1.4">${s.text}</li>`).join('');
+            const items = steps.map(s => `<li style="margin:0 0 8px 0; line-height:1.4">${formatStepHtml(s.text)}</li>`).join('');
             bodyHtml = `<ol style="margin:6px 0 0 0; padding-left:20px;">${items}</ol>`;
           } else {
             bodyHtml = '(no steps found)';
@@ -1066,7 +1089,7 @@
             const steps = meta.steps || [];
             let bodyHtml;
               if (steps.length) {
-                const items = steps.map(s => `<li style="margin:0 0 8px 0; line-height:1.4">${s.text}</li>`).join('');
+                const items = steps.map(s => `<li style="margin:0 0 8px 0; line-height:1.4">${formatStepHtml(s.text)}</li>`).join('');
                 bodyHtml = `<ol style="margin:6px 0 0 0; padding-left:20px;">${items}</ol>`;
               } else { bodyHtml = '(no steps found)'; }
             showTooltipAtMouse(syntheticEvt, `<strong>${meta.title || d.label}</strong><br/>${bodyHtml}`, { avoidRect: r });
