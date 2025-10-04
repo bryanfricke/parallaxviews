@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Historical Hypotheses — Radar & Heatmap (JSON loader)</title>
+  <title>Resurrection Hypotheses</title>
   <style>
     :root {
       --bg: #ffffff;
@@ -35,7 +35,8 @@
       margin: 0;
       font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
       color: var(--ink);
-      background: var(--bg)
+      background: var(--bg);
+      overflow: hidden
     }
 
     #topbar {
@@ -113,23 +114,30 @@
       }
     }
 
-    /* Desktop: row layout similar to original */
+    /* Desktop: row layout with hypothesis pills on separate line */
     @media (min-width:769px) {
       #topbar {
-        flex-direction: row;
-        align-items: center;
-        gap: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
         padding: 10px 14px;
       }
 
       .topbar-primary {
-        width: auto;
+        width: 100%;
         min-height: auto
       }
 
       #controls-panel {
         padding: 0;
-        width: auto
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      #hypotheses {
+        width: 100%;
+        justify-content: flex-start;
+        margin-left: 0;
       }
 
       #controlsToggle {
@@ -176,7 +184,7 @@
       overflow-x: auto;
       overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
-      padding: 6px 8px 0 8px;
+      padding: 6px 8px 12px 8px;
     }
 
     .pill {
@@ -828,7 +836,7 @@
 <body>
   <div id="topbar" data-state="collapsed">
     <div class="topbar-primary">
-      <h1>Compare Historical Hypotheses</h1>
+      <h1>Resurrection Hypotheses</h1>
       <button id="controlsToggle" class="btn" aria-expanded="false" aria-controls="controls-panel"
         aria-label="Show controls">Controls ▼</button>
     </div>
