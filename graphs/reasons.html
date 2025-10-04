@@ -959,6 +959,9 @@
       lastActiveHypothesis: null,
       _highlightClearTimer: null
     };
+  // Selected vertex visual scales
+  const SELECTED_DOT_SCALE = 1.35;  // how much bigger than baseline the inner dot gets
+  const SELECTED_RING_SCALE = 1.6;  // how much bigger than baseline the outer ring gets (kept > dot so white outline shows)
     // Track currently active vertex (hypothesis + criterion) for precise highlighting
     state.activeVertex = null;
     // current zoom scale applied to chart (1 == identity). Updated by zoom handler.
@@ -966,6 +969,8 @@
     // flags to track pointer location for auto-hide logic
     state.isOverChart = false;
     state.isOverTT = false;
+  // Persist selection while the mobile bottom sheet is open to avoid a mid-zoom "third state"
+  state.sheetActiveVertex = null;
 
     // ---------- UI: loading
     const loader = document.getElementById('loader');
@@ -1126,7 +1131,10 @@
       } catch (e) { }
       try {
         if (highlight) {
-          if (typeof highlight === 'object' && highlight.hypId) { highlightSeries(highlight.hypId, highlight.critId || null); }
+          if (typeof highlight === 'object' && highlight.hypId) {
+            highlightSeries(highlight.hypId, highlight.critId || null);
+            if (highlight.critId) state.sheetActiveVertex = { hypId: highlight.hypId, critId: highlight.critId };
+          }
           else { highlightSeries(highlight); }
         }
       } catch (e) { }
@@ -1242,6 +1250,8 @@
       document.body.style.overflow = '';
       // clear anchor
       sheetAnchorRect = null;
+      // clear persisted active vertex used during sheet interactions
+      state.sheetActiveVertex = null;
       // clear highlight after closing (slight delay so user perceives action end)
       setTimeout(() => { clearHighlight(); }, 60);
     }
@@ -1501,7 +1511,23 @@
         // respect prefers-color-scheme as default
         const prefers = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; applyTheme(prefers); d3.select('#themeToggle').attr('aria-pressed', prefers === 'dark' ? 'true' : 'false');
       }
-      d3.select('#themeToggle').on('click', () => { const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light'; const next = cur === 'dark' ? 'light' : 'dark'; applyTheme(next); localStorage.setItem(themeKey, next); d3.select('#themeToggle').attr('aria-pressed', next === 'dark' ? 'true' : 'false'); });
+      d3.select('#themeToggle').on('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        const next = cur === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem(themeKey, next);
+        d3.select('#themeToggle').attr('aria-pressed', next === 'dark' ? 'true' : 'false');
+        // If a specific vertex is currently selected, reapply highlight so ring fill tones
+        // update according to the new theme (dark-only effect). Otherwise do nothing.
+        try {
+          if (state && state.activeVertex && state.activeVertex.hypId && state.activeVertex.critId && typeof highlightSeries === 'function') {
+            highlightSeries(state.activeVertex.hypId, state.activeVertex.critId);
+          } else if (!state.activeVertex) {
+            // ensure default look remains (especially when switching from dark->light)
+            d3.selectAll('.vertices .vertex-ring').attr('fill', '#fff');
+          }
+        } catch (e) { /* ignore */ }
+      });
     }
     // initialize theme immediately so colors are correct before UI paints
     try { initTheme(); } catch (e) {/* ignore */ }
@@ -1558,6 +1584,8 @@
       d3.selectAll('.pill').style('opacity', 0.5);
       // dim vertices (inner colored dots)
       d3.selectAll('.vertices .vertex-dot').style('opacity', 0.4).attr('r', d => Math.max(2, (d.baseR || 5) / (state.zoomK || 1)));
+      // clear any leftover glow filters from previous selections
+      d3.selectAll('.vertices .vertex').attr('filter', null);
       // emphasize the selected polygon and move it to the end of its parent so it renders on top of other polygons
       d3.selectAll('.hyp-polygon')
         .filter(function (d) { return d && d.id === hypId; })
@@ -1572,21 +1600,53 @@
       // restore normal state (not selected) for vertices of this hypothesis
       d3.selectAll('.vertices .vertex').filter(function (d) { return d && d.h && d.h.id === hypId; }).each(function (d) {
         const k = state.zoomK || 1;
-        d3.select(this).select('.vertex-dot').style('opacity', 1).attr('r', Math.max(2, (d.baseR || 5) / k));
-        d3.select(this).select('.vertex-ring').attr('stroke', getColorFor(d.h)).attr('stroke-width', 2);
+        const baseDot = Math.max(2, (d.baseR || 5) / k);
+        const baseRing = Math.max(4, (d.baseRing || 7) / k);
+        d3.select(this).select('.vertex-dot').style('opacity', 1).attr('r', baseDot);
+        d3.select(this).select('.vertex-ring')
+          .attr('stroke', getColorFor(d.h))
+          .attr('stroke-width', 2)
+          .attr('r', baseRing);
       });
       // shrink non-selected hypotheses to the smallest dot size for clear contrast
       d3.selectAll('.vertices .vertex').filter(function (d) { return d && d.h && d.h.id !== hypId; }).each(function (d) {
+        const k = state.zoomK || 1;
+        const baseRing = Math.max(4, (d.baseRing || 7) / k);
         d3.select(this).select('.vertex-dot').style('opacity', 0.35).attr('r', 2).attr('fill', getColorFor(d.h));
-        d3.select(this).select('.vertex-ring').attr('stroke', getColorFor(d.h)).attr('stroke-width', 2);
+        d3.select(this).select('.vertex-ring').attr('stroke', getColorFor(d.h)).attr('stroke-width', 2).attr('r', baseRing);
       });
+      // In dark mode, when a specific vertex is selected, tone down the white fill of all
+      // unselected vertex rings so they don't pop as bright white. Keep the selected one white.
+      try {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          // Tone down all unselected hypotheses; keep all points for the selected hypothesis white.
+          d3.selectAll('.vertices .vertex').each(function (d) {
+            const ring = d3.select(this).select('.vertex-ring');
+            const inSelectedHyp = d && d.h && d.h.id === hypId;
+            ring.attr('fill', inSelectedHyp ? '#fff' : 'rgba(255,255,255,0.12)');
+          });
+        } else {
+          // Light mode: keep default white fill everywhere.
+          d3.selectAll('.vertices .vertex-ring').attr('fill', '#fff');
+        }
+      } catch (e) { /* non-fatal */ }
       // emphasize only the selected vertex within the hypothesis, if provided
       if (critId) {
         const k = state.zoomK || 1;
         d3.selectAll('.vertices .vertex').filter(function (d) { return d && d.h && d.c && d.h.id === hypId && d.c.id === critId; }).classed('selected', true).each(function (d) {
           d3.select(this).raise();
-          d3.select(this).select('.vertex-dot').style('opacity', 1).attr('r', Math.max(4, Math.max(2, (d.baseR || 5) / k) * 1.5)).attr('fill', getColorFor(d.h));
-          d3.select(this).select('.vertex-ring').attr('stroke', getColorFor(d.h)).attr('stroke-width', 3);
+          // apply soft glow matching the hypothesis color
+          d3.select(this).attr('filter', `url(#glow-${d.h.id})`);
+          // enlarge the inner dot and outer ring slightly so the white ring remains visible
+          d3.select(this).select('.vertex-dot')
+            .style('opacity', 1)
+            .attr('r', Math.max(4, Math.max(2, (d.baseR || 5) / k) * SELECTED_DOT_SCALE))
+            .attr('fill', getColorFor(d.h));
+          d3.select(this).select('.vertex-ring')
+            .attr('stroke', getColorFor(d.h))
+            .attr('stroke-width', 3)
+            .attr('r', Math.max(5, Math.max(4, (d.baseRing || 7) / k) * SELECTED_RING_SCALE));
         });
       }
       // Reorder all vertex groups so the selected hypothesis' vertices render on top
@@ -1612,7 +1672,15 @@
           .attr('fill', d => getColorFor(d.h));
         d3.selectAll('.vertices .vertex').classed('selected', false);
         // restore ring stroke & width for all vertices
-        d3.selectAll('.vertices .vertex-ring').attr('stroke', d => getColorFor(d.h)).attr('stroke-width', 2);
+        d3.selectAll('.vertices .vertex-ring')
+          .attr('stroke', d => getColorFor(d.h))
+          .attr('stroke-width', 2)
+          // also restore the default white fill so the chart looks unchanged when nothing is selected
+          .attr('fill', '#fff');
+        // restore ring radius based on current zoom and remove glows
+        const k = state.zoomK || 1;
+        d3.selectAll('.vertices .vertex-ring').attr('r', d => Math.max(4, (d.baseRing || 7) / k));
+        d3.selectAll('.vertices .vertex').attr('filter', null);
         state._highlightClearTimer = null;
         // reset lastActiveHypothesis after clearing
         state.lastActiveHypothesis = null;
@@ -1701,6 +1769,23 @@
         .attr('width', w).attr('height', h)
         .attr('viewBox', `0 0 ${w} ${h}`)
         .style('touch-action', 'none');
+      // Define soft glow filters (one per hypothesis color)
+      const defs = svg.append('defs');
+      try {
+        (Data && Data.hypotheses ? Data.hypotheses : []).forEach(h => {
+          const col = getColorFor(h);
+          const f = defs.append('filter')
+            .attr('id', `glow-${h.id}`)
+            .attr('x', '-60%').attr('y', '-60%')
+            .attr('width', '220%').attr('height', '220%');
+          f.append('feGaussianBlur').attr('in', 'SourceAlpha').attr('stdDeviation', 2.6).attr('result', 'blur');
+          f.append('feFlood').attr('flood-color', col).attr('flood-opacity', 0.55).attr('result', 'flood');
+          f.append('feComposite').attr('in', 'flood').attr('in2', 'blur').attr('operator', 'in').attr('result', 'colored');
+          const m = f.append('feMerge');
+          m.append('feMergeNode').attr('in', 'colored');
+          m.append('feMergeNode').attr('in', 'SourceGraphic');
+        });
+      } catch (e) { /* non-fatal */ }
       // Allow browser pinch zoom globally; only chart D3 gestures use pointer events via touch-action:none on container.
       // track pointer presence over chart to control tooltip auto-hide
       svg.on('mouseenter', () => { state.isOverChart = true; clearTimeout(hideTimer); }).on('mouseleave', () => { state.isOverChart = false; scheduleHide(); });
@@ -1728,17 +1813,22 @@
         try { state.lastTransform = e.transform; } catch (err) { }
         // inverse-scale vertex dot radii so dots stay approximately the same screen size
         try {
-          g.selectAll('.vertex-dot').attr('r', d => {
+          g.selectAll('.vertex-dot').attr('r', function (d) {
             // store base radius on datum if not present
             d.baseR = d.baseR || 5;
             // base inverse-scaled radius so dots stay approximately the same screen size
             const base = Math.max(2, d.baseR / k);
-            // If a precise vertex is actively highlighted (from tooltip/pager), keep it emphasized
-            const isActiveVertex = state.activeVertex && state.activeVertex.hypId === d.h.id && state.activeVertex.critId === d.c.id;
+            // If a precise vertex is actively highlighted (from tooltip/pager or open mobile sheet),
+            // or the DOM group has the 'selected' class, keep it emphasized.
+            const active = (state.activeVertex || ((sheetEl && sheetEl.classList.contains('open')) ? state.sheetActiveVertex : null));
+            let isActiveVertex = active && active.hypId === d.h.id && active.critId === d.c.id;
+            if (!isActiveVertex) {
+              try { const v = this.closest && this.closest('.vertex'); if (v && v.classList && v.classList.contains('selected')) isActiveVertex = true; } catch (_e) { }
+            }
             // If a hypothesis series is highlighted (but not a single vertex), shrink other hypotheses' dots
             const inActiveSeries = state.lastActiveHypothesis && state.lastActiveHypothesis === d.h.id;
             if (isActiveVertex) {
-              return Math.max(4, base * 1.5);
+              return Math.max(4, base * SELECTED_DOT_SCALE);
             }
             if (state.lastActiveHypothesis) {
               // non-highlighted series should be visually de-emphasized
@@ -1746,10 +1836,22 @@
             }
             return base;
           });
-          // outer ring stroke width was non-scaling (vector-effect), but ensure its radius visually compensates
-          g.selectAll('.vertex-ring').attr('r', d => { d.baseRing = d.baseRing || 7; return Math.max(4, d.baseRing / k); });
+          // outer ring radius: keep screen size steady, and enlarge if this vertex is the active one
+          g.selectAll('.vertex-ring').attr('r', function (d) {
+            d.baseRing = d.baseRing || 7;
+            const base = Math.max(4, d.baseRing / k);
+            const active = (state.activeVertex || ((sheetEl && sheetEl.classList.contains('open')) ? state.sheetActiveVertex : null));
+            let isActiveVertex = active && active.hypId === d.h.id && active.critId === d.c.id;
+            if (!isActiveVertex) {
+              try { const v = this.closest && this.closest('.vertex'); if (v && v.classList && v.classList.contains('selected')) isActiveVertex = true; } catch (_e) { }
+            }
+            return isActiveVertex ? Math.max(5, (d.baseRing / k) * SELECTED_RING_SCALE) : base;
+          });
           // dimension (axis-end) nodes: inverse-scale like hypothesis nodes
           g.selectAll('.axis-dot').attr('r', d => { d.baseAxisR = d.baseAxisR || 5; return Math.max(3, d.baseAxisR / k); });
+          // keep larger hit-targets a constant on-screen size for both vertices and axis markers
+          g.selectAll('.hit-target').attr('r', d => { d.baseHit = d.baseHit || (prefersSheet() ? 18 : 10); return Math.max(8, d.baseHit / k); });
+          g.selectAll('.axis-hit').attr('r', d => { d.baseAxisHit = d.baseAxisHit || (prefersSheet() ? 18 : 10); return Math.max(8, d.baseAxisHit / k); });
           // adjust level/axis label font sizes so they remain readable;
           // on small viewports allow slightly smaller minimums when zooming in so central labels don't overlap
           const minLevelFont = (w < 520) ? 5.5 : 8; // px (smaller floor on phones)
@@ -1757,6 +1859,17 @@
           g.selectAll('.level-label').style('font-size', d => (k > 1 ? Math.max(minLevelFont, baseLevelFont / k) : baseLevelFont) + 'px');
           g.selectAll('g > text').filter(function () { return d3.select(this).classed('level-label') ? false : true; })
             .style('font-size', d => (k > 1 ? Math.max(minTextFont, baseTextFont / k) : baseTextFont) + 'px');
+          // Force-apply selected sizing and glow to the active vertex so pan/zoom can't reduce it
+          const active = (state.activeVertex || ((sheetEl && sheetEl.classList.contains('open')) ? state.sheetActiveVertex : null));
+          if (active) {
+            const selV = g.selectAll('.vertex').filter(d => d && d.h && d.c && d.h.id === active.hypId && d.c.id === active.critId);
+            selV.each(function (d) {
+              try { d3.select(this).raise(); } catch (e) { }
+              d3.select(this).attr('filter', `url(#glow-${d.h.id})`);
+              d3.select(this).select('.vertex-dot').attr('r', Math.max(4, Math.max(2, (d.baseR || 5) / k) * SELECTED_DOT_SCALE));
+              d3.select(this).select('.vertex-ring').attr('r', Math.max(5, Math.max(4, (d.baseRing || 7) / k) * SELECTED_RING_SCALE)).attr('stroke-width', 3).attr('stroke', getColorFor(d.h)).attr('fill', '#fff');
+            });
+          }
         } catch (err) { /* ignore minor runtime adjustments */ }
       });
       // remember zoom instance so other code can programmatically change the transform
@@ -1798,6 +1911,9 @@
       svg.on('touchstart.closecontrols', maybeCloseControls);
       // hide tooltip when pointer leaves the active hypothesis polygon
       svg.on('mousemove.pointercheck', (event) => {
+        // On mobile when the bottom sheet is open, keep the highlight even if the pointer moves outside
+        // the polygon as the user pans/zooms; otherwise we create a confusing third state.
+        if (prefersSheet() && sheetEl && sheetEl.classList.contains('open')) return;
         if (!state.lastActiveHypothesis) return;
         const poly = state.currentPolygons && state.currentPolygons[state.lastActiveHypothesis];
         if (!poly) return;
@@ -1813,6 +1929,8 @@
           // schedule an immediate hide that ignores isOverChart but respects if pointer moved into tooltip
           // If tooltip is pinned on desktop, do not auto-hide here.
           if (state.ttPinned && !prefersSheet()) return;
+          // If on mobile and a bottom sheet is open, keep the highlight.
+          if (prefersSheet() && sheetEl && sheetEl.classList.contains('open')) return;
           setTimeout(() => {
             const el2 = document.elementFromPoint(event.clientX, event.clientY);
             if (!(el2 && el2.closest && el2.closest('#tt'))) { state.pagerActive = null; hideTT(); }
@@ -1911,10 +2029,14 @@
 
       // axis-end info dots
       const helpG = g.append('g');
-      helpG.selectAll('circle').data(axes).join('circle')
-        .attr('class', 'axis-dot')
-        .attr('cx', d => d.x * r).attr('cy', d => d.y * r).attr('r', 5)
-        .style('fill', 'var(--panel-bg)').style('stroke', 'var(--muted)').attr('stroke-width', 2)
+      // Larger invisible hit area for axis-end markers (improves touch usability)
+      helpG.selectAll('circle.axis-hit').data(axes).join('circle')
+        .attr('class', 'axis-hit')
+        .attr('cx', d => d.x * r).attr('cy', d => d.y * r)
+        .attr('r', () => (prefersSheet() ? 18 : 10))
+        .style('fill', 'transparent')
+        .style('stroke', 'none')
+        .style('pointer-events', 'all')
         .on('mouseenter mousemove', (e, d) => {
           if (prefersSheet()) return; // ignore hover on mobile; tap opens
           const html = `<div><strong>${d.label}</strong></div>` +
@@ -1922,25 +2044,30 @@
             `<div style='margin-top:4px'>Levels: <strong>${d.anchors.join(' • ')}</strong></div>`;
           const svgEl = svg.node(); const br = getScreenRectForAnchor(e.currentTarget, svgEl) || e.currentTarget.getBoundingClientRect(); const sr = svgEl.getBoundingClientRect();
           showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
-        }).on('mouseleave', () => scheduleHide())
+        })
+        .on('mouseleave', () => scheduleHide())
         .on('click', (e, d) => {
           if (!prefersSheet()) return; // desktop already handled via hover
           const html = `<h3>${d.label}</h3><div class='sheet-meta'>Axis</div><p style='margin-top:6px'>${d.desc || ''}</p><p style='margin-top:8px'><strong>Levels</strong>: ${d.anchors.join(' • ')}</p>`;
-          // pass the clicked element bounding rect as anchor so sheet can avoid covering it
-          const anchorEl = e.currentTarget;
+          const anchorEl = e.currentTarget; // pass the tapped target so sheet can avoid covering it
           openSheet(html, null, anchorEl);
-        })
-        ;
+        });
+      helpG.selectAll('circle').data(axes).join('circle')
+        .attr('class', 'axis-dot')
+        .attr('cx', d => d.x * r).attr('cy', d => d.y * r).attr('r', 5)
+        .style('fill', 'var(--panel-bg)').style('stroke', 'var(--muted)').attr('stroke-width', 2)
+        .style('pointer-events', 'none');
 
       // vertex dots
-      const vertexData = sel.flatMap(hh => axes.map(a => { const raw = Hy[hh.id].scores[a.id]; const vv = quantize(raw); const rr = rScale(vv); return { h: hh, c: a, raw, x: a.x * rr, y: a.y * rr }; }));
+  const vertexData = sel.flatMap(hh => axes.map(a => { const raw = Hy[hh.id].scores[a.id]; const vv = quantize(raw); const rr = rScale(vv); return { h: hh, c: a, raw, x: a.x * rr, y: a.y * rr }; }));
       const vwrap = g.append('g').attr('class', 'vertices').selectAll('g.vertex').data(vertexData).join('g').attr('class', 'vertex')
         .attr('transform', d => `translate(${d.x},${d.y})`)
+        .style('cursor', 'pointer')
         .on('mouseenter mousemove', (e, d) => {
           if (prefersSheet()) return; // disable hover tooltips on mobile; use tap
           const svgEl = svg.node(); const br = getScreenRectForAnchor(e.currentTarget, svgEl) || e.currentTarget.getBoundingClientRect(); const sr = svgEl.getBoundingClientRect();
-          // find overlapping vertices
-          const tol = 2.5; // pixels (more permissive for touch)
+          // find overlapping vertices (tolerance in local coords, inverse-scaled by zoom)
+          const tol = (prefersSheet() ? 10 : 3.5) / (state.zoomK || 1); // wider tolerance for touch
           const overlapping = vertexData.filter(v => Math.hypot(v.x - d.x, v.y - d.y) <= tol);
           // If a pager is active for this group, don't let normal hover override it
           if (state.pagerActive) { const key = overlapping.map(i => i.h.id + '@' + i.c.id).join('|'); if (state.pagerActive.key === key) return; }
@@ -1963,12 +2090,16 @@
         // tap/click (mobile) opens bottom sheet
         .on('click', (e, d) => {
           e.stopPropagation();
-          const tol = 2.5;
+          const tol = (prefersSheet() ? 10 : 3.5) / (state.zoomK || 1);
           const overlapping = vertexData.filter(v => Math.hypot(v.x - d.x, v.y - d.y) <= tol);
           const C = byId(Data.criteria);
           const svgEl = state.currentSvg && state.currentSvg.node() ? state.currentSvg.node() : document.querySelector('#chart svg');
           const br = getScreenRectForAnchor(e.currentTarget, svgEl) || e.currentTarget.getBoundingClientRect();
           const sr = svgEl ? svgEl.getBoundingClientRect() : document.body.getBoundingClientRect();
+          // On desktop, clear any stale pager session; when switching from a single pinned tooltip
+          // back to a paged overlap group (or vice versa), a leftover pagerActive can short-circuit
+          // rendering. The paged tooltip will set a fresh pagerActive as needed below.
+          if (!prefersSheet()) { state.pagerActive = null; }
           if (prefersSheet()) {
             // mobile: existing bottom-sheet behavior
             if (overlapping.length > 1) {
@@ -1990,8 +2121,8 @@
               openSheet(sheetContent(idx), { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }, anchorEl);
               function wirePager() {
                 if (!sheetInner) return; const l = sheetInner.querySelector('.pg-left'); const r = sheetInner.querySelector('.pg-right');
-                if (l) l.onclick = ev => { ev.stopPropagation(); idx = (idx - 1 + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); };
-                if (r) r.onclick = ev => { ev.stopPropagation(); idx = (idx + 1) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); };
+                if (l) l.onclick = ev => { ev.stopPropagation(); idx = (idx - 1 + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; };
+                if (r) r.onclick = ev => { ev.stopPropagation(); idx = (idx + 1) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; };
                 const x = sheetInner.querySelector('.hdr-close'); if (x) x.onclick = (ev) => { ev.stopPropagation(); closeSheet(); };
               }
               wirePager();
@@ -2008,6 +2139,7 @@
               if (sheetEl) sheetEl.classList.remove('has-inline-close');
               const anchorEl = e.currentTarget;
               openSheet(html, { hypId: d.h.id, critId: d.c.id }, anchorEl);
+              state.sheetActiveVertex = { hypId: d.h.id, critId: d.c.id };
             }
           } else {
             // Desktop: clicking a marker pins the tooltip. Show the same content as hover/pager and pin it.
@@ -2031,6 +2163,14 @@
           }
         });
 
+      // draw a larger invisible hit-target first (improves touch precision), then ring + dot
+      vwrap.append('circle')
+        .attr('class', 'hit-target')
+        .each(function (d) { d.baseHit = d.baseHit || (prefersSheet() ? 18 : 10); })
+        .attr('r', d => d.baseHit)
+        .attr('fill', 'transparent')
+        .style('stroke', 'none')
+        .style('pointer-events', 'all');
       // draw ring + dot inside each vertex group; store base sizes on the datum for zoom math
       vwrap.append('circle').attr('class', 'vertex-ring').each(function (d) { d.baseRing = d.baseRing || 7; }).attr('r', d => d.baseRing).attr('fill', '#fff').attr('stroke', d => getColorFor(d.h)).attr('stroke-width', 2).style('stroke-opacity', 0.95);
       vwrap.append('circle').attr('class', 'vertex-dot').each(function (d) { d.baseR = d.baseR || 5; }).attr('r', d => d.baseR).attr('fill', d => getColorFor(d.h)).attr('stroke', 'none');
