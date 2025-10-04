@@ -219,8 +219,51 @@
       border-radius: 3px
     }
 
-    .pill input {
-      accent-color: var(--control-accent)
+    /* High-contrast custom checkbox for hypothesis pills */
+    .pill input[type="checkbox"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      border: 2px solid var(--line);
+      background: transparent;
+      display: inline-block;
+      vertical-align: middle;
+      transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .pill input[type="checkbox"]:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .pill input[type="checkbox"]:checked {
+      background-color: var(--control-accent);
+      border-color: var(--control-accent);
+      /* white check glyph for maximum contrast */
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='3.5,8.5 6.5,11.5 12.5,4.5'/></svg>");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 12px 12px;
+    }
+
+    /* Unchecked state should still be visible in dark mode */
+    :root[data-theme="dark"] .pill input[type="checkbox"] {
+      border-color: rgba(255, 255, 255, 0.45);
+      background-color: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2) inset;
+    }
+
+    :root[data-theme="dark"] .pill input[type="checkbox"]:checked {
+      /* Option A: maximum contrast — white box with dark check */
+      background-color: #ffffff;
+      border-color: #ffffff;
+      box-shadow: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%230f1724' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='3.5,8.5 6.5,11.5 12.5,4.5'/></svg>");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 12px 12px;
     }
 
     .viewtabs {
@@ -525,7 +568,8 @@
       --modal-shadow: 0 20px 60px rgba(0, 0, 0, .6);
       --cell-mid: #7b8794;
       --cell-high: #a3b0c0;
-      --control-accent: #cbd6e1;
+      /* Use a brighter accent for checkboxes/toggles to ensure sufficient contrast on dark backgrounds */
+      --control-accent: #9ec6ff;
     }
 
     /* Make links inside floating UI readable; use primary color by default and a lighter tint in dark mode */
