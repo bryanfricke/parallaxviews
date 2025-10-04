@@ -338,8 +338,25 @@
       vector-effect: non-scaling-stroke;
     }
 
+    .help,
+    #controlsToggle,
+    #themeToggle {
+      font-size: 14px;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      background: transparent;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: none;
+      transition: background .12s ease, color .12s ease, transform .12s ease;
+    }
+
     .help {
-      margin-left: 8px
+      margin-left: 8px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-weight: 600;
     }
 
     .legend {
@@ -392,15 +409,17 @@
       outline-offset: 2px
     }
 
-    /* Pinned tooltip state (desktop only): blue outline and draggable cursor */
+    /* Pinned tooltip state (desktop only): colored outline matching hypothesis and draggable cursor */
     .tooltip.pinned {
-      border-color: var(--primary);
-      box-shadow: 0 12px 36px rgba(11, 95, 255, 0.12);
+      border-color: var(--tooltip-pinned-color, var(--primary));
+      border-width: 2px;
+      box-shadow: var(--tooltip-pinned-shadow, 0 12px 36px rgba(11, 95, 255, 0.12));
       cursor: move;
     }
 
     .tooltip.pinned:focus {
-      outline: 3px solid rgba(11, 95, 255, 0.16);
+      outline: 2px solid var(--tooltip-pinned-color, var(--primary));
+      outline-offset: 2px;
     }
 
     /* When tooltip is pinned, block pointer interaction with the chart until user clicks the chart.
@@ -492,35 +511,36 @@
       box-shadow: 0 6px 14px rgba(11, 79, 255, 0.12)
     }
 
-    /* Help button is positioned right but styled as a clear primary-outline */
-    #helpBtn {
-      padding: 8px 12px;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 14px;
-      color: var(--primary);
-      border: 2px solid var(--primary);
-      background: transparent;
-      box-shadow: none;
-      transition: background .12s ease, color .12s ease, transform .12s ease
-    }
-
     #themeToggle {
-      color: var(--muted)
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      padding: 8px 10px;
     }
 
-    #helpBtn:hover {
+    #themeToggle svg {
+      display: block;
+    }
+
+    .help:hover,
+    #controlsToggle:hover,
+    #themeToggle:hover {
       background: var(--primary);
       color: #fff;
       transform: translateY(-1px);
       box-shadow: 0 10px 28px rgba(11, 95, 255, 0.10)
     }
 
-    #helpBtn:active {
+    .help:active,
+    #controlsToggle:active,
+    #themeToggle:active {
       transform: translateY(0)
     }
 
-    #helpBtn:focus,
+    .help:focus,
+    #controlsToggle:focus,
+    #themeToggle:focus,
     .btn.primary:focus {
       outline: 3px solid rgba(11, 95, 255, 0.16);
       outline-offset: 2px
@@ -837,7 +857,7 @@
   <div id="topbar" data-state="collapsed">
     <div class="topbar-primary">
       <h1>Resurrection Hypotheses</h1>
-      <button id="controlsToggle" class="btn" aria-expanded="false" aria-controls="controls-panel"
+      <button id="controlsToggle" aria-expanded="false" aria-controls="controls-panel"
         aria-label="Show controls">Controls ▼</button>
     </div>
     <div id="controls-panel">
@@ -845,7 +865,7 @@
       <button id="dimsBtn" class="btn primary" aria-expanded="false" aria-haspopup="dialog" aria-controls="dimsOverlay"
         title="About the seven dimensions">Criteria</button>
       <button id="helpBtn" role="button" aria-haspopup="dialog" aria-controls="helpOverlay" class="help">? Help</button>
-      <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle dark mode" style="margin-left:8px">
+      <button id="themeToggle" aria-pressed="false" title="Toggle dark mode" style="margin-left:8px">
         <span id="icon-moon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
@@ -1111,13 +1131,156 @@
     const tt = d3.select('#tt'); let hideTimer = null;
     // tooltip pinned state (desktop only)
     state.ttPinned = false;
+    // store the hypothesis color for pinned tooltips
+    state.ttPinnedColor = null;
     // store last manual position when pinned
     state.ttPos = { left: null, top: null };
+    // flag to track if user has manually dragged the tooltip
+    state.ttUserMoved = false;
+    // store anchor point for leader line
+    state.ttAnchor = { x: null, y: null };
     const sheetEl = document.getElementById('ttSheet');
     const sheetInner = sheetEl ? sheetEl.querySelector('.sheet-inner') : null;
     const sheetClose = sheetEl ? sheetEl.querySelector('.close-btn') : null;
     // track the bounding rect of the last tapped element so the sheet can avoid obscuring it
     let sheetAnchorRect = null;
+    
+    // Leader line SVG for connecting tooltip to anchor point
+    let leaderSvg = null;
+    function ensureLeaderSvg() {
+      if (leaderSvg) return leaderSvg;
+      leaderSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      leaderSvg.id = 'tt-leader';
+      leaderSvg.style.position = 'fixed';
+      leaderSvg.style.top = '0';
+      leaderSvg.style.left = '0';
+      leaderSvg.style.width = '100%';
+      leaderSvg.style.height = '100%';
+      leaderSvg.style.pointerEvents = 'none';
+      leaderSvg.style.zIndex = '9998'; // Below tooltip (9999) but above blocker
+      leaderSvg.style.display = 'none';
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.id = 'tt-leader-line';
+      line.setAttribute('stroke', 'var(--tooltip-pinned-color, var(--primary))');
+      line.setAttribute('stroke-width', '1.5');
+      line.setAttribute('stroke-dasharray', '4 3');
+      line.setAttribute('opacity', '0.6');
+      leaderSvg.appendChild(line);
+      document.body.appendChild(leaderSvg);
+      return leaderSvg;
+    }
+    
+    function updateLeaderLine() {
+      if (!state.ttPinned || !state.ttAnchor.x || !state.ttAnchor.y) {
+        hideLeaderLine();
+        return;
+      }
+      const ttNode = tt.node();
+      if (!ttNode) return;
+      const ttRect = ttNode.getBoundingClientRect();
+      const anchorX = state.ttAnchor.x;
+      const anchorY = state.ttAnchor.y;
+      
+      // Calculate tooltip center
+      const ttCenterX = ttRect.left + ttRect.width / 2;
+      const ttCenterY = ttRect.top + ttRect.height / 2;
+      
+      // Only show leader if tooltip has moved significantly from anchor
+      const distance = Math.sqrt(Math.pow(ttCenterX - anchorX, 2) + Math.pow(ttCenterY - anchorY, 2));
+      if (distance < 30) {
+        hideLeaderLine();
+        return;
+      }
+      
+      const svg = ensureLeaderSvg();
+      const line = svg.querySelector('#tt-leader-line');
+      if (!line) return;
+      
+      // Update line color to match tooltip (or default primary color for criteria)
+      if (state.ttPinnedColor) {
+        line.setAttribute('stroke', state.ttPinnedColor);
+      } else {
+        // Use default primary color when no hypothesis color is set (e.g., for criteria)
+        line.setAttribute('stroke', 'var(--primary)');
+      }
+      
+      // Find the best connection point on the tooltip edge
+      const dx = anchorX - ttCenterX;
+      const dy = anchorY - ttCenterY;
+      const angle = Math.atan2(dy, dx);
+      
+      // Calculate intersection with tooltip rectangle
+      const halfW = ttRect.width / 2;
+      const halfH = ttRect.height / 2;
+      let ttEdgeX, ttEdgeY;
+      
+      // Determine which edge to connect to based on angle
+      const tanAngle = Math.abs(Math.tan(angle));
+      if (tanAngle < halfH / halfW) {
+        // Connect to left or right edge
+        ttEdgeX = ttCenterX + (dx > 0 ? halfW : -halfW);
+        ttEdgeY = ttCenterY + (dx > 0 ? halfW : -halfW) * Math.tan(angle);
+      } else {
+        // Connect to top or bottom edge
+        ttEdgeX = ttCenterX + (dy > 0 ? halfH : -halfH) / Math.tan(angle);
+        ttEdgeY = ttCenterY + (dy > 0 ? halfH : -halfH);
+      }
+      
+      line.setAttribute('x1', anchorX);
+      line.setAttribute('y1', anchorY);
+      line.setAttribute('x2', ttEdgeX);
+      line.setAttribute('y2', ttEdgeY);
+      
+      svg.style.display = 'block';
+    }
+    
+    function hideLeaderLine() {
+      if (leaderSvg) {
+        leaderSvg.style.display = 'none';
+      }
+    }
+    
+    // Helper to set the tooltip pinned color
+    function setTooltipColor(color) {
+      if (!color) return;
+      state.ttPinnedColor = color;
+      const ttNode = tt.node();
+      if (ttNode) {
+        ttNode.style.setProperty('--tooltip-pinned-color', color);
+        // Convert hex color to rgba for the shadow
+        const rgb = hexToRgb(color);
+        if (rgb) {
+          const shadow = `0 12px 36px rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.12)`;
+          ttNode.style.setProperty('--tooltip-pinned-shadow', shadow);
+        }
+      }
+    }
+    
+    // Helper to clear the tooltip pinned color
+    function clearTooltipColor() {
+      state.ttPinnedColor = null;
+      const ttNode = tt.node();
+      if (ttNode) {
+        ttNode.style.removeProperty('--tooltip-pinned-color');
+        ttNode.style.removeProperty('--tooltip-pinned-shadow');
+      }
+    }
+    
+    // Helper to convert hex color to RGB object
+    function hexToRgb(hex) {
+      // Remove # if present
+      hex = hex.replace(/^#/, '');
+      // Handle 3-digit hex
+      if (hex.length === 3) {
+        hex = hex.split('').map(c => c + c).join('');
+      }
+      const num = parseInt(hex, 16);
+      return {
+        r: (num >> 16) & 255,
+        g: (num >> 8) & 255,
+        b: num & 255
+      };
+    }
     // track active chart vertical shift (pixels)
     let chartShift = 0;
     // last applied D3 transform so we can reapply it after re-render
@@ -1383,8 +1546,14 @@
           // prevent scheduled hide while pinned
           clearTimeout(hideTimer);
           showTTBlocker();
+          // Show leader line (will be hidden if tooltip hasn't moved)
+          updateLeaderLine();
         } else {
           tt.classed('pinned', false);
+          clearTooltipColor();
+          hideLeaderLine();
+          // Clear stored position and user moved flag so next tooltip appears at default position
+          state.ttPos.left = null; state.ttPos.top = null; state.ttUserMoved = false;
           // allow tooltip to hide on mouseleave again
           scheduleHide(150);
           hideTTBlocker();
@@ -1413,6 +1582,10 @@
         const dx = ev.clientX - startX; const dy = ev.clientY - startY;
         const newLeft = Math.round(origLeft + dx); const newTop = Math.round(origTop + dy);
         node.style.left = newLeft + 'px'; node.style.top = newTop + 'px'; state.ttPos.left = newLeft; state.ttPos.top = newTop;
+        // Mark that user has manually moved the tooltip
+        state.ttUserMoved = true;
+        // Update leader line during drag
+        updateLeaderLine();
         // extend suppression window because a drag is happening
         state._suppressClickUntil = Date.now() + 400;
       });
@@ -1461,7 +1634,10 @@
           try { _ttBlocker.style.display = 'block'; } catch (_e) { }
         }
         // default: unpin and hide tooltip
-        state.ttPinned = false; tt.classed('pinned', false); hideTT(); hideTTBlocker();
+        state.ttPinned = false; tt.classed('pinned', false); clearTooltipColor(); hideLeaderLine(); 
+        // Clear stored position and user moved flag so next tooltip appears at default position
+        state.ttPos.left = null; state.ttPos.top = null; state.ttUserMoved = false;
+        hideTT(); hideTTBlocker();
       });
       return _ttBlocker;
     }
@@ -1486,7 +1662,7 @@
         }
       }, delay);
     }
-    function hideTT() { tt.style('display', 'none'); state.pagerActive = null; try { state.activeAxisId = null; updateAxisSelection(); } catch (_) {} clearHighlight(true); }
+    function hideTT() { tt.style('display', 'none'); hideLeaderLine(); state.pagerActive = null; try { state.activeAxisId = null; updateAxisSelection(); } catch (_) {} clearHighlight(true); }
     tt.on('click', () => { /* no-op (pin removed) */ })
       .on('mouseenter', () => { state.isOverTT = true; clearTimeout(hideTimer); }).on('mouseleave', () => {
         state.isOverTT = false;
@@ -1788,9 +1964,24 @@
         if (note) content += `<div style='margin-top:4px;color:var(--muted)'>${note}</div>`;
         content += qhtml;
         content += `</div></div>`;
-        showTTAt(content, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
+        
+        // If tooltip has been manually moved by user, update content in place
+        const ttNode = tt.node();
+        const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
+        if (hasMoved && ttNode) {
+          // Just update the HTML content without repositioning
+          tt.html(content);
+        } else {
+          // Normal positioning for initial show or unpinned tooltips
+          showTTAt(content, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
+        }
+        
+        // Update tooltip color to match current hypothesis
+        setTooltipColor(getColorFor(item.h));
         // highlight current series and selected vertex
         highlightSeries(item.h.id, item.c.id);
+        // Update leader line to reflect new color
+        updateLeaderLine();
         // wire pager buttons (delegated via document since TT content is HTML string)
         setTimeout(() => {
           const left = document.getElementById('pager-left');
@@ -2165,10 +2356,30 @@
           const svgEl = svg.node();
           const br = getScreenRectForAnchor(e.currentTarget, svgEl) || e.currentTarget.getBoundingClientRect();
           const sr = svgEl.getBoundingClientRect();
-          showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
+          
+          // Check if there's a stored tooltip position from a previous user drag
+          const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
+          if (hasMoved) {
+            // Use the stored position and just update content
+            tt.html(html).style('display', 'block');
+            const ttNode = tt.node();
+            if (ttNode) {
+              ttNode.style.left = state.ttPos.left + 'px';
+              ttNode.style.top = state.ttPos.top + 'px';
+            }
+          } else {
+            // Normal positioning for first show
+            showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
+          }
+          
           try { state.activeAxisId = d.id; updateAxisSelection(); } catch (_) {}
-          // Pin the tooltip and show the blocker so subsequent clicks behave like popup pinning
+          // Pin the tooltip and show the blocker (no color for axis tooltips, use default)
+          clearTooltipColor();
+          // Set anchor to the center of the axis marker
+          state.ttAnchor.x = br.left + br.width / 2;
+          state.ttAnchor.y = br.top + br.height / 2;
           state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer);
+          updateLeaderLine();
         });
       // Draw the visual axis-end dots as a separate selection so we don't overwrite
       // the interactive hit targets above (which would remove their pointer events).
@@ -2277,8 +2488,14 @@
               let startIdx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
               if (startIdx < 0) startIdx = 0;
               showPagedTooltip(overlapping, startIdx, svgEl, br, sr);
-              // pin
+              // pin with color of the currently shown hypothesis
+              const currentHyp = overlapping[startIdx].h;
+              setTooltipColor(getColorFor(currentHyp));
+              // Set anchor to the center of the vertex marker (not tooltip position)
+              state.ttAnchor.x = br.left + br.width / 2;
+              state.ttAnchor.y = br.top + br.height / 2;
               state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer);
+              updateLeaderLine();
             } else {
               const level = ordinalLabel(d.c.id, d.raw, C);
               const note = (byId(Data.hypotheses)[d.h.id].notes || {})[d.c.id] || '';
@@ -2287,10 +2504,30 @@
                 `<div><strong>Criteria:</strong> ${d.c.label}</div>` +
                 `<div><strong>Level:</strong> ${level}</div>` +
                 (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
-              showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
+              
+              // Check if there's a stored tooltip position from a previous user drag
+              const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
+              if (hasMoved) {
+                // Use the stored position and just update content
+                tt.html(html).style('display', 'block');
+                const ttNode = tt.node();
+                if (ttNode) {
+                  ttNode.style.left = state.ttPos.left + 'px';
+                  ttNode.style.top = state.ttPos.top + 'px';
+                }
+              } else {
+                // Normal positioning for first show
+                showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
+              }
+              
               highlightSeries(d.h.id, d.c.id);
-              // pin
+              // pin with hypothesis color
+              setTooltipColor(getColorFor(d.h));
+              // Set anchor to the center of the vertex marker (not tooltip position)
+              state.ttAnchor.x = br.left + br.width / 2;
+              state.ttAnchor.y = br.top + br.height / 2;
               state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer);
+              updateLeaderLine();
             }
           }
         });
