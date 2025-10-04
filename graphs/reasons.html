@@ -71,6 +71,10 @@ input[type="text"]{border:1px solid var(--line); border-radius:8px; padding:6px 
 /* Chart area: restrict touch gestures here only so D3 can manage them; leave page zoom accessible elsewhere */
 #chart{width:100%; height:calc(var(--vh, 1vh) * 100 - var(--header-h, 92px)); min-height:380px; padding-top:14px; box-sizing:border-box; touch-action:none; overscroll-behavior:contain}
 #chart svg{display:block; width:100%; height:100%; touch-action:none}
+/* Add a touch of side padding on very small screens so the chart doesn't hug the edges */
+@media (max-width:520px){
+  #chart{ padding-left:10px; padding-right:10px; }
+}
 /* Prevent the browser from handling pinch/zoom inside the chart area so D3 can manage gestures.
   iOS sometimes ignores touch-action, so we also add an explicit touchstart listener in JS below. */
 #chart svg{ touch-action: none; -webkit-user-select: none; user-select: none; -ms-touch-action: none; -webkit-tap-highlight-color: transparent; }
@@ -925,10 +929,12 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
   // responsive typography: bigger base on desktop, smaller floor on mobile
   const baseTextFont = (w >= 1280) ? 15 : (w >= 1024) ? 14 : (w >= 768) ? 13 : 12; // axis labels
   const baseLevelFont = (w >= 1280) ? 12 : (w >= 1024) ? 11 : (w >= 768) ? 10.5 : 10; // ring labels
-  // responsive padding: give more horizontal padding on narrow viewports so outer axis labels don't get clipped
+  // responsive padding: with wrapped labels we can afford smaller horizontal padding on phones
   const padY = 36;
-  // padX scales with width; ensure a reasonable min/max so labels have room
-  const padX = Math.max(40, Math.min(140, Math.round(w * 0.25)));
+  // On narrow screens, keep a bit more horizontal padding so there is comfortable edge whitespace
+  const padX = (w < 520)
+    ? Math.max(32, Math.min(90, Math.round(w * 0.15)))
+    : Math.max(40, Math.min(120, Math.round(w * 0.18)));
   const r = Math.min(w/2 - padX, h/2 - padY);
   // create an SVG with a viewBox so it scales nicely and we can apply transforms
   const svg = d3.select(container).append('svg')
@@ -965,7 +971,20 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
         g.selectAll('.vertex-dot').attr('r', d => {
           // store base radius on datum if not present
           d.baseR = d.baseR || 5;
-          return Math.max(2, d.baseR / k);
+          // base inverse-scaled radius so dots stay approximately the same screen size
+          const base = Math.max(2, d.baseR / k);
+          // If a precise vertex is actively highlighted (from tooltip/pager), keep it emphasized
+          const isActiveVertex = state.activeVertex && state.activeVertex.hypId === d.h.id && state.activeVertex.critId === d.c.id;
+          // If a hypothesis series is highlighted (but not a single vertex), shrink other hypotheses' dots
+          const inActiveSeries = state.lastActiveHypothesis && state.lastActiveHypothesis === d.h.id;
+          if(isActiveVertex){
+            return Math.max(4, base * 1.5);
+          }
+          if(state.lastActiveHypothesis){
+            // non-highlighted series should be visually de-emphasized
+            return inActiveSeries ? base : 2;
+          }
+          return base;
         });
         // outer ring stroke width was non-scaling (vector-effect), but ensure its radius visually compensates
         g.selectAll('.vertex-ring').attr('r', d=>{ d.baseRing = d.baseRing || 7; return Math.max(4, d.baseRing / k); });
@@ -1028,7 +1047,7 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
         }, 40);
       }
     });
-    const axes=Data.criteria.map((d,i)=>{ const ang=(Math.PI*2*i)/Data.criteria.length - Math.PI/2; return {...d, angle:ang, x:Math.cos(ang), y:Math.sin(ang)}; });
+  const axes=Data.criteria.map((d,i)=>{ const ang=(Math.PI*2*i)/Data.criteria.length - Math.PI/2; return {...d, idx:i, angle:ang, x:Math.cos(ang), y:Math.sin(ang)}; });
     const rScale=d3.scaleLinear().domain([0,1]).range([0,r]);
 
     // grid + axes (no pointer capture)
@@ -1049,10 +1068,59 @@ body, #topbar, .modal, .tooltip, button, .btn, .pill { transition: background-co
       .text(d=> (d.axis.anchors && d.axis.anchors[d.i]) ? d.axis.anchors[d.i] : '');
   const ax=g.append('g').selectAll('g').data(axes).join('g').style('pointer-events','none');
   ax.append('line').attr('x1',0).attr('y1',0).attr('x2',d=>d.x*r).attr('y2',d=>d.y*r).style('stroke','var(--line)');
-    ax.append('text').attr('x',d=>d.x*(r+14)).attr('y',d=>d.y*(r+14))
-      .attr('text-anchor',d=> Math.abs(d.x)<0.3 ? 'middle' : (d.x>0?'start':'end'))
-      .attr('dominant-baseline','central').attr('font-size',baseTextFont)
-      .text(d=>d.short);
+  // helper to wrap axis labels into multiple lines within a max width and vertically center them
+  function wrapAxisLabels(sel, maxWidthPx, lineHeightEm=1.1){
+    sel.each(function(){
+      const text = d3.select(this);
+      const full = (text.text() || '').trim();
+      if(!full) return;
+      const words = full.split(/\s+/).filter(Boolean);
+      const x = text.attr('x');
+      const y = text.attr('y');
+      // clear and rebuild with tspans
+      text.text(null);
+      let tspan = text.append('tspan').attr('x', x).attr('y', y);
+      const tspans = [];
+      let line = [];
+      for(let i=0;i<words.length;i++){
+        const wds = line.concat([words[i]]);
+        tspan.text(wds.join(' '));
+        const len = tspan.node() && tspan.node().getComputedTextLength ? tspan.node().getComputedTextLength() : 0;
+        if(len > maxWidthPx && line.length){
+          // commit previous line and start a new one with current word
+          tspan.text(line.join(' '));
+          tspans.push(tspan);
+          line = [words[i]];
+          tspan = text.append('tspan').attr('x', x).attr('y', y).text(words[i]);
+        } else {
+          line = wds;
+        }
+      }
+      tspans.push(tspan);
+      // center lines vertically around the anchor point
+      const n = tspans.length;
+      for(let i=0;i<n;i++){
+        const dy = (i - (n-1)/2) * lineHeightEm;
+        tspans[i].attr('dy', dy + 'em');
+      }
+    });
+  }
+  // axis labels with word-wrap; use a smaller max width on phones
+  const maxLabelWidth = (w < 520) ? 78 : 120; // pixels
+  ax.append('text')
+    .attr('x', d => {
+      // push specific axis labels slightly further out so they don't collide with the axis-end markers
+      const extra = (d.idx === 0 || d.idx === 4) ? 24 : 14;
+      return d.x * (r + extra);
+    })
+    .attr('y', d => {
+      const extra = (d.idx === 0 || d.idx === 4) ? 24 : 14;
+      return d.y * (r + extra);
+    })
+    .attr('text-anchor',d=> Math.abs(d.x)<0.3 ? 'middle' : (d.x>0?'start':'end'))
+    .attr('dominant-baseline','central').attr('font-size',baseTextFont)
+    .text(d=>d.short)
+    .call(wrapAxisLabels, maxLabelWidth);
 
     const sel = Data.hypotheses.filter(h=>state.selected.has(h.id));
     const pointsFor = (h)=> axes.map(a=>{ const vv=quantize(Hy[h.id].scores[a.id]); const rr=rScale(vv); return [a.x*rr, a.y*rr]; });

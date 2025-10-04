@@ -92,6 +92,10 @@
                 "notDisconfirmed": 0.85,
                 "exceeds": 0.94
             },
+            "scoreNotes": {
+                "summary": "No change: scores already reflect Craig's strong endorsement (high scope/power/exceeds) and worldview-dependent plausibility.",
+                "plausibility": "Kept below perfect (0.76) to reflect Craig's qualification that plausibility depends on prior theistic commitment."
+            },
             "notes": {
                 "derivation": "The resurrection hypothesis directly implies the kind of evidence we actually possess: an empty tomb, numerous eyewitness reports, and the sudden conviction of early Christians that Jesus had been vindicated by God. These are not incidental byproducts but the very things one would expect if Jesus truly rose.",
                 "scope": "It accounts for a wide range of agreed-upon facts — from the empty tomb and postmortem appearances, to the conversions of skeptics (Paul and James) and the explosive rise of the Christian movement in Jerusalem. Few hypotheses manage to cover all these disparate data with such coherence.",
@@ -125,7 +129,7 @@
                 ],
                 "plausibility": [
                     {
-                        "t": "It is plausible given Jesus\u2019 life and claims as divine confirmation.",
+                        "t": "It is plausible: given the historical context of Jesus\u2019s own unparalleled life and claims, the resurrection serves as divine confirmation of those radical claims.",
                         "src": "The Resurrection of Jesus",
                         "url": "https://www.reasonablefaith.org/writings/popular-writings/jesus-of-nazareth/the-resurrection-of-jesus/"
                     }
@@ -139,7 +143,7 @@
                 ],
                 "notDisconfirmed": [
                     {
-                        "t": "It is in accord with accepted beliefs; it does not conflict with the belief that people don\u2019t rise naturally from the dead.",
+                        "t": "It is in accord with accepted beliefs. The hypothesis: 'God raised Jesus from the dead' does not in any way conflict with the accepted belief that people don\u2019t rise naturally from the dead.",
                         "src": "The Resurrection of Jesus",
                         "url": "https://www.reasonablefaith.org/writings/popular-writings/jesus-of-nazareth/the-resurrection-of-jesus/"
                     }
@@ -158,13 +162,22 @@
             "label": "Hallucination",
             "color": "#2ca02c",
             "scores": {
-                "derivation": 0.54,
-                "scope": 0.44,
-                "power": 0.42,
-                "plausibility": 0.46,
-                "adHoc": 0.36,
-                "notDisconfirmed": 0.34,
-                "exceeds": 0.19
+                "derivation": 0.40,
+                "scope": 0.25,
+                "power": 0.30,
+                "plausibility": 0.30,
+                "adHoc": 0.32,
+                "notDisconfirmed": 0.30,
+                "exceeds": 0.18
+            },
+            "scoreNotes": {
+                "summary": "Reduced several criteria to 'Low' to reflect Craig's position that hallucinations cannot account for the empty tomb, group/500-person appearances, or origin of the movement without additional hypotheses.",
+                "derivation": "Hallucinations can explain individual visionary experiences but not the public/physical data (empty tomb) Craig emphasizes; lowered to 0.40.",
+                "scope": "Craig treats scope as narrow for hallucination; lowered to 0.25 to reflect inability to explain the empty tomb or mass appearances.",
+                "power": "Lowered to 0.30: poor fit for consistent multi-person/group appearances and conversions.",
+                "plausibility": "Lowered to 0.30 for psychological implausibility when applied to the full corpus of appearances.",
+                "adHoc": "Lowered slightly: requires auxiliary hypotheses (e.g., theft) to cover tomb evidence.",
+                "exceeds": "Left low to reflect that hallucination does not outperform the resurrection hypothesis."
             },
             "ordinals": {
                 "derivation": "Low"
@@ -181,35 +194,35 @@
             "quotes": {
                 "derivation": [
                     {
-                        "t": "Hallucinations are private, subjective events; they do not explain public phenomena like an empty tomb.",
-                        "src": "Visions of Jesus (Assessment of L\u00fcdemann)",
-                        "url": "https://www.reasonablefaith.org/writings/scholarly-writings/historical-jesus/visions-of-jesus-a-critical-assessment-of-gerd-ludemanns-hallucination-hypo"
+                        "t": "The Hallucination hypothesis is offered as a way of explaining the resurrection appearances, but it says absolutely nothing about the empty tomb.",
+                        "src": "The Doctrine of Christ (part 14)",
+                        "url": "https://www.reasonablefaith.org/podcasts/defenders-podcast-series-1/s1-the-doctrine-of-christ/the-doctrine-of-christ-part-14"
                     }
                 ],
                 "scope": [
                     {
-                        "t": "It has narrow explanatory scope; it offers nothing to explain the empty tomb.",
-                        "src": "Visions of Jesus (Assessment of L\u00fcdemann)",
-                        "url": "https://www.reasonablefaith.org/writings/scholarly-writings/historical-jesus/visions-of-jesus-a-critical-assessment-of-gerd-ludemanns-hallucination-hypo"
+                        "t": "In order to explain the empty tomb you have to conjoin an independent hypothesis to the Hallucination hypothesis.",
+                        "src": "The Doctrine of Christ (part 14)",
+                        "url": "https://www.reasonablefaith.org/podcasts/defenders-podcast-series-1/s1-the-doctrine-of-christ/the-doctrine-of-christ-part-14"
                     }
                 ],
                 "power": [
                     {
-                        "t": "The diversity of the appearances is very difficult to explain by hallucinations.",
-                        "src": "Visions of Jesus (Assessment of L\u00fcdemann)",
-                        "url": "https://www.reasonablefaith.org/writings/scholarly-writings/historical-jesus/visions-of-jesus-a-critical-assessment-of-gerd-ludemanns-hallucination-hypo"
+                        "t": "The variety and the frequency of the resurrection appearances are beyond anything in the psychological case books on record.",
+                        "src": "The Doctrine of Christ (part 14)",
+                        "url": "https://www.reasonablefaith.org/podcasts/defenders-podcast-series-1/s1-the-doctrine-of-christ/the-doctrine-of-christ-part-14"
                     }
                 ],
                 "plausibility": [
                     {
-                        "t": "There is little plausibility in L\u00fcdemann\u2019s psychoanalysis of Peter and Paul.",
-                        "src": "Visions of Jesus (Assessment of L\u00fcdemann)",
-                        "url": "https://www.reasonablefaith.org/writings/scholarly-writings/historical-jesus/visions-of-jesus-a-critical-assessment-of-gerd-ludemanns-hallucination-hypo"
+                        "t": "Number one \u2014 it is psychologically implausible.",
+                        "src": "The Doctrine of Christ (part 14)",
+                        "url": "https://www.reasonablefaith.org/podcasts/defenders-podcast-series-1/s1-the-doctrine-of-christ/the-doctrine-of-christ-part-14"
                     }
                 ],
                 "adHoc": [
                     {
-                        "t": "It is completely ad hoc.",
+                        "t": "L\u00fcdemann's Hallucination Hypothesis is seen to have narrow explanatory scope, to have weak explanatory power, to be implausible, to be unacceptably ad hoc, to contradict quite a large number of accepted beliefs, and not to outstrip its rivals in meeting these tests.",
                         "src": "Visions of Jesus (Assessment of L\u00fcdemann)",
                         "url": "https://www.reasonablefaith.org/writings/scholarly-writings/historical-jesus/visions-of-jesus-a-critical-assessment-of-gerd-ludemanns-hallucination-hypo"
                     }
@@ -223,7 +236,7 @@
                 ],
                 "exceeds": [
                     {
-                        "t": "It has not demonstrated clear superiority to rival theories.",
+                        "t": "[It is seen] not to outstrip its rivals in meeting these tests.",
                         "src": "Visions of Jesus (Assessment of L\u00fcdemann)",
                         "url": "https://www.reasonablefaith.org/writings/scholarly-writings/historical-jesus/visions-of-jesus-a-critical-assessment-of-gerd-ludemanns-hallucination-hypo"
                     }
@@ -235,13 +248,21 @@
             "label": "Theft/Conspiracy",
             "color": "#ff7f0e",
             "scores": {
-                "derivation": 0.52,
-                "scope": 0.52,
-                "power": 0.36,
-                "plausibility": 0.32,
-                "adHoc": 0.29,
-                "notDisconfirmed": 0.42,
-                "exceeds": 0.21
+                "derivation": 0.50,
+                "scope": 0.60,
+                "power": 0.25,
+                "plausibility": 0.20,
+                "adHoc": 0.22,
+                "notDisconfirmed": 0.25,
+                "exceeds": 0.16
+            },
+            "scoreNotes": {
+                "summary": "Adjusted to reflect Craig's view: conspiracy has superficial scope (can be made to explain many data points) but is implausible and highly ad hoc.",
+                "scope": "Raised to 0.60 because Craig admits conspiracy can (superficially) cover empty tomb, appearances, and origin of belief if posited.",
+                "power": "Lowered to 0.25: fails to render the disciples' transformation and martyrdom probable.",
+                "plausibility": "Lowered to 0.20: Craig emphasizes psychological and historical implausibility.",
+                "adHoc": "Lowered to 0.22 to reflect many unsupported auxiliary claims required.",
+                "notDisconfirmed": "Lowered to 0.25 reflecting conflicts with general knowledge about conspiracies and disciple sincerity."
             },
             "notes": {
                 "derivation": "Theft or conspiracy could in theory generate empty-tomb reports and fabricated testimony, but only at the cost of positing deliberate deception among the disciples.",
@@ -255,7 +276,7 @@
             "quotes": {
                 "derivation": [
                     {
-                        "t": "Accounts for the data only by positing deliberate deception.",
+                        "t": "According to this explanation the disciples stole the body of Jesus and then lied about his postmortem appearances thus faking the resurrection of Jesus.",
                         "src": "Defenders 3, Doctrine of Christ (Part 42)",
                         "url": "https://www.reasonablefaith.org/podcasts/defenders-podcast-series-3/s3-doctrine-of-christ/doctrine-of-christ-part-42/"
                     }
@@ -269,7 +290,7 @@
                 ],
                 "power": [
                     {
-                        "t": "It would be utterly daft to invent women as the discoverers of the empty tomb.",
+                        "t": "it would be utterly daft for them to fabricate the story about the discovery of the empty tomb by women.",
                         "src": "Defenders 3, Doctrine of Christ (Part 42)",
                         "url": "https://www.reasonablefaith.org/podcasts/defenders-podcast-series-3/s3-doctrine-of-christ/doctrine-of-christ-part-42/"
                     }
@@ -309,13 +330,19 @@
             "label": "Wrong Tomb",
             "color": "#17becf",
             "scores": {
-                "derivation": 0.39,
-                "scope": 0.32,
+                "derivation": 0.32,
+                "scope": 0.20,
                 "power": 0.09,
-                "plausibility": 0.28,
-                "adHoc": 0.29,
-                "notDisconfirmed": 0.27,
-                "exceeds": 0.11
+                "plausibility": 0.24,
+                "adHoc": 0.28,
+                "notDisconfirmed": 0.22,
+                "exceeds": 0.10
+            },
+            "scoreNotes": {
+                "summary": "Lowered to reflect Craig's dismissal: wrong-tomb explains at best a mistaken empty-tomb report and fails for appearances and origin of belief.",
+                "derivation": "Lowered to 0.32: may explain a mistaken empty-tomb report but nothing else.",
+                "scope": "Lowered to 0.20 to emphasize narrowness.",
+                "power": "Kept low (0.09): no real power regarding appearances or conversions."
             },
             "ordinals": {
                 "derivation": "Low"
@@ -367,7 +394,7 @@
                 ],
                 "notDisconfirmed": [
                     {
-                        "t": "Disconfirmed by accepted beliefs that Joseph buried Jesus and could point out the tomb.",
+                        "t": "The wrong tomb hypothesis is disconfirmed by the generally accepted beliefs that Joseph of Arimathea did bury Jesus in the tomb and thus could point to the correct burial location.",
                         "src": "Defenders 3, Doctrine of Christ (Part 42)",
                         "url": "https://www.reasonablefaith.org/podcasts/defenders-podcast-series-3/s3-doctrine-of-christ/doctrine-of-christ-part-42/"
                     }
@@ -386,13 +413,18 @@
             "label": "Displaced Body",
             "color": "#9467bd",
             "scores": {
-                "derivation": 0.47,
-                "scope": 0.32,
+                "derivation": 0.35,
+                "scope": 0.20,
                 "power": 0.09,
-                "plausibility": 0.32,
-                "adHoc": 0.42,
-                "notDisconfirmed": 0.34,
-                "exceeds": 0.13
+                "plausibility": 0.22,
+                "adHoc": 0.30,
+                "notDisconfirmed": 0.25,
+                "exceeds": 0.11
+            },
+            "scoreNotes": {
+                "summary": "Scored low: displaced-body explanations are narrow, ad hoc, and conflict with known Jewish burial customs per Craig.",
+                "derivation": "Lowered to 0.35 because it only potentially explains an empty tomb but not appearances or origin of belief.",
+                "adHoc": "Lowered to 0.30: invents undocumented actions and motives."
             },
             "notes": {
                 "derivation": "If Joseph or others moved the body, the empty tomb could be explained, but the hypothesis does not naturally imply resurrection appearances or convictions of divine vindication.",
@@ -463,10 +495,15 @@
                 "derivation": 0.36,
                 "scope": 0.27,
                 "power": 0.09,
-                "plausibility": 0.13,
+                "plausibility": 0.10,
                 "adHoc": 0.19,
-                "notDisconfirmed": 0.09,
+                "notDisconfirmed": 0.05,
                 "exceeds": 0.09
+            },
+            "scoreNotes": {
+                "summary": "Kept very low: Craig emphasizes medical implausibility after scourging and crucifixion; strong disconfirmation by accepted facts.",
+                "plausibility": "Lowered slightly to 0.10 to reflect near-impossibility given Roman execution practices.",
+                "notDisconfirmed": "Very low: conflicts strongly with medical/historical evidence."
             },
             "notes": {
                 "derivation": "If Jesus only appeared dead and later revived, mistaken appearances could occur. Yet this conflicts with medical knowledge of Roman scourging and crucifixion.",
@@ -534,13 +571,18 @@
             "label": "Legend/Myth Development",
             "color": "#bcbd22",
             "scores": {
-                "derivation": 0.33,
-                "scope": 0.23,
-                "power": 0.19,
-                "plausibility": 0.33,
-                "adHoc": 0.47,
-                "notDisconfirmed": 0.37,
-                "exceeds": 0.11
+                "derivation": 0.28,
+                "scope": 0.18,
+                "power": 0.15,
+                "plausibility": 0.25,
+                "adHoc": 0.45,
+                "notDisconfirmed": 0.30,
+                "exceeds": 0.10
+            },
+            "scoreNotes": {
+                "summary": "Lowered to reflect Craig's argument that early dating and multiple attestation make wholesale legendary development unlikely.",
+                "derivation": "Lowered to 0.28: legendary development struggles to account for the earliest Jerusalem-based reports and Paul's formula.",
+                "adHoc": "Remains moderately high (0.45) because legend theories typically must be conjoined with others (e.g., hallucination)."
             },
             "notes": {
                 "derivation": "Legendary development could blur later traditions, but it does not generate the early, simple, and Jerusalem-based reports of empty tomb and appearances.",
@@ -554,9 +596,9 @@
             "quotes": {
                 "derivation": [
                     {
-                        "t": "We reviewed the evidence so these facts cannot just be written off as legends.",
-                        "src": "Defenders 1, Doctrine of Christ (Part 14)",
-                        "url": "https://www.reasonablefaith.org/podcasts/defenders-podcast-series-1/s1-the-doctrine-of-christ/the-doctrine-of-christ-part-14"
+                        "t": "It is today widely recognized that the empty tomb of Jesus is a simple historical fact.",
+                        "src": "Jesus' Resurrection (scholarly writing)",
+                        "url": "https://www.reasonablefaith.org/writings/scholarly-writings/historical-jesus/jesus-resurrection"
                     }
                 ],
                 "scope": [
@@ -568,28 +610,28 @@
                 ],
                 "power": [
                     {
-                        "t": "The earliest accounts are very theologically unadorned\u2026 unlike later legendary stories.",
-                        "src": "Defenders 1, Doctrine of Christ (Part 14)",
-                        "url": "https://www.reasonablefaith.org/podcasts/defenders-podcast-series-1/s1-the-doctrine-of-christ/the-doctrine-of-christ-part-14"
+                        "t": "The empty tomb story is uncolored by the theological and apologetical motifs that would be characteristic of a later legendary account.",
+                        "src": "Jesus' Resurrection (scholarly writing)",
+                        "url": "https://www.reasonablefaith.org/writings/scholarly-writings/historical-jesus/jesus-resurrection"
                     }
                 ],
                 "plausibility": [
                     {
-                        "t": "Even two generations is too short a time span to wipe out the hard core of historical facts.",
+                        "t": "Even two generations is too short a time span to allow legendary tendencies to wipe out the hard core of historical facts.",
                         "src": "Scholarly Writings: Jesus\u2019 Resurrection",
                         "url": "https://www.reasonablefaith.org/writings/scholarly-writings/historical-jesus/jesus-resurrection"
                     }
                 ],
                 "adHoc": [
                     {
-                        "t": "Usually must be conjoined with other hypotheses to cover the facts.",
-                        "src": "Defenders 3, Doctrine of Christ (Part 42)",
-                        "url": "https://www.reasonablefaith.org/podcasts/defenders-podcast-series-3/s3-doctrine-of-christ/doctrine-of-christ-part-42/"
+                        "t": "No apocryphal gospel appeared during the first century. These did not arise until after the generation of eyewitnesses had died off.",
+                        "src": "Jesus' Resurrection (scholarly writing)",
+                        "url": "https://www.reasonablefaith.org/writings/scholarly-writings/historical-jesus/jesus-resurrection"
                     }
                 ],
                 "notDisconfirmed": [
                     {
-                        "t": "It is widely recognized that the empty tomb is a simple historical fact.",
+                        "t": "It is today widely recognized that the empty tomb of Jesus is a simple historical fact.",
                         "src": "The Resurrection of Jesus (essay)",
                         "url": "https://www.reasonablefaith.org/writings/popular-writings/jesus-of-nazareth/the-resurrection-of-jesus/"
                     }
