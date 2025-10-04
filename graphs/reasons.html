@@ -1879,6 +1879,12 @@
       // Only enable zoom when interacting with the SVG background (not when interacting with interactive elements)
       svg.call(zoom.filter(function (event) {
         const t = event.target;
+        // Disable zoom when interacting with interactive overlays: vertices, legend pills,
+        // and the axis-end hit targets so tooltips/bottom sheets are not interfered with.
+        const insideVertices = t.closest && t.closest('.vertices');
+        const insidePills = t.closest && t.closest('.pill');
+        const onAxisHit = t.closest && t.closest('.axis-hit');
+        if (insideVertices || insidePills || onAxisHit) return false;
         return t === svg.node() || t.tagName === 'svg' || (t.closest && !t.closest('.vertices') && !t.closest('.pill'));
       }));
       // double-click to reset zoom
@@ -2039,6 +2045,9 @@
         .style('pointer-events', 'all')
         .on('mouseenter mousemove', (e, d) => {
           if (prefersSheet()) return; // ignore hover on mobile; tap opens
+          // Clear any lingering series highlight so the background pointer-in-polygon
+          // check doesn’t auto-hide this axis tooltip.
+          try { state.lastActiveHypothesis = null; state.activeVertex = null; clearHighlight(true); } catch (_) {}
           const html = `<div><strong>${d.label}</strong></div>` +
             `<div style='color:var(--muted)'>${d.desc || ''}</div>` +
             `<div style='margin-top:4px'>Levels: <strong>${d.anchors.join(' • ')}</strong></div>`;
@@ -2048,11 +2057,18 @@
         .on('mouseleave', () => scheduleHide())
         .on('click', (e, d) => {
           if (!prefersSheet()) return; // desktop already handled via hover
+          // Prevent the background SVG click handler from immediately closing the sheet
+          // (otherwise the sheet opens and then closes on the same click)
+          try { e.stopPropagation(); } catch (_) {}
+          // Also clear any prior series highlight to avoid conflicting states on mobile
+          try { state.lastActiveHypothesis = null; state.activeVertex = null; clearHighlight(true); } catch (_) {}
           const html = `<h3>${d.label}</h3><div class='sheet-meta'>Axis</div><p style='margin-top:6px'>${d.desc || ''}</p><p style='margin-top:8px'><strong>Levels</strong>: ${d.anchors.join(' • ')}</p>`;
           const anchorEl = e.currentTarget; // pass the tapped target so sheet can avoid covering it
           openSheet(html, null, anchorEl);
         });
-      helpG.selectAll('circle').data(axes).join('circle')
+      // Draw the visual axis-end dots as a separate selection so we don't overwrite
+      // the interactive hit targets above (which would remove their pointer events).
+      helpG.selectAll('circle.axis-dot').data(axes).join('circle')
         .attr('class', 'axis-dot')
         .attr('cx', d => d.x * r).attr('cy', d => d.y * r).attr('r', 5)
         .style('fill', 'var(--panel-bg)').style('stroke', 'var(--muted)').attr('stroke-width', 2)
@@ -2176,6 +2192,9 @@
       vwrap.append('circle').attr('class', 'vertex-dot').each(function (d) { d.baseR = d.baseR || 5; }).attr('r', d => d.baseR).attr('fill', d => getColorFor(d.h)).attr('stroke', 'none');
       // ensure vertex groups render on top of polygons/axes
       try { vwrap.raise(); } catch (e) { }
+      // And ensure the axis-end hit targets sit above vertices near the perimeter so
+      // taps/hover at the ends of axes trigger the criteria tooltip rather than a nearby vertex.
+      try { helpG.raise(); } catch (e) { }
     }
 
     // ---------- Heatmap
