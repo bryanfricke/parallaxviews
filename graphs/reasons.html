@@ -297,7 +297,9 @@
       display: block;
       width: 100%;
       height: 100%;
-      touch-action: none
+      touch-action: none;
+      /* allow soft glows and ring strokes to extend beyond the viewport without being clipped */
+      overflow: visible;
     }
 
     /* Add a touch of side padding on very small screens so the chart doesn't hug the edges */
@@ -1006,6 +1008,8 @@
   // Selected vertex visual scales
   const SELECTED_DOT_SCALE = 1.35;  // how much bigger than baseline the inner dot gets
   const SELECTED_RING_SCALE = 1.6;  // how much bigger than baseline the outer ring gets (kept > dot so white outline shows)
+  // Axis-end selection scale
+  const AXIS_SELECTED_SCALE = 1.5;
     // Track currently active vertex (hypothesis + criterion) for precise highlighting
     state.activeVertex = null;
     // current zoom scale applied to chart (1 == identity). Updated by zoom handler.
@@ -1015,6 +1019,8 @@
     state.isOverTT = false;
   // Persist selection while the mobile bottom sheet is open to avoid a mid-zoom "third state"
   state.sheetActiveVertex = null;
+  // Track active axis id to visually emphasize axis-end marker when its info is shown
+  state.activeAxisId = null;
 
     // ---------- UI: loading
     const loader = document.getElementById('loader');
@@ -1296,6 +1302,8 @@
       sheetAnchorRect = null;
       // clear persisted active vertex used during sheet interactions
       state.sheetActiveVertex = null;
+      // clear any active axis highlight
+      try { state.activeAxisId = null; if (typeof updateAxisSelection === 'function') updateAxisSelection(); } catch (_) {}
       // clear highlight after closing (slight delay so user perceives action end)
       setTimeout(() => { clearHighlight(); }, 60);
     }
@@ -1430,13 +1438,15 @@
           // Restore blocker visibility immediately
           _ttBlocker.style.display = 'block';
           if (under) {
-            const vertex = under.closest && under.closest('.vertex');
-            if (vertex) {
-              // Dispatch a synthetic click on the underlying vertex so its click handler runs and
-              // will pin a new tooltip. Use bubbling MouseEvent so listeners see it like a normal click.
+            // Prefer dispatching clicks to underlying interactive elements so the user's intent
+            // to open/pin another tooltip is honored. Support axis markers and vertex groups.
+            const interactive = under.closest && under.closest('.vertex, .axis-hit, .axis-dot, .hit-target');
+            if (interactive) {
+              // Dispatch a synthetic click on the underlying interactive element so its click handler runs
+              // Use bubbling MouseEvent so listeners see it like a normal click.
               const evt = new MouseEvent('click', { bubbles: true, cancelable: true, clientX: ev.clientX, clientY: ev.clientY });
-              vertex.dispatchEvent(evt);
-              return; // don't unpin; new tooltip handler will manage pin/blocker
+              interactive.dispatchEvent(evt);
+              return; // don't unpin; the clicked element's handler will manage pin/blocker
             }
           }
         } catch (e) {
@@ -1458,9 +1468,17 @@
       if (prefersSheet() && sheetEl && sheetEl.classList.contains('open')) return;
       if (state.ttPinned && !prefersSheet()) return;
       clearTimeout(hideTimer);
-      hideTimer = setTimeout(() => { if (!state.isOverChart && !state.isOverTT) { tt.style('display', 'none'); state.pagerActive = null; clearHighlight(); } }, delay);
+      hideTimer = setTimeout(() => {
+        if (!state.isOverChart && !state.isOverTT) {
+          tt.style('display', 'none');
+          state.pagerActive = null;
+          // clear any active axis highlight when tooltip fully hides
+          try { state.activeAxisId = null; updateAxisSelection(); } catch (_) {}
+          clearHighlight();
+        }
+      }, delay);
     }
-    function hideTT() { tt.style('display', 'none'); state.pagerActive = null; clearHighlight(true); }
+    function hideTT() { tt.style('display', 'none'); state.pagerActive = null; try { state.activeAxisId = null; updateAxisSelection(); } catch (_) {} clearHighlight(true); }
     tt.on('click', () => { /* no-op (pin removed) */ })
       .on('mouseenter', () => { state.isOverTT = true; clearTimeout(hideTimer); }).on('mouseleave', () => {
         state.isOverTT = false;
@@ -1804,8 +1822,10 @@
       // responsive typography: bigger base on desktop, smaller floor on mobile
       const baseTextFont = (w >= 1280) ? 15 : (w >= 1024) ? 14 : (w >= 768) ? 13 : 12; // axis labels
       const baseLevelFont = (w >= 1280) ? 12 : (w >= 1024) ? 11 : (w >= 768) ? 10.5 : 10; // ring labels
-      // responsive padding: with wrapped labels we can afford smaller horizontal padding on phones
-      const padY = 36;
+  // responsive padding: with wrapped labels we can afford smaller horizontal padding on phones
+  // Add a bit more vertical breathing room on desktop so the top-most ring/labels aren't clipped
+  // (mobile retains the original spacing to keep the compact layout).
+  const padY = 36 + (isMobile() ? 0 : 20);
       // On narrow screens, keep a bit more horizontal padding so there is comfortable edge whitespace
       const padX = (w < 520)
         ? Math.max(32, Math.min(90, Math.round(w * 0.15)))
@@ -1895,7 +1915,8 @@
             return isActiveVertex ? Math.max(5, (d.baseRing / k) * SELECTED_RING_SCALE) : base;
           });
           // dimension (axis-end) nodes: inverse-scale like hypothesis nodes
-          g.selectAll('.axis-dot').attr('r', d => { d.baseAxisR = d.baseAxisR || 5; return Math.max(3, d.baseAxisR / k); });
+          g.selectAll('.axis-dot').attr('r', d => { d.baseAxisR = d.baseAxisR || 5; const base = Math.max(3, d.baseAxisR / k); return (state.activeAxisId && state.activeAxisId === d.id) ? Math.max(4, base * AXIS_SELECTED_SCALE) : base; })
+            .attr('stroke-width', d => (state.activeAxisId && state.activeAxisId === d.id) ? 3 : 2);
           // keep larger hit-targets a constant on-screen size for both vertices and axis markers
           g.selectAll('.hit-target').attr('r', d => { d.baseHit = d.baseHit || (prefersSheet() ? 18 : 10); return Math.max(8, d.baseHit / k); });
           g.selectAll('.axis-hit').attr('r', d => { d.baseAxisHit = d.baseAxisHit || (prefersSheet() ? 18 : 10); return Math.max(8, d.baseAxisHit / k); });
@@ -2092,6 +2113,8 @@
         .style('pointer-events', 'all')
         .on('mouseenter mousemove', (e, d) => {
           if (prefersSheet()) return; // ignore hover on mobile; tap opens
+          // visually emphasize the axis-end while hovered
+          try { state.activeAxisId = d.id; updateAxisSelection(); } catch (_) {}
           // Clear any lingering series highlight so the background pointer-in-polygon
           // check doesn’t auto-hide this axis tooltip.
           try { state.lastActiveHypothesis = null; state.activeVertex = null; clearHighlight(true); } catch (_) {}
@@ -2101,25 +2124,54 @@
           const svgEl = svg.node(); const br = getScreenRectForAnchor(e.currentTarget, svgEl) || e.currentTarget.getBoundingClientRect(); const sr = svgEl.getBoundingClientRect();
           showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
         })
-        .on('mouseleave', () => scheduleHide())
+        .on('mouseleave', (e) => {
+          // If tooltip is pinned on desktop, keep it and the highlight
+          if (state.ttPinned && !prefersSheet()) return;
+          // Small delay; if the pointer moved into the tooltip itself, don't hide
+          setTimeout(() => {
+            const el2 = document.elementFromPoint(e.clientX, e.clientY);
+            const overTT = el2 && el2.closest && el2.closest('#tt');
+            if (!overTT) {
+              try { state.activeAxisId = null; updateAxisSelection(); } catch (_) {}
+              hideTT();
+            }
+          }, 40);
+        })
         .on('click', (e, d) => {
-          if (!prefersSheet()) return; // desktop already handled via hover
-          // Prevent the background SVG click handler from immediately closing the sheet
-          // (otherwise the sheet opens and then closes on the same click)
+          // Prevent the background SVG click handler from immediately closing the sheet/tooltip
           try { e.stopPropagation(); } catch (_) {}
-          // Also clear any prior series highlight to avoid conflicting states on mobile
+          // Also clear any prior series highlight to avoid conflicting states
           try { state.lastActiveHypothesis = null; state.activeVertex = null; clearHighlight(true); } catch (_) {}
-          const html = `<h3>${d.label}</h3><div class='sheet-meta'>Axis</div><p style='margin-top:6px'>${d.desc || ''}</p><p style='margin-top:8px'><strong>Levels</strong>: ${d.anchors.join(' • ')}</p>`;
-          const anchorEl = e.currentTarget; // pass the tapped target so sheet can avoid covering it
-          openSheet(html, null, anchorEl);
+          // Mobile: open bottom-sheet as before
+          if (prefersSheet()) {
+            const html = `<h3>${d.label}</h3><div class='sheet-meta'>Axis</div><p style='margin-top:6px'>${d.desc || ''}</p><p style='margin-top:8px'><strong>Levels</strong>: ${d.anchors.join(' • ')}</p>`;
+            const anchorEl = e.currentTarget;
+            openSheet(html, null, anchorEl);
+            try { state.activeAxisId = d.id; updateAxisSelection(); } catch (_) {}
+            return;
+          }
+          // Desktop: show tooltip and pin it (clicking the marker should pin the axis tooltip)
+          const html = `<div><strong>${d.label}</strong></div>` +
+            `<div style='color:var(--muted)'>${d.desc || ''}</div>` +
+            `<div style='margin-top:4px'>Levels: <strong>${d.anchors.join(' • ')}</strong></div>`;
+          const svgEl = svg.node();
+          const br = getScreenRectForAnchor(e.currentTarget, svgEl) || e.currentTarget.getBoundingClientRect();
+          const sr = svgEl.getBoundingClientRect();
+          showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
+          try { state.activeAxisId = d.id; updateAxisSelection(); } catch (_) {}
+          // Pin the tooltip and show the blocker so subsequent clicks behave like popup pinning
+          state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer);
         });
       // Draw the visual axis-end dots as a separate selection so we don't overwrite
       // the interactive hit targets above (which would remove their pointer events).
       helpG.selectAll('circle.axis-dot').data(axes).join('circle')
         .attr('class', 'axis-dot')
+        .each(function(d){ d.baseAxisR = d.baseAxisR || 5; })
         .attr('cx', d => d.x * r).attr('cy', d => d.y * r).attr('r', 5)
         .style('fill', 'var(--panel-bg)').style('stroke', 'var(--muted)').attr('stroke-width', 2)
         .style('pointer-events', 'none');
+      // apply initial axis selection sizing, if any
+      try { updateAxisSelection(); } catch (_) {}
 
       // vertex dots
   const vertexData = sel.flatMap(hh => axes.map(a => { const raw = Hy[hh.id].scores[a.id]; const vv = quantize(raw); const rr = rScale(vv); return { h: hh, c: a, raw, x: a.x * rr, y: a.y * rr }; }));
@@ -2251,6 +2303,19 @@
       // And ensure the axis-end hit targets sit above vertices near the perimeter so
       // taps/hover at the ends of axes trigger the criteria tooltip rather than a nearby vertex.
       try { helpG.raise(); } catch (e) { }
+    }
+    // Helper to apply active styling to axis-end markers based on state.activeAxisId
+    function updateAxisSelection() {
+      try {
+        const k = state.zoomK || 1;
+        d3.select('#chart svg').selectAll('.axis-dot')
+          .attr('r', function (d) {
+            d.baseAxisR = d.baseAxisR || 5;
+            const base = Math.max(3, d.baseAxisR / k);
+            return (state.activeAxisId && state.activeAxisId === d.id) ? Math.max(4, base * AXIS_SELECTED_SCALE) : base;
+          })
+          .attr('stroke-width', d => (state.activeAxisId && state.activeAxisId === d.id) ? 3 : 2);
+      } catch (_) { }
     }
 
     // ---------- Heatmap
