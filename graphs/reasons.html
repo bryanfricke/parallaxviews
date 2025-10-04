@@ -1745,6 +1745,7 @@
         const level = ordinalLabel(item.c.id, item.raw, byId(Data.criteria));
         const note = (byId(Data.hypotheses)[item.h.id].notes || {})[item.c.id] || '';
         const qhtml = quoteHTML(byId(Data.hypotheses), item.h.id, item.c.id);
+        const sw = `<span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(item.h)};margin:0 6px -1px 6px'></span>`;
         // pager at top to avoid vertical shift when content changes
         let content = `<div style='position:relative;display:flex;flex-direction:column;gap:8px;min-width:220px'>` +
           `<div style='display:flex;align-items:center;gap:12px'>` +
@@ -1755,7 +1756,9 @@
           `</div>` +
           `</div>` +
           `<div id='pager-body' style='min-height:56px'>` +
-          `<div style='font-weight:600'>${item.h.label}</div><div>${item.c.label}</div><div>Level: <strong>${level}</strong></div>`;
+          `<div style='font-weight:600;display:flex;align-items:center;gap:6px'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(item.h)}'></span><span>${item.h.label}</span></div>` +
+          `<div><strong>Criteria:</strong> ${item.c.label}</div>` +
+          `<div><strong>Level:</strong> ${level}</div>`;
         if (note) content += `<div style='margin-top:4px;color:var(--muted)'>${note}</div>`;
         content += qhtml;
         content += `</div></div>`;
@@ -2142,7 +2145,10 @@
           const level = ordinalLabel(d.c.id, d.raw, byId(Data.criteria));
           const note = (byId(Data.hypotheses)[d.h.id].notes || {})[d.c.id] || '';
           const qhtml = quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
-          const html = `<div><strong>${d.h.label}</strong></div><div>${d.c.label}</div><div>Level: <strong>${level}</strong></div>` + (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
+          const html = `<div style='font-weight:600;display:flex;align-items:center;gap:6px'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(d.h)}'></span><span>${d.h.label}</span></div>` +
+            `<div><strong>Criteria:</strong> ${d.c.label}</div>` +
+            `<div><strong>Level:</strong> ${level}</div>` +
+            (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
           showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
           highlightSeries(d.h.id, d.c.id);
         })
@@ -2172,7 +2178,8 @@
                 const qhtml = quoteHTML(byId(Data.hypotheses), it.h.id, it.c.id);
                 return `<div class='with-pager'>` +
                   `<div class='hdr'><div class='hdr-left'><div class='pager-info'>Hypothesis ${i + 1}/${overlapping.length}</div><div class='pager'><button type='button' class='pg-left' aria-label='Previous'>&#9664;</button><button type='button' class='pg-right' aria-label='Next'>&#9654;</button></div></div><button type='button' class='hdr-close' aria-label='Close'>×</button></div>` +
-                  `<h3 style='margin:0 0 4px 0'>${it.h.label}</h3><div class='sheet-meta'>${it.c.label}</div>` +
+                  `<h3 style='margin:0 0 4px 0;display:flex;align-items:center;gap:8px'><span style='display:inline-block;width:12px;height:12px;border-radius:3px;background:${getColorFor(it.h)}'></span><span>${it.h.label}</span></h3>` +
+                  `<div><strong>Criteria:</strong> ${it.c.label}</div>` +
                   `<div><strong>Level:</strong> ${level}</div>` +
                   (note ? `<div style='margin-top:6px;color:var(--muted)'>${note}</div>` : '') + qhtml + `</div>`;
               }
@@ -2195,7 +2202,9 @@
               const level = ordinalLabel(d.c.id, d.raw, C);
               const note = (byId(Data.hypotheses)[d.h.id].notes || {})[d.c.id] || '';
               const qhtml = quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
-              const html = `<h3>${d.h.label}</h3><div class='sheet-meta'>${d.c.label}</div><div><strong>Level:</strong> ${level}</div>` + (note ? `<div style='margin-top:6px;color:var(--muted)'>${note}</div>` : '') + qhtml;
+              const html = `<h3 style='display:flex;align-items:center;gap:8px'><span style='display:inline-block;width:12px;height:12px;border-radius:3px;background:${getColorFor(d.h)}'></span><span>${d.h.label}</span></h3>` +
+                `<div><strong>Criteria:</strong> ${d.c.label}</div>` +
+                `<div><strong>Level:</strong> ${level}</div>` + (note ? `<div style='margin-top:6px;color:var(--muted)'>${note}</div>` : '') + qhtml;
               if (sheetEl) sheetEl.classList.remove('has-inline-close');
               const anchorEl = e.currentTarget;
               openSheet(html, { hypId: d.h.id, critId: d.c.id }, anchorEl);
@@ -2214,7 +2223,10 @@
               const level = ordinalLabel(d.c.id, d.raw, C);
               const note = (byId(Data.hypotheses)[d.h.id].notes || {})[d.c.id] || '';
               const qhtml = quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
-              const html = `<div><strong>${d.h.label}</strong></div><div>${d.c.label}</div><div>Level: <strong>${level}</strong></div>` + (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
+              const html = `<div style='font-weight:600;display:flex;align-items:center;gap:6px'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(d.h)}'></span><span>${d.h.label}</span></div>` +
+                `<div><strong>Criteria:</strong> ${d.c.label}</div>` +
+                `<div><strong>Level:</strong> ${level}</div>` +
+                (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
               showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
               highlightSeries(d.h.id, d.c.id);
               // pin
