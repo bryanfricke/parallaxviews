@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tab Order Test</title>
+    <style>
+        button { margin: 10px; padding: 10px; }
+        .focused { background: yellow; }
+    </style>
+</head>
+<body>
+    <h1>Tab Order Test</h1>
+    
+    <button tabindex="1">Button 1 (tabindex=1)</button>
+    <button tabindex="5">Button 5 (tabindex=5)</button>
+    <button tabindex="3">Button 3 (tabindex=3)</button>
+    <button tabindex="2">Button 2 (tabindex=2)</button>
+    <button tabindex="4">Button 4 (tabindex=4)</button>
+    
+    <p>Expected tab order: 1 → 2 → 3 → 4 → 5</p>
+    
+    <script>
+        // Highlight focused element
+        document.addEventListener('focusin', (e) => {
+            document.querySelectorAll('.focused').forEach(el => el.classList.remove('focused'));
+            e.target.classList.add('focused');
+        });
+    </script>
+</body>
+</html>
