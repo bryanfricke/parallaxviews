@@ -800,6 +800,16 @@
             transition: fill 0.2s, stroke 0.2s;
         }
 
+        /* Invisible, larger hit target for touch devices. Keeps visible nodes small
+           while providing a comfortable touch target (~44x44px). The hit circle
+           is pointer-active but visually hidden. */
+        .node circle.hit {
+            fill: transparent !important;
+            stroke: none !important;
+            opacity: 0 !important;
+            pointer-events: all;
+        }
+
         .node circle {
             fill: #e0f7fa;
             stroke: #00796b;
@@ -2268,10 +2278,21 @@
                 // This scales with the node radius so larger nodes on small screens push labels further out.
                 const labelOffset = targetRadius + 8; // px gap from node edge to first text baseline
 
+                // Visible circle (small)
                 nodeEnter.append("circle")
+                    .attr("class", "visible")
                     .attr("r", 1e-6)
                     .attr("fill", d => (d._children ? nodeColor(d) : "#fff"))
                     .attr("stroke", d => nodeColor(d));
+
+                // Invisible hit target circle (larger on touch devices)
+                nodeEnter.append("circle")
+                    .attr("class", "hit")
+                    .attr("r", 1e-6)
+                    .attr("fill", "transparent")
+                    .attr('aria-hidden', 'true')
+                    .attr('focusable', 'false')
+                    .style('pointer-events', 'all');
 
                 const labels = nodeEnter.append("text")
                     .attr("dy", "0em")
@@ -2296,10 +2317,16 @@
                 nodeUpdate.transition().duration(350)
                     .attr("transform", d => `translate(${d.y},${d.x})`)
                     .on("end", () => { updatePopupHelpPosition(); });
-                nodeUpdate.select("circle").transition().duration(350)
+                // Update visible circle radius + styles
+                nodeUpdate.select("circle.visible").transition().duration(350)
                     .attr("r", targetRadius)
                     .attr("fill", d => (d._children ? nodeColor(d) : "#fff"))
                     .attr("stroke", d => nodeColor(d));
+
+                // Update hit circle to be comfortably tappable on small screens
+                const hitRadius = isSmall ? Math.max(20, targetRadius * 2.5) : Math.max(10, targetRadius * 1.6);
+                nodeUpdate.select("circle.hit").transition().duration(350)
+                    .attr("r", hitRadius);
                 nodeUpdate.select("text").transition().duration(350)
                     .attr("x", d => (d.children || d._children) ? -labelOffset : labelOffset)
                     .attr("text-anchor", d => (d.children || d._children) ? "end" : "start");
@@ -2307,7 +2334,8 @@
                 const nodeExit = node.exit().transition().duration(250)
                     .attr("transform", d => `translate(${source.y},${source.x})`)
                     .remove();
-                nodeExit.select("circle").attr("r", 1e-6);
+                nodeExit.select("circle.visible").attr("r", 1e-6);
+                nodeExit.select("circle.hit").attr("r", 1e-6);
 
                 // Stash positions for smooth transitions next time
                 nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
