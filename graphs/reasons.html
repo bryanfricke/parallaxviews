@@ -72,6 +72,11 @@
       margin-left: auto
     }
 
+    /* Mobile-only variant for buttons that should appear in the primary row on small screens */
+    .mobile-only {
+      display: none;
+    }
+
     #controls-panel {
       display: flex;
       gap: 16px;
@@ -92,6 +97,17 @@
         align-items: center;
         gap: 4px;
         font-weight: 500
+      }
+
+      /* Show the mobile-only facts button in the topbar and hide the one inside the controls panel */
+      .mobile-only {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      #controls-panel > #factsBtn {
+        display: none;
       }
 
       #topbar[data-state='collapsed'] #controls-panel {
@@ -718,10 +734,9 @@
     }
 
     /* Make chart axis labels and grid lines use the theme variables so they remain visible in dark mode.
-  IMPORTANT: avoid overriding vertex marker strokes (they live inside the .vertices group). */
+       IMPORTANT: do not override font-size here; D3 manages sizes responsively via attributes/styles. */
     :root[data-theme="dark"] #chart svg text {
       fill: var(--muted);
-      font-size: 12px;
     }
 
     :root[data-theme="dark"] #chart svg line {
@@ -932,6 +947,8 @@
   <div id="topbar" data-state="collapsed">
     <div class="topbar-primary">
       <h1>Resurrection Hypotheses</h1>
+      <!-- Mobile-only Facts button placed to the left of Controls on small screens -->
+      <button id="factsBtnMobile" class="btn primary mobile-only" tabindex="2" aria-expanded="false" aria-controls="factsOverlay" style="margin-right:8px;">Facts</button>
       <button id="controlsToggle" tabindex="1" aria-expanded="false" aria-controls="controls-panel"
         aria-label="Show controls">Controls ▼</button>
     </div>
@@ -1097,6 +1114,9 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     let Data = null; // loaded JSON
+    // Debug flag and helper: enable with ?pv_debug in URL
+    const PV_DEBUG = /(^|[?&])pv_debug(=1|&|$)/.test(window.location.search || '');
+    const dbg = (...args) => { if (PV_DEBUG && typeof console !== 'undefined') { const ts = new Date().toISOString().split('T')[1]; console.log(`[PV ${ts}]`, ...args); } };
     const state = {
       view: 'radar',
       selected: new Set(),
@@ -1108,7 +1128,9 @@
       lastActiveHypothesis: null,
       _highlightClearTimer: null,
       // suppress brief late hides immediately after pin to avoid first-click race
-      _suppressHideUntil: 0
+      _suppressHideUntil: 0,
+      // suppress auto-open on focus after programmatic focus restoration
+      _suppressFocusOpenUntil: 0
     };
   // Selected vertex visual scales
   const SELECTED_DOT_SCALE = 1.35;  // how much bigger than baseline the inner dot gets
@@ -1190,6 +1212,7 @@
         const json = JSON.parse(txt);
         validate(json);
         initialize(json);
+        dbg('initialize: data loaded');
       } catch (err) { alert('Invalid JSON: ' + err.message); }
     }
 
@@ -1419,6 +1442,7 @@
     // anchorRect is an optional DOMRect of the tapped item so we can shift the chart on mobile
     function openSheet(html, highlight = null, anchorRect = null) {
       if (!sheetEl) return;
+      dbg('openSheet', { highlight, hasAnchorRect: !!anchorRect, prefersSheet: prefersSheet() });
       // Store the currently focused element so we can restore focus when sheet closes
       state.sheetTriggerElement = document.activeElement;
       sheetInner.innerHTML = html;
@@ -1558,6 +1582,7 @@
     }
     function closeSheet() {
       if (!sheetEl) return;
+      dbg('closeSheet');
       sheetEl.classList.remove('open');
       sheetEl.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
@@ -1572,6 +1597,8 @@
       
       // Restore focus to the element that triggered the sheet
       if (state.sheetTriggerElement) {
+        // Suppress synthetic open-on-focus handlers briefly so focus restore doesn't reopen the sheet
+        try { state._suppressFocusOpenUntil = Date.now() + 600; } catch(_) {}
         state.sheetTriggerElement.focus();
         state.sheetTriggerElement = null;
       }
@@ -1580,6 +1607,7 @@
     // swipe-down gesture to close
     (function () { if (!sheetEl) return; let startY = null, startT = null; sheetEl.addEventListener('touchstart', e => { if (e.touches.length === 1) { startY = e.touches[0].clientY; startT = Date.now(); } }); sheetEl.addEventListener('touchmove', e => { if (startY == null) return; const dy = e.touches[0].clientY - startY; if (dy > 60) { closeSheet(); startY = null; } }); sheetEl.addEventListener('touchend', () => { startY = null; startT = null; }); })();
     function showTTAt(html, svgEl, sx, sy, dy = -10) {
+      dbg('showTTAt', { mode: prefersSheet() ? 'sheet' : 'tooltip', sx, sy, dy });
       if (prefersSheet()) {
         // compute an approximate anchor rect from svgEl + sx/sy so openSheet can shift the chart
         try {
@@ -1774,6 +1802,7 @@
     }
     function hideTTBlocker() { const b = ensureTTBlocker(); b.style.display = 'none'; }
     function scheduleHide(delay = 200) {
+      dbg('scheduleHide', { delay, ttPinned: state.ttPinned, sheetOpen: !!(sheetEl && sheetEl.classList.contains('open')) });
       // Don't auto-hide while a bottom sheet is open or when the tooltip is pinned on desktop
       if (prefersSheet() && sheetEl && sheetEl.classList.contains('open')) return;
       if (state.ttPinned && !prefersSheet()) return;
@@ -1791,6 +1820,7 @@
       }, delay);
     }
     function hideTT() {
+      dbg('hideTT');
       // If we're within the suppression window, don't hide
       if (Date.now() < (state._suppressHideUntil || 0)) return;
       tt.style('display', 'none'); hideLeaderLine(); state.pagerActive = null; try { state.activeAxisId = null; updateAxisSelection(); } catch (_) {} clearHighlight(true);
@@ -1833,6 +1863,8 @@
       // Set tabindex for hypothesis controls - will be set correctly by global setup
       pill.append('input').attr('type', 'checkbox').attr('checked', true)
         .attr('tabindex', 0)
+        .attr('id', d => `hypothesis-${d.id}`)
+        .attr('name', 'hypothesis-selection')
         .on('change', (e, d) => { e.target.checked ? state.selected.add(d.id) : state.selected.delete(d.id); render(); })
         .on('keydown', (e, d) => {
           // Support both Space and Enter for checkbox toggling
@@ -1859,12 +1891,14 @@
       let modalTriggerElement = null;
       
       d3.select('#helpBtn').on('click', function() { 
+        dbg('help:open');
         modalTriggerElement = this;
         d3.select('#helpOverlay').style('display', 'flex'); 
         d3.select('#helpClose').node().focus(); 
       });
       
       const closeHelpModal = () => {
+        dbg('help:close');
         d3.select('#helpOverlay').style('display', 'none');
         if (modalTriggerElement) {
           modalTriggerElement.focus();
@@ -1878,6 +1912,7 @@
       let dimsModalTrigger = null;
       
       d3.select('#dimsBtn').on('click', function() { 
+        dbg('dims:open');
         dimsModalTrigger = this;
         d3.select('#dimsOverlay').style('display', 'flex'); 
         d3.select('#dimsClose').node().focus(); 
@@ -1885,6 +1920,7 @@
       });
       
       const closeDimsModal = () => {
+        dbg('dims:close');
         d3.select('#dimsOverlay').style('display', 'none'); 
         d3.select('#dimsBtn').attr('aria-expanded', 'false');
         if (dimsModalTrigger) {
@@ -1896,19 +1932,35 @@
       d3.select('#dimsClose').on('click', closeDimsModal);
       d3.select('#dimsOverlay').on('click', function (e) { if (e.target === this) closeDimsModal(); });
 
-      // Facts modal with focus restoration
-      let factsModalTrigger = null;
+  // Facts modal with focus restoration
+  let factsModalTrigger = null;
+  // Mobile trigger element (if present) — declare early so handlers can reference it
+  const fbMobile = document.getElementById('factsBtnMobile');
       
-      d3.select('#factsBtn').on('click', function() { 
+  d3.select('#factsBtn').on('click', function() { 
+        dbg('facts:open');
         factsModalTrigger = this;
         d3.select('#factsOverlay').style('display', 'flex'); 
         d3.select('#factsClose').node().focus(); 
         d3.select('#factsBtn').attr('aria-expanded', 'true'); 
+        // Mirror aria-expanded on the mobile trigger if present
+        if (fbMobile) fbMobile.setAttribute('aria-expanded', 'true');
       });
+
+      // If a mobile-only facts button exists, forward its clicks to the primary facts button
+      if (fbMobile) {
+        fbMobile.addEventListener('click', function () {
+          const primary = document.getElementById('factsBtn');
+          if (primary) primary.click();
+        });
+      }
       
       const closeFactsModal = () => {
+        dbg('facts:close');
         d3.select('#factsOverlay').style('display', 'none'); 
         d3.select('#factsBtn').attr('aria-expanded', 'false');
+        // Also ensure mobile trigger's aria state is cleared when present
+        if (fbMobile) fbMobile.setAttribute('aria-expanded', 'false');
         if (factsModalTrigger) {
           factsModalTrigger.focus();
           factsModalTrigger = null;
@@ -1921,6 +1973,7 @@
       // Consolidated Escape handling: close overlays and tooltips
       window.addEventListener('keydown', (e) => { 
         if (e.key === 'Escape') { 
+          dbg('escape:global');
           hideTT(); 
           // Close modals with proper focus restoration
           if (d3.select('#helpOverlay').style('display') !== 'none') {
@@ -2040,6 +2093,7 @@
 
     // Highlight a hypothesis series (polygon and pill) by id
     function highlightSeries(hypId, critId = null) {
+      dbg('highlightSeries', { hypId, critId, zoomK: state.zoomK });
       // record last active
       state.lastActiveHypothesis = hypId;
       state.activeVertex = critId ? { hypId, critId } : null;
@@ -2126,9 +2180,11 @@
     }
 
     function clearHighlight(immediate = false) {
+      dbg('clearHighlight:requested', { immediate });
       // delay returning to default to allow quick move to another vertex of same hypothesis
       if (state._highlightClearTimer) clearTimeout(state._highlightClearTimer);
       const run = () => {
+        dbg('clearHighlight:run');
         d3.selectAll('.hyp-polygon').style('opacity', null).style('filter', null);
         d3.selectAll('.pill').style('opacity', null);
         // reset all vertex dots to baseline size, color, and opacity
@@ -2158,6 +2214,7 @@
 
     // Show a tooltip with pager controls for overlapping vertices
     function showPagedTooltip(list, startIndex, svgEl, br, sr) {
+      dbg('showPagedTooltip', { startIndex, items: list.map(i => `${i.h.id}@${i.c.id}`) });
       let idx = startIndex || 0;
       // If pager is already active for the same list and index, avoid re-rendering
       const key = list.map(i => i.h.id + '@' + i.c.id).join('|');
@@ -2365,7 +2422,7 @@
       // remember zoom instance so other code can programmatically change the transform
       state.currentZoom = zoom;
       // on zoom end ensure lastTransform is current (helps when programmatically animating transforms)
-      zoom.on('end', (e) => { try { state.lastTransform = e.transform; } catch (err) { } });
+  zoom.on('end', (e) => { try { state.lastTransform = e.transform; dbg('zoom:end', { k: e.transform.k, x: e.transform.x, y: e.transform.y }); } catch (err) { } });
       // Only enable zoom when interacting with the SVG background (not when interacting with interactive elements)
       svg.call(zoom.filter(function (event) {
         const t = event.target;
@@ -2541,6 +2598,7 @@
           if (prefersSheet()) return; // ignore hover on mobile; tap opens
           // visually emphasize the axis-end while hovered
           try { state.activeAxisId = d.id; updateAxisSelection(); } catch (_) {}
+          dbg('axis:hover', { id: d.id });
           // Clear any lingering series highlight so the background pointer-in-polygon
           // check doesn’t auto-hide this axis tooltip.
           try { state.lastActiveHypothesis = null; state.activeVertex = null; clearHighlight(true); } catch (_) {}
@@ -2553,6 +2611,8 @@
         .on('mouseleave', (e) => {
           // If tooltip is pinned on desktop, keep it and the highlight
           if (state.ttPinned && !prefersSheet()) return;
+          // On mobile, if the bottom sheet is open, don't trigger hideTT or clear axis selection.
+          if (prefersSheet() && sheetEl && sheetEl.classList.contains('open')) return;
           // Small delay; if the pointer moved into the tooltip itself, don't hide
           setTimeout(() => {
             const el2 = document.elementFromPoint(e.clientX, e.clientY);
@@ -2564,6 +2624,8 @@
           }, 40);
         })
         .on('focus', (e, d) => { 
+          // If we're restoring focus after closing the sheet, don't auto-open
+          if (Date.now() < (state._suppressFocusOpenUntil || 0)) return;
           // Emphasize and open on focus just like a click/tap
           try { state.activeAxisId = d.id; updateAxisSelection(); } catch (_) {}
           try {
@@ -2571,8 +2633,31 @@
             e.currentTarget.dispatchEvent(evt);
           } catch (_) {}
         })
-  .on('blur', () => { try { state.activeAxisId = null; updateAxisSelection(); } catch (_) {} })
+        // Do not immediately clear selection on blur. On mobile, focus moves to the bottom sheet
+        // which would cause a jarring flash (grow then shrink). Defer and only clear if we're not
+        // opening/using the sheet and focus did not move to another chart element.
+        .on('blur', (e, d) => {
+          try {
+            setTimeout(() => {
+              const sheetOpen = prefersSheet() && sheetEl && sheetEl.classList.contains('open');
+              // If focus moved to another interactive element inside the chart, keep selection
+              let focusWithinChart = false;
+              try {
+                const a = document.activeElement;
+                focusWithinChart = !!(a && a.closest && a.closest('#chart'));
+              } catch (_) { /* ignore */ }
+              // If activeAxisId changed to a different axis, a new selection is active—don't clear
+              dbg('axis:blur', { id: d.id, sheetOpen, focusWithinChart, currentActiveAxisId: state.activeAxisId });
+              if (sheetOpen || focusWithinChart || (state.activeAxisId && state.activeAxisId !== d.id)) return;
+              state.activeAxisId = null;
+              updateAxisSelection();
+            }, 0);
+          } catch (_) { /* noop */ }
+        })
         .on('click', (e, d) => {
+          dbg('axis:click', { id: d.id, prefersSheet: prefersSheet() });
+          // Sync clicked element with tab navigation
+          try { syncClickWithTabOrder(e.currentTarget); } catch (_) {}
           // Ensure any pending hide from hover/mouseleave is cancelled before pinning
           try { clearTimeout(hideTimer); } catch(_) {}
           // Prevent the background SVG click handler from immediately closing the sheet/tooltip
@@ -2660,6 +2745,8 @@
         .attr('role', 'button')
         .attr('aria-label', d => `Hypothesis ${d.h.label}, criteria ${d.c.label}. Press Enter to open details, Left/Right to switch hypothesis, Up/Down to change criteria.`)
         .on('focus', function(e, d) {
+          // If we're restoring focus after closing the sheet, don't auto-open
+          if (Date.now() < (state._suppressFocusOpenUntil || 0)) return;
           // Open on focus (keyboard tab) just like a click; this pins on desktop and opens sheet on mobile
           try {
             const evt = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
@@ -2668,6 +2755,8 @@
         })
         .on('mouseenter mousemove', (e, d) => {
           if (prefersSheet()) return; // disable hover tooltips on mobile; use tap
+          // If an axis (criterion) is currently highlighted, clear it when focusing a vertex
+          try { if (state.activeAxisId) { state.activeAxisId = null; updateAxisSelection(); } } catch (_) {}
           const svgEl = svg.node(); const br = getScreenRectForAnchor(e.currentTarget, svgEl) || e.currentTarget.getBoundingClientRect(); const sr = svgEl.getBoundingClientRect();
           // find overlapping vertices (tolerance in local coords, inverse-scaled by zoom)
           const tol = (prefersSheet() ? 10 : 3.5) / (state.zoomK || 1); // wider tolerance for touch
@@ -2695,9 +2784,14 @@
         .on('mouseleave', () => { if (!prefersSheet()) scheduleHide(); })
         // tap/click (mobile) opens bottom sheet
         .on('click', (e, d) => {
+          dbg('vertex:click', { hyp: d.h.id, crit: d.c.id, prefersSheet: prefersSheet() });
+          // Sync clicked element with tab navigation  
+          try { syncClickWithTabOrder(e.currentTarget); } catch (_) {}
           // Cancel any pending tooltip auto-hide before we pin
           try { clearTimeout(hideTimer); } catch(_) {}
           e.stopPropagation();
+          // Clear any active axis highlight when selecting a vertex
+          try { if (state.activeAxisId) { state.activeAxisId = null; updateAxisSelection(); } } catch(_) {}
           const tol = (prefersSheet() ? 10 : 3.5) / (state.zoomK || 1);
           const overlapping = vertexData.filter(v => Math.hypot(v.x - d.x, v.y - d.y) <= tol);
           const C = byId(Data.criteria);
@@ -2711,6 +2805,7 @@
           if (prefersSheet()) {
             // mobile: existing bottom-sheet behavior
             if (overlapping.length > 1) {
+              dbg('vertex:click->sheet:pager', { count: overlapping.length });
               let idx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
               if (idx < 0) idx = 0;
               function sheetContent(i) {
@@ -2741,6 +2836,7 @@
                 area.ontouchend = ev => { if (startX == null) return; const dx = (ev.changedTouches[0].clientX - startX); if (Math.abs(dx) > 50) { idx = (idx + (dx < 0 ? 1 : -1) + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); } startX = null; };
               }
             } else {
+              dbg('vertex:click->sheet:single');
               const level = ordinalLabel(d.c.id, d.raw, C);
               const note = (byId(Data.hypotheses)[d.h.id].notes || {})[d.c.id] || '';
               const qhtml = quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
@@ -2755,6 +2851,7 @@
           } else {
             // Desktop: clicking a marker pins the tooltip. Show the same content as hover/pager and pin it.
             if (overlapping.length > 1) {
+              dbg('vertex:click->desktop:pager', { count: overlapping.length });
               // show the paged tooltip and pin it
               let startIdx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
               if (startIdx < 0) startIdx = 0;
@@ -2770,6 +2867,7 @@
               try { const t = Date.now() + 250; state._suppressClickUntil = t; state._suppressHideUntil = t; } catch(_) {}
               updateLeaderLine();
             } else {
+              dbg('vertex:click->desktop:single');
               const level = ordinalLabel(d.c.id, d.raw, C);
               const note = (byId(Data.hypotheses)[d.h.id].notes || {})[d.c.id] || '';
               const qhtml = quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
@@ -2862,6 +2960,8 @@
         // Activation
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
+          // Clear any active axis highlight when activating a vertex via keyboard
+          try { if (state.activeAxisId) { state.activeAxisId = null; updateAxisSelection(); } } catch(_) {}
           if (overlapping.length > 1) {
             const startIdx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
             openPagerAt(startIdx >= 0 ? startIdx : 0);
@@ -2976,16 +3076,21 @@
     let currentTabIndex = -1;
     let tabOrder = [];
     let tabEventListenersSetup = false;
+    let controlCount = 0;
 
     function setupTabOrder() {
       // Build ordered list of focusable elements in the desired sequence
       tabOrder = [];
       
-      // 1. Add controls
-      ['controlsToggle', 'factsBtn', 'dimsBtn', 'helpBtn', 'themeToggle'].forEach(id => {
+      // 1. Add controls (only if visible)
+  ['controlsToggle', 'factsBtnMobile', 'factsBtn', 'dimsBtn', 'helpBtn', 'themeToggle'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-          tabOrder.push(el);
+          // Check if element is visible (not display:none or visibility:hidden)
+          const style = window.getComputedStyle(el);
+          if (style.display !== 'none' && style.visibility !== 'hidden') {
+            tabOrder.push(el);
+          }
         }
       });
       
@@ -3067,6 +3172,7 @@
             e.preventDefault();
             
             const direction = e.shiftKey ? -1 : 1;
+            const prevIndex = currentTabIndex;
             let newIndex = currentTabIndex + direction;
             
             // Wrap around
@@ -3076,12 +3182,53 @@
               newIndex = tabOrder.length - 1;
             }
             
+            // Check if we're moving from chart back to controls and clear highlights
+            if (prevIndex >= controlCount && newIndex < controlCount) {
+              try {
+                // Hide tooltip and leader line
+                const tt = d3.select('#tt');
+                if (tt && !tt.empty()) {
+                  tt.style('display', 'none');
+                }
+                if (typeof hideLeaderLine === 'function') hideLeaderLine();
+                
+                // Clear chart state
+                state.activeAxisId = null;
+                state.activeVertex = null; 
+                state.lastActiveHypothesis = null;
+                state.pagerActive = null;
+                
+                // Update visual state
+                if (typeof updateAxisSelection === 'function') updateAxisSelection();
+                if (typeof clearHighlight === 'function') clearHighlight(true);
+              } catch (e) {
+                // Silently handle any errors in clearing highlights
+              }
+            }
+            
             focusElementAtIndex(newIndex);
           }
         });
         
         tabEventListenersSetup = true;
       }
+      
+      // Calculate where control elements end and chart elements begin in tabOrder
+      controlCount = 0;
+      
+      // Count visible control buttons
+      ['controlsToggle', 'factsBtnMobile', 'factsBtn', 'dimsBtn', 'helpBtn', 'themeToggle'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          const style = window.getComputedStyle(el);
+          if (style.display !== 'none' && style.visibility !== 'hidden') {
+            controlCount++;
+          }
+        }
+      });
+      
+      // Add hypothesis checkboxes count
+      controlCount += document.querySelectorAll('#hypotheses input[type="checkbox"]').length;
       
       // Remove old focus listeners and add new ones
       tabOrder.forEach((el, index) => {
@@ -3090,7 +3237,22 @@
         
         // Create new focus handler
         el._tabFocusHandler = () => {
+          const prevIndex = currentTabIndex;
           currentTabIndex = index;
+          
+          // If focus moves from chart area (radar elements) back to controls, clear highlights
+          if (prevIndex >= controlCount && index < controlCount) {
+            try {
+              console.log('Clearing chart highlights - focus returned to controls');
+              state.activeAxisId = null;
+              state.activeVertex = null;
+              state.lastActiveHypothesis = null;
+              if (typeof updateAxisSelection === 'function') updateAxisSelection();
+              if (typeof clearHighlight === 'function') clearHighlight(true);
+            } catch (e) {
+              console.log('Error clearing highlights:', e);
+            }
+          }
         };
         
         el.addEventListener('focus', el._tabFocusHandler);
@@ -3104,6 +3266,15 @@
         return true;
       }
       return false;
+    };
+
+    // Sync mouse click with tab navigation
+    const syncClickWithTabOrder = (clickedElement) => {
+      // Find the clicked element in the tab order
+      const index = tabOrder.indexOf(clickedElement);
+      if (index !== -1) {
+        currentTabIndex = index;
+      }
     };
 
     // ---------- Heatmap
@@ -3197,6 +3368,17 @@
       // Start at first element
       focusElementAtIndex(0);
     }, 2000);
+
+    // Load debug-tabindex.js if debug mode is on
+    if (PV_DEBUG) {
+      try {
+        const s = document.createElement('script');
+        s.src = '../debug-tabindex.js';
+        s.async = true;
+        document.body.appendChild(s);
+        dbg('debug-tabindex.js injected');
+      } catch (_) { /* ignore */ }
+    }
   </script>
 </body>
 
