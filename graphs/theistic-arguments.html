@@ -49,6 +49,10 @@
       --attr-fill: #94a3b8;
       --text-glow-color: rgba(255, 255, 255, 0.9);
       --node-selection-color: rgba(255, 255, 255, 0.6);
+      /* Dynamic layout helpers (updated via JS on load/resize) */
+      --app-dvh: 100dvh;           /* measured visual viewport height fallback */
+      --header-total: 120px;       /* header + top padding (desktop rule uses this) */
+      --content-offset: 110px;     /* header + top+bottom padding (mobile rule uses this) */
       
       /* Light mode argument colors (ColorBrewer Set1) - default */
       --kalam-color: #1B9E77;
@@ -150,7 +154,7 @@
     html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial; }
   /* Remove vertical margins to prevent cumulative height overflow and use padding instead. */
   /* Respect safe-area insets on iOS (adds no-op 0px fallback for other browsers). */
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px calc(16px + env(safe-area-inset-right, 0px)) 20px calc(16px + env(safe-area-inset-left, 0px)); box-sizing: border-box; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 20px calc(16px + env(safe-area-inset-right, 0px)) calc(20px + env(safe-area-inset-bottom, 0px)) calc(16px + env(safe-area-inset-left, 0px)); box-sizing: border-box; }
   .page-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:nowrap; padding:12px 0 8px 0; }
     h1 { font-size: 20px; line-height: 1.1; margin: 0; font-weight: 700; flex: 1 1 auto; min-width: 0; }
 
@@ -176,9 +180,10 @@
 
   /* Smaller chart height on narrow viewports so it fits mobile screens more comfortably */
   @media (max-width: 600px) {
-    /* Use the smaller of a vh-based height or the dynamic viewport minus an offset
-       so the chart reliably fits on phones (accounts for browser UI chrome). */
-    svg { height: min(80vh, calc(100dvh - 50px)); }
+    /* On phones, size the chart by the dynamic viewport (visual viewport) minus
+       the actual content offset we measure in JS (header + vertical padding).
+       This avoids the classic iOS Chrome/Safari 100vh clipping. */
+    svg { height: calc(var(--app-dvh, 100dvh) - var(--content-offset, 110px)); }
   }
 
   /* Node rectangles: keep fully opaque so links underneath don't show through (prevents two-tone artifact). */
@@ -299,6 +304,37 @@
 
   <script>
       (async () => {
+        // Measure dynamic viewport and layout offsets so mobile browsers (esp. iOS Chrome)
+        // get a correct SVG height without clipping the bottom.
+        function updateViewportVars(){
+          try {
+            // Prefer visualViewport height when available; fall back to innerHeight.
+            const dvh = (window.visualViewport ? window.visualViewport.height : window.innerHeight) || window.innerHeight;
+            document.documentElement.style.setProperty('--app-dvh', dvh + 'px');
+            // Compute the total vertical space above/below the chart (header row + wrap paddings)
+            const wrap = document.querySelector('.wrap');
+            const header = document.querySelector('.page-header');
+            let offset = 110; // default fallback
+            let headerTotal = 120; // desktop fallback used in CSS calc
+            if (wrap && header) {
+              const wrapCS = getComputedStyle(wrap);
+              const padTop = parseFloat(wrapCS.paddingTop) || 0;
+              const padBottom = parseFloat(wrapCS.paddingBottom) || 0;
+              const hRect = header.getBoundingClientRect();
+              // Use header height plus top padding as the amount above the chart; include bottom padding too for mobile
+              headerTotal = Math.round(hRect.height + padTop);
+              offset = Math.round(hRect.height + padTop + padBottom);
+            }
+            document.documentElement.style.setProperty('--content-offset', offset + 'px');
+            document.documentElement.style.setProperty('--header-total', headerTotal + 'px');
+          } catch (e) { /* ignore measurement errors */ }
+        }
+        updateViewportVars();
+        // Update on resize/zoom and when the browser UI changes size (iOS address bar hide/show)
+        window.addEventListener('resize', updateViewportVars, { passive: true });
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener('resize', updateViewportVars, { passive: true });
+        }
         // Theme handling: toggle and persist theme in localStorage
         const themeKey = 'pv_theme';
         function applyTheme(t){ 
