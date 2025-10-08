@@ -976,7 +976,7 @@
 
   <div id="main">
     <div id="chart" aria-live="polite">
-      <div id="loader" class="small">Loading data from <code>data/resurrection-data.json</code>…</div>
+      <div id="loader" class="small">Loading data from <code>data/hypotheses.json</code>…</div>
     </div>
     <!-- Facts modal overlay (opened by Facts button) -->
     <div id="factsOverlay" class="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="factsTitle"
@@ -1063,13 +1063,17 @@
         <p><strong>Colors</strong><br>Colors distinguish hypotheses (not the numeric magnitude of scores). The radar
           uses colored outlines and filled polygons for visual grouping.</p>
         <p><strong>Tooltips</strong><br>
-          Desktop: Hover a dot (vertex) to see band, any short note, and an optional source quote (closes when you move
-          away or press Esc).<br>
+          Desktop: Hover a dot (vertex) to see the criterion's ordinal band (Low / Medium / High), any short note, and
+          an optional source quote. Hover
+          tooltips close when you move the pointer away or press Esc. You can click a vertex to pin its tooltip; once
+          pinned it stays open, can be moved (drag) to a convenient position, and will show a leader line back to the
+          anchored vertex. Close a pinned tooltip with the × button, by pressing Esc, or by clicking the chart background.
+          <br>
           Mobile: Tap a vertex to open a bottom sheet with the same details; swipe down or tap × to dismiss. When
           multiple hypotheses share a vertex, use the left/right pager controls (or swipe) to cycle through them.</p>
         <p class="small" style="margin-top:8px;color:var(--muted)">Note for advanced users: the snapping behavior, band
           anchors, and the underlying numeric assessments are driven by the JSON data in
-          <code>graphs/data/resurrection-data.json</code>. If you prefer a different segmentation (for example,
+          <code>graphs/data/hypotheses.json</code>. If you prefer a different segmentation (for example,
           quartiles or a continuous scale), adjust the data or the quantization function in the script.</p>
       </div>
     </div>
@@ -1205,7 +1209,7 @@
     });
     // Initialize state (collapsed on mobile, expanded otherwise)
     setTimeout(() => { setControls(!isMobile() ? true : false); }, 0);
-    // drag/drop removed; page will attempt to auto-load `data/resurrection-data.json` on load
+    // drag/drop removed; page will attempt to auto-load `data/hypotheses.json` on load
 
     function loadFromText(txt) {
       try {
@@ -3318,7 +3322,7 @@
     // try to auto-load the local data file; fall back to a brief instruction if fetch fails
     (async function () {
       try {
-        const resp = await fetch('data/resurrection-data.json');
+        const resp = await fetch('data/hypotheses.json');
         if (!resp.ok) throw new Error(resp.status + ' ' + resp.statusText);
         const txt = await resp.text();
         loadFromText(txt);
@@ -3327,7 +3331,7 @@
         const exampleHint = document.createElement('div');
         exampleHint.className = 'small';
         exampleHint.style.padding = '10px 14px';
-        exampleHint.innerHTML = 'Failed to load <code>data/resurrection-data.json</code>. Use <b>Load JSON file</b> or paste a URL into the input.';
+        exampleHint.innerHTML = 'Failed to load <code>data/hypotheses.json</code>. Use <b>Load JSON file</b> or paste a URL into the input.';
         document.getElementById('main').prepend(exampleHint);
         if (loader) loader.style.display = 'none';
         console.warn('Auto-load failed:', err);
