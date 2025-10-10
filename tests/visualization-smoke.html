@@ -50,11 +50,14 @@
 // Because this file lives in /tests/, use ../ to reach site root items.
 const ROOT_PREFIX = '../';
 function p(rel){ return rel.startsWith('../') ? rel : ROOT_PREFIX + rel; }
+// Toggle to make console errors/unhandled promise rejections mark the page as FAILED.
+// Set to `true` to be strict (useful in CI), or leave `false` for permissive local checks.
+const FAIL_ON_ERRORS = false;
 const PAGES = [
   { path:p('index.html'), keySelector:'body', label:'Home / Index'},
   { path:p('graphs/resurrectionHypotheses.html'), keySelector:'#chart svg', label:'Resurrection Hypotheses (static data)'},
   { path:p('graphs/resurrectionHypotheses2.html'), keySelector:'#chart svg', label:'Resurrection Hypotheses 2'},
-  { path:p('graphs/reasons.html'), keySelector:'#chart svg', label:'Reasons (JSON loader)'},
+  { path:p('graphs/hypotheses.html'), keySelector:'#chart svg', label:'Hypotheses (JSON loader)'},
   { path:p('graphs/minimalFactsTidyTree.html'), keySelector:'svg', label:'Minimal Facts Tidy Tree'},
   { path:p('graphs/minimalFactsRadialTree.html'), keySelector:'svg', label:'Minimal Facts Radial Tree'},
   { path:p('graphs/minimalFactsDisjointForceDirectedGraph.html'), keySelector:'svg', label:'Minimal Facts Disjoint Force Graph'},
@@ -98,6 +101,23 @@ async function run(){
 
     const start = performance.now();
   const iframe = document.createElement('iframe');
+  // Capture console errors and global errors from the iframe for diagnostics.
+  // We collect them and print into the per-frame log; we don't aggressively fail the test
+  // on any console message to avoid false negatives, but having these messages visible
+  // helps quickly spot runtime problems (fetch failures, uncaught exceptions).
+  const collectedErrors = [];
+  try {
+    const win = iframe.contentWindow;
+    if (win && win.console) {
+      const origErr = win.console.error && win.console.error.bind(win.console);
+      const origWarn = win.console.warn && win.console.warn.bind(win.console);
+      win.console.error = function(...args){ collectedErrors.push({type:'console.error', args}); if(origErr) origErr(...args); };
+      win.console.warn = function(...args){ collectedErrors.push({type:'console.warn', args}); if(origWarn) origWarn(...args); };
+      // Catch synchronous errors and promise rejections
+      win.addEventListener('error', e=>{ collectedErrors.push({type:'error', message: e.message, filename: e.filename, lineno: e.lineno}); });
+      win.addEventListener('unhandledrejection', e=>{ collectedErrors.push({type:'unhandledrejection', reason: String(e.reason)}); });
+    }
+  } catch(e){ /* cross-origin or not ready yet; we'll attempt to attach after load if possible */ }
   // NOTE: Removed iframe.loading = 'lazy' because hidden (display:none) + lazy frames were never loading,
   // causing artificial timeouts until the user expanded the row. We attach listeners before setting src.
 
@@ -122,7 +142,7 @@ async function run(){
           notesEl.textContent = 'Cannot access document';
           return;
         }
-        // Some pages (e.g., reasons.html) create the SVG only after async data fetch.
+  // Some pages (e.g., hypotheses.html) create the SVG only after async data fetch.
         // Poll for the key selector for up to pollTimeout ms before declaring failure.
         const pollTimeout = 5000; // ms after load
         const pollInterval = 120; // ms
@@ -130,18 +150,27 @@ async function run(){
         function tryKey(){
           let keyEl = null;
           try{ keyEl = doc.querySelector(page.keySelector); }catch(e){ /* invalid selector */ }
-          if(keyEl){
-            stEl.textContent = 'PASS';
-            stEl.className = 'status pass';
-            elEl.textContent = 'Found';
-            const appearMs = Math.round(performance.now() - t0);
-            notesEl.textContent = appearMs < 50 ? 'Loaded & key element present' : `Key element appeared after ${appearMs}ms (async)`;
-            // Extra diagnostics
-            const svgCount = doc.querySelectorAll('svg').length;
-            if(svgCount){ log(logEl, `SVG elements: ${svgCount}`); }
-            const bodyText = doc.body.innerText.slice(0,400).toLowerCase();
-            if(bodyText.includes('error')) log(logEl, 'Contains the word "error" (manual inspect).');
-          } else if(performance.now() - t0 < pollTimeout){
+            if(keyEl){
+              stEl.textContent = 'PASS';
+              stEl.className = 'status pass';
+              elEl.textContent = 'Found';
+              const appearMs = Math.round(performance.now() - t0);
+              notesEl.textContent = appearMs < 50 ? 'Loaded & key element present' : `Key element appeared after ${appearMs}ms (async)`;
+              // Extra diagnostics
+              const svgCount = doc.querySelectorAll('svg').length;
+              if(svgCount){ log(logEl, `SVG elements: ${svgCount}`); }
+              const bodyText = doc.body.innerText.slice(0,400).toLowerCase();
+              if(bodyText.includes('error')) log(logEl, 'Contains the word "error" (manual inspect).');
+              // Surface collected console errors/warnings and runtime exceptions
+              if(collectedErrors && collectedErrors.length){
+                notesEl.textContent += ` — ${collectedErrors.length} console messages/errors`;
+                collectedErrors.forEach((e,i)=> log(logEl, `#${i+1} ${e.type}: ${e.message || JSON.stringify(e.args || e.reason)}`));
+                if(FAIL_ON_ERRORS){
+                  stEl.textContent = 'FAIL (console)';
+                  stEl.className = 'status fail';
+                }
+              }
+            } else if(performance.now() - t0 < pollTimeout){
             setTimeout(tryKey, pollInterval);
           } else {
             stEl.textContent = 'No key element';
