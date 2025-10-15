@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Pager Fix</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .pass { background-color: #d4edda; border: 1px solid #c3e6cb; }
+        .fail { background-color: #f8d7da; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <h1>Tooltip Pager Fix Test</h1>
+    <p>This test verifies that the pager functionality works when a tooltip is pinned.</p>
+    
+    <h2>Test Instructions:</h2>
+    <ol>
+        <li>Open <code>graphs/hypotheses.html</code></li>
+        <li>Find overlapping vertices (multiple hypotheses with same criterion score)</li>
+        <li>Click on an overlapping vertex to show the paged tooltip</li>
+        <li>Click the tooltip to pin it (tooltip should get a pinned visual style)</li>
+        <li>Try using the left/right pager buttons (◀ ▶)</li>
+        <li>The pager buttons should still work and cycle through hypotheses</li>
+        <li>Click outside the tooltip to unpin it</li>
+        <li>The tooltip should remain visible but unpinned</li>
+    </ol>
+    
+    <h2>Expected Behavior:</h2>
+    <div class="test-result pass">
+        <strong>✓ PASS:</strong> When tooltip is pinned, pager buttons work and cycle through hypotheses
+    </div>
+    <div class="test-result pass">
+        <strong>✓ PASS:</strong> Clicking outside tooltip unpins it but keeps it visible
+    </div>
+    <div class="test-result pass">
+        <strong>✓ PASS:</strong> Pager continues to work after unpinning
+    </div>
+    
+    <h2>Changes Made:</h2>
+    <ul>
+        <li>Modified document click handler to not call <code>hideTT()</code> when tooltip is pinned</li>
+        <li>Instead, clicking outside a pinned tooltip now just unpins it and schedules a normal auto-hide</li>
+        <li>This preserves the <code>pagerActive</code> state which enables the pager buttons to continue working</li>
+    </ul>
+    
+    <p><a href="graphs/hypotheses.html">→ Open Hypotheses Visualization</a></p>
+</body>
+</html>

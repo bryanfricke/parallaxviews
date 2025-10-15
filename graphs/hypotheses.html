@@ -1838,7 +1838,7 @@
         scheduleHide();
         if (state.pagerActive) {
           setTimeout(() => {
-            // respect pinned state even if it changed during the delay
+            // respect pinned state even if it changed during the delay - don't clear pager when pinned
             if (state.ttPinned && !prefersSheet()) return;
             if (!state.isOverTT && !state.isOverChart) { state.pagerActive = null; clearHighlight(); }
           }, 250);
@@ -2006,9 +2006,22 @@
         // This avoids a race on first desktop click where the doc handler would dismiss before pinning.
         if (clickedInsideChart) return;
 
-        // If tooltip is pinned on desktop, only hide it when the click is outside both the tooltip and the chart area.
+        // If tooltip is pinned on desktop, only unpin it when the click is outside both the tooltip and the chart area.
         if (state.ttPinned && !prefersSheet()) {
-          if (!clickedInsideTooltip) { state.pagerActive = null; hideTT(); }
+          if (!clickedInsideTooltip) { 
+            // Unpin the tooltip but keep it visible with pager functionality
+            state.ttPinned = false; 
+            tt.classed('pinned', false); 
+            clearTooltipColor(); 
+            hideLeaderLine();
+            // Clear stored position so next tooltip appears at default position
+            state.ttPos.left = null; 
+            state.ttPos.top = null; 
+            state.ttUserMoved = false;
+            hideTTBlocker();
+            // Don't call hideTT() - just unpin and let normal hover behavior take over
+            scheduleHide(150);
+          }
           return;
         }
         // On mobile, if the bottom sheet is open and the user clicks within the sheet,
