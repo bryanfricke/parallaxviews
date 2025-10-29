@@ -164,22 +164,93 @@
                     "subtitle": "Jewish same-day burial custom for the executed and Roman permissions",
                     "children": [
                         {
-                            "name": "Hebrew Bible",
-                            "subtitle": "Foundational Jewish scriptures; source of the law requiring same-day burial for the executed",
+                            "name": "Hebrew Bible and Paul",
+                            "subtitle": "Torah basis for same-day burial and Paul’s citation of the key verse",
                             "children": [
-                                        {
-                                            "name": "Deuteronomy 21:22–23",
+                                {
+                                    "name": "Deuteronomy 21:22–23",
                                     "subtitle": "Remove the body the same day",
-                                    "date": "c. 7th–5th century BC ",
-                                    "details": "The law commands that if someone is executed and their body is displayed, it must not remain overnight; they must be buried the same day so the land is not defiled.",
+                                    "date": "c. 7th–5th century BC",
+                                    "details": "The law commands that if someone is executed and their body is displayed, it must not remain overnight. The person must be buried the same day so the land is not defiled.",
                                     "whyItMatters": [
                                         "Primary source for the Jewish same-day burial norm.",
-                                        "Explains urgency to remove bodies before nightfall/Sabbath.",
+                                        "Explains urgency to remove bodies before nightfall or Sabbath.",
                                         "Background for later Jewish practice referenced by Josephus and the Gospels."
                                     ],
                                     "source": {
-                                        "title": "Deuteronomy 21:22-23",
+                                        "title": "Deuteronomy 21:22–23",
                                         "url": "https://www.biblegateway.com/passage/?search=Deuteronomy+21%3A22-23&version=ESV"
+                                    },
+                                    "kind": "evidence"
+                                },
+                                {
+                                    "name": "Galatians 3:13",
+                                    "subtitle": "Paul cites Deuteronomy 21:23, hanged on a tree",
+                                    "date": "c. AD 48–55",
+                                    "details": "Paul quotes the Deuteronomic clause about one who is hanged being under a curse. His focus is theological, but it presumes the same law that required removal and burial the same day.",
+                                    "whyItMatters": [
+                                        "Direct quotation of the verse that grounds the same-day burial rule.",
+                                        "Shows early Christian awareness of the legal and cultural frame for crucifixion.",
+                                        "Bridges Torah law and apostolic interpretation relevant to burial timing."
+                                    ],
+                                    "source": {
+                                        "title": "Galatians 3:13",
+                                        "url": "https://www.biblegateway.com/passage/?search=Galatians+3%3A13&version=ESV"
+                                    },
+                                    "kind": "evidence"
+                                }
+                            ],
+                            "kind": "collection"
+                        },
+                        {
+                            "name": "Second Temple & Rabbinic Texts",
+                            "subtitle": "Later Jewish interpretations that confirm and elaborate the same-day burial command",
+                            "children": [
+                                {
+                                    "name": "Temple Scroll 11QT 64:7–13",
+                                    "subtitle": "Dead Sea Scroll reiteration of Deuteronomy’s burial law",
+                                    "date": "c. 2nd–1st century BC",
+                                    "details": "The Temple Scroll restates that those executed by hanging must not remain overnight but be buried the same day, applying the law even to foreigners within the camp.",
+                                    "whyItMatters": [
+                                        "Confirms Second Temple adherence to the Deuteronomic rule.",
+                                        "Shows Jewish communities at Qumran extended the law’s application beyond Israelite offenders.",
+                                        "Illustrates continuity between Torah and sectarian legal observance."
+                                    ],
+                                    "source": {
+                                        "title": "11QT (Temple Scroll) 64:7–13",
+                                        "url": "https://www.deadseascrolls.org.il/explore-the-archive/manuscript/11Q19-1"
+                                    },
+                                    "kind": "evidence"
+                                },
+                                {
+                                    "name": "Mishnah Sanhedrin 6:4–5",
+                                    "subtitle": "No corpse to remain hanging overnight",
+                                    "date": "c. AD 200 (reflecting earlier oral tradition)",
+                                    "details": "The Mishnah rules that one who is hanged must not remain overnight on the tree but is to be buried that same day, directly citing Deuteronomy 21:23 and connecting it to divine mercy.",
+                                    "whyItMatters": [
+                                        "Codifies the Torah’s law in post-Temple Jewish jurisprudence.",
+                                        "Shows rabbinic continuity with earlier Second Temple practice.",
+                                        "Illustrates moral motivation—'because the curse is on God’s image.'"
+                                    ],
+                                    "source": {
+                                        "title": "Mishnah Sanhedrin 6:4–5",
+                                        "url": "https://www.sefaria.org/Mishnah_Sanhedrin.6.4"
+                                    },
+                                    "kind": "evidence"
+                                },
+                                {
+                                    "name": "Talmud b. Sanhedrin 46b",
+                                    "subtitle": "Discussion of immediate burial of the executed",
+                                    "date": "c. 5th century AD (Babylonian Talmud)",
+                                    "details": "The Talmud elaborates on Deuteronomy 21:23, teaching that burial of the executed must occur the same day, out of respect for God’s image and to avoid desecration of the land.",
+                                    "whyItMatters": [
+                                        "Reflects long-standing interpretation of same-day burial as a moral imperative.",
+                                        "Explains why even executed criminals were buried promptly.",
+                                        "Shows Jewish sensitivity to divine and ritual purity laws tied to burial timing."
+                                    ],
+                                    "source": {
+                                        "title": "Babylonian Talmud, Sanhedrin 46b",
+                                        "url": "https://www.sefaria.org/Sanhedrin.46b"
                                     },
                                     "kind": "evidence"
                                 }
@@ -221,6 +292,22 @@
                                         "url": "https://www.perseus.tufts.edu/hopper/text?doc=J.+AJ+4.202"
                                     },
                                     "kind": "evidence"
+                                },
+                                {
+                                    "name": "Against Apion 2.211",
+                                    "subtitle": "Jews treat even the executed with respect in burial",
+                                    "date": "c. AD 97–100",
+                                    "details": "Josephus defends Jewish customs, stating they take down those condemned and buried before sunset, showing mercy even to criminals.",
+                                    "whyItMatters": [
+                                        "Further confirms cultural piety concerning burial before sunset.",
+                                        "Reinforces that burial was seen as an act of mercy and lawfulness.",
+                                        "Corroborates both War 4.317 and the Gospel accounts."
+                                    ],
+                                    "source": {
+                                        "title": "Josephus, Against Apion 2.211",
+                                        "url": "https://lexundria.com/j_aj/2.211/wst"
+                                    },
+                                    "kind": "evidence"
                                 }
                             ],
                             "kind": "collection"
@@ -241,8 +328,23 @@
                                     ],
                                     "source": {
                                         "title": "Philo, In Flaccum 83–84 (English, Yonge trans.)",
-                                        "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Philo/in_Flaccum*.html",
-                                        "highlightedUrl": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Philo/in_Flaccum*.html#:~:text=83%C2%A0I%C2%A0have,fire%20and%20sword%3B"
+                                        "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Philo/in_Flaccum*.html"
+                                    },
+                                    "kind": "evidence"
+                                },
+                                {
+                                    "name": "On the Special Laws 3.150–151",
+                                    "subtitle": "Leaving a corpse unburied is impious",
+                                    "date": "c. AD 20–40",
+                                    "details": "Philo condemns the leaving of corpses unburied overnight, teaching that both divine and human law require burial the same day to prevent desecration of the sacred order.",
+                                    "whyItMatters": [
+                                        "Supports the same-day burial principle philosophically and legally.",
+                                        "Reinforces Jewish moral aversion to leaving corpses exposed.",
+                                        "Provides philosophical grounding for Deuteronomic practice."
+                                    ],
+                                    "source": {
+                                        "title": "Philo, On the Special Laws 3.150–151",
+                                        "url": "https://www.perseus.tufts.edu/hopper/text?doc=Philo%2C+Special+Laws%2C+3.150"
                                     },
                                     "kind": "evidence"
                                 }
@@ -250,13 +352,13 @@
                             "kind": "collection"
                         },
                         {
-                            "name": "Roman Law",
-                            "subtitle": "Legal principles from the Roman Empire; codified burial permissions for the executed, influencing local practice",
+                            "name": "Roman Law and Writers",
+                            "subtitle": "Roman jurists and philosophers on burial rights for the executed",
                             "children": [
                                 {
                                     "name": "Digest of Justinian 48.24.1–3",
                                     "subtitle": "Bodies not to be denied to relatives (with exceptions)",
-                                    "date": "Compiled AD 533 (quoting earlier jurists like Ulpian, 3rd c. )",
+                                    "date": "Compiled AD 533 (quoting earlier jurists like Ulpian, 3rd c.)",
                                     "details": "The Digest records the principle that the bodies of those punished should not be refused to their relatives, though treason cases could be excluded. It reflects a normative allowance for burial under Roman administration.",
                                     "whyItMatters": [
                                         "Indicates burial permissions were routine enough to be codified.",
@@ -265,7 +367,55 @@
                                     ],
                                     "source": {
                                         "title": "Digest 48.24 (De cadaveribus punitorum)",
-                                        "url": "https://droitromain.univ-grenoble-alpes.fr/Anglica/D48_Scott.htm#XXIV:~:text=1.%20Ulpianus%2C%20On%20the%20Duties%20of%20Proconsul%2C%20Book%20IX,given%20to%20whoever%20requests%20them%20for%20the%20purpose%20of%20burial"
+                                        "url": "https://droitromain.univ-grenoble-alpes.fr/Anglica/D48_Scott.htm#XXIV"
+                                    },
+                                    "kind": "evidence"
+                                },
+                                {
+                                    "name": "Seneca, De Clementia 1.23.1",
+                                    "subtitle": "Mercy requires prompt burial of the executed",
+                                    "date": "c. AD 55–62",
+                                    "details": "Seneca writes that the wise ruler shows mercy by permitting burial of the executed, implying such denial is cruelty contrary to Roman ideals of clemency.",
+                                    "whyItMatters": [
+                                        "Demonstrates burial permission as a mark of Roman clemency.",
+                                        "Shows that removing bodies was culturally expected, not unusual.",
+                                        "Provides philosophical support parallel to Philo’s moral argument."
+                                    ],
+                                    "source": {
+                                        "title": "Seneca, De Clementia 1.23.1",
+                                        "url": "https://www.perseus.tufts.edu/hopper/text?doc=Sen.+Cl.+1.23"
+                                    },
+                                    "kind": "evidence"
+                                },
+                                {
+                                    "name": "Cicero, In Verrem 2.5.45",
+                                    "subtitle": "Denial of burial as barbaric",
+                                    "date": "70 BC",
+                                    "details": "Cicero accuses Verres of barbarism for denying burial to Roman citizens, reflecting the cultural expectation of proper burial even for criminals.",
+                                    "whyItMatters": [
+                                        "Shows Roman burial expectations predate the Empire.",
+                                        "Helps explain the outrage of denying burial as 'inhumanity.'",
+                                        "Provides a moral and legal backdrop for provincial governors’ policies."
+                                    ],
+                                    "source": {
+                                        "title": "Cicero, In Verrem 2.5.45",
+                                        "url": "https://www.perseus.tufts.edu/hopper/text?doc=Cic.+Ver.+2.5.45"
+                                    },
+                                    "kind": "evidence"
+                                },
+                                {
+                                    "name": "Suetonius, Augustus 13",
+                                    "subtitle": "Forbids prolonged display of executed bodies",
+                                    "date": "c. AD 120",
+                                    "details": "Suetonius records that Augustus forbade the bodies of the executed to be left hanging, instructing that they be removed promptly to maintain public decency.",
+                                    "whyItMatters": [
+                                        "Shows imperial precedent for same-day removal of bodies.",
+                                        "Reflects Roman concern for decorum and pietas.",
+                                        "Demonstrates harmony between Jewish and Roman norms in burial timing."
+                                    ],
+                                    "source": {
+                                        "title": "Suetonius, Augustus 13",
+                                        "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Suetonius/12Caesars/Augustus*.html"
                                     },
                                     "kind": "evidence"
                                 }
@@ -273,13 +423,13 @@
                             "kind": "collection"
                         },
                         {
-                            "name": "Gospels",
+                            "name": "Gospels and Acts",
                             "subtitle": "Narratives of Jesus’s removal and burial before the Sabbath (with women observing the tomb’s location)",
                             "children": [
                                 {
                                     "name": "Mark 15:42–47",
                                     "subtitle": "Burial before Sabbath; women see where he is laid (v.47)",
-                                    "date": "c. AD 66–70 (traditional dating of Mark)",
+                                    "date": "c. AD 66–70",
                                     "details": "On Preparation Day, Joseph of Arimathea requests Jesus’s body; after death is confirmed, Pilate grants it. Jesus is wrapped and placed in a rock-hewn tomb. Mary Magdalene and Mary the mother of Jesus saw where he was laid (v.47), fixing the tomb’s location.",
                                     "whyItMatters": [
                                         "Explains official permission and pre-Sabbath haste.",
@@ -287,15 +437,15 @@
                                         "Supports a known, checkable burial site."
                                     ],
                                     "source": {
-                                        "title": "Mark 15:42",
+                                        "title": "Mark 15:42–47",
                                         "url": "https://www.biblegateway.com/passage/?search=Mark+15%3A42-47&version=ESV"
                                     },
                                     "kind": "evidence"
                                 },
-                                        {
-                                            "name": "Matthew 27:57–61",
+                                {
+                                    "name": "Matthew 27:57–61",
                                     "subtitle": "Joseph of Arimathea's tomb; women sit opposite the tomb (v.61)",
-                                    "date": "c. AD 80–90 (traditional dating of Matthew)",
+                                    "date": "c. AD 80–90",
                                     "details": "Joseph of Arimathea asks for the body and lays Jesus in his own new rock-hewn tomb, rolling a great stone to the entrance. Mary Magdalene and “the other Mary” were there, sitting opposite the tomb (v.61), marking its location.",
                                     "whyItMatters": [
                                         "Adds ownership/new-tomb detail consistent with purity/time constraints.",
@@ -303,15 +453,15 @@
                                         "Corroborates the Markan sequence with independent nuance."
                                     ],
                                     "source": {
-                                        "title": "Matthew 27:57-61",
+                                        "title": "Matthew 27:57–61",
                                         "url": "https://www.biblegateway.com/passage/?search=Matthew+27%3A57-61&version=ESV"
                                     },
                                     "kind": "evidence"
                                 },
-                                        {
-                                            "name": "Luke 23:50–56",
+                                {
+                                    "name": "Luke 23:50–56",
                                     "subtitle": "Council member buries Jesus; women see the tomb and how the body was laid (vv.55–56)",
-                                    "date": "c. AD 80–90 (traditional dating of Luke)",
+                                    "date": "c. AD 80–90",
                                     "details": "Joseph of Arimathea, a council member who had not consented to the decision, wraps Jesus in linen and places him in a rock-hewn tomb. The women who had come from Galilee saw the tomb and how his body was laid (vv.55–56), then prepare spices and rest on the Sabbath.",
                                     "whyItMatters": [
                                         "Emphasizes timing: burial just before Sabbath begins.",
@@ -319,23 +469,39 @@
                                         "Explains their return after Sabbath with prepared spices."
                                     ],
                                     "source": {
-                                        "title": "Luke 23:50-56",
+                                        "title": "Luke 23:50–56",
                                         "url": "https://www.biblegateway.com/passage/?search=Luke+23%3A50-56&version=ESV"
+                                    },
+                                    "kind": "evidence"
+                                },
+                                {
+                                    "name": "Acts 13:29",
+                                    "subtitle": "Early Christian summary: removal and burial after execution",
+                                    "date": "c. AD 62–64",
+                                    "details": "In Paul's sermon at Pisidian Antioch, he recounts that Jesus’s body was taken down from the tree and laid in a tomb, reflecting the same-day removal principle consistent with Jewish law and Gospel narratives.",
+                                    "whyItMatters": [
+                                        "Earliest Christian summary statement connecting crucifixion and immediate burial.",
+                                        "Demonstrates continuity with Deuteronomic and Gospel patterns of removal before sunset.",
+                                        "Corroborates that early believers viewed same-day burial as integral to the Passion events."
+                                    ],
+                                    "source": {
+                                        "title": "Acts 13:29",
+                                        "url": "https://www.biblegateway.com/passage/?search=Acts+13%3A29&version=ESV"
                                     },
                                     "kind": "evidence"
                                 },
                                 {
                                     "name": "John 19:31, 38–42",
                                     "subtitle": "Bodies removed for high Sabbath; Joseph & Nicodemus bury Jesus",
-                                    "date": "c. AD 90–100 (traditional dating of John)",
-                                    "details": "Because it was Preparation and the next day was a high Sabbath, the Judean leaders ask for the bodies to be removed. Joseph of Arimathea, joined by Nicodemus, receives permission, prepares the body with spices, and lays Jesus in a nearby garden tomb. John does not explicitly state women witnessed the burial (women appear at the cross, 19:25, and Mary Magdalene at the tomb on the first day, 20:1).",
+                                    "date": "c. AD 90–100",
+                                    "details": "Because it was Preparation and the next day was a high Sabbath, the Judean leaders ask for the bodies to be removed. Joseph of Arimathea, joined by Nicodemus, receives permission, prepares the body with spices, and lays Jesus in a nearby garden tomb.",
                                     "whyItMatters": [
                                         "Links removal directly to Jewish law/Sabbath concerns.",
                                         "Details official permission and proximity/haste.",
                                         "Complements Synoptic testimony about women without duplicating it."
                                     ],
                                     "source": {
-                                        "title": "John 19:31, 38",
+                                        "title": "John 19:31, 38–42",
                                         "url": "https://www.biblegateway.com/passage/?search=John+19%3A31%2C+38-42&version=ESV"
                                     },
                                     "kind": "evidence"
@@ -521,8 +687,8 @@
                             "name": "Enemy Attestation",
                             "subtitle": "Assertion and counter-assertion: the Jewish ‘stolen body’ explanation and Christian replies across the 2nd–3rd centuries",
                             "children": [
-                                        {
-                                            "name": "Matthew 28:11–15",
+                                {
+                                    "name": "Matthew 28:11–15",
                                     "subtitle": "“His disciples came by night and stole him away”",
                                     "date": "c. AD 80–90 (traditional dating of Matthew)",
                                     "details": "Matthew preserves the earliest Jewish polemic: a bribed guard is to report that the disciples stole the body while the soldiers slept. The narrative both records the opposing claim and implies that, on all sides, the body was not in the tomb.",
@@ -1729,10 +1895,10 @@
                             "name": "Converted",
                             "subtitle": "Accounts of Paul’s transformation from persecutor to apostle after encountering the risen Jesus",
                             "children": [
-                                        {
-                                            "name": "Paul's Letters",
-                                            "subtitle": "Paul's letters documenting his conversion and early testimony",
-                                            "children": [
+                                {
+                                    "name": "Paul's Letters",
+                                    "subtitle": "Paul's letters documenting his conversion and early testimony",
+                                    "children": [
                                         {
                                             "name": "1 Corinthians 15:9–10",
                                             "subtitle": "Paul’s Unworthiness and God’s Grace",

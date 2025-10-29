@@ -1,0 +1,373 @@
+const linkSel = gLinks.selectAll('path').data(links).join('path')
+      .attr('class','link')
+      .style('stroke', d => colorByCluster ? clusterColor(nodeById.get(d.source)?.data?.raw?.cluster || 'Other') : 'var(--edge)')
+      .attr('d', d => { const a = nodeById.get(d.source); const b = nodeById.get(d.target); return a && b ? nodePath(a, b) : null; });<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hierarchical Edge Bundling — Messianic Prophecy (OT→NT)</title>
+  <style>
+    :root{ --bg:#0b0f14; --fg:#e6eef7; --muted:#94a3b8; --edge:#94a3b844; }
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto; background:var(--bg); color:var(--fg);} 
+    header{display:flex;gap:1rem;align-items:center; padding:1rem 1.25rem; border-bottom:1px solid #1e293b; position:sticky; top:0; backdrop-filter: blur(8px); background:rgba(11,15,20,.85); z-index:20;} 
+    h1{font-size:1.05rem;margin:0;font-weight:600;letter-spacing:.2px}
+    .controls{display:flex;flex-wrap:wrap; gap:.75rem; align-items:center;}
+    .pill{border:1px solid #263445; background:#0f172a; color:#cbd5e1; padding:.5rem .75rem; border-radius:999px; display:inline-flex; align-items:center; gap:.5rem}
+    select, input[type="text"], input[type="range"]{background:#0b1220; color:#e2e8f0; border:1px solid #233044; border-radius:.5rem; padding:.45rem .6rem;}
+    input[type="file"]{display:none}
+    label.file{cursor:pointer}
+    main{display:grid; grid-template-columns:320px 1fr; min-height:calc(100vh - 70px);} 
+    aside{border-right:1px solid #1f2937; padding:1rem; overflow:auto}
+    .legend{display:grid; gap:.5rem}
+    .badge{display:inline-block; padding:.2rem .5rem; border-radius:.4rem; font-size:.8rem; border:1px solid #334155; background:#0b1220}
+    .note{color:var(--muted); font-size:.9rem}
+    #chart-wrap{position:relative}
+    svg{display:block; width:100%; height:100%;}
+    .node{cursor:default; font:10px/1.1rem ui-sans-serif,system-ui; fill:var(--fg)}
+    .node.ot{fill:#f1f5f9}
+    .node.nt{fill:#c7d2fe}
+    .link{fill:none; stroke:var(--edge); stroke-width:1px; transition:stroke .2s ease, stroke-width .2s ease, opacity .2s ease}
+    .link.hl{ stroke-width:1.8px }
+    .label{font-size:10.5px; fill:#cbd5e1}
+    .fade{opacity:.12}
+    footer{padding:.75rem 1.25rem; border-top:1px solid #1f2937; color:#93a3b8; font-size:.9rem}
+    .tip{position:fixed; background:#0b1220; color:#e2e8f0; border:1px solid #263445; border-radius:.5rem; padding:.5rem .6rem; font-size:.9rem; transform:translate(-50%,-120%); white-space:nowrap; box-shadow:0 6px 24px rgba(0,0,0,.35); pointer-events:none}
+    .tip.pinned{pointer-events:auto}
+    .tip a{color:#93c5fd; text-decoration:none; border-bottom:1px dotted #93c5fd}
+    .tip .small{color:#94a3b8; font-size:.8rem}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hierarchical Edge Bundling — Messianic Prophecies (OT → NT)</h1>
+    <div class="controls">
+      <label class="pill file">📄 <span>Load JSON</span>
+        <input id="file" type="file" accept="application/json" />
+      </label>
+      <label class="pill">Radius
+        <input id="radius" type="range" min="300" max="900" step="10" value="640" />
+      </label>
+      <label class="pill">Bundle β
+        <input id="beta" type="range" min="0" max="1" step="0.01" value="0.85" />
+      </label>
+      <label class="pill">Rotation
+        <input id="rotation" type="range" min="0" max="360" step="1" value="270" />
+      </label>
+      <label class="pill">Filter cluster
+        <select id="clusterSelect"><option value="">(all)</option></select>
+      </label>
+      <label class="pill">Search
+        <input id="search" type="text" placeholder="e.g., Isaiah 53 or cornerstone" />
+      </label>
+      <label class="pill"><input id="colorByCluster" type="checkbox" checked style="accent-color:#8b5cf6"> Color by cluster</label>
+    </div>
+  </header>
+
+  <main>
+    <aside>
+      <div class="legend">
+        <div>
+          <span class="badge">How this works</span>
+          <p class="note">Left branch: OT claims grouped by cluster. Right branch: NT passages grouped by book. Hover to highlight; click a label to pin with BibleGateway links.</p>
+        </div>
+        <div>
+          <span class="badge">Tips</span>
+          <ul class="note">
+            <li>Use <b>Load JSON</b> to open your data.</li>
+            <li>Rotate to orient OT or NT on top. Toggle <b>Color by cluster</b>.</li>
+            <li>Esc or click empty space to unpin a tooltip.</li>
+          </ul>
+        </div>
+        <div>
+          <span class="badge">Colors</span>
+          <div id="legendColors" class="note">(loads after JSON)</div>
+        </div>
+      </div>
+    </aside>
+
+    <section id="chart-wrap">
+      <svg id="chart"></svg>
+      <div id="tip" class="tip" style="display:none"></div>
+    </section>
+  </main>
+
+  <footer>
+    Built with D3 v7.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+  const $ = sel => document.querySelector(sel);
+  const svg = d3.select('#chart');
+  const tip = $('#tip');
+
+  // Global helpers so listeners are safe before chart exists
+  let pinnedNode = null;
+  function unpin(){
+    pinnedNode = null;
+    tip.classList.remove('pinned');
+    tip.style.display = 'none';
+    // Clear highlights/classes
+    document.querySelectorAll('.link').forEach(el => {
+      el.classList.remove('hl','fade');
+      el.removeAttribute('opacity');
+      el.removeAttribute('stroke-width');
+    });
+    document.querySelectorAll('.node').forEach(el => el.classList.remove('fade'));
+  }
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') unpin(); });
+  document.addEventListener('click', e => { if(!tip.contains(e.target)) unpin(); });
+
+  let width = 1200, height = 1200;
+  let radius = +$('#radius').value;
+  let beta = +$('#beta').value;
+  let rotation = +$('#rotation').value * Math.PI / 180;
+  // coloring
+  let colorByCluster = true;
+  let clusterColor = (c) => '#94a3b8';
+
+  function resize(){
+    const w = document.getElementById('chart-wrap').clientWidth;
+    width = Math.max(900, w);
+    height = width;
+    svg.attr('viewBox', [-width/2, -height/2, width, height]);
+    draw(currentData);
+  }
+  window.addEventListener('resize', resize);
+
+  let currentData = [];
+  let allClusters = new Set();
+
+  // File loader
+  $('#file').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    try{
+      const text = await file.text();
+      const json = JSON.parse(text);
+      currentData = normalize(json);
+      allClusters = new Set(currentData.map(d => (d.cluster && d.cluster.trim()) || 'Other'));
+      // build color scale for clusters
+      const palette = ['#7dd3fc','#93c5fd','#c4b5fd','#f9a8d4','#fca5a5','#fdba74','#fcd34d','#bef264','#86efac','#a7f3d0','#67e8f9','#cbd5e1'];
+      const domain = Array.from(allClusters).sort();
+      const range = domain.map((_, i) => palette[i % palette.length]);
+      clusterColor = d3.scaleOrdinal(domain, range);
+      populateClusterSelect();
+      resize();
+    }catch(err){
+      console.error(err); alert('Could not parse JSON.');
+    }
+  });
+
+  function populateClusterSelect(){
+    const sel = $('#clusterSelect');
+    sel.innerHTML = '<option value="">(all)</option>' + Array.from(allClusters).sort().map(c => `<option value="${c}">${c}</option>`).join('');
+    sel.onchange = () => draw(currentData);
+  }
+
+  // Controls
+  $('#search').addEventListener('input', () => draw(currentData));
+  $('#radius').addEventListener('input', e => { radius = +e.target.value; draw(currentData); });
+  $('#beta').addEventListener('input', e => { beta = +e.target.value; draw(currentData); });
+  $('#rotation').addEventListener('input', e => { rotation = +e.target.value * Math.PI / 180; draw(currentData); });
+  $('#colorByCluster').addEventListener('change', e => { colorByCluster = e.target.checked; draw(currentData); });
+
+  // Normalize flexible JSON shapes to our expected array
+  function normalize(json){
+    // If already an array of rows, return
+    if(Array.isArray(json)) return json;
+    // If object with .rows or .data arrays
+    if(Array.isArray(json?.rows)) return json.rows;
+    if(Array.isArray(json?.data)) return json.data;
+    return [];
+  }
+
+  // Build hierarchy and links from rows
+  function buildHierarchyAndLinks(rows){
+    const clusterFilter = $('#clusterSelect').value;
+    const q = $('#search').value.trim().toLowerCase();
+
+    const data = rows.filter(d => {
+      const inCluster = !clusterFilter || ((d.cluster && d.cluster.trim())||'Other') === clusterFilter;
+      const inSearch = !q || (
+        (d.claim && d.claim.toLowerCase().includes(q)) ||
+        (d.ot_ref && String(d.ot_ref).toLowerCase().includes(q)) ||
+        (Array.isArray(d.nt_refs) && d.nt_refs.some(r => String(r).toLowerCase().includes(q)))
+      );
+      return inCluster && inSearch;
+    });
+
+    const root = {name:'root', children:[{name:'OT', children:[]}, {name:'NT', children:[]}]};
+
+    // OT branch: clusters → claims
+    const clusterMap = new Map();
+    for(const d of data){
+      const cluster = (d.cluster && d.cluster.trim()) || 'Other';
+      if(!clusterMap.has(cluster)) clusterMap.set(cluster, {name: cluster, children: [], _type:'ot-cluster'});
+      clusterMap.get(cluster).children.push({
+        name: d.claim || `Claim ${d.id ?? ''}`,
+        id: `claim-${d.id ?? d.claim}`,
+        _type: 'ot-claim',
+        ot_ref: d.ot_ref,
+        nt_refs: Array.isArray(d.nt_refs) ? d.nt_refs : (d.nt_refs ? [d.nt_refs] : []),
+        raw: d
+      });
+    }
+    root.children[0].children = Array.from(clusterMap.values());
+
+    // NT branch: books → passages
+    function parseBook(s){ return (String(s||'').trim().split(/[\s\d:–-]/)[0]) || 'NT'; }
+    const bookMap = new Map();
+    for(const d of data){
+      const refs = Array.isArray(d.nt_refs) ? d.nt_refs : (d.nt_refs ? [d.nt_refs] : []);
+      for(const ref of refs){
+        const book = parseBook(ref);
+        if(!bookMap.has(book)) bookMap.set(book, {name: book, children: [], _type:'nt-book'});
+        const key = `nt:${ref}`;
+        if(!bookMap.get(book).children.find(c => c.id === key)){
+          bookMap.get(book).children.push({ name: String(ref), id: key, _type: 'nt-passage', raw: { book, ref } });
+        }
+      }
+    }
+    root.children[1].children = Array.from(bookMap.values()).sort((a,b)=> d3.ascending(a.name,b.name));
+
+    // Links OT claim → each NT ref
+    const links = [];
+    for(const d of data){
+      const refs = Array.isArray(d.nt_refs) ? d.nt_refs : (d.nt_refs ? [d.nt_refs] : []);
+      for(const ref of refs){ links.push({ source: `claim-${d.id ?? d.claim}`, target: `nt:${ref}` }); }
+    }
+
+    return {root, links};
+  }
+
+  function idMap(root){ const map = new Map(); root.each(node => { if(node.data.id) map.set(node.data.id, node); }); return map; }
+
+  // BibleGateway URL helper (ESV by default)
+  function refToURL(ref){ return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=ESV`; }
+
+  function draw(rows){
+    // update legend colors
+    const legend = document.getElementById('legendColors');
+    if (legend && allClusters.size) {
+      legend.innerHTML = Array.from(allClusters)
+        .sort()
+        .map(c => `
+          <span style="display:inline-flex;align-items:center;gap:.5rem;margin:.15rem .5rem .15rem 0">
+            <span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${clusterColor(c)};border:1px solid #1f2937"></span>
+            ${c}
+          </span>`)
+        .join('');
+    }
+
+    svg.selectAll('*').remove();
+    if(!rows || !rows.length){
+      svg.append('text').attr('text-anchor','middle').attr('fill','#93a3b8').attr('font-size',14).text('Load a JSON file to render');
+      return;
+    }
+
+    const {root, links} = buildHierarchyAndLinks(rows);
+
+    const cluster = d3.cluster().size([2*Math.PI, radius - 140]);
+    const hierarchy = d3.hierarchy(root).sum(d => d.children ? 0 : 1).sort((a,b)=> d3.ascending(a.data.name, b.data.name));
+    cluster(hierarchy);
+
+    const leaves = hierarchy.leaves();
+    const nodeById = idMap(hierarchy);
+
+    const line = d3.lineRadial().curve(d3.curveBundle.beta(beta)).radius(d => d.y).angle(d => d.x + rotation);
+    function nodePath(a, b){ const path = a.path(b); return line(path.map(d => ({x: d.x, y: d.y}))); }
+
+    // LINKS
+    const gLinks = svg.append('g').attr('class','links');
+    const linkSel = gLinks.selectAll('path').data(links).join('path')
+      .attr('class','link')
+      .attr('stroke', d => colorByCluster ? clusterColor(nodeById.get(d.source)?.data?.raw?.cluster || 'Other') : 'var(--edge)')
+      .attr('d', d => { const a = nodeById.get(d.source); const b = nodeById.get(d.target); return a && b ? nodePath(a, b) : null; });
+
+    // NODES (leaves)
+    const gNodes = svg.append('g').attr('class','nodes');
+    const nodeSel = gNodes.selectAll('g.node').data(leaves).join('g')
+      .attr('class', d => `node ${(d.data._type||'').startsWith('nt')?'nt':'ot'}`)
+      .attr('transform', d => `rotate(${(d.x + rotation) * 180/Math.PI - 90}) translate(${d.y},0)`);
+
+    nodeSel.append('text')
+      .attr('class','label')
+      .attr('dy','0.31em')
+      .attr('x', d => ((d.x + rotation) % (2*Math.PI)) < Math.PI ? 6 : -6)
+      .attr('text-anchor', d => ((d.x + rotation) % (2*Math.PI)) < Math.PI ? 'start' : 'end')
+      .attr('transform', d => ((d.x + rotation) % (2*Math.PI)) >= Math.PI ? 'rotate(180)' : null)
+      .text(d => d.data.name)
+      .on('mouseenter', (event, d) => { if(!pinnedNode) highlight(d, linkSel, nodeSel); if(!pinnedNode) showTip(event.target, d); })
+      .on('mouseleave', () => { if(!pinnedNode) clearHighlight(linkSel, nodeSel); if(!pinnedNode) hideTip(); })
+      .on('mousemove', (event, d) => { if(!pinnedNode) showTip(event.target, d); })
+      .on('click', (event, d) => { event.stopPropagation(); togglePin(event.target, d, linkSel, nodeSel); });
+
+    // Rings
+    [0.25, 0.5, 0.75, 1].forEach(fr => svg.append('circle').attr('r', (radius-140)*fr).attr('fill','none').attr('stroke','#1f2937'));
+
+    function linked(d){ const id = d.data.id; if(!id) return []; return links.filter(l => l.source === id || l.target === id); }
+    function highlight(d, linkSel, nodeSel){
+      const rel = linked(d);
+      linkSel
+        .classed('fade', l => !rel.includes(l))
+        .classed('hl', l => rel.includes(l))
+        .attr('opacity', l => rel.includes(l) ? 1 : 0.15)
+        .attr('stroke-width', l => rel.includes(l) ? 2.3 : 1);
+      nodeSel.classed('fade', n => {
+        if(n === d) return false;
+        const ids = new Set();
+        for(const l of rel){ ids.add(l.source); ids.add(l.target); }
+        return !(n.data.id && ids.has(n.data.id));
+      });
+    }
+    function clearHighlight(linkSel, nodeSel){
+      linkSel.classed('hl', false).classed('fade', false)
+        .attr('opacity', 1)
+        .attr('stroke-width', 1);
+      nodeSel.classed('fade', false);
+    }
+
+    function tipHTML(d){
+      const isOT = (d.data._type||'').startsWith('ot');
+      if(isOT){
+        const ot = d.data.ot_ref ? `<a href="${refToURL(d.data.ot_ref)}" target="_blank" rel="noopener">OT: ${d.data.ot_ref}</a>` : '';
+        const ntsArr = (d.data.raw?.nt_refs||[]);
+        const nts = ntsArr.length ? `<div>NT: ${ntsArr.map(r => `<a href="${refToURL(r)}" target="_blank" rel="noopener">${r}</a>`).join(', ')}</div>` : '';
+        return `<div><b>${d.data.name}</b></div>${ot?`<div>${ot}</div>`:''}${nts}<div class="small">Click elsewhere or Esc to unpin</div>`;
+      } else {
+        const ref = d.data.name || d.data.raw?.ref || '';
+        const link = ref ? `<a href="${refToURL(ref)}" target="_blank" rel="noopener">Open in BibleGateway</a>` : '';
+        return `<div><b>${ref}</b></div><div>${link}</div><div class="small">Click elsewhere or Esc to unpin</div>`;
+      }
+    }
+
+    function placeTipNearTarget(target){
+      const rect = target.getBoundingClientRect();
+      const pad = 10;
+      // ideal position (viewport coords)
+      let x = rect.left + rect.width/2;
+      let y = rect.top - pad;
+      // ensure tip is on-screen using measured size
+      tip.style.display = 'block'; // ensure measurable
+      const tipRect = tip.getBoundingClientRect();
+      const w = tipRect.width || 260;
+      const h = tipRect.height || 80;
+      x = Math.min(window.innerWidth - w/2 - 12, Math.max(w/2 + 12, x));
+      y = Math.max(56 + h/2, y);
+      tip.style.left = x + 'px';
+      tip.style.top = y + 'px';
+    }
+
+    function showTip(target, d){ tip.innerHTML = tipHTML(d); tip.style.display = 'block'; tip.classList.toggle('pinned', !!pinnedNode); placeTipNearTarget(target); }
+    function hideTip(){ tip.style.display = 'none'; }
+
+    function togglePin(target, d, linkSel, nodeSel){ if(pinnedNode && pinnedNode === d){ unpin(); return; } pinnedNode = d; tip.classList.add('pinned'); highlight(d, linkSel, nodeSel); showTip(target, d); }
+  }
+
+  // Initial empty render
+  resize();
+  </script>
+</body>
+</html>

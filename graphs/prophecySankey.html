@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OT → NT Fulfillment Sankey (D3)</title>
+  <style>
+    :root{
+      --bg:#0b0f14; --panel:#121923; --muted:#8aa0b6; --text:#e5eef7; --accent:#7dc4ff;
+      --ot:#8bafff; --nt:#ffd27d;
+      --c-birth:#93c5fd; --c-ministry:#86efac; --c-entry:#fbbf24; --c-passion:#f87171; --c-res:#a78bfa; --c-misc:#94a3b8;
+    }
+    html,body{height:100%;}
+    body{margin:0; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
+    header{padding:14px 18px; background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0)); position:sticky; top:0; z-index:5; backdrop-filter: blur(6px);}    
+    h1{margin:0; font-size: clamp(18px, 2vw, 22px); letter-spacing:.3px}
+    .sub{color:var(--muted); font-size:12px; margin-top:4px}
+
+    .bar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px}
+    .ctrl{background:var(--panel); border:1px solid #1f2a37; border-radius:10px; padding:8px 10px; display:flex; gap:8px; align-items:center}
+    .ctrl input[type="text"]{background:transparent; border:none; outline:none; color:var(--text); min-width:200px}
+    .legend{display:flex; gap:10px; flex-wrap:wrap}
+    .pill{display:inline-flex; align-items:center; gap:6px; background:#0e1621; border:1px solid #1f2a37; padding:6px 10px; border-radius:999px; font-size:12px}
+    .dot{width:10px; height:10px; border-radius:999px}
+
+  #chart-wrap{position:relative; height: calc(100vh - 140px);} 
+  #chart{width:100%; height:100%; display:block; overflow:visible}
+
+  /* Prevent labels from rendering outside the chart bounds */
+  #chart { overflow: hidden; }
+
+  .node rect{fill:#22324a; stroke:#385173; rx:6;}
+  /* Allow clicks to hit the rect; text shouldn't block pointer events */
+  .node text{fill:var(--text); font-size:12px; pointer-events:none; user-select:none}
+
+    .link{fill:none; opacity:.65; mix-blend-mode:screen}
+    .link:hover{opacity:1}
+
+    .tooltip{position:absolute; pointer-events:none; background:#0f1722; border:1px solid #1f2a37; color:var(--text); padding:10px 12px; border-radius:10px; font-size:12px; max-width:360px; box-shadow:0 10px 30px rgba(0,0,0,.35);}
+    .tooltip a{color:var(--accent); text-decoration:none}
+    .tooltip a:hover{text-decoration:underline}
+
+    .badge{font-size:10px; color:#0b1021; background:#cde2ff; padding:2px 6px; border-radius:6px; font-weight:600}
+    .muted{color:var(--muted)}
+    .sep{opacity:.4}
+
+    .btn{background:#17212f; border:1px solid #27374f; color:var(--text); border-radius:8px; padding:8px 10px; font-size:12px; cursor:pointer}
+    .btn:hover{background:#1a2636}
+
+    .foot{position:fixed; right:10px; bottom:10px; color:var(--muted); font-size:12px}
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Prophecy → Fulfillment (OT → NT) — Sankey</h1>
+    <div class="sub">Hover any ribbon to see the claim and open ESV links. Filter by theme or search claims/passages.</div>
+    <div class="bar">
+      <div class="ctrl" aria-label="Search">
+        🔎 <input id="q" type="text" placeholder="Search claim / passage… (e.g., Isaiah 53 or Bethlehem)" />
+      </div>
+      <div class="ctrl legend" aria-label="Cluster filters">
+        <span class="muted">Theme:</span>
+        <label class="pill"><input type="checkbox" class="cbox" value="Birth/Origin" checked/> <span class="dot" style="background:var(--c-birth)"></span> Birth/Origin</label>
+        <label class="pill"><input type="checkbox" class="cbox" value="Forerunner/Ministry" checked/> <span class="dot" style="background:var(--c-ministry)"></span> Ministry</label>
+        <label class="pill"><input type="checkbox" class="cbox" value="Entry/Conflict" checked/> <span class="dot" style="background:var(--c-entry)"></span> Entry/Conflict</label>
+        <label class="pill"><input type="checkbox" class="cbox" value="Betrayal/Passion" checked/> <span class="dot" style="background:var(--c-passion)"></span> Passion</label>
+        <label class="pill"><input type="checkbox" class="cbox" value="Resurrection/Exaltation/New Covenant" checked/> <span class="dot" style="background:var(--c-res)"></span> Resurrection</label>
+        <label class="pill"><input type="checkbox" class="cbox" value="" checked/> <span class="dot" style="background:var(--c-misc)"></span> Other</label>
+      </div>
+      <button id="reset" class="btn" title="Reset filters">Reset</button>
+    </div>
+  </header>
+
+  <div id="chart-wrap">
+    <svg id="chart" role="img" aria-label="Sankey diagram of Old Testament prophecies and New Testament fulfillments"></svg>
+    <div id="tt" class="tooltip" style="display:none"></div>
+  </div>
+
+  <div class="foot">Built with D3 v7 + d3-sankey</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+  <script>
+  // --- Config & color scales ---
+  const clusterColor = (c) => ({
+    'Birth/Origin': getComputedStyle(document.documentElement).getPropertyValue('--c-birth').trim(),
+    'Forerunner/Ministry': getComputedStyle(document.documentElement).getPropertyValue('--c-ministry').trim(),
+    'Entry/Conflict': getComputedStyle(document.documentElement).getPropertyValue('--c-entry').trim(),
+    'Betrayal/Passion': getComputedStyle(document.documentElement).getPropertyValue('--c-passion').trim(),
+    'Resurrection/Exaltation/New Covenant': getComputedStyle(document.documentElement).getPropertyValue('--c-res').trim(),
+    '': getComputedStyle(document.documentElement).getPropertyValue('--c-misc').trim()
+  })[c] || getComputedStyle(document.documentElement).getPropertyValue('--c-misc').trim();
+
+  const OT_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--ot').trim();
+  const NT_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--nt').trim();
+
+  const urlJSON = 'messianic_prophecies_core_esv.json'; // expects the JSON beside this file
+
+  // Resize handling
+  const svg = d3.select('#chart');
+  const wrap = document.getElementById('chart-wrap');
+  const tooltip = document.getElementById('tt');
+
+  let raw = [];
+  let currentFilters = new Set(["Birth/Origin","Forerunner/Ministry","Entry/Conflict","Betrayal/Passion","Resurrection/Exaltation/New Covenant",""]);
+  let currentQuery = "";
+
+  // Load data (with inline fallback for local previews without hosting the JSON)
+  async function loadData(){
+    try{
+      const res = await fetch(urlJSON, {cache:'no-store'});
+      if(!res.ok) throw new Error('Fetch failed');
+      raw = await res.json();
+    }catch(e){
+      console.warn('Could not fetch JSON. Falling back to inline minimal sample. Place the JSON next to this HTML for full data.', e);
+      raw = [
+        {id:1, claim:'Born in Bethlehem', ot_ref:'Micah 5:2', nt_refs:['Matthew 2:1-6','Luke 2:4-7'], ot_url_esv:'https://www.biblegateway.com/passage/?search=Micah+5%3A2&version=ESV', nt_urls_esv:['https://www.biblegateway.com/passage/?search=Matthew+2%3A1-6&version=ESV','https://www.biblegateway.com/passage/?search=Luke+2%3A4-7&version=ESV'], cluster:'Birth/Origin', tooltip:'Born in Bethlehem — Micah 5:2'},
+        {id:15, claim:'Despised, rejected; bore our sins', ot_ref:'Isaiah 53:3-6', nt_refs:['1 Peter 2:22-25','Matthew 8:16-17'], ot_url_esv:'https://www.biblegateway.com/passage/?search=Isaiah+53%3A3-6&version=ESV', nt_urls_esv:['https://www.biblegateway.com/passage/?search=1+Peter+2%3A22-25&version=ESV','https://www.biblegateway.com/passage/?search=Matthew+8%3A16-17&version=ESV'], cluster:'Betrayal/Passion', tooltip:'Despised, rejected; bore our sins — Isaiah 53:3-6'}
+      ];
+    }
+    render();
+  }
+
+  function buildSankeyData(){
+    // Apply filters
+    const filtered = raw.filter(r => currentFilters.has(r.cluster ?? ""))
+                        .filter(r => {
+                          if(!currentQuery) return true;
+                          const q = currentQuery.toLowerCase();
+                          const inClaim = (r.claim||'').toLowerCase().includes(q);
+                          const inOT = (r.ot_ref||'').toLowerCase().includes(q);
+                          const inNT = (r.nt_refs||[]).some(x => (x||'').toLowerCase().includes(q));
+                          return inClaim || inOT || inNT;
+                        });
+
+    // Build unique node lists for OT & NT passages
+    const otMap = new Map(); // key: ot_ref
+    const ntMap = new Map(); // key: nt_ref
+
+    filtered.forEach(rec => {
+      if(!otMap.has(rec.ot_ref)) otMap.set(rec.ot_ref, {type:'OT', name:rec.ot_ref, urls:new Set([rec.ot_url_esv].filter(Boolean)), claims:new Set([rec.claim]), clusters:new Set([rec.cluster])});
+      else {
+        const o = otMap.get(rec.ot_ref);
+        if(rec.ot_url_esv) o.urls.add(rec.ot_url_esv);
+        o.claims.add(rec.claim); o.clusters.add(rec.cluster);
+      }
+      (rec.nt_refs||[]).forEach((ntRef, i) => {
+        if(!ntMap.has(ntRef)) ntMap.set(ntRef, {type:'NT', name:ntRef, urls:new Set([(rec.nt_urls_esv||[])[i]].filter(Boolean)), claims:new Set([rec.claim]), clusters:new Set([rec.cluster])});
+        else {
+          const n = ntMap.get(ntRef);
+          if((rec.nt_urls_esv||[])[i]) n.urls.add((rec.nt_urls_esv||[])[i]);
+          n.claims.add(rec.claim); n.clusters.add(rec.cluster);
+        }
+      });
+    });
+
+    const nodes = [];
+    const indexByKey = new Map();
+
+    // Preserve OT group first (left), NT group second (right)
+    [...otMap.entries()].sort((a,b)=>a[0].localeCompare(b[0])).forEach(([key, data])=>{
+      indexByKey.set(`OT::${key}`, nodes.length);
+      nodes.push({
+        name: key,
+        side: 'OT',
+        urls: [...data.urls],
+        claims: [...data.claims],
+        clusters: [...data.clusters]
+      });
+    });
+    const otCount = nodes.length;
+    [...ntMap.entries()].sort((a,b)=>a[0].localeCompare(b[0])).forEach(([key, data])=>{
+      indexByKey.set(`NT::${key}`, nodes.length);
+      nodes.push({
+        name: key,
+        side: 'NT',
+        urls: [...data.urls],
+        claims: [...data.claims],
+        clusters: [...data.clusters]
+      });
+    });
+
+    // Links
+    const links = [];
+    filtered.forEach(rec => {
+      const sIndex = indexByKey.get(`OT::${rec.ot_ref}`);
+      (rec.nt_refs||[]).forEach((ntRef, i) => {
+        const tIndex = indexByKey.get(`NT::${ntRef}`);
+        if(sIndex==null || tIndex==null) return;
+        links.push({
+          source: sIndex,
+          target: tIndex,
+          value: 1,
+          claim: rec.claim,
+          cluster: rec.cluster || '',
+          ot_ref: rec.ot_ref,
+          nt_ref: ntRef,
+          ot_url: rec.ot_url_esv,
+          nt_url: (rec.nt_urls_esv||[])[i]
+        });
+      });
+    });
+
+    return {nodes, links, otCount};
+  }
+
+  function render(){
+    const {width, height} = wrap.getBoundingClientRect();
+    svg.attr('width', width).attr('height', height);
+    svg.selectAll('*').remove();
+
+    const {nodes, links, otCount} = buildSankeyData();
+
+    const sankey = d3.sankey()
+      .nodeId((d,i)=>i)
+      .nodeAlign(d3.sankeyLeft)
+      .nodeWidth(14)
+      .nodePadding(8)
+      .extent([[20, 20], [width-20, height-20]]);
+
+    const graph = sankey({
+      nodes: nodes.map(d=>Object.assign({}, d)),
+      links: links.map(d=>Object.assign({}, d))
+    });
+
+    // defs for grad links by cluster
+    const defs = svg.append('defs');
+
+    // Node groups
+    const g = svg.append('g');
+
+    // Links
+    const link = g.append('g').attr('fill','none').selectAll('path')
+      .data(graph.links)
+      .join('path')
+      .attr('class','link')
+      .attr('d', d3.sankeyLinkHorizontal())
+      .attr('stroke', d => clusterColor(d.cluster))
+      .attr('stroke-width', d => Math.max(1, d.width))
+      .on('mousemove', (event,d)=> showTooltip(event,d))
+      .on('mouseleave', hideTooltip)
+      .on('click', (event,d)=> {
+        event.stopPropagation();
+        const href = d.nt_url || d.ot_url; // prefer NT fulfillment
+        if(href) window.open(href, '_blank', 'noopener');
+      });
+
+    // Nodes
+    const node = g.append('g').selectAll('g')
+      .data(graph.nodes)
+      .join('g')
+      .attr('class','node')
+      .attr('transform', d=>`translate(${d.x0},${d.y0})`)
+      .call(g=>g.append('rect')
+        .attr('height', d=>Math.max(2, d.y1-d.y0))
+        .attr('width', d=>Math.max(1, d.x1-d.x0))
+        .attr('fill', d=> d.side==='OT'? OT_COLOR : NT_COLOR)
+        .attr('stroke','#1f2a37')
+        .on('mousemove', (event,d)=> showTooltip(event, {node:d}))
+        .on('mouseleave', hideTooltip)
+        .on('click', (event,d)=>{
+          event.stopPropagation();
+          const urls = d.urls||[];
+          if(urls.length===1){ window.open(urls[0], '_blank', 'noopener'); }
+          else if(urls.length>1){
+            // If multiple URLs, show tooltip chooser
+            showTooltip(event, {node:d, chooser:true});
+          }
+        })
+      )
+      .call(g=>g.append('text')
+        .attr('x', d=> {
+          // OT labels always to left
+          if(d.side === 'OT') return -8;
+          // NT labels: prefer to right, but if node is too close to chart right edge,
+          // place label to the left of the node to avoid going off-screen.
+          const pad = 80; // pixels of buffer we want to keep on the right
+          return (d.x1 + pad > width) ? -8 : (d.x1 - d.x0) + 8;
+        })
+        .attr('y', d=> (d.y1-d.y0)/2 )
+        .attr('dy','0.35em')
+        .attr('text-anchor', d=> {
+          if(d.side === 'OT') return 'end';
+          return (d.x1 + 80 > width) ? 'end' : 'start';
+        })
+        .text(d=> d.name)
+        .style('font-weight','500')
+      );
+
+    svg.on('click', hideTooltip);
+  }
+
+  function showTooltip(event, d){
+    const e = event;
+    const {pageX:x, pageY:y} = e;
+
+    let html = '';
+    if(d.node){
+      const n = d.node;
+      const side = n.side==='OT' ? 'Old Testament' : 'New Testament';
+      html += `<div style="font-size:12px; margin-bottom:6px"><span class="badge">${side}</span></div>`;
+      html += `<div style="font-weight:600; margin-bottom:6px">${escapeHtml(n.name)}</div>`;
+      if(n.claims && n.claims.length){
+        html += `<div class="muted" style="margin-bottom:6px">Claims: ${n.claims.map(escapeHtml).join(', ')}</div>`;
+      }
+      if(n.clusters && n.clusters.length){
+        html += `<div style="display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 8px 0">`+
+          n.clusters.map(c=>`<span class="pill"><span class="dot" style="background:${clusterColor(c)}"></span>${escapeHtml(c||'Other')}</span>`).join('')+
+        `</div>`;
+      }
+      const urls = n.urls||[];
+      if(urls.length){
+        if(d.chooser && urls.length>1){
+          html += `<div style="margin-top:6px">Open passage:</div>`+
+                  urls.map(u=>`<div>• <a href="${u}" target="_blank" rel="noopener">${truncate(u, 44)}</a></div>`).join('');
+        } else {
+          html += `<div><a href="${urls[0]}" target="_blank" rel="noopener">Open in ESV →</a></div>`;
+        }
+      }
+    } else {
+      // link
+      html += `<div style="font-size:12px; margin-bottom:6px"><span class="badge">${escapeHtml(d.cluster||'Other')}</span></div>`;
+      html += `<div style="font-weight:600">${escapeHtml(d.claim)}</div>`;
+      html += `<div class="muted" style="margin-top:6px">${escapeHtml(d.ot_ref)} <span class="sep">→</span> ${escapeHtml(d.nt_ref)}</div>`;
+      html += `<div style="margin-top:8px; display:flex; gap:12px; flex-wrap:wrap">`+
+              (d.ot_url? `<a href="${d.ot_url}" target="_blank" rel="noopener">Open OT</a>`: '')+
+              (d.nt_url? `<a href="${d.nt_url}" target="_blank" rel="noopener">Open NT</a>`: '')+
+              `</div>`;
+    }
+
+    tooltip.style.display='block';
+    tooltip.innerHTML = html;
+
+    const ttRect = tooltip.getBoundingClientRect();
+    const left = Math.min(window.innerWidth - ttRect.width - 12, x + 12);
+    const top  = Math.min(window.innerHeight - ttRect.height - 12, y + 12);
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + 'px';
+  }
+
+  function hideTooltip(){ tooltip.style.display='none'; }
+
+  function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
+  function truncate(s, n){ s = s+''; return s.length>n? s.slice(0,n-1)+'…' : s; }
+
+  // Simple debounce for D3 v7 (if not present)
+  // Define this before any listeners use it so callers won't get "d3.debounce is not a function"
+  if(!d3.debounce){
+    d3.debounce = function(fn, wait){
+      let t;
+      return function(...args){
+        clearTimeout(t);
+        t = setTimeout(()=>fn.apply(this,args), wait);
+      };
+    }
+  }
+
+  // --- Controls ---
+  document.getElementById('reset').addEventListener('click', ()=>{
+    document.querySelectorAll('.cbox').forEach(cb=> cb.checked=true);
+    currentFilters = new Set(["Birth/Origin","Forerunner/Ministry","Entry/Conflict","Betrayal/Passion","Resurrection/Exaltation/New Covenant",""]);
+    currentQuery = '';
+    document.getElementById('q').value = '';
+    render();
+  });
+
+  document.querySelectorAll('.cbox').forEach(cb=>{
+    cb.addEventListener('change', ()=>{
+      const checked = [...document.querySelectorAll('.cbox')].filter(x=>x.checked).map(x=>x.value);
+      currentFilters = new Set(checked);
+      render();
+    });
+  });
+
+  document.getElementById('q').addEventListener('input', d3.debounce((e)=>{
+    currentQuery = e.target.value.trim();
+    render();
+  }, 250));
+  window.addEventListener('resize', d3.debounce(render, 200));
+
+  loadData();
+  </script>
+</body>
+</html>
