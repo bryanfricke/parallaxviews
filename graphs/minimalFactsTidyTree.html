@@ -2147,6 +2147,9 @@
                         if (isSmall) {
                             openBottomSheet(html, d);
                         } else {
+                            // Hide tooltip when opening popup
+                            tooltip.style("opacity", 0);
+                            
                             popupHelp.html(html)
                                 .style("opacity", 1)
                                 .style("pointer-events", "auto");
@@ -2415,12 +2418,41 @@
                                     targetNode = d.parent;
                                 }
                             } else if (event.key === 'ArrowDown') {
-                                // Navigate to next node in visual order
+                                // Check if popup is currently open for this node
+                                const isPopupOpen = popupHelp.style("opacity") === "1" && popupHelpNode === d;
+                                
+                                // If popup is open, down arrow focuses the link (go "down" to it)
+                                if (isPopupOpen) {
+                                    const popupEl = popupHelp.node();
+                                    const link = popupEl ? popupEl.querySelector('a') : null;
+                                    if (link) {
+                                        link.focus();
+                                    }
+                                    return; // Don't navigate
+                                }
+                                
+                                // Otherwise, navigate to next node in visual order
                                 if (currentIndex < allNodes.length - 1) {
                                     targetNode = allNodes[currentIndex + 1];
                                 }
                             } else if (event.key === 'ArrowUp') {
-                                // Navigate to previous node in visual order
+                                // Check if popup is currently open for this node
+                                const isPopupOpen = popupHelp.style("opacity") === "1" && popupHelpNode === d;
+                                
+                                // If popup is open, up arrow returns focus to node (go "up" from link)
+                                if (isPopupOpen) {
+                                    // Keep focus on this node
+                                    setTimeout(() => {
+                                        const nodeGroup = d3.selectAll('g.node').filter(n => n === d);
+                                        const nodeEl = nodeGroup.node();
+                                        if (nodeEl) {
+                                            nodeEl.focus();
+                                        }
+                                    }, 0);
+                                    return; // Don't navigate
+                                }
+                                
+                                // Otherwise, navigate to previous node in visual order
                                 if (currentIndex > 0) {
                                     targetNode = allNodes[currentIndex - 1];
                                 }
@@ -2478,6 +2510,45 @@
                     })
                     .on("pointerleave", () => {
                         tooltip.style("opacity", 0);
+                    })
+                    .on("focus", (event, d) => {
+                        // Show tooltip when node receives keyboard focus
+                        const txt = d.data.subtitle || "";
+                        if (!txt) return;
+                        
+                        // Don't show tooltip if popup is open for this node
+                        const isPopupOpen = popupHelp.style("opacity") === "1" && popupHelpNode === d;
+                        if (isPopupOpen) return;
+                        
+                        const isSmall = isMobileLike();
+                        if (isSmall) {
+                            // On small/touch devices, don't show tooltip on focus to avoid clutter
+                            // Users can press Enter to see details
+                            return;
+                        }
+                        // Hide any existing tooltip first
+                        tooltip.style("opacity", 0);
+                        // Position tooltip near the node
+                        const nodeEl = event.currentTarget;
+                        if (nodeEl) {
+                            // Wait for viewport recentering animation to complete (200ms duration + buffer)
+                            // This ensures tooltip appears in the correct position after the node moves
+                            setTimeout(() => {
+                                // Verify element still has focus before showing tooltip
+                                if (document.activeElement !== nodeEl) return;
+                                
+                                // Double-check popup isn't open (might have opened during delay)
+                                const isPopupOpenNow = popupHelp.style("opacity") === "1" && popupHelpNode === d;
+                                if (isPopupOpenNow) return;
+                                
+                                const rect = nodeEl.getBoundingClientRect();
+                                tooltip.html(txt)
+                                    .style("opacity", 1)
+                                    .style("pointer-events", "none");
+                                // Position to the right of the node
+                                clampToViewport(tooltip, rect.right + 10, rect.top);
+                            }, 250);
+                        }
                     });
                 // Remove mouseleave handler so tooltip doesn't disappear immediately
 
@@ -2564,6 +2635,26 @@
                         if (link && document.activeElement !== link) {
                             link.focus();
                         }
+                    }
+                    // Up arrow: unfocus link and return to node
+                    else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const activeEl = document.activeElement;
+                        const link = popupEl ? popupEl.querySelector('a') : null;
+                        
+                        // If link is focused, return focus to the node (but keep popup open)
+                        if (activeEl === link) {
+                            const nodeToFocus = popupHelpNode;
+                            if (nodeToFocus) {
+                                const nodeGroup = d3.selectAll('g.node').filter(d => d === nodeToFocus);
+                                const nodeEl = nodeGroup.node();
+                                if (nodeEl) {
+                                    nodeEl.focus();
+                                }
+                            }
+                        }
+                        // If node already has focus, do nothing (don't navigate away)
                     }
                 }
                 
