@@ -253,6 +253,22 @@
                                         "url": "https://www.sefaria.org/Sanhedrin.46b"
                                     },
                                     "kind": "evidence"
+                                },
+                                {
+                                    "name": "Semaḥot (Evel Rabbati) 2:7, 2:11–14",
+                                    "subtitle": "Rabbinic mourning laws for those executed by Jewish and non-Jewish tribunals",
+                                    "date": "Traditions: early centuries AD; compilation: post-Talmudic (often dated c. 8th century)",
+                                    "details": "Tractate Semaḥot (Evel Rabbati) chapter 2 discusses mourning customs for those condemned and executed by a Jewish court (§§7–9) and then for a person executed by a non-Jewish tribunal (§§11–14). Even when the authorities are gentile, the tractate assumes the family may, in some circumstances, receive the body and observe mourning. Although compiled later, Semaḥot preserves earlier rabbinic assumptions that proper burial and mourning remain obligations even for the disgraced dead, including those put to death by government authorities.",
+                                    "whyItMatters": [
+                                        "Explicitly treats mourning and burial questions for those executed by Jewish and non-Jewish authorities.",
+                                        "Preserves legal-moral assumptions consistent with Deuteronomy 21:22–23 and later Talmudic discussions of burial for the executed.",
+                                        "Supports the broader picture that Jewish concern for burial could extend even to those executed under foreign (e.g., Roman) rule, making requests for bodies plausible."
+                                    ],
+                                    "source": {
+                                        "title": "Tractate Semaḥot (Evel Rabbati) 2:7, 11–14 (Heb/Eng)",
+                                        "url": "https://www.sefaria.org/Tractate_Semachot.2?lang=bi"
+                                    },
+                                    "kind": "evidence"
                                 }
                             ],
                             "kind": "collection"
@@ -508,6 +524,29 @@
                                 }
                             ],
                             "kind": "collection"
+                        },
+                        {
+                            "name": "Archaeological Corroboration",
+                            "subtitle": "Material evidence that crucified Jews could receive proper same-day burial",
+                            "children": [
+                                {
+                                    "name": "Yehohanan Ossuary (Givʿat ha-Mivtar)",
+                                    "subtitle": "Remains of a crucified man buried in a 1st-century Jewish rock-cut family tomb",
+                                    "date": "Burial: 1st century AD; Discovery: 1968",
+                                    "details": "During construction in 1968, workers in the north Jerusalem suburb of Givʿat ha-Mivtar uncovered a multi-chambered, rock-cut Jewish family tomb with kokhim (loculi). Among several limestone ossuaries was one inscribed 'Yehohanan son of Hagkol,' containing the remains of a young Jewish man and an iron nail still piercing his right heel bone. The tomb typology (rock-hewn chambers with kokhim and ossuaries) is characteristic of late Second Temple Jewish family burials in and around Jerusalem.",
+                                    "whyItMatters": [
+                                        "Provides concrete archaeological evidence that at least one crucified Jew in 1st-century Judea was recovered from his cross and buried in a standard rock-cut family tomb.",
+                                        "Confirms that crucifixion and subsequent placement in an ossuary within a multi-chambered cave tomb could occur under Roman rule, aligning with the Gospel picture of crucifixion followed by proper Jewish burial.",
+                                        "Undercuts blanket claims that crucified victims were never granted decent burial or placed in Jewish rock-hewn tombs, while still allowing that many were indeed left unburied."
+                                    ],
+                                    "source": {
+                                        "title": "V. Tzaferis, 'Jewish Tombs at and near Givʿat ha-Mivtar', Israel Exploration Journal 20 (1970): 18–32; summarized in later discussions of the Givʿat ha-Mivtar crucifixion remains",
+                                        "url": "https://bibleinterp.arizona.edu/articles/2018/02/smi428014"
+                                    },
+                                    "kind": "evidence"
+                                }
+                            ],
+                            "kind": "collection"
                         }
                     ],
                     "kind": "collection"
@@ -516,6 +555,81 @@
                     "name": "Empty Tomb",
                     "subtitle": "Early Christians used ‘resurrection’ in the bodily sense recognized in Judaism and Greco-Roman contexts. As N. T. Wright puts it: “when the early Christians said ‘resurrection’ … ‘resurrection’ meant bodily resurrection; and that is what the early Christians affirmed.” (Christian Origins, 3:209)",
                     "children": [
+                        {
+                            "name": "Gospel Empty-Tomb Narratives",
+                            "subtitle": "Earliest narrative accounts of the women discovering Jesus’s tomb empty",
+                            "children": [
+                                {
+                                    "name": "Mark 16:1–8",
+                                    "subtitle": "Women find the stone rolled away and hear that Jesus has been raised",
+                                    "date": "c. AD 66–70 (traditional dating of Mark; 16:1–8 in earliest manuscripts)",
+                                    "details": "After the Sabbath, Mary Magdalene, Mary the mother of James, and Salome come to the tomb at daybreak to anoint Jesus’s body. They find the large stone already rolled away. Inside, they see a young man in a white robe who tells them that Jesus, the crucified one, has been raised and is not there, and shows them the place where he had been laid. He instructs them to tell the disciples and Peter that Jesus is going ahead of them to Galilee. The earliest manuscripts end with the women fleeing in trembling and astonishment, saying nothing to anyone because they were afraid.",
+                                    "whyItMatters": [
+                                        "Earliest written empty-tomb narrative, widely regarded as Markan priority.",
+                                        "Locates the discovery with specific named women who had seen the burial in Mark 15:47.",
+                                        "Presents the tomb as already empty when the women arrive, with no body shown to remain.",
+                                        "Ends in a way that is narratively awkward and unlikely to be a later apologetic embellishment (fear, silence), which many argue suggests historical reminiscence."
+                                    ],
+                                    "source": {
+                                        "title": "Mark 16:1–8",
+                                        "url": "https://www.biblegateway.com/passage/?search=Mark+16%3A1-8&version=ESV"
+                                    },
+                                    "kind": "evidence"
+                                },
+                                {
+                                    "name": "Matthew 28:1–10",
+                                    "subtitle": "Earthquake, angel, and the women grasp the risen Jesus’s feet",
+                                    "date": "c. AD 80–90 (traditional dating of Matthew)",
+                                    "details": "Mary Magdalene and “the other Mary” go to see the tomb at dawn on the first day of the week. There is a great earthquake; an angel of the Lord descends, rolls back the stone, and sits on it. The guards shake and become like dead men. The angel tells the women not to fear, announces that Jesus has been crucified but has been raised, and invites them to see the place where he lay. As they run to tell the disciples, Jesus himself meets them; they take hold of his feet and worship him, and he reiterates the command that his brothers go to Galilee.",
+                                    "whyItMatters": [
+                                        "Clearly presents the tomb as empty with an angelic invitation to inspect the place where Jesus had been laid.",
+                                        "Depicts a physical encounter in which the women grasp Jesus’s feet, reinforcing a bodily conception of resurrection.",
+                                        "Retains women as the first discoverers of the empty tomb despite their lower apologetic value in that culture.",
+                                        "Provides narrative background for the later Jewish theft explanation in Matthew 28:11–15."
+                                    ],
+                                    "source": {
+                                        "title": "Matthew 28:1–10",
+                                        "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A1-10&version=ESV"
+                                    },
+                                    "kind": "evidence"
+                                },
+                                {
+                                    "name": "Luke 24:1–12",
+                                    "subtitle": "Women find the stone rolled away; apostles initially dismiss their report",
+                                    "date": "c. AD 80–90 (traditional dating of Luke)",
+                                    "details": "At early dawn on the first day of the week, the women who had followed Jesus from Galilee come to the tomb with prepared spices. They find the stone rolled away but, entering, do not find the body. Two men in dazzling apparel appear and remind them of Jesus’s prediction that he would be delivered up, crucified, and rise on the third day. The women return and report these things to the eleven and all the rest, but their words seem to the apostles an idle tale and they do not believe them; Peter, however, runs to the tomb, sees the linen cloths by themselves, and goes home marveling.",
+                                    "whyItMatters": [
+                                        "Explicitly states that the women find no body in the tomb and that the stone is already rolled away.",
+                                        "Links the empty tomb with Jesus’s prior passion predictions, tying narrative to earlier tradition.",
+                                        "Records the apostles’ initial skepticism toward the women’s report, an unlikely invention if the story were being tailored for apologetic credibility.",
+                                        "Adds an early male corroborative visit (Peter seeing the linen cloths) without displacing the women as first discoverers."
+                                    ],
+                                    "source": {
+                                        "title": "Luke 24:1–12",
+                                        "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A1-12&version=ESV"
+                                    },
+                                    "kind": "evidence"
+                                },
+                                {
+                                    "name": "John 20:1–18",
+                                    "subtitle": "Mary Magdalene, the beloved disciple, Peter, and a personal encounter with the risen Jesus",
+                                    "date": "c. AD 90–100 (traditional dating of John)",
+                                    "details": "While it is still dark on the first day of the week, Mary Magdalene comes to the tomb and sees the stone taken away. She runs to Simon Peter and the beloved disciple and reports that the body has been taken. Peter and the other disciple run to the tomb, find it empty, and see the linen cloths lying there and the face cloth folded separately. The beloved disciple believes, though they do not yet understand the Scripture. After they leave, Mary remains weeping outside the tomb, sees two angels inside, and then encounters Jesus himself, whom she initially mistakes for the gardener. When he speaks her name, she recognizes him; he instructs her not to cling to him and commissions her to announce his ascension to the disciples.",
+                                    "whyItMatters": [
+                                        "Provides a detailed empty-tomb scene with multiple witnesses (Mary Magdalene, Peter, the beloved disciple) and specific mention of grave cloths left behind.",
+                                        "Shows Mary Magdalene as the first to discover the empty tomb and the first to receive a personal appearance and commission, preserving the prominent role of a woman witness.",
+                                        "Depicts Jesus speaking, being recognized, and warning Mary not to cling to him—again reinforcing a concrete, bodily understanding rather than a mere visionary experience.",
+                                        "Combines empty-tomb discovery with an appearance tradition in a way that resonates with, but is not simply copied from, the Synoptic accounts."
+                                    ],
+                                    "source": {
+                                        "title": "John 20:1–18",
+                                        "url": "https://www.biblegateway.com/passage/?search=John+20%3A1-18&version=ESV"
+                                    },
+                                    "kind": "evidence"
+                                }
+                            ],
+                            "kind": "collection"
+                        },
                         {
                             "name": "Jerusalem Factor",
                             "subtitle": "The message began in Jerusalem, where authorities could have refuted it by producing a body",
@@ -1353,38 +1467,139 @@
                                             "subtitle": "Early church leaders who preserved and transmitted the apostles' resurrection testimony",
                                             "children": [
                                                 {
-                                                    "name": "1 Clement 42:1–3",
-                                                    "subtitle": "The Apostles Sent by the Risen Christ",
-                                                    "date": "c. AD 95",
-                                                    "details": "The author, traditionally identified as Clement of Rome, writing to the Corinthian church, describes a chain of authority beginning with Jesus: “The apostles received the gospel for us from the Lord Jesus Christ; Jesus the Christ was sent from God. So then Christ is from God, and the apostles are from Christ.” He goes on to state that they were fully convinced by Jesus' resurrection and empowered by the Holy Spirit.",
-                                                    "whyItMatters": [
-                                                        "Early testimony: 1 Clement is one of the earliest post–New Testament Christian writings, possibly penned by a companion of the apostles.",
-                                                        "Direct experience implied: The apostles’ reception of the gospel from Christ implies eyewitness interaction with the risen Jesus.",
-                                                        "Continuity of message: The passage emphasizes that the apostles did not invent their message but passed on what they received—rooting the resurrection claim in apostolic authority and continuity."
-                                                    ],
-                                                    "source": {
-                                                        "title": "1 Clement 42:3 (Lightfoot & Harmer translation)",
-                                                        "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html",
-                                                        "highlightedUrl": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%2042%3A1,God%20should%20come."
-                                                    },
-                                                    "kind": "evidence"
+                                                    "name": "Clement of Rome",
+                                                    "subtitle": "Bishop of Rome and early witness to apostolic succession and the apostles' preaching",
+                                                    "kind": "collection",
+                                                    "children": [
+                                                        {
+                                                            "name": "1 Clement 42:1–3",
+                                                            "subtitle": "The Apostles Sent by the Risen Christ",
+                                                            "date": "c. AD 95",
+                                                            "details": "The author, traditionally identified as Clement of Rome, writing to the Corinthian church, describes a chain of authority beginning with Jesus: “The apostles received the gospel for us from the Lord Jesus Christ; Jesus the Christ was sent from God. So then Christ is from God, and the apostles are from Christ.” He goes on to state that they were fully convinced by Jesus' resurrection and empowered by the Holy Spirit.",
+                                                            "whyItMatters": [
+                                                                "Early testimony: 1 Clement is one of the earliest post–New Testament Christian writings, possibly penned by a companion of the apostles.",
+                                                                "Direct experience implied: The apostles’ reception of the gospel from Christ implies eyewitness interaction with the risen Jesus.",
+                                                                "Continuity of message: The passage emphasizes that the apostles did not invent their message but passed on what they received—rooting the resurrection claim in apostolic authority and continuity."
+                                                            ],
+                                                            "source": {
+                                                                "title": "1 Clement 42:3 (Lightfoot & Harmer translation)",
+                                                                "url": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html",
+                                                                "highlightedUrl": "https://www.earlychristianwritings.com/text/1clement-lightfoot.html#:~:text=1Clem%2042%3A1,God%20should%20come."
+                                                            },
+                                                            "kind": "evidence"
+                                                        },
+                                                        {
+                                                            "name": "Irenaeus, Against Heresies 3.3.3",
+                                                            "subtitle": "Clement as third in the succession of Roman bishops from the apostles",
+                                                            "date": "c. AD 185",
+                                                            "details": "Irenaeus lists the succession of bishops at Rome and notes that in the third place from the apostles stood Clement, who had both seen and conversed with them and still had their preaching “ringing in his ears.” This implies that the author of 1 Clement was personally acquainted with the apostles whose authority he invokes.",
+                                                            "whyItMatters": [
+                                                                "Links Clement directly to the apostles, strengthening the historical weight of 1 Clement as a near-apostolic witness.",
+                                                                "Shows that the early church viewed Clement and his epistle within an unbroken chain of episcopal succession from the apostles.",
+                                                                "Provides second-century corroboration that the Roman church preserved and valued Clement’s testimony."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Irenaeus, Against Heresies 3.3.3",
+                                                                "url": "https://www.newadvent.org/fathers/0103303.htm",
+                                                                "highlightedUrl": "https://www.newadvent.org/fathers/0103303.htm#:~:text=Clement%20was%20allotted,to%20the%20Corinthians."
+                                                            },
+                                                            "kind": "evidence"
+                                                        },
+                                                        {
+                                                            "name": "Tertullian, Prescription Against Heretics 32",
+                                                            "subtitle": "Clement of Rome ordained by Peter in the Roman succession lists",
+                                                            "date": "c. AD 200",
+                                                            "details": "Tertullian describes how the apostolic churches can trace their bishops back to the apostles through preserved registers. He notes that the church of Smyrna records Polycarp as appointed by John, and that the church of Rome likewise records Clement as ordained by Peter. This reinforces the picture of Clement as an authoritative link in the chain of apostolic succession behind 1 Clement.",
+                                                            "whyItMatters": [
+                                                                "Offers independent North African testimony that Clement stood in direct continuity with the apostle Peter.",
+                                                                "Shows that the early church appealed to concrete succession lists when defending the authenticity of their teaching.",
+                                                                "Further undergirds the authority of 1 Clement as a voice speaking out of an acknowledged apostolic church."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Tertullian, Prescription Against Heretics 32",
+                                                                "url": "https://www.newadvent.org/fathers/0311.htm",
+                                                                "highlightedUrl": "https://www.newadvent.org/fathers/0311.htm#:~:text=For%20this%20is%20the%20manner%20in%20which%20the%20apostolic%20churches%20transmit%20their%20registers%3A%20as%20the%20church%20of%20Smyrna%2C%20which%20records%20that%20Polycarp%20was%20placed%20therein%20by%20John%3B%20as%20also%20the%20church%20of%20Rome%2C%20which%20makes%20Clement%20to%20have%20been%20ordained%20in%20like%20manner%20by%20Peter."
+                                                            },
+                                                            "kind": "evidence"
+                                                        }
+                                                    ]
                                                 },
                                                 {
-                                                    "name": "Polycarp to the Philippians 9:1–2",
-                                                    "subtitle": "Faith in the Risen Christ",
-                                                    "date": "c. AD 110–140 (traditional dating of Polycarp’s epistle)",
-                                                    "details": "In this passage, Polycarp exhorts believers to remain steadfast in the faith delivered by the apostles, encouraging them to believe “in Him who raised up our Lord Jesus Christ from the dead and gave Him glory, and a throne on His right hand.” He ties resurrection faith to Christian endurance and the anticipation of judgment.",
-                                                    "whyItMatters": [
-                                                        "Shows an early second-century testimony to belief in the bodily resurrection.",
-                                                        "Demonstrates continuity of resurrection faith beyond the apostolic circle.",
-                                                        "Connects resurrection with endurance and eschatological hope."
-                                                    ],
-                                                    "source": {
-                                                        "title": "Polycarp to the Philippians 9:1–2",
-                                                        "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html",
-                                                        "highlightedUrl": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
-                                                    },
-                                                    "kind": "evidence"
+                                                    "name": "Polycarp of Smyrna",
+                                                    "subtitle": "Bishop of Smyrna, disciple of the apostles, and martyr",
+                                                    "date": "c. AD 69–155 (lifetime; martyrdom c. AD 155–160)",
+                                                    "details": "Polycarp stands as a key bridge figure between the apostles and the next generation. A hearer of the apostle John and other eyewitnesses to Jesus, he served as bishop of Smyrna and was remembered for faithfully transmitting what he had received.",
+                                                    "kind": "figure",
+                                                    "children": [
+                                                        {
+                                                            "name": "Polycarp to the Philippians 9:1–2",
+                                                            "subtitle": "Faith in the Risen Christ",
+                                                            "date": "c. AD 110–140 (traditional dating of Polycarp’s epistle)",
+                                                            "details": "In this passage, Polycarp exhorts believers to remain steadfast in the faith delivered by the apostles, encouraging them to believe \"in Him who raised up our Lord Jesus Christ from the dead and gave Him glory, and a throne on His right hand.\" He ties resurrection faith to Christian endurance and the anticipation of judgment.",
+                                                            "whyItMatters": [
+                                                                "Shows an early second-century testimony to belief in the bodily resurrection.",
+                                                                "Demonstrates continuity of resurrection faith beyond the apostolic circle.",
+                                                                "Connects resurrection with endurance and eschatological hope."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Polycarp to the Philippians 9:1–2",
+                                                                "url": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html",
+                                                                "highlightedUrl": "https://www.earlychristianwritings.com/text/polycarp-lightfoot.html#:~:text=Polycarp%209%3A1,God%20for%20us."
+                                                            },
+                                                            "kind": "evidence"
+                                                        },
+                                                        {
+                                                            "name": "Irenaeus, Against Heresies 3.3.4",
+                                                            "subtitle": "Polycarp as an apostolic hearer and bishop of Smyrna",
+                                                            "date": "c. AD 180",
+                                                            "details": "Irenaeus reports that Polycarp was not only instructed by the apostles and conversed with many who had seen Christ, but was also appointed bishop of the church in Smyrna by apostles in Asia. Irenaeus himself knew Polycarp in his youth and depicts him as having always taught what he learned from the apostles and what the Church has handed down as the true faith.",
+                                                            "whyItMatters": [
+                                                                "Direct apostolic link: Polycarp is explicitly described as a disciple of the apostles and a hearer of those who saw Christ.",
+                                                                "Apostolic appointment: His episcopal office at Smyrna is said to derive from the apostles themselves, grounding his authority historically.",
+                                                                "Second-generation witness: Irenaeus, a major second-century theologian, personally knew Polycarp and vouches that he preserved the apostles’ teaching unchanged."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Irenaeus, Against Heresies 3.3.4",
+                                                                "url": "https://www.newadvent.org/fathers/0103303.htm",
+                                                                "highlightedUrl": "https://www.newadvent.org/fathers/0103303.htm#:~:text=But%20Polycarp%20also%20was%20not%20only%20instructed%20by%20apostles"
+                                                            },
+                                                            "kind": "evidence"
+                                                        },
+                                                        {
+                                                            "name": "Irenaeus, To Florinus (via Eusebius, Ecclesiastical History 5.20)",
+                                                            "subtitle": "Irenaeus’ personal memories of Polycarp’s testimony",
+                                                            "date": "Letter c. AD 180; preserved c. early 4th century",
+                                                            "details": "In a letter to Florinus quoted by Eusebius, Irenaeus recalls seeing Florinus with Polycarp in Asia when he himself was a boy. He vividly remembers where Polycarp sat, his manner of life, and especially how Polycarp recounted his intercourse with John and others who had seen the Lord, relating what he had heard from them about Christ and His miracles \"in harmony with the Scriptures.\"",
+                                                            "whyItMatters": [
+                                                                "Eyewitness chain: Irenaeus describes a living chain of memory—John and other eyewitnesses → Polycarp → Irenaeus.",
+                                                                "Scriptural coherence: Polycarp’s recollections of the Lord’s teaching and miracles are said to agree with the Scriptures, reinforcing the harmony between oral and written testimony.",
+                                                                "Concrete historical picture: The passage supplies concrete, personal reminiscences of Polycarp as an elderly bishop recounting what he had heard from direct eyewitnesses."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Eusebius, Ecclesiastical History 5.20 (quoting Irenaeus to Florinus)",
+                                                                "url": "https://www.newadvent.org/fathers/250105.htm",
+                                                                "highlightedUrl": "https://www.newadvent.org/fathers/250105.htm#:~:text=5.%20For%20when,the%20Scriptures."
+                                                            },
+                                                            "kind": "evidence"
+                                                        },
+                                                        {
+                                                            "name": "Tertullian, Prescription Against Heretics 32",
+                                                            "subtitle": "The church of Smyrna’s record that Polycarp was placed there by John",
+                                                            "date": "c. AD 200",
+                                                            "details": "Arguing that true churches can trace their bishops in succession back to the apostles or apostolic men, Tertullian points to concrete examples. He notes that the church of Smyrna \"records that Polycarp was placed therein by John,\" and likewise that the church of Rome remembers Clement as ordained by Peter. Smyrna’s register thus locates Polycarp’s episcopate within an explicitly apostolic succession.",
+                                                            "whyItMatters": [
+                                                                "Independent attestation: Provides a non-Irenaean, North African witness to Polycarp’s appointment by the apostle John.",
+                                                                "Apostolic succession as a criterion: Shows how early Christians appealed to episcopal succession as a historical test against heresy.",
+                                                                "Reinforces Polycarp’s role: Strengthens the picture of Polycarp as a key transmitter of apostolic teaching, rooted in the official memory of his own church."
+                                                            ],
+                                                            "source": {
+                                                                "title": "Tertullian, Prescription Against Heretics 32",
+                                                                "url": "https://www.newadvent.org/fathers/0311.htm",
+                                                                "highlightedUrl": "https://www.newadvent.org/fathers/0311.htm#:~:text=For%20this%20is%20the%20manner%20in%20which%20the%20apostolic%20churches%20transmit%20their%20registers%3A%20as%20the%20church%20of%20Smyrna%2C%20which%20records%20that%20Polycarp%20was%20placed%20therein%20by%20John"
+                                                            },
+                                                            "kind": "evidence"
+                                                        }
+                                                    ]
                                                 }
                                             ],
                                             "kind": "collection"
