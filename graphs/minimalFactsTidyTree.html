@@ -901,12 +901,32 @@
         .popup-help a {
             color: var(--link-accent) !important;
             text-decoration: underline;
+            border-radius: 3px;
+            padding: 2px 4px;
+            margin: -2px -4px;
+            transition: background-color 0.15s, outline 0.15s;
         }
 
         .tooltip a:hover,
         .popup-help a:hover {
             /* slightly stronger on hover; still derived from the accent variable where appropriate */
             color: var(--node-hover-stroke-dark) !important;
+            background-color: rgba(0, 116, 217, 0.08);
+        }
+
+        /* Keyboard focus styles for links in popups */
+        .tooltip a:focus,
+        .popup-help a:focus {
+            outline: 2px solid #0074d9;
+            outline-offset: 2px;
+            background-color: rgba(0, 116, 217, 0.12);
+        }
+
+        body.dark-mode .tooltip a:focus,
+        body.dark-mode .popup-help a:focus {
+            outline: 2px solid #00E6B2;
+            outline-offset: 2px;
+            background-color: rgba(0, 230, 178, 0.12);
         }
 
         /* Modal links should use the shared link accent so they look correct in dark mode */
@@ -958,6 +978,23 @@
 
         body:not(.dark-mode) g.node[data-selected="true"] {
             filter: drop-shadow(0 6px 10px rgba(0, 116, 217, 0.06));
+        }
+
+        /* Keyboard focus styles for accessibility */
+        g.node:focus {
+            outline: none;
+        }
+
+        g.node:focus circle.visible {
+            stroke: #0074d9 !important;
+            stroke-width: 3px !important;
+            filter: drop-shadow(0 0 8px rgba(0, 116, 217, 0.5));
+        }
+
+        body.dark-mode g.node:focus circle.visible {
+            stroke: #00E6B2 !important;
+            stroke-width: 3px !important;
+            filter: drop-shadow(0 0 8px rgba(0, 230, 178, 0.5));
         }
 
         /* ESV credit footnote (small, unobtrusive, respects dark mode) */
@@ -1699,6 +1736,21 @@
             });
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'visible') {
+                    // When returning to the tab, close any open popup and restore focus
+                    if (popupHelp && popupHelp.style("opacity") === "1") {
+                        const nodeToFocus = popupHelpNode;
+                        closePopupHelp();
+                        // Restore focus to the node that had the popup open
+                        if (nodeToFocus) {
+                            setTimeout(() => {
+                                const nodeGroup = d3.selectAll('g.node').filter(d => d === nodeToFocus);
+                                const nodeEl = nodeGroup.node();
+                                if (nodeEl) {
+                                    nodeEl.focus();
+                                }
+                            }, 100);
+                        }
+                    }
                     setTimeout(() => {
                         computeChartHeight();
                         try { scheduleRecenter(200); } catch (e) { /* non-fatal */ }
@@ -1714,7 +1766,12 @@
                 .attr("class", "tooltip").style("opacity", 0);
             // Add a separate popup help element
             const popupHelp = d3.select("body").append("div")
-                .attr("class", "popup-help").style("opacity", 0).style("position", "fixed");
+                .attr("class", "popup-help")
+                .attr("role", "dialog")
+                .attr("aria-live", "polite")
+                .attr("tabindex", "-1")
+                .style("opacity", 0)
+                .style("position", "fixed");
 
             // Track last known pointer position so we can re-evaluate hover after programmatic moves
             let lastPointer = { x: null, y: null };
@@ -1729,6 +1786,7 @@
                 try { tooltip.style('opacity', 0); } catch (e) { }
                 try { popupHelp.style('opacity', 0).style('pointer-events', 'none'); } catch (e) { }
                 try { document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true); } catch (e) { }
+                try { document.removeEventListener('keydown', popupHelpKeyHandler, true); } catch (e) { }
                 popupHelpNode = null;
             }
 
@@ -2058,6 +2116,24 @@
                         d3.selectAll('g.node').filter(n => n === d).attr('data-selected', 'true');
                     } catch (e) { /* ignore if d3 not present */ }
                     if (!d.children && !d._children && d.data.source && (d.data.source.highlightedUrl || d.data.source.url)) {
+                        // Check if popup is already open for this node
+                        const isPopupOpen = popupHelp.style("opacity") === "1" && popupHelpNode === d;
+                        
+                        // If popup is already open, close it (toggle behavior)
+                        if (isPopupOpen) {
+                            closePopupHelp();
+                            // Keep focus on the node
+                            setTimeout(() => {
+                                const nodeGroup = d3.selectAll('g.node').filter(n => n === d);
+                                const nodeEl = nodeGroup.node();
+                                if (nodeEl) {
+                                    nodeEl.focus();
+                                }
+                            }, 50);
+                            return;
+                        }
+                        
+                        // Otherwise, open the popup
                         // Prefer a highlightedUrl when authors provided one in the source group; fall back to url
                         const href = d.data.source.highlightedUrl || d.data.source.url;
                         // Build a leaf-specific content block so we can style date/details/link
@@ -2076,8 +2152,22 @@
                                 .style("pointer-events", "auto");
                             popupHelpNode = d;
                             updatePopupHelpPosition();
+                            
+                            // Keep focus on the node when popup opens via keyboard
+                            // User must press right arrow to focus the link
+                            if (event && (event.key === 'Enter' || event.key === ' ')) {
+                                setTimeout(() => {
+                                    const nodeGroup = d3.selectAll('g.node').filter(n => n === d);
+                                    const nodeEl = nodeGroup.node();
+                                    if (nodeEl) {
+                                        nodeEl.focus();
+                                    }
+                                }, 50);
+                            }
+                            
                             setTimeout(() => {
                                 document.addEventListener('pointerdown', popupHelpOutsideClickHandler, true);
+                                document.addEventListener('keydown', popupHelpKeyHandler, true);
                             }, 0);
                         }
                     } else {
@@ -2202,10 +2292,7 @@
                             }
                         }, isSmall ? 380 : 220);
 
-                        popupHelp.style("opacity", 0)
-                            .style("pointer-events", "none");
-                        document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true);
-                        popupHelpNode = null;
+                        closePopupHelp();
                         // For toggles, only surface the bottom-sheet/popup on mobile-like devices.
                         // Desktop/large-screen toggles should not open additional popups to avoid
                         // stacking multiple tooltip boxes.
@@ -2225,6 +2312,18 @@
                 const nodeEnter = node.enter().append("g")
                     .attr("class", d => (!d.children && !d._children && d.data.source && d.data.source.url) ? "node clickable" : "node")
                     .attr("transform", d => `translate(${source.y0},${source.x0})`)
+                    .attr("tabindex", "0")
+                    .attr("role", "button")
+                    .attr("aria-label", d => {
+                        const hasChildren = d.children || d._children;
+                        const isExpanded = !!d.children;
+                        const isLeaf = !d.children && !d._children;
+                        if (isLeaf) {
+                            return `${d.data.name}. Leaf node. Press Enter to view details.`;
+                        } else {
+                            return `${d.data.name}. ${isExpanded ? 'Expanded' : 'Collapsed'}. Press Enter to ${isExpanded ? 'collapse' : 'expand'}.`;
+                        }
+                    })
                     .on('pointerdown', (event, d) => {
                         try { if (event.isPrimary) pointerStarts.set(event.pointerId, { x: event.clientX, y: event.clientY, t: Date.now() }); } catch (e) { /* ignore */ }
                     })
@@ -2250,6 +2349,111 @@
                         // avoid duplicate when pointerup already handled the tap
                         if (d._handledTap && (Date.now() - d._handledTap) < 600) { d._handledTap = 0; return; }
                         handleNodeActivate(event, d);
+                    })
+                    .on('keydown', (event, d) => {
+                        // Handle keyboard activation (Enter or Space)
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            handleNodeActivate(event, d);
+                        }
+                        // Handle arrow key navigation
+                        else if (event.key.startsWith('Arrow')) {
+                            event.preventDefault();
+                            const allNodes = root.descendants();
+                            const currentIndex = allNodes.indexOf(d);
+                            let targetNode = null;
+                            let shouldActivate = false;
+
+                            if (event.key === 'ArrowRight') {
+                                // Check if popup is currently open for this node
+                                const isPopupOpen = popupHelp.style("opacity") === "1" && popupHelpNode === d;
+                                
+                                // If popup is open, focus the link inside
+                                if (isPopupOpen) {
+                                    const popupEl = popupHelp.node();
+                                    const link = popupEl ? popupEl.querySelector('a') : null;
+                                    if (link) {
+                                        link.focus();
+                                    }
+                                    return; // Don't navigate
+                                }
+                                
+                                // If node has children and is expanded, navigate to a child (go deeper)
+                                if (d.children && d.children.length > 0) {
+                                    // Check if we have a "last visited child" stored for this node
+                                    // and if that child is still in the current children array
+                                    if (d._lastVisitedChild && d.children.includes(d._lastVisitedChild)) {
+                                        targetNode = d._lastVisitedChild;
+                                    } else {
+                                        // Default to first child
+                                        targetNode = d.children[0];
+                                    }
+                                }
+                                // If node is collapsed or a leaf, right arrow does nothing
+                                // (use Enter to expand, or Down arrow to move to siblings)
+                            } else if (event.key === 'ArrowLeft') {
+                                // Check if popup is currently open for this node
+                                const isPopupOpen = popupHelp.style("opacity") === "1" && popupHelpNode === d;
+                                
+                                // If popup is open, close it
+                                if (isPopupOpen) {
+                                    closePopupHelp();
+                                    // Keep focus on this node
+                                    setTimeout(() => {
+                                        const nodeGroup = d3.selectAll('g.node').filter(n => n === d);
+                                        const nodeEl = nodeGroup.node();
+                                        if (nodeEl) {
+                                            nodeEl.focus();
+                                        }
+                                    }, 60);
+                                    return; // Don't navigate, just close popup
+                                }
+                                
+                                // When navigating to parent, remember this child
+                                if (d.parent) {
+                                    d.parent._lastVisitedChild = d;
+                                    targetNode = d.parent;
+                                }
+                            } else if (event.key === 'ArrowDown') {
+                                // Navigate to next node in visual order
+                                if (currentIndex < allNodes.length - 1) {
+                                    targetNode = allNodes[currentIndex + 1];
+                                }
+                            } else if (event.key === 'ArrowUp') {
+                                // Navigate to previous node in visual order
+                                if (currentIndex > 0) {
+                                    targetNode = allNodes[currentIndex - 1];
+                                }
+                            }
+
+                            if (targetNode) {
+                                // Clear the selection highlight when navigating with keyboard
+                                d3.selectAll('g.node').attr('data-selected', 'false');
+                                
+                                // Find and focus the target node's DOM element
+                                const targetElement = d3.selectAll('g.node')
+                                    .filter(n => n === targetNode)
+                                    .node();
+                                if (targetElement) {
+                                    targetElement.focus();
+                                    // Center the newly focused node
+                                    try {
+                                        const transform = d3.zoomTransform(svg.node());
+                                        const screen = transform.apply([targetNode.y, targetNode.x]);
+                                        const center = getDesiredScreenCenter();
+                                        const dx = (width / 2) - screen[0];
+                                        const dy = center.centerY - screen[1];
+                                        // Only move if the node is significantly off-center
+                                        if (Math.abs(dx) > width * 0.3 || Math.abs(dy) > height * 0.3) {
+                                            const newTransform = d3.zoomIdentity
+                                                .translate(transform.x + dx * 0.5, transform.y + dy * 0.5)
+                                                .scale(transform.k);
+                                            svg.transition().duration(200).call(zoom.transform, newTransform);
+                                        }
+                                    } catch (e) { /* ignore centering errors */ }
+                                }
+                            }
+                        }
                     })
                     .on("pointerenter", (event, d) => {
                         // show subtitle on hover/enter (pointer-aware)
@@ -2281,20 +2485,106 @@
                 function popupHelpOutsideClickHandler(e) {
                     const popupEl = popupHelp.node();
                     if (popupHelp.style("opacity") === "1" && (!popupEl || (e.target !== popupEl && !popupEl.contains(e.target)))) {
-                        popupHelp.style("opacity", 0)
-                            .style("pointer-events", "none");
-                        document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true);
-                        // Quickfix: dispatch mouseleave to node under popup
-                        if (popupHelpNode) {
-                            // Find the corresponding SVG node group
-                            const nodeGroup = d3.selectAll('g.node').filter(d => d === popupHelpNode);
-                            nodeGroup.select('text').each(function () {
-                                const evt = new MouseEvent('mouseleave', { bubbles: true });
-                                this.dispatchEvent(evt);
-                            });
-                        }
-                        popupHelpNode = null;
+                        const nodeToFocus = closePopupHelp();
+                        // Optionally return focus when clicking outside
+                        // (commenting out as clicking outside usually means focusing elsewhere)
+                        // if (nodeToFocus) {
+                        //     setTimeout(() => {
+                        //         const nodeGroup = d3.selectAll('g.node').filter(d => d === nodeToFocus);
+                        //         const nodeEl = nodeGroup.node();
+                        //         if (nodeEl) nodeEl.focus();
+                        //     }, 50);
+                        // }
                     }
+                }
+                
+                // Helper to handle keyboard events in popup (Escape to close, arrows to navigate)
+                function popupHelpKeyHandler(e) {
+                    const popupEl = popupHelp.node();
+                    const isPopupVisible = popupHelp.style("opacity") === "1";
+                    
+                    if (!isPopupVisible) return;
+                    
+                    // Escape key: close popup and return to node
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // Store the node reference before closing
+                        const nodeToFocus = popupHelpNode;
+                        closePopupHelp();
+                        // Return focus to the node that opened the popup
+                        if (nodeToFocus) {
+                            setTimeout(() => {
+                                const nodeGroup = d3.selectAll('g.node').filter(d => d === nodeToFocus);
+                                const nodeEl = nodeGroup.node();
+                                if (nodeEl) {
+                                    nodeEl.focus();
+                                }
+                            }, 50);
+                        }
+                    }
+                    // Left arrow: unfocus link or close popup
+                    else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const activeEl = document.activeElement;
+                        const link = popupEl ? popupEl.querySelector('a') : null;
+                        
+                        // If link is focused, return focus to the node (but keep popup open)
+                        if (activeEl === link) {
+                            const nodeToFocus = popupHelpNode;
+                            if (nodeToFocus) {
+                                const nodeGroup = d3.selectAll('g.node').filter(d => d === nodeToFocus);
+                                const nodeEl = nodeGroup.node();
+                                if (nodeEl) {
+                                    nodeEl.focus();
+                                }
+                            }
+                        }
+                        // If node is focused (popup visible but link not focused), close popup
+                        else {
+                            const nodeToFocus = popupHelpNode;
+                            closePopupHelp();
+                            if (nodeToFocus) {
+                                setTimeout(() => {
+                                    const nodeGroup = d3.selectAll('g.node').filter(d => d === nodeToFocus);
+                                    const nodeEl = nodeGroup.node();
+                                    if (nodeEl) {
+                                        nodeEl.focus();
+                                    }
+                                }, 50);
+                            }
+                        }
+                    }
+                    // Right arrow: focus the link if not already focused
+                    else if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const link = popupEl ? popupEl.querySelector('a') : null;
+                        if (link && document.activeElement !== link) {
+                            link.focus();
+                        }
+                    }
+                }
+                
+                // Helper to close popup and clean up event listeners
+                function closePopupHelp() {
+                    const nodeRef = popupHelpNode; // Store before clearing
+                    popupHelp.style("opacity", 0)
+                        .style("pointer-events", "none");
+                    document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true);
+                    document.removeEventListener('keydown', popupHelpKeyHandler, true);
+                    // Quickfix: dispatch mouseleave to node under popup
+                    if (popupHelpNode) {
+                        // Find the corresponding SVG node group
+                        const nodeGroup = d3.selectAll('g.node').filter(d => d === popupHelpNode);
+                        nodeGroup.select('text').each(function () {
+                            const evt = new MouseEvent('mouseleave', { bubbles: true });
+                            this.dispatchEvent(evt);
+                        });
+                    }
+                    popupHelpNode = null;
+                    return nodeRef; // Return the node reference for caller to use
                 }
 
                 // Adjust node radius for small touch screens to improve tap targets
@@ -2340,6 +2630,17 @@
 
                 // UPDATE + TRANSITIONS
                 const nodeUpdate = nodeEnter.merge(node);
+                // Update aria-label for existing nodes
+                nodeUpdate.attr("aria-label", d => {
+                    const hasChildren = d.children || d._children;
+                    const isExpanded = !!d.children;
+                    const isLeaf = !d.children && !d._children;
+                    if (isLeaf) {
+                        return `${d.data.name}. Leaf node. Press Enter to view details.`;
+                    } else {
+                        return `${d.data.name}. ${isExpanded ? 'Expanded' : 'Collapsed'}. Press Enter to ${isExpanded ? 'collapse' : 'expand'}.`;
+                    }
+                });
                 nodeUpdate.transition().duration(350)
                     .attr("transform", d => `translate(${d.y},${d.x})`)
                     .on("end", () => { updatePopupHelpPosition(); });
