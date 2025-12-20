@@ -16,6 +16,18 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
     <style>
+        /* Semantic HTML landmarks */
+        header {
+            position: relative;
+            z-index: 5000;
+        }
+
+        main {
+            display: block;
+            width: 100%;
+            height: calc(100vh - 48px);
+        }
+
         #topbar {
             display: flex;
             align-items: center;
@@ -207,6 +219,37 @@
             --safe-left: env(safe-area-inset-left, 0px);
         }
 
+        /* Visually hidden class for skip link - accessible to screen readers but not visible */
+        .visually-hidden {
+            position: absolute;
+            left: -10000px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        .visually-hidden:focus {
+            position: fixed;
+            top: 8px;
+            left: 8px;
+            width: auto;
+            height: auto;
+            padding: 8px 16px;
+            background: #0066cc;
+            color: #ffffff;
+            border-radius: 6px;
+            z-index: 10000;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .visually-hidden:focus {
+            background: #1a1a1a;
+            color: #ffffff;
+            border: 2px solid #00E6B2;
+        }
+
         body {
             margin: 0;
             font: 14px/1.4 system-ui, sans-serif;
@@ -232,11 +275,10 @@
         }
 
         #chart {
-            width: 100vw;
-            height: calc(100vh - 48px);
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             background: var(--bg-light);
-            margin-top: 48px; /* Add margin to account for fixed topbar */
         }
 
         body.dark-mode #chart {
@@ -1024,8 +1066,10 @@
 </head>
 
 <body class="dark-mode">
-    <div id="topbar">
-        <strong style="font-size:18px; letter-spacing:0.5px; margin-right:16px;">Tidy Tree</strong>
+    <a href="#chart" class="visually-hidden">Skip to tree visualization</a>
+    <header>
+        <div id="topbar">
+            <strong style="font-size:18px; letter-spacing:0.5px; margin-right:16px;">Tidy Tree</strong>
         <button id="factsAboutBtn" aria-haspopup="dialog">4+1 Facts</button>
         <button id="controlsToggle" aria-expanded="false">Controls <span class="controls-icon" aria-hidden="true"><svg
                     viewBox="0 0 24 24" focusable="false" aria-hidden="true">
@@ -1050,8 +1094,11 @@
             </div>
             <label id="darkModeLabel" for="darkModeToggle"><input type="checkbox" id="darkModeToggle"> Dark mode</label>
         </div>
-    </div>
-    <div id="chart"></div>
+        </div>
+    </header>
+    <main role="main" id="main-content" aria-label="Minimal facts tree visualization">
+        <div id="chart" tabindex="-1"></div>
+    </main>
 
     <!-- bottom sheet for mobile node details -->
     <div id="bottomSheet" class="bottom-sheet" role="dialog" aria-hidden="true"></div>
@@ -1137,6 +1184,30 @@
             const container = document.getElementById('chart');
             let width = container.clientWidth;
             let height = container.clientHeight;
+
+            // Skip link: jump straight into the tree for keyboard/screen-reader users
+            const skipLink = document.querySelector('a[href="#chart"]');
+            function focusFirstTreeNode() {
+                const firstNode = document.querySelector('#chart g.node');
+                if (firstNode) {
+                    firstNode.focus({ preventScroll: true });
+                    return true;
+                }
+                return false;
+            }
+            if (skipLink && container) {
+                skipLink.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    container.focus({ preventScroll: true });
+                    if (!focusFirstTreeNode()) {
+                        setTimeout(() => {
+                            if (!focusFirstTreeNode()) {
+                                container.focus({ preventScroll: true });
+                            }
+                        }, 160);
+                    }
+                });
+            }
 
             // Compute chart height based on topbar height so content isn't hidden under it on small screens
             function computeChartHeight() {
