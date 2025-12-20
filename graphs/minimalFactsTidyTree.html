@@ -1866,6 +1866,8 @@
             // UI consistent when the chart recenters under a stationary mouse.
             function revealHoverAtPointer() {
                 try {
+                    // Don't reveal tooltips if they're suppressed during transitions
+                    if (suppressHoverTooltips) return;
                     if (lastPointer.x == null || lastPointer.y == null) return;
                     const el = document.elementFromPoint(lastPointer.x, lastPointer.y);
                     if (!el) return;
@@ -2032,6 +2034,8 @@
             // When true, prevent ensureTreeVisible from nudging the view while we perform
             // a deliberate centering animation (avoids competing transitions).
             let suppressAutoEnsure = false;
+            // When true, completely suppress all hover tooltips during expand/collapse transitions
+            let suppressHoverTooltips = false;
             root.x0 = height / 2;
             root.y0 = 0;
             // Collapse the 'Death', 'Burial', and 'Resurrection' nodes themselves so only those are visible under the root
@@ -2274,11 +2278,11 @@
                                     // original mobile behavior: center fully on the target
                                     if (willExpand) {
                                         const desc = d.descendants();
-                                        if (!desc || desc.length === 0) { suppressAutoEnsure = false; return; }
+                                        if (!desc || desc.length === 0) { suppressAutoEnsure = false; suppressHoverTooltips = false; return; }
                                         let maxDepth = -Infinity;
                                         desc.forEach(n => { if (n.depth > maxDepth) maxDepth = n.depth; });
                                         const deepest = desc.filter(n => n.depth === maxDepth);
-                                        if (!deepest || deepest.length === 0) { suppressAutoEnsure = false; return; }
+                                        if (!deepest || deepest.length === 0) { suppressAutoEnsure = false; suppressHoverTooltips = false; return; }
                                         const avgX = d3.mean(deepest, n => n.x);
                                         const avgY = d3.mean(deepest, n => n.y);
                                         const screen = transform.apply([avgY, avgX]);
@@ -2296,7 +2300,7 @@
                                         svg.interrupt();
                                         hideTransientUI();
                                         svg.transition().duration(360).call(zoom.transform, newTransform)
-                                            .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
+                                            .on('end interrupt', () => { suppressAutoEnsure = false; suppressHoverTooltips = false; try { revealHoverAtPointer(); } catch (e) { } });
                                     } else {
                                         const avgX = d.x;
                                         const avgY = d.y;
@@ -2313,20 +2317,20 @@
                                         svg.interrupt();
                                         hideTransientUI();
                                         svg.transition().duration(360).call(zoom.transform, newTransform)
-                                            .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
+                                            .on('end interrupt', () => { suppressAutoEnsure = false; suppressHoverTooltips = false; try { revealHoverAtPointer(); } catch (e) { } });
                                     }
                                 } else {
                                     // Desktop/large-screen behavior: apply a fraction of the computed delta
                                     // and clamp to reasonable maximums so motion is subtle.
-                                    const duration = 260;
+                                    const duration = 680;
                                     const fraction = 1.0; // apply full computed shift on desktop (match mobile)
                                     if (willExpand) {
                                         const desc = d.descendants();
-                                        if (!desc || desc.length === 0) { suppressAutoEnsure = false; return; }
+                                        if (!desc || desc.length === 0) { suppressAutoEnsure = false; suppressHoverTooltips = false; return; }
                                         let maxDepth = -Infinity;
                                         desc.forEach(n => { if (n.depth > maxDepth) maxDepth = n.depth; });
                                         const deepest = desc.filter(n => n.depth === maxDepth);
-                                        if (!deepest || deepest.length === 0) { suppressAutoEnsure = false; return; }
+                                        if (!deepest || deepest.length === 0) { suppressAutoEnsure = false; suppressHoverTooltips = false; return; }
                                         const avgX = d3.mean(deepest, n => n.x);
                                         const avgY = d3.mean(deepest, n => n.y);
                                         const screen = transform.apply([avgY, avgX]);
@@ -2341,7 +2345,7 @@
                                         svg.interrupt();
                                         hideTransientUI();
                                         svg.transition().duration(duration).call(zoom.transform, newTransform)
-                                            .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
+                                            .on('end interrupt', () => { suppressAutoEnsure = false; suppressHoverTooltips = false; try { revealHoverAtPointer(); } catch (e) { } });
                                     } else {
                                         const avgX = d.x;
                                         const avgY = d.y;
@@ -2357,12 +2361,13 @@
                                         svg.interrupt();
                                         hideTransientUI();
                                         svg.transition().duration(duration).call(zoom.transform, newTransform)
-                                            .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
+                                            .on('end interrupt', () => { suppressAutoEnsure = false; suppressHoverTooltips = false; try { revealHoverAtPointer(); } catch (e) { } });
                                     }
                                 }
                             } catch (e) {
                                 console.warn('centering after expand/collapse failed', e);
                                 suppressAutoEnsure = false;
+                                suppressHoverTooltips = false;
                             }
                         }, isSmall ? 380 : 220);
 
@@ -2399,7 +2404,13 @@
                         }
                     })
                     .on('pointerdown', (event, d) => {
-                        try { if (event.isPrimary) pointerStarts.set(event.pointerId, { x: event.clientX, y: event.clientY, t: Date.now() }); } catch (e) { /* ignore */ }
+                        try {
+                            // Immediately suppress tooltips and hide any active tooltip when user starts clicking
+                            // This prevents tooltip flash when clicking a node that's already being hovered
+                            suppressHoverTooltips = true;
+                            hideTransientUI();
+                            if (event.isPrimary) pointerStarts.set(event.pointerId, { x: event.clientX, y: event.clientY, t: Date.now() });
+                        } catch (e) { /* ignore */ }
                     })
                     .on('pointerup', (event, d) => {
                         const s = pointerStarts.get(event.pointerId);
@@ -2415,13 +2426,23 @@
                                 handleNodeActivate(event, d);
                                 event.preventDefault();
                                 return;
+                            } else {
+                                // Was a drag/pan, not a click - re-enable tooltips after a brief delay
+                                setTimeout(() => { suppressHoverTooltips = false; }, 100);
                             }
                         }
                     })
-                    .on('pointercancel', (event) => { pointerStarts.delete(event.pointerId); })
+                    .on('pointercancel', (event) => { 
+                        pointerStarts.delete(event.pointerId);
+                        // Re-enable tooltips after a brief delay when pointer is cancelled
+                        setTimeout(() => { suppressHoverTooltips = false; }, 100);
+                    })
                     .on('click', (event, d) => {
                         // avoid duplicate when pointerup already handled the tap
                         if (d._handledTap && (Date.now() - d._handledTap) < 600) { d._handledTap = 0; return; }
+                        // Suppress tooltips immediately on click as well (backup for browsers that don't fire pointerdown)
+                        suppressHoverTooltips = true;
+                        hideTransientUI();
                         handleNodeActivate(event, d);
                     })
                     .on('keydown', (event, d) => {
@@ -2559,6 +2580,8 @@
                         }
                     })
                     .on("pointerenter", (event, d) => {
+                        // Suppress tooltips during expand/collapse transitions
+                        if (suppressHoverTooltips) return;
                         // show subtitle on hover/enter (pointer-aware)
                         const txt = d.data.subtitle || "";
                         if (!txt) return;
@@ -2575,7 +2598,24 @@
                             .style("pointer-events", "none");
                         clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
                     })
-                    .on("pointermove", (event) => {
+                    .on("pointermove", (event, d) => {
+                        // If tooltips are suppressed but pointer is moving (not clicking/dragging),
+                        // re-enable them so hover works on newly revealed nodes
+                        if (suppressHoverTooltips) {
+                            suppressHoverTooltips = false;
+                            // Trigger a synthetic pointerenter to show tooltip for current node
+                            const txt = d.data.subtitle || "";
+                            if (txt) {
+                                const isSmall = isMobileLike();
+                                if (!isSmall) {
+                                    tooltip.html(txt)
+                                        .style("opacity", 1)
+                                        .style("pointer-events", "none");
+                                    clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
+                                }
+                            }
+                            return;
+                        }
                         const isSmall = isMobileLike();
                         if (!isSmall) clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
                     })
@@ -2583,6 +2623,8 @@
                         tooltip.style("opacity", 0);
                     })
                     .on("focus", (event, d) => {
+                        // Suppress tooltips during expand/collapse transitions
+                        if (suppressHoverTooltips) return;
                         // Show tooltip when node receives keyboard focus
                         const txt = d.data.subtitle || "";
                         if (!txt) return;
