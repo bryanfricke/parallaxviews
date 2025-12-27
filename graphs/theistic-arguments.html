@@ -203,9 +203,9 @@
   /* Desktop: hover highlighting similar to mobile */
   @media (min-width: 601px) {
     .node:focus { outline: none; }
-    .node.hover rect { filter: brightness(1.08); }
-    .node.hover rect { stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
-    .node.hover .label { filter: url(#textGlow); }
+    .node.hover rect, .node.active rect { filter: brightness(1.08); }
+    .node.hover rect, .node.active rect { stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
+    .node.hover .label, .node.active .label { filter: url(#textGlow); }
     /* Keyboard (true focus) highlighting distinct from mere mouse click focus */
     .node.focused rect { filter: brightness(1.08); stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
     .node.focused .label { filter: url(#textGlow); }
@@ -600,6 +600,19 @@
       .extent([[isMobile ? 40 : 140, 20], [width - (isMobile ? 40 : 140), height - 20]]);
 
     const graph = sankey({ nodes: nodes.map(d => ({ ...d })), links: links.map(d => ({ ...d })) });
+
+    // Reorder links targeting 'good' to put ontological→good last
+    const goodNode = graph.nodes.find(n => n.id === 'good');
+    if (goodNode && goodNode.targetLinks) {
+      const ontIdx = goodNode.targetLinks.findIndex(l => l.source.id === 'ontological');
+      if (ontIdx !== -1 && ontIdx !== goodNode.targetLinks.length - 1) {
+        // Remove ontological→good and push to end
+        const [ontLink] = goodNode.targetLinks.splice(ontIdx, 1);
+        goodNode.targetLinks.push(ontLink);
+        // Recalculate link positions
+        sankey.update(graph);
+      }
+    }
 
     // Reposition attribute nodes according to their explicit 'order' so right-side order is enforced.
     // Gather attribute nodes (these are sinks, typically on the right column) and re-stack them.
