@@ -185,13 +185,13 @@
     {
       "source": "ontological",
       "target": "max_great",
-      "value": 12,
+      "value":9,
       "explain": "If possibly necessary being, then necessary being exists (modal ontological)."
     },
     {
       "source": "ontological",
       "target": "necessary",
-      "value": 10,
+      "value": 6,
       "explain": "Ontological also supports necessity of being."
     },
     {
@@ -235,6 +235,12 @@
       "target": "good",
       "value": 12,
       "explain": "Ground of objective moral values & duties."
+    },
+    {
+      "source": "ontological",
+      "target": "good",
+      "value": 6,
+      "explain": "Ontological also supports necessity of being maximally good."
     }
   ]
 }

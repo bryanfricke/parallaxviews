@@ -245,7 +245,9 @@
   :root:not([data-theme]) .link:hover { stroke-opacity: .7; }
     }
 
-  .tooltip { position: absolute; pointer-events: none; background: var(--bg); color: var(--fg); border: 1px solid rgba(148,163,184,.4); padding: 8px 10px; border-radius: 8px; font-size: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); opacity: 0; transition: opacity 80ms ease; max-width: 200px; white-space: pre-wrap; overflow-wrap: break-word; word-break: break-word; }
+  .tooltip { position: absolute; pointer-events: none; background: var(--bg); color: var(--fg); border: 1px solid rgba(148,163,184,.4); padding: 8px 10px; border-radius: 8px; font-size: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.25); opacity: 0; transition: opacity 80ms ease; max-width: 200px; white-space: pre-wrap; overflow-wrap: break-word; word-break: break-word; z-index: 15; }
+  .tooltip.active { pointer-events: auto; }
+  .tooltip.popup { position: fixed; z-index: 30; }
   /* Wider tooltips progressively on larger desktop widths to reduce unnecessary vertical scrolling */
   @media (min-width: 700px){ .tooltip { max-width: 280px; } }
   @media (min-width: 1000px){ .tooltip { max-width: 340px; } }
@@ -735,9 +737,44 @@
     // Helper to position tooltip near the cursor and shift left if it would overflow the right edge.
     let _lastTooltipAt = 0;
     let _hideTooltipTimeout = null;
+    let popupLocked = false;
+
+    function lockTooltipToPopup(){
+      try{
+        const ttNode = tooltip.node();
+        if (!ttNode) return;
+        if (_hideTooltipTimeout) { clearTimeout(_hideTooltipTimeout); _hideTooltipTimeout = null; }
+        const rect = ttNode.getBoundingClientRect();
+        tooltip
+          .classed('popup', true)
+          .classed('active', true)
+          .style('left', rect.left + 'px')
+          .style('top', rect.top + 'px')
+          .style('opacity', 1);
+        popupLocked = true;
+      }catch(e){}
+    }
+
+    function unlockTooltip(keepVisible = false){
+      try{
+        const ttNode = tooltip.node();
+        if (ttNode) {
+          const rect = ttNode.getBoundingClientRect();
+          const docLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
+          const docTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+          tooltip.style('left', rect.left + docLeft + 'px').style('top', rect.top + docTop + 'px');
+        }
+      }catch(e){}
+      tooltip.classed('popup', false);
+      popupLocked = false;
+      if (!keepVisible) {
+        tooltip.classed('active', false).style('opacity', 0);
+      }
+    }
     
     // Helper functions for debounced tooltip show/hide
     function showTooltip(event, html, opts = {}) {
+      if (popupLocked && !opts.overridePopup) return;
       // cancel any pending hide
       if (_hideTooltipTimeout) {
         clearTimeout(_hideTooltipTimeout);
@@ -748,32 +785,49 @@
     }
     
     function hideTooltipDelayed(delay = 50) {
+      if (popupLocked) return;
       if (_hideTooltipTimeout) clearTimeout(_hideTooltipTimeout);
       _hideTooltipTimeout = setTimeout(() => {
-        tooltip.style('opacity', 0);
+        tooltip.style('opacity', 0).classed('active', false).classed('popup', false);
         _hideTooltipTimeout = null;
       }, delay);
     }
     
-    function hideTooltipImmediate() {
+    function hideTooltipImmediate(force = false) {
+      if (popupLocked && !force) return;
       if (_hideTooltipTimeout) {
         clearTimeout(_hideTooltipTimeout);
         _hideTooltipTimeout = null;
       }
-      tooltip.style('opacity', 0);
+      tooltip.style('opacity', 0).classed('active', false).classed('popup', false);
+      popupLocked = false;
     }
     
+    tooltip.on('click', function(event){
+      const isVisible = parseFloat(tooltip.style('opacity') || '0') > 0.01;
+      if (!isVisible) return;
+      if (event && event.stopPropagation) event.stopPropagation();
+      lockTooltipToPopup();
+    });
+    
     // showTooltipAtMouse(event, html, opts?)
-    // opts: { avoidRect: DOMRect } - a client bounding rect to avoid overlapping
+    // opts: { avoidRect: DOMRect, overridePopup?: boolean, skipCooldown?: boolean } - a client bounding rect to avoid overlapping
     function showTooltipAtMouse(event, html, opts = {}){
       try{
+        if (popupLocked && !opts.overridePopup) return;
+        if (popupLocked && opts.overridePopup) {
+          unlockTooltip(true);
+        }
+        if (_hideTooltipTimeout) { clearTimeout(_hideTooltipTimeout); _hideTooltipTimeout = null; }
+        const skipCooldown = !!opts.skipCooldown;
         const now = Date.now();
         // ignore rapid successive calls (common when touch generates synthetic mouse events)
-        if (now - _lastTooltipAt < 60) return;
+        if (!skipCooldown && now - _lastTooltipAt < 60) return;
         _lastTooltipAt = now;
         // Determine a baseline max-width (desktop gets wider tooltips)
         const baseMax = window.innerWidth >= 1000 ? 340 : (window.innerWidth >= 700 ? 280 : 200);
         // reset any adaptive max-width so measurement is accurate for current viewport tier
+        tooltip.classed('active', true).classed('popup', false);
         tooltip.style('max-width', baseMax + 'px');
         tooltip.html(html).style('opacity', 1).style('left', '0px');
 
@@ -884,11 +938,16 @@
     }
 
     // Centered tooltip (used for keyboard-focused links) – places tooltip centered on (x,y)
-    function showTooltipCentered(x, y, html){
+    function showTooltipCentered(x, y, html, opts = {}){
       try {
+        if (popupLocked && !opts.overridePopup) return;
+        if (popupLocked && opts.overridePopup) {
+          unlockTooltip(true);
+        }
         // baseline max-width tiered by viewport width similar to showTooltipAtMouse
         const baseMax = window.innerWidth >= 1000 ? 340 : (window.innerWidth >= 700 ? 280 : 200);
         if (_hideTooltipTimeout) { clearTimeout(_hideTooltipTimeout); _hideTooltipTimeout = null; }
+        tooltip.classed('active', true).classed('popup', false);
         tooltip.style('max-width', baseMax + 'px');
         tooltip.html(html).style('opacity', 1).style('left', '0px');
         // Measure
@@ -922,26 +981,22 @@
       })
       .on('mouseleave', () => hideTooltipDelayed(100))
       .on('click touchstart', function(event, d) {
-        const isCoarseTap = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
         if (event.preventDefault) event.preventDefault();
         if (event.stopPropagation) event.stopPropagation();
         // Clear node states and previous active link
         d3.selectAll('.node').classed('hover', false).classed('active', false).classed('focused', false);
         d3.selectAll('.link').classed('active-link', false).classed('kb-focus', false);
-        if (isCoarseTap) {
-          // Persist highlight for this link on mobile
-            d3.select(this).classed('active-link', true);
-          // Explicitly show tooltip (don't rely on synthetic mousemove)
-          try {
-            const s = nodes[d.source.index];
-            const t = nodes[d.target.index];
-            const label = `${s.label} → ${t.label}`;
-            const box = this.getBoundingClientRect();
-            const synthetic = { pageX: box.left + window.pageXOffset + box.width/2, pageY: box.top + window.pageYOffset + box.height/2 };
-            showTooltipAtMouse(synthetic, `<strong>${label}</strong><br/>${d.explain}`, { avoidRect: box });
-            try{ updateA11yLive(stripHtml(`<strong>${label}</strong><br/>${d.explain}`)); }catch(e){}
-          } catch(e){}
-        }
+        d3.select(this).classed('active-link', true);
+        try {
+          const s = nodes[d.source.index];
+          const t = nodes[d.target.index];
+          const label = `${s.label} → ${t.label}`;
+          const box = this.getBoundingClientRect();
+          const point = (event.touches && event.touches[0]) ? event.touches[0] : (event.pageX ? event : { pageX: box.left + window.pageXOffset + box.width/2, pageY: box.top + window.pageYOffset + box.height/2 });
+          showTooltipAtMouse(point, `<strong>${label}</strong><br/>${d.explain}`, { overridePopup: true, skipCooldown: true });
+          lockTooltipToPopup();
+          try{ updateA11yLive(stripHtml(`<strong>${label}</strong><br/>${d.explain}`)); }catch(e){}
+        } catch(e){}
         updateNodeColors();
       });
 
@@ -955,16 +1010,10 @@
         .attr('role', 'button')
         .attr('aria-label', d => `${d.label} ${d.type === 'arg' ? 'argument' : 'attribute'}`)
           .attr('id', d => `node-${d.index}`)
-          .attr('aria-describedby', d => `node-${d.index}-desc`)
-        // CLICK: On coarse (touch) pointers treat click like a tap (show tooltip + isolate).
-        // On fine (mouse) pointers do nothing (hover already shows tooltip; click used only for keyboard a11y via Enter/Space below).
+        .attr('aria-describedby', d => `node-${d.index}-desc`)
+        // CLICK: Show persistent popup for both coarse (touch) and fine (mouse) pointers.
         .on('click', function(event, d) {
-          if (isCoarse) {
-            showNodeDetails(event, d, 'click');
-          } else {
-            // Desktop mouse click: intentionally no-op to avoid selection without tooltip.
-            // (Keyboard activation handled in keydown handler.)
-          }
+          showNodeDetails(event, d, 'click', { lockPopup: true, overridePopup: true });
         })
 
     .on('focus', function(event, d) {
@@ -989,11 +1038,13 @@
           }
         })
         .on('touchstart', function(event, d){
-          showNodeDetails(event, d, 'touch');
+          showNodeDetails(event, d, 'touch', { lockPopup: true, overridePopup: true });
         });
 
       // Unified handler for coarse pointer activation (touch/click) so selection & tooltip always sync.
-      function showNodeDetails(event, d, source){
+      function showNodeDetails(event, d, source, opts = {}){
+        const lockPopup = !!opts.lockPopup;
+        const overridePopup = !!opts.overridePopup;
         // Prevent follow-up synthetic mouse events for touch.
         if (event && event.preventDefault) event.preventDefault();
         if (event && event.stopPropagation) event.stopPropagation();
@@ -1020,13 +1071,16 @@
             } else {
               bodyHtml = '(no steps found)';
             }
-            showTooltipAtMouse(point, `<strong>${meta.title || d.label}</strong><br/>${bodyHtml}`, { avoidRect });
+            showTooltipAtMouse(point, `<strong>${meta.title || d.label}</strong><br/>${bodyHtml}`, { avoidRect, overridePopup, skipCooldown: lockPopup });
             try{ updateA11yLive(stripHtml(`${meta.title || d.label}. ${ (meta.steps || []).map(s=>s.text).join(' — ') }`)); }catch(e){}
           } else {
             const meta = attrById.get(d.id) || {};
             const desc = meta.description || '(no description)';
-            showTooltipAtMouse(point, `<strong>${meta.title || d.label}</strong><br/>${desc}`, { avoidRect });
+            showTooltipAtMouse(point, `<strong>${meta.title || d.label}</strong><br/>${desc}`, { avoidRect, overridePopup, skipCooldown: lockPopup });
             try{ updateA11yLive(stripHtml(`${meta.title || d.label}. ${desc}`)); }catch(e){}
+          }
+          if (lockPopup) {
+            lockTooltipToPopup();
           }
           // Focus node for accessibility (screen readers announce activation)
           try{ el.node().focus({ preventScroll: true }); }catch(e){}
@@ -1295,7 +1349,7 @@
       if (!el) return;
       // if click inside a node, link, or the tooltip itself, do nothing
       if (el.closest && (el.closest('.node') || el.closest('.link') || el.closest('#tooltip'))) return;
-      hideTooltipImmediate();
+      hideTooltipImmediate(true);
       // clear visual interaction states
       d3.selectAll('.node').classed('hover', false).classed('active', false).classed('focused', false);
       // remove any isolation fainting
@@ -1307,7 +1361,7 @@
     document.addEventListener('click', hideTooltipIfOutside);
     document.addEventListener('touchstart', hideTooltipIfOutside);
 
-  window.addEventListener('keydown', e => { if (e.key === 'Escape') { node.classed('faint', false); link.classed('faint', false); hideTooltipImmediate(); d3.selectAll('.node').classed('hover', false).classed('active', false).classed('focused', false); d3.selectAll('.link').classed('active-link', false).classed('kb-focus', false); updateNodeColors(); }});
+  window.addEventListener('keydown', e => { if (e.key === 'Escape') { node.classed('faint', false); link.classed('faint', false); hideTooltipImmediate(true); d3.selectAll('.node').classed('hover', false).classed('active', false).classed('focused', false); d3.selectAll('.link').classed('active-link', false).classed('kb-focus', false); updateNodeColors(); }});
 
       })();
     </script>
