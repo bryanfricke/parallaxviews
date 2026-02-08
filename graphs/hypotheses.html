@@ -1054,8 +1054,8 @@
           display. This is an explicit design choice to surface ordinal differences; other reasonable segmentation
           schemes (e.g., quartiles, custom thresholds, or continuous scoring) could be used instead depending on your
           methodology.</p>
-        <p><strong>Axes</strong> (each shows its anchors): 1. Observable Implications; 2. Scope; 3. Power; 4.
-          Plausibility; 5. Fewer assumptions; 6. Fewer conflicts; 7. Overall vs. rivals. Each axis has human-readable
+        <p><strong>Axes</strong> (each shows its anchors): 1. Scope; 2. Power; 3.
+          Plausibility; 4. Assumptions; 5. Conflicts; 6. Overall vs. rivals. Each axis has human-readable
           anchors that explain what Low/Medium/High mean in that dimension; see the <em>Dimensions</em> dialog for the
           full text.</p>
         <p><strong>Colors</strong><br>Colors distinguish hypotheses (not the numeric magnitude of scores). The radar
@@ -1082,21 +1082,20 @@
     style="display:none">
     <div class="modal">
       <div class="modalHeader">
-        <h2 id="dimsTitle">The seven dimensions (framework consistency)</h2>
+        <h2 id="dimsTitle">The six dimensions (framework consistency)</h2>
         <button id="dimsClose" aria-label="Close dimensions">×</button>
       </div>
       <div class="modalBody">
-        <p>This visualization uses C. Behan McCullagh’s seven criteria (as applied by comparative historians) to assess
-          hypotheses about historical events. The seven dimensions are used consistently as ordinal bands (Low · Medium
-          · High) across hypotheses so relative strengths and trade-offs are comparable.</p>
+        <p>This visualization applies six of C. Behan McCullagh's seven criteria (as used by comparative historians) to assess
+          hypotheses about historical events.</p>
+        <p>The criterion concerning whether a hypothesis implies further statements already taken to be true is treated as implicit in hypothesis formulation and is therefore not scored separately.</p>
+        <p>The remaining six criteria are applied consistently as ordinal bands (Low · Medium · High) across hypotheses so that relative strengths and trade-offs are directly comparable.</p>
         <ol>
-          <li><strong>Observable Implications</strong> — How directly does the hypothesis produce observable
-            consequences in the primary material?</li>
           <li><strong>Scope</strong> — How wide an explanatory reach does the hypothesis have?</li>
           <li><strong>Power</strong> — How well does it account for the specific facts under consideration?</li>
           <li><strong>Plausibility</strong> — Consistency with background knowledge and auxiliary hypotheses.</li>
-          <li><strong>Fewer assumptions</strong> — Simplicity and fewer ad-hoc auxiliaries.</li>
-          <li><strong>Fewer conflicts</strong> — Compatibility with other accepted facts.</li>
+          <li><strong>Assumptions</strong> — Simplicity and fewer ad-hoc auxiliaries.</li>
+          <li><strong>Conflicts</strong> — Compatibility with other accepted facts.</li>
           <li><strong>Overall vs. rivals</strong> — Comparative explanatory superiority.</li>
         </ol>
         <p>The chart snaps scores to three ordinal bands so comparisons emphasize consistent, repeatable judgments
@@ -1707,6 +1706,12 @@
                 state.ttAnchor.x = br.left + (br.width || 0) / 2;
                 state.ttAnchor.y = br.top + (br.height || 0) / 2;
               }
+              // Set focus on the anchor node and sync tab order (same as clicking the node directly)
+              try { 
+                state._suppressFocusOpenUntil = Date.now() + 200; 
+                anchorNode.focus({ preventScroll: true }); 
+              } catch (_) {}
+              try { syncClickWithTabOrder(anchorNode); } catch (_) {}
             } else {
               // No active item; clear the anchor so no stale line is drawn
               state.ttAnchor.x = null; state.ttAnchor.y = null;
@@ -1991,6 +1996,32 @@
       d3.select('#factsOverlay').on('click', function (e) { if (e.target === this) closeFactsModal(); });
 
       // Consolidated Escape handling: close overlays and tooltips
+      // DEBUG: trace all arrow keydowns to diagnose focus issues
+      window.addEventListener('keydown', (e) => {
+        if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) {
+          const ae = document.activeElement;
+          const cl = ae ? ae.className : '(none)';
+          const tag = ae ? ae.tagName : '(none)';
+          const isVertex = ae && ae.closest && ae.closest('.vertex');
+          const isAxis = ae && ae.classList && ae.classList.contains('axis-hit');
+          const ti = ae ? ae.getAttribute('tabindex') : null;
+          console.log(`[PV-DEBUG] Arrow ${e.key} | activeElement: <${tag} class="${cl}" tabindex="${ti}"> | isVertex=${!!isVertex} isAxis=${!!isAxis}`);
+        }
+      }, true); // capture phase to see it before anything stops propagation
+
+      // DEBUG: track whenever focus leaves a chart element
+      document.addEventListener('focusout', (e) => {
+        const from = e.target;
+        const to = e.relatedTarget;
+        const fromTag = from ? `<${from.tagName} class="${from.className}">` : 'null';
+        const toTag = to ? `<${to.tagName} class="${to.className}">` : 'null (→body)';
+        const fromInChart = from && from.closest && from.closest('#chart');
+        if (fromInChart || (from && (from.classList?.contains?.('vertex') || from.classList?.contains?.('axis-hit')))) {
+          console.log(`[PV-DEBUG] focusout: from ${fromTag} → to ${toTag}`);
+          console.trace('[PV-DEBUG] focusout stack');
+        }
+      }, true);
+
       window.addEventListener('keydown', (e) => { 
         if (e.key === 'Escape') { 
           dbg('escape:global');
@@ -2185,6 +2216,8 @@
         }
       } catch (e) { /* non-fatal */ }
       // emphasize only the selected vertex within the hypothesis, if provided
+      // Save focused element before DOM reordering (raise/sort) which destroys focus
+      const _prevFocus = document.activeElement;
       if (critId) {
         const k = state.zoomK || 1;
         d3.selectAll('.vertices .vertex').filter(function (d) { return d && d.h && d.c && d.h.id === hypId && d.c.id === critId; }).classed('selected', true).each(function (d) {
@@ -2209,6 +2242,10 @@
           const bb = b && b.h && b.h.id === hypId ? 1 : 0;
           return aa - bb; // selected (1) after non-selected (0) => on top
         });
+        // Restore focus lost by DOM reordering (raise/sort re-insert elements, destroying focus)
+        if (_prevFocus && _prevFocus.focus && document.activeElement !== _prevFocus) {
+          _prevFocus.focus({ preventScroll: true });
+        }
       } catch (e) { }
     }
 
@@ -2696,6 +2733,9 @@
         })
         .on('click', (e, d) => {
           dbg('axis:click', { id: d.id, prefersSheet: prefersSheet() });
+          // Give DOM focus so keydown handler works after click (SVG elements don't auto-focus on click)
+          // Suppress the focus handler's auto-open since this click already handles tooltip display
+          try { state._suppressFocusOpenUntil = Date.now() + 200; e.currentTarget.focus({ preventScroll: true }); } catch (_) {}
           // Sync clicked element with tab navigation
           try { syncClickWithTabOrder(e.currentTarget); } catch (_) {}
           // Ensure any pending hide from hover/mouseleave is cancelled before pinning
@@ -2783,7 +2823,7 @@
         .attr('transform', d => `translate(${d.x},${d.y})`)
         .style('cursor', 'pointer')
         .attr('role', 'button')
-        .attr('aria-label', d => `Hypothesis ${d.h.label}, criteria ${d.c.label}. Press Enter to open details, Left/Right to switch hypothesis, Up/Down to change criteria.`)
+        .attr('aria-label', d => `Hypothesis ${d.h.label}, criteria ${d.c.label}. Press Enter to open details, Left/Right to change criteria, Up/Down to switch hypothesis.`)
         .on('focus', function(e, d) {
           // If we're restoring focus after closing the sheet, don't auto-open
           if (Date.now() < (state._suppressFocusOpenUntil || 0)) return;
@@ -2825,6 +2865,9 @@
         // tap/click (mobile) opens bottom sheet
         .on('click', (e, d) => {
           dbg('vertex:click', { hyp: d.h.id, crit: d.c.id, prefersSheet: prefersSheet() });
+          // Give DOM focus so keydown handler works after click (SVG elements don't auto-focus on click)
+          // Suppress the focus handler's auto-open since this click already handles tooltip display
+          try { state._suppressFocusOpenUntil = Date.now() + 200; e.currentTarget.focus({ preventScroll: true }); } catch (_) {}
           // Sync clicked element with tab navigation  
           try { syncClickWithTabOrder(e.currentTarget); } catch (_) {}
           // Cancel any pending tooltip auto-hide before we pin
@@ -2946,6 +2989,7 @@
 
       // Keyboard handlers for vertices: Enter/Space open tooltip/sheet; arrows navigate pager & criteria
       vwrap.on('keydown', function (e, d) {
+        console.log(`[PV-DEBUG] vertex keydown FIRED: key=${e.key} hyp=${d.h.id} crit=${d.c.id}`);
         const svgEl = state.currentSvg && state.currentSvg.node ? state.currentSvg.node() : document.querySelector('#chart svg');
         if (!svgEl) return;
         const tol = (prefersSheet() ? 10 : 3.5) / (state.zoomK || 1);
@@ -3019,7 +3063,20 @@
               openSheet(html, { hypId: d.h.id, critId: d.c.id }, el);
               state.sheetActiveVertex = { hypId: d.h.id, critId: d.c.id };
             } else {
-              showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
+              // Check if user has moved the tooltip - if so, preserve that position
+              const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
+              if (hasMoved) {
+                // Use the stored position and just update content
+                tt.html(html).style('display', 'block');
+                const ttNode = tt.node();
+                if (ttNode) {
+                  ttNode.style.left = state.ttPos.left + 'px';
+                  ttNode.style.top = state.ttPos.top + 'px';
+                }
+              } else {
+                // Normal positioning for first show
+                showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
+              }
               highlightSeries(d.h.id, d.c.id);
               setTooltipColor(getColorFor(d.h));
               state.ttAnchor.x = br.left + br.width / 2; state.ttAnchor.y = br.top + br.height / 2;
@@ -3032,33 +3089,10 @@
           return;
         }
 
-        // Pager Left/Right across hypotheses at the same criterion (keyboard)
+        // Left/Right move to previous/next criterion (dimension) for the same hypothesis
         if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
           e.preventDefault();
-          // Build list of vertices for the same criterion across all currently selected hypotheses
-          const sameCrit = vertexData.filter(v => v.c.id === d.c.id);
-          // Order by the global hypothesis order in Data.hypotheses for predictability
-          const order = Data.hypotheses.map(h => h.id);
-          sameCrit.sort((a, b) => order.indexOf(a.h.id) - order.indexOf(b.h.id));
-          let idx = sameCrit.findIndex(v => v.h.id === d.h.id);
-          if (idx < 0) idx = 0;
-          const nextIdx = (idx + (e.key === 'ArrowLeft' ? -1 : 1) + sameCrit.length) % sameCrit.length;
-          // Show a paged tooltip over the same-criterion list, pinned; avoid reposition while pinned
-          try { state.ttUserMoved = true; } catch(_) {}
-          showPagedTooltip(sameCrit, nextIdx, svgEl, br, sr);
-          // Update anchor to the newly selected hypothesis' vertex location for accurate leader line
-          try {
-            const targetNode = g.selectAll('.vertex').filter(v => v && v.h && v.c && v.h.id === sameCrit[nextIdx].h.id && v.c.id === sameCrit[nextIdx].c.id).node();
-            const br2 = getScreenRectForAnchor(targetNode, svgEl) || (targetNode && targetNode.getBoundingClientRect ? targetNode.getBoundingClientRect() : br);
-            state.ttAnchor.x = br2.left + br2.width / 2; state.ttAnchor.y = br2.top + br2.height / 2; updateLeaderLine();
-          } catch(_) {}
-          return;
-        }
-
-        // Up/Down move to previous/next criterion for the same hypothesis id (or nearest vertex)
-        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-          e.preventDefault();
-          const dir = e.key === 'ArrowUp' ? -1 : 1;
+          const dir = e.key === 'ArrowLeft' ? -1 : 1;
           const critOrder = axes.map(a => a.id);
           const curIdx = critOrder.indexOf(d.c.id);
           const nextCritId = critOrder[(curIdx + dir + critOrder.length) % critOrder.length];
@@ -3068,10 +3102,110 @@
             try {
               const node = g.selectAll('.vertex').filter(v => v && v.h && v.c && v.h.id === target.h.id && v.c.id === target.c.id).node();
               if (node && node.focus) node.focus();
-              // Also open its tooltip for continuity
-              const fakeEvt = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
-              if (node) node.dispatchEvent(fakeEvt);
+              
+              // Build tooltip content for the new criterion
+              const Cmap = byId(Data.criteria);
+              const level = ordinalLabel(target.c.id, target.raw, Cmap);
+              const note = (byId(Data.hypotheses)[target.h.id].notes || {})[target.c.id] || '';
+              const qhtml = quoteHTML(byId(Data.hypotheses), target.h.id, target.c.id);
+              const html = `<div style='font-weight:600;display:flex;align-items:center;gap:6px'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(target.h)}'></span><span>${target.h.label}</span></div>` +
+                `<div><strong>Criteria:</strong> ${target.c.label}</div>` +
+                `<div><strong>Level:</strong> ${level}</div>` + (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
+              
+              const targetBr = getScreenRectForAnchor(node, svgEl) || node.getBoundingClientRect();
+              
+              if (prefersSheet()) {
+                if (sheetEl) sheetEl.classList.remove('has-inline-close');
+                openSheet(html, { hypId: target.h.id, critId: target.c.id }, node);
+                state.sheetActiveVertex = { hypId: target.h.id, critId: target.c.id };
+              } else {
+                // Check if user has moved the tooltip - if so, preserve that position
+                const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
+                if (hasMoved) {
+                  // Use the stored position and just update content
+                  tt.html(html).style('display', 'block');
+                  const ttNode = tt.node();
+                  if (ttNode) {
+                    ttNode.style.left = state.ttPos.left + 'px';
+                    ttNode.style.top = state.ttPos.top + 'px';
+                  }
+                } else {
+                  // Normal positioning for first show
+                  showTTAt(html, svgEl, (targetBr.left + targetBr.width / 2) - sr.left, (targetBr.top + targetBr.height / 2) - sr.top, -10);
+                }
+                setTooltipColor(getColorFor(target.h));
+                highlightSeries(target.h.id, target.c.id);
+                state.ttAnchor.x = targetBr.left + targetBr.width / 2;
+                state.ttAnchor.y = targetBr.top + targetBr.height / 2;
+                state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer);
+                try { const t = Date.now() + 250; state._suppressClickUntil = t; state._suppressHideUntil = t; } catch(_) {}
+                updateLeaderLine();
+              }
+              // Restore focus lost by DOM reordering in highlightSeries (raise/sort)
+              if (node) { state._suppressFocusOpenUntil = Date.now() + 200; node.focus({ preventScroll: true }); }
             } catch (_) {}
+          }
+          return;
+        }
+
+        // Up/Down move to previous/next hypothesis at the same criterion (dimension)
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          // Build list of vertices for the same criterion across all currently selected hypotheses
+          const sameCrit = vertexData.filter(v => v.c.id === d.c.id);
+          const order = Data.hypotheses.map(h => h.id);
+          sameCrit.sort((a, b) => order.indexOf(a.h.id) - order.indexOf(b.h.id));
+          let idx = sameCrit.findIndex(v => v.h.id === d.h.id);
+          if (idx < 0) idx = 0;
+          const nextIdx = (idx + (e.key === 'ArrowUp' ? -1 : 1) + sameCrit.length) % sameCrit.length;
+          const nv = sameCrit[nextIdx];
+          // Move DOM focus to the next hypothesis's vertex
+          const targetNode = g.selectAll('.vertex').filter(v => v && v.h && v.c && v.h.id === nv.h.id && v.c.id === nv.c.id).node();
+          if (targetNode) {
+            state._suppressFocusOpenUntil = Date.now() + 300;
+            targetNode.focus({ preventScroll: true });
+            try { syncClickWithTabOrder(targetNode); } catch (_) {}
+            // Clear stale pager cache so tooltip content is always refreshed
+            state.pagerActive = null;
+            // Build and show tooltip directly for the target vertex
+            const Cmap = byId(Data.criteria);
+            const level = ordinalLabel(nv.c.id, nv.raw, Cmap);
+            const note = (byId(Data.hypotheses)[nv.h.id].notes || {})[nv.c.id] || '';
+            const qhtml = quoteHTML(byId(Data.hypotheses), nv.h.id, nv.c.id);
+            const html = `<div style='font-weight:600;display:flex;align-items:center;gap:6px'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(nv.h)}'></span><span>${nv.h.label}</span></div>` +
+              `<div><strong>Criteria:</strong> ${nv.c.label}</div>` +
+              `<div><strong>Level:</strong> ${level}</div>` + (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
+            const targetBr = getScreenRectForAnchor(targetNode, svgEl) || targetNode.getBoundingClientRect();
+            if (prefersSheet()) {
+              if (sheetEl) sheetEl.classList.remove('has-inline-close');
+              openSheet(html, { hypId: nv.h.id, critId: nv.c.id }, targetNode);
+              state.sheetActiveVertex = { hypId: nv.h.id, critId: nv.c.id };
+            } else {
+              // Check if user has moved the tooltip - if so, preserve that position
+              const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
+              if (hasMoved) {
+                // Use the stored position and just update content
+                tt.html(html).style('display', 'block');
+                const ttNode = tt.node();
+                if (ttNode) {
+                  ttNode.style.left = state.ttPos.left + 'px';
+                  ttNode.style.top = state.ttPos.top + 'px';
+                }
+              } else {
+                // Normal positioning for first show
+                showTTAt(html, svgEl, (targetBr.left + targetBr.width / 2) - sr.left, (targetBr.top + targetBr.height / 2) - sr.top, -10);
+              }
+              setTooltipColor(getColorFor(nv.h));
+              highlightSeries(nv.h.id, nv.c.id);
+              state.ttAnchor.x = targetBr.left + targetBr.width / 2;
+              state.ttAnchor.y = targetBr.top + targetBr.height / 2;
+              state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer);
+              try { const t = Date.now() + 250; state._suppressClickUntil = t; state._suppressHideUntil = t; } catch (_) {}
+              updateLeaderLine();
+            }
+            // Restore focus after highlightSeries DOM reordering
+            state._suppressFocusOpenUntil = Date.now() + 200;
+            targetNode.focus({ preventScroll: true });
           }
         }
       });
@@ -3246,7 +3380,10 @@
               }
             }
             
+            console.log(`[PV-DEBUG] Tab: focusing index ${newIndex}, element:`, tabOrder[newIndex]?.tagName, tabOrder[newIndex]?.className, 'tabindex:', tabOrder[newIndex]?.getAttribute('tabindex'));
             focusElementAtIndex(newIndex);
+            console.log(`[PV-DEBUG] Tab: after focus, activeElement:`, document.activeElement?.tagName, document.activeElement?.className);
+            setTimeout(() => console.log(`[PV-DEBUG] Tab: 100ms later, activeElement:`, document.activeElement?.tagName, document.activeElement?.className), 100);
           }
         });
         
