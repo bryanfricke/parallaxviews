@@ -160,6 +160,116 @@
                     "kind": "collection"
                 },
                 {
+                    "name": "Gospels and Acts",
+                    "subtitle": "Narratives of Jesus’s removal and burial before the Sabbath (with women observing the tomb’s location)",
+                    "children": [
+                        {
+                            "name": "Mark 15:42–47",
+                            "subtitle": "Burial before Sabbath; women see where he is laid (v.47)",
+                            "date": "c. AD 66–70",
+                            "details": "On Preparation Day, Joseph of Arimathea requests Jesus’s body; after death is confirmed, Pilate grants it. Jesus is wrapped and placed in a rock-hewn tomb. Mary Magdalene and Mary the mother of Jesus saw where he was laid (v.47), fixing the tomb’s location.",
+                            "whyItMatters": [
+                                "Explains official permission and pre-Sabbath haste.",
+                                "Women witnesses identify the tomb’s location (v.47).",
+                                "Supports a known, checkable burial site."
+                            ],
+                            "source": {
+                                "title": "Mark 15:42–47",
+                                "url": "https://www.biblegateway.com/passage/?search=Mark+15%3A42-47&version=ESV"
+                            },
+                            "kind": "evidence"
+                        },
+                        {
+                            "name": "Matthew 27:57–61",
+                            "subtitle": "Joseph of Arimathea's tomb; women sit opposite the tomb (v.61)",
+                            "date": "c. AD 80–90",
+                            "details": "Joseph of Arimathea asks for the body and lays Jesus in his own new rock-hewn tomb, rolling a great stone to the entrance. Mary Magdalene and “the other Mary” were there, sitting opposite the tomb (v.61), marking its location.",
+                            "whyItMatters": [
+                                "Adds ownership/new-tomb detail consistent with purity/time constraints.",
+                                "Women’s presence locates the burial site (v.61).",
+                                "Corroborates the Markan sequence with independent nuance."
+                            ],
+                            "source": {
+                                "title": "Matthew 27:57–61",
+                                "url": "https://www.biblegateway.com/passage/?search=Matthew+27%3A57-61&version=ESV"
+                            },
+                            "kind": "evidence"
+                        },
+                        {
+                            "name": "Luke 23:50–56",
+                            "subtitle": "Council member buries Jesus; women see the tomb and how the body was laid (vv.55–56)",
+                            "date": "c. AD 80–90",
+                            "details": "Joseph of Arimathea, a council member who had not consented to the decision, wraps Jesus in linen and places him in a rock-hewn tomb. The women who had come from Galilee saw the tomb and how his body was laid (vv.55–56), then prepare spices and rest on the Sabbath.",
+                            "whyItMatters": [
+                                "Emphasizes timing: burial just before Sabbath begins.",
+                                "Women observe both location and burial manner (vv.55–56).",
+                                "Explains their return after Sabbath with prepared spices."
+                            ],
+                            "source": {
+                                "title": "Luke 23:50–56",
+                                "url": "https://www.biblegateway.com/passage/?search=Luke+23%3A50-56&version=ESV"
+                            },
+                            "kind": "evidence"
+                        },
+                        {
+                            "name": "Acts 13:29",
+                            "subtitle": "Early Christian summary: removal and burial after execution",
+                            "date": "c. AD 62–64",
+                            "details": "In Paul's sermon at Pisidian Antioch, he recounts that Jesus’s body was taken down from the tree and laid in a tomb, reflecting the same-day removal principle consistent with Jewish law and Gospel narratives.",
+                            "whyItMatters": [
+                                "Earliest Christian summary statement connecting crucifixion and immediate burial.",
+                                "Demonstrates continuity with Deuteronomic and Gospel patterns of removal before sunset.",
+                                "Corroborates that early believers viewed same-day burial as integral to the Passion events."
+                            ],
+                            "source": {
+                                "title": "Acts 13:29",
+                                "url": "https://www.biblegateway.com/passage/?search=Acts+13%3A29&version=ESV"
+                            },
+                            "kind": "evidence"
+                        },
+                        {
+                            "name": "John 19:31, 38–42",
+                            "subtitle": "Bodies removed for high Sabbath; Joseph & Nicodemus bury Jesus",
+                            "date": "c. AD 90–100",
+                            "details": "Because it was Preparation and the next day was a high Sabbath, the Judean leaders ask for the bodies to be removed. Joseph of Arimathea, joined by Nicodemus, receives permission, prepares the body with spices, and lays Jesus in a nearby garden tomb.",
+                            "whyItMatters": [
+                                "Links removal directly to Jewish law/Sabbath concerns.",
+                                "Details official permission and proximity/haste.",
+                                "Complements Synoptic testimony about women without duplicating it."
+                            ],
+                            "source": {
+                                "title": "John 19:31, 38–42",
+                                "url": "https://www.biblegateway.com/passage/?search=John+19%3A31%2C+38-42&version=ESV"
+                            },
+                            "kind": "evidence"
+                        }
+                    ],
+                    "kind": "collection"
+                },
+                {
+                    "name": "Archaeological Corroboration",
+                    "subtitle": "Material evidence that crucified Jews could receive proper same-day burial",
+                    "children": [
+                        {
+                            "name": "Yehohanan Ossuary (Givʿat ha-Mivtar)",
+                            "subtitle": "Remains of a crucified man buried in a 1st-century Jewish rock-cut family tomb",
+                            "date": "Burial: 1st century AD; Discovery: 1968",
+                            "details": "During construction in 1968, workers in the north Jerusalem suburb of Givʿat ha-Mivtar uncovered a multi-chambered, rock-cut Jewish family tomb with kokhim (loculi). Among several limestone ossuaries was one inscribed 'Yehohanan son of Hagkol,' containing the remains of a young Jewish man and an iron nail still piercing his right heel bone. The tomb typology (rock-hewn chambers with kokhim and ossuaries) is characteristic of late Second Temple Jewish family burials in and around Jerusalem.",
+                            "whyItMatters": [
+                                "Provides concrete archaeological evidence that at least one crucified Jew in 1st-century Judea was recovered from his cross and buried in a standard rock-cut family tomb.",
+                                "Confirms that crucifixion and subsequent placement in an ossuary within a multi-chambered cave tomb could occur under Roman rule, aligning with the Gospel picture of crucifixion followed by proper Jewish burial.",
+                                "Undercuts blanket claims that crucified victims were never granted decent burial or placed in Jewish rock-hewn tombs, while still allowing that many were indeed left unburied."
+                            ],
+                            "source": {
+                                "title": "V. Tzaferis, 'Jewish Tombs at and near Givʿat ha-Mivtar', Israel Exploration Journal 20 (1970): 18–32; summarized in later discussions of the Givʿat ha-Mivtar crucifixion remains",
+                                "url": "https://bibleinterp.arizona.edu/articles/2018/02/smi428014"
+                            },
+                            "kind": "evidence"
+                        }
+                    ],
+                    "kind": "collection"
+                },
+                {
                     "name": "Before Sunset",
                     "subtitle": "Jewish same-day burial custom for the executed and Roman permissions",
                     "children": [
@@ -432,116 +542,6 @@
                                     "source": {
                                         "title": "Suetonius, Augustus 13",
                                         "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Suetonius/12Caesars/Augustus*.html"
-                                    },
-                                    "kind": "evidence"
-                                }
-                            ],
-                            "kind": "collection"
-                        },
-                        {
-                            "name": "Gospels and Acts",
-                            "subtitle": "Narratives of Jesus’s removal and burial before the Sabbath (with women observing the tomb’s location)",
-                            "children": [
-                                {
-                                    "name": "Mark 15:42–47",
-                                    "subtitle": "Burial before Sabbath; women see where he is laid (v.47)",
-                                    "date": "c. AD 66–70",
-                                    "details": "On Preparation Day, Joseph of Arimathea requests Jesus’s body; after death is confirmed, Pilate grants it. Jesus is wrapped and placed in a rock-hewn tomb. Mary Magdalene and Mary the mother of Jesus saw where he was laid (v.47), fixing the tomb’s location.",
-                                    "whyItMatters": [
-                                        "Explains official permission and pre-Sabbath haste.",
-                                        "Women witnesses identify the tomb’s location (v.47).",
-                                        "Supports a known, checkable burial site."
-                                    ],
-                                    "source": {
-                                        "title": "Mark 15:42–47",
-                                        "url": "https://www.biblegateway.com/passage/?search=Mark+15%3A42-47&version=ESV"
-                                    },
-                                    "kind": "evidence"
-                                },
-                                {
-                                    "name": "Matthew 27:57–61",
-                                    "subtitle": "Joseph of Arimathea's tomb; women sit opposite the tomb (v.61)",
-                                    "date": "c. AD 80–90",
-                                    "details": "Joseph of Arimathea asks for the body and lays Jesus in his own new rock-hewn tomb, rolling a great stone to the entrance. Mary Magdalene and “the other Mary” were there, sitting opposite the tomb (v.61), marking its location.",
-                                    "whyItMatters": [
-                                        "Adds ownership/new-tomb detail consistent with purity/time constraints.",
-                                        "Women’s presence locates the burial site (v.61).",
-                                        "Corroborates the Markan sequence with independent nuance."
-                                    ],
-                                    "source": {
-                                        "title": "Matthew 27:57–61",
-                                        "url": "https://www.biblegateway.com/passage/?search=Matthew+27%3A57-61&version=ESV"
-                                    },
-                                    "kind": "evidence"
-                                },
-                                {
-                                    "name": "Luke 23:50–56",
-                                    "subtitle": "Council member buries Jesus; women see the tomb and how the body was laid (vv.55–56)",
-                                    "date": "c. AD 80–90",
-                                    "details": "Joseph of Arimathea, a council member who had not consented to the decision, wraps Jesus in linen and places him in a rock-hewn tomb. The women who had come from Galilee saw the tomb and how his body was laid (vv.55–56), then prepare spices and rest on the Sabbath.",
-                                    "whyItMatters": [
-                                        "Emphasizes timing: burial just before Sabbath begins.",
-                                        "Women observe both location and burial manner (vv.55–56).",
-                                        "Explains their return after Sabbath with prepared spices."
-                                    ],
-                                    "source": {
-                                        "title": "Luke 23:50–56",
-                                        "url": "https://www.biblegateway.com/passage/?search=Luke+23%3A50-56&version=ESV"
-                                    },
-                                    "kind": "evidence"
-                                },
-                                {
-                                    "name": "Acts 13:29",
-                                    "subtitle": "Early Christian summary: removal and burial after execution",
-                                    "date": "c. AD 62–64",
-                                    "details": "In Paul's sermon at Pisidian Antioch, he recounts that Jesus’s body was taken down from the tree and laid in a tomb, reflecting the same-day removal principle consistent with Jewish law and Gospel narratives.",
-                                    "whyItMatters": [
-                                        "Earliest Christian summary statement connecting crucifixion and immediate burial.",
-                                        "Demonstrates continuity with Deuteronomic and Gospel patterns of removal before sunset.",
-                                        "Corroborates that early believers viewed same-day burial as integral to the Passion events."
-                                    ],
-                                    "source": {
-                                        "title": "Acts 13:29",
-                                        "url": "https://www.biblegateway.com/passage/?search=Acts+13%3A29&version=ESV"
-                                    },
-                                    "kind": "evidence"
-                                },
-                                {
-                                    "name": "John 19:31, 38–42",
-                                    "subtitle": "Bodies removed for high Sabbath; Joseph & Nicodemus bury Jesus",
-                                    "date": "c. AD 90–100",
-                                    "details": "Because it was Preparation and the next day was a high Sabbath, the Judean leaders ask for the bodies to be removed. Joseph of Arimathea, joined by Nicodemus, receives permission, prepares the body with spices, and lays Jesus in a nearby garden tomb.",
-                                    "whyItMatters": [
-                                        "Links removal directly to Jewish law/Sabbath concerns.",
-                                        "Details official permission and proximity/haste.",
-                                        "Complements Synoptic testimony about women without duplicating it."
-                                    ],
-                                    "source": {
-                                        "title": "John 19:31, 38–42",
-                                        "url": "https://www.biblegateway.com/passage/?search=John+19%3A31%2C+38-42&version=ESV"
-                                    },
-                                    "kind": "evidence"
-                                }
-                            ],
-                            "kind": "collection"
-                        },
-                        {
-                            "name": "Archaeological Corroboration",
-                            "subtitle": "Material evidence that crucified Jews could receive proper same-day burial",
-                            "children": [
-                                {
-                                    "name": "Yehohanan Ossuary (Givʿat ha-Mivtar)",
-                                    "subtitle": "Remains of a crucified man buried in a 1st-century Jewish rock-cut family tomb",
-                                    "date": "Burial: 1st century AD; Discovery: 1968",
-                                    "details": "During construction in 1968, workers in the north Jerusalem suburb of Givʿat ha-Mivtar uncovered a multi-chambered, rock-cut Jewish family tomb with kokhim (loculi). Among several limestone ossuaries was one inscribed 'Yehohanan son of Hagkol,' containing the remains of a young Jewish man and an iron nail still piercing his right heel bone. The tomb typology (rock-hewn chambers with kokhim and ossuaries) is characteristic of late Second Temple Jewish family burials in and around Jerusalem.",
-                                    "whyItMatters": [
-                                        "Provides concrete archaeological evidence that at least one crucified Jew in 1st-century Judea was recovered from his cross and buried in a standard rock-cut family tomb.",
-                                        "Confirms that crucifixion and subsequent placement in an ossuary within a multi-chambered cave tomb could occur under Roman rule, aligning with the Gospel picture of crucifixion followed by proper Jewish burial.",
-                                        "Undercuts blanket claims that crucified victims were never granted decent burial or placed in Jewish rock-hewn tombs, while still allowing that many were indeed left unburied."
-                                    ],
-                                    "source": {
-                                        "title": "V. Tzaferis, 'Jewish Tombs at and near Givʿat ha-Mivtar', Israel Exploration Journal 20 (1970): 18–32; summarized in later discussions of the Givʿat ha-Mivtar crucifixion remains",
-                                        "url": "https://bibleinterp.arizona.edu/articles/2018/02/smi428014"
                                     },
                                     "kind": "evidence"
                                 }

@@ -1176,7 +1176,7 @@
     <script>
         async function init() {
             let response = await fetch('data/ResurrectionDisciplesBelievedItActs01.json');
-             //response = await fetch('data/messianic_prophecies_hierarchical_full.json');
+            //response = await fetch('data/messianic_prophecies_hierarchical_full.json');
             
             let data = await response.json();
 
@@ -2322,7 +2322,7 @@
                                 } else {
                                     // Desktop/large-screen behavior: apply a fraction of the computed delta
                                     // and clamp to reasonable maximums so motion is subtle.
-                                    const duration = 680;
+                                    const duration = 780;
                                     const fraction = 1.0; // apply full computed shift on desktop (match mobile)
                                     if (willExpand) {
                                         const desc = d.descendants();
