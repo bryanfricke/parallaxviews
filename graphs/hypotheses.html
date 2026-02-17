@@ -1890,7 +1890,11 @@
         .attr('tabindex', 0)
         .attr('id', d => `hypothesis-${d.id}`)
         .attr('name', 'hypothesis-selection')
-        .on('change', (e, d) => { e.target.checked ? state.selected.add(d.id) : state.selected.delete(d.id); render(); })
+        .on('change', (e, d) => { 
+          e.target.checked ? state.selected.add(d.id) : state.selected.delete(d.id); 
+          state.lastToggledHypothesis = d.id; 
+          render(); 
+        })
         .on('keydown', (e, d) => {
           // Support both Space and Enter for checkbox toggling
           if (e.key === ' ' || e.key === 'Enter') {
@@ -2360,6 +2364,19 @@
           try { if (state.chartRoot && state.chartRoot.style) { state.chartRoot.style.transform = ''; state.chartRoot.dataset.shift = ''; } } catch (_e) { }
         }
       } catch (e) { }
+      
+      // If a hypothesis was just toggled, bring it to the top via highlightSeries
+      if (state.lastToggledHypothesis && state.selected.has(state.lastToggledHypothesis)) {
+        try {
+          highlightSeries(state.lastToggledHypothesis);
+          // Clear the highlight after a brief moment so it doesn't stay permanently highlighted
+          setTimeout(() => {
+            if (state.lastActiveHypothesis === state.lastToggledHypothesis) {
+              clearHighlight(true);
+            }
+          }, 800);
+        } catch (e) { }
+      }
       
       // Rebuild tab order after DOM changes
       setTimeout(() => setupTabOrder(), 100);
