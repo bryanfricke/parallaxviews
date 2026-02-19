@@ -1441,6 +1441,117 @@
     }
 
     // anchorRect is an optional DOMRect of the tapped item so we can shift the chart on mobile
+    function updateChartForSheetOverlap(anchorRef = null, waitForTransition = false) {
+      if (!sheetEl || !prefersSheet()) return;
+      if (!sheetEl.classList.contains('open')) return;
+      if (anchorRef) sheetAnchorRect = anchorRef;
+      if (!sheetAnchorRect) return;
+      try {
+        const chartEl = state.chartRoot || document.getElementById('chart');
+        const anchor = sheetAnchorRect;
+        const padding = 12; // pixels of breathing room between anchor and sheet
+        const doMeasure = () => {
+          try {
+            const sheetRect = sheetEl.getBoundingClientRect();
+            // Prefer computing anchor rect from the underlying datum when available (most robust under
+            // D3 zoom/pan). Only fall back to getBoundingClientRect when datum-based mapping isn't possible.
+            let curAnchor = anchor;
+            try {
+              if (anchor && anchor.__data__ && state.currentSvg && state.currentSvg.node()) {
+                // compute screen position from datum and current D3 transform
+                const d = anchor.__data__;
+                const svgNode = state.currentSvg.node();
+                const svgRect = svgNode.getBoundingClientRect();
+                const tcur = d3.zoomTransform(svgNode) || d3.zoomIdentity;
+                const k = tcur.k || 1;
+                const cx = (state.chartCenter && state.chartCenter.cx) ? state.chartCenter.cx : (svgRect.width / 2);
+                const cy = (state.chartCenter && state.chartCenter.cy) ? state.chartCenter.cy : (svgRect.height / 2);
+                const localY = (typeof d.y === 'number') ? (d.y + cy) : null;
+                if (localY !== null) {
+                  const screenY = svgRect.top + (tcur.y || 0) + localY * k;
+                  const screenX = svgRect.left + (tcur.x || 0) + ((d.x || 0) + cx) * k;
+                  const r = (d.baseR || d.baseRing || 6) * k;
+                  curAnchor = { top: screenY - r, bottom: screenY + r, left: screenX - r, right: screenX + r, width: r * 2, height: r * 2 };
+                }
+              } else if (anchor && typeof anchor.getBoundingClientRect === 'function') {
+                curAnchor = anchor.getBoundingClientRect();
+              }
+            } catch (_e) { }
+            const chartRect = chartEl ? chartEl.getBoundingClientRect() : null;
+            const overlap = (curAnchor && curAnchor.bottom ? curAnchor.bottom : (anchor && anchor.bottom)) - (sheetRect.top) + padding;
+            if (overlap > 0 && chartEl && chartRect) {
+              // state.chartShift stores the desired total vertical shift in screen pixels
+              // Prefer to derive the current screen shift from the live D3 transform so we don't rely on stale state.
+              let currentScreen = parseFloat(state.chartShift || '0') || 0;
+              try {
+                if (state.currentSvg && state.currentSvg.node()) {
+                  const tcur = d3.zoomTransform(state.currentSvg.node());
+                  if (tcur && typeof tcur.y === 'number') currentScreen = Math.max(0, -tcur.y);
+                }
+              } catch (_e) { }
+              const desiredTotalUncapped = currentScreen + overlap;
+              // Allow the desired shift to be as large as needed to bring the anchor above the sheet.
+              // Previously we capped this to chartRect.height-40 which could be too small at some zoom levels.
+              const desiredTotal = desiredTotalUncapped;
+              // only increase the shift in screen pixels
+              if (desiredTotal > currentScreen) {
+                state.chartShift = desiredTotal;
+                // compute applied transform in chart-local units by dividing by zoom
+                const scale = state.zoomK || 1;
+                const applied = desiredTotal / scale;
+                // Prefer composing this bump into the D3 zoom transform so it behaves like a normal pan.
+                try {
+                  if (state.currentSvg && state.currentZoom && state.currentSvg.node()) {
+                    // read the current transform directly from the svg so we use the exact applied transform
+                    const t = d3.zoomTransform(state.currentSvg.node()) || state.lastTransform || d3.zoomIdentity;
+                    // desiredTotal is the total desired screen-pixel shift. Only apply the incremental delta
+                    // because t.y already includes prior programmatic pans.
+                    const delta = (desiredTotal - currentScreen) || 0;
+                    const newT = d3.zoomIdentity.translate(t.x, t.y - delta).scale(t.k || 1);
+                    // animate the transform so the chart visibly moves up
+                    state.currentSvg.transition().duration(280).call(state.currentZoom.transform, newT);
+                    // remove any leftover inline transform on the chart element to avoid double-counting
+                    try { chartEl.style.transform = ''; chartEl.dataset.shift = ''; } catch (_e) { }
+                    // remember the transform we just requested (zoom handler will also update on progress)
+                    try { state.lastTransform = newT; } catch (_e) { }
+                  } else {
+                    // fallback: directly translate the chart root element (chart-local units)
+                    chartEl.style.transition = 'transform .28s ease'; chartEl.style.transform = `translateY(-${applied}px)`; chartEl.dataset.shift = String(applied);
+                  }
+                } catch (e) {
+                  try { chartEl.style.transition = 'transform .28s ease'; chartEl.style.transform = `translateY(-${applied}px)`; chartEl.dataset.shift = String(applied); } catch (_e) { }
+                }
+                chartShift = desiredTotal;
+                try {
+                  if (window.location.search && window.location.search.indexOf('pv_debug_sheet') >= 0) {
+                    const tcur = (state.currentSvg && state.currentSvg.node()) ? d3.zoomTransform(state.currentSvg.node()) : null;
+                    console.debug('openSheet shift (applied)', { anchor: curAnchor || anchor, sheetRect, chartRect, overlap, desiredTotal, applied, previous: currentScreen, scale, tcur, delta: desiredTotal - currentScreen, newTransform: state.lastTransform });
+                  }
+                } catch (e) { }
+              } else {
+                try { console.debug('openSheet shift (kept existing)', { anchor, sheetRect, chartRect, overlap, desiredTotal: currentScreen, previous: currentScreen }); } catch (e) { }
+              }
+            }
+          } catch (e) { }
+        };
+
+        if (waitForTransition) {
+          let handled = false;
+          const onEnd = (ev) => {
+            if (handled) return;
+            handled = true;
+            sheetEl.removeEventListener('transitionend', onEnd);
+            doMeasure();
+          };
+          sheetEl.addEventListener('transitionend', onEnd);
+          // fallback in case transitionend doesn't fire
+          setTimeout(() => { if (!handled) { handled = true; sheetEl.removeEventListener('transitionend', onEnd); doMeasure(); } }, 420);
+        } else {
+          requestAnimationFrame(() => requestAnimationFrame(doMeasure));
+        }
+      } catch (e) { }
+    }
+
     function openSheet(html, highlight = null, anchorRect = null) {
       if (!sheetEl) return;
       dbg('openSheet', { highlight, hasAnchorRect: !!anchorRect, prefersSheet: prefersSheet() });
@@ -1479,106 +1590,7 @@
       // On mobile / coarse pointer, shift the chart up if the sheet would cover the tapped point.
       // Measure after the sheet is painted (use two RAF ticks) so we get the final sheet position
       if (prefersSheet() && sheetAnchorRect) {
-        try {
-          const chartEl = state.chartRoot || document.getElementById('chart');
-          const anchor = sheetAnchorRect;
-          const padding = 12; // pixels of breathing room between anchor and sheet
-          // Wait for the sheet open transition to finish so getBoundingClientRect reflects the final position.
-          const doMeasure = () => {
-            try {
-              const sheetRect = sheetEl.getBoundingClientRect();
-              // Prefer computing anchor rect from the underlying datum when available (most robust under
-              // D3 zoom/pan). Only fall back to getBoundingClientRect when datum-based mapping isn't possible.
-              let curAnchor = anchor;
-              try {
-                if (anchor && anchor.__data__ && state.currentSvg && state.currentSvg.node()) {
-                  // compute screen position from datum and current D3 transform
-                  const d = anchor.__data__;
-                  const svgNode = state.currentSvg.node();
-                  const svgRect = svgNode.getBoundingClientRect();
-                  const tcur = d3.zoomTransform(svgNode) || d3.zoomIdentity;
-                  const k = tcur.k || 1;
-                  const cx = (state.chartCenter && state.chartCenter.cx) ? state.chartCenter.cx : (svgRect.width / 2);
-                  const cy = (state.chartCenter && state.chartCenter.cy) ? state.chartCenter.cy : (svgRect.height / 2);
-                  const localY = (typeof d.y === 'number') ? (d.y + cy) : null;
-                  if (localY !== null) {
-                    const screenY = svgRect.top + (tcur.y || 0) + localY * k;
-                    const screenX = svgRect.left + (tcur.x || 0) + ((d.x || 0) + cx) * k;
-                    const r = (d.baseR || d.baseRing || 6) * k;
-                    curAnchor = { top: screenY - r, bottom: screenY + r, left: screenX - r, right: screenX + r, width: r * 2, height: r * 2 };
-                  }
-                } else if (anchor && typeof anchor.getBoundingClientRect === 'function') {
-                  curAnchor = anchor.getBoundingClientRect();
-                }
-              } catch (_e) { }
-              const chartRect = chartEl ? chartEl.getBoundingClientRect() : null;
-              const overlap = (curAnchor && curAnchor.bottom ? curAnchor.bottom : (anchor && anchor.bottom)) - (sheetRect.top) + padding;
-              if (overlap > 0 && chartEl && chartRect) {
-                // state.chartShift stores the desired total vertical shift in screen pixels
-                // Prefer to derive the current screen shift from the live D3 transform so we don't rely on stale state.
-                let currentScreen = parseFloat(state.chartShift || '0') || 0;
-                try {
-                  if (state.currentSvg && state.currentSvg.node()) {
-                    const tcur = d3.zoomTransform(state.currentSvg.node());
-                    if (tcur && typeof tcur.y === 'number') currentScreen = Math.max(0, -tcur.y);
-                  }
-                } catch (_e) { }
-                const desiredTotalUncapped = currentScreen + overlap;
-                // Allow the desired shift to be as large as needed to bring the anchor above the sheet.
-                // Previously we capped this to chartRect.height-40 which could be too small at some zoom levels.
-                const desiredTotal = desiredTotalUncapped;
-                // only increase the shift in screen pixels
-                if (desiredTotal > currentScreen) {
-                  state.chartShift = desiredTotal;
-                  // compute applied transform in chart-local units by dividing by zoom
-                  const scale = state.zoomK || 1;
-                  const applied = desiredTotal / scale;
-                  // Prefer composing this bump into the D3 zoom transform so it behaves like a normal pan.
-                  try {
-                    if (state.currentSvg && state.currentZoom && state.currentSvg.node()) {
-                      // read the current transform directly from the svg so we use the exact applied transform
-                      const t = d3.zoomTransform(state.currentSvg.node()) || state.lastTransform || d3.zoomIdentity;
-                      // desiredTotal is the total desired screen-pixel shift. Only apply the incremental delta
-                      // because t.y already includes prior programmatic pans.
-                      const delta = (desiredTotal - currentScreen) || 0;
-                      const newT = d3.zoomIdentity.translate(t.x, t.y - delta).scale(t.k || 1);
-                      // animate the transform so the chart visibly moves up
-                      state.currentSvg.transition().duration(280).call(state.currentZoom.transform, newT);
-                      // remove any leftover inline transform on the chart element to avoid double-counting
-                      try { chartEl.style.transform = ''; chartEl.dataset.shift = ''; } catch (_e) { }
-                      // remember the transform we just requested (zoom handler will also update on progress)
-                      try { state.lastTransform = newT; } catch (_e) { }
-                    } else {
-                      // fallback: directly translate the chart root element (chart-local units)
-                      chartEl.style.transition = 'transform .28s ease'; chartEl.style.transform = `translateY(-${applied}px)`; chartEl.dataset.shift = String(applied);
-                    }
-                  } catch (e) {
-                    try { chartEl.style.transition = 'transform .28s ease'; chartEl.style.transform = `translateY(-${applied}px)`; chartEl.dataset.shift = String(applied); } catch (_e) { }
-                  }
-                  chartShift = desiredTotal;
-                  try {
-                    if (window.location.search && window.location.search.indexOf('pv_debug_sheet') >= 0) {
-                      const tcur = (state.currentSvg && state.currentSvg.node()) ? d3.zoomTransform(state.currentSvg.node()) : null;
-                      console.debug('openSheet shift (applied)', { anchor: curAnchor || anchor, sheetRect, chartRect, overlap, desiredTotal, applied, previous: currentScreen, scale, tcur, delta: desiredTotal - currentScreen, newTransform: state.lastTransform });
-                    }
-                  } catch (e) { }
-                } else {
-                  try { console.debug('openSheet shift (kept existing)', { anchor, sheetRect, chartRect, overlap, desiredTotal: currentScreen, previous: currentScreen }); } catch (e) { }
-                }
-              }
-            } catch (e) { }
-          };
-          let handled = false;
-          const onEnd = (ev) => {
-            if (handled) return;
-            handled = true;
-            sheetEl.removeEventListener('transitionend', onEnd);
-            doMeasure();
-          };
-          sheetEl.addEventListener('transitionend', onEnd);
-          // fallback in case transitionend doesn't fire
-          setTimeout(() => { if (!handled) { handled = true; sheetEl.removeEventListener('transitionend', onEnd); doMeasure(); } }, 420);
-        } catch (e) { }
+        updateChartForSheetOverlap(null, true);
       }
     }
     function closeSheet() {
@@ -2613,6 +2625,8 @@
           const text = d3.select(this);
           const full = (text.text() || '').trim();
           if (!full) return;
+          const datum = text.datum();
+          const maxWidth = (typeof maxWidthPx === 'function') ? maxWidthPx(datum) : maxWidthPx;
           const words = full.split(/\s+/).filter(Boolean);
           const x = text.attr('x');
           const y = text.attr('y');
@@ -2625,7 +2639,7 @@
             const wds = line.concat([words[i]]);
             tspan.text(wds.join(' '));
             const len = tspan.node() && tspan.node().getComputedTextLength ? tspan.node().getComputedTextLength() : 0;
-            if (len > maxWidthPx && line.length) {
+            if (len > maxWidth && line.length) {
               // commit previous line and start a new one with current word
               tspan.text(line.join(' '));
               tspans.push(tspan);
@@ -2646,20 +2660,22 @@
       }
       // axis labels with word-wrap; use a smaller max width on phones
       const maxLabelWidth = (w < 520) ? 78 : 120; // pixels
+      const axisLabelOffset = (d) => {
+        if (d.idx === 3) return (w < 520) ? 30 : 22;
+        return (d.idx === 0 || d.idx === 4) ? 24 : 14;
+      };
       ax.append('text')
         .attr('x', d => {
-          // push specific axis labels slightly further out so they don't collide with the axis-end markers
-          const extra = (d.idx === 0 || d.idx === 4) ? 24 : 14;
-          return d.x * (r + extra);
+          // push specific axis labels further out where needed so they don't collide with axis-end markers
+          return d.x * (r + axisLabelOffset(d));
         })
         .attr('y', d => {
-          const extra = (d.idx === 0 || d.idx === 4) ? 24 : 14;
-          return d.y * (r + extra);
+          return d.y * (r + axisLabelOffset(d));
         })
         .attr('text-anchor', d => Math.abs(d.x) < 0.3 ? 'middle' : (d.x > 0 ? 'start' : 'end'))
         .attr('dominant-baseline', 'central').attr('font-size', baseTextFont)
         .text(d => d.short)
-        .call(wrapAxisLabels, maxLabelWidth);
+        .call(wrapAxisLabels, d => (w < 520 && d && d.idx === 3) ? 110 : maxLabelWidth);
 
       const sel = Data.hypotheses.filter(h => state.selected.has(h.id));
       const pointsFor = (h) => axes.map(a => { const vv = quantize(Hy[h.id].scores[a.id]); const rr = rScale(vv); return [a.x * rr, a.y * rr]; });
@@ -2925,15 +2941,15 @@
               openSheet(sheetContent(idx), { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }, anchorEl);
               function wirePager() {
                 if (!sheetInner) return; const l = sheetInner.querySelector('.pg-left'); const r = sheetInner.querySelector('.pg-right');
-                if (l) l.onclick = ev => { ev.stopPropagation(); idx = (idx - 1 + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; };
-                if (r) r.onclick = ev => { ev.stopPropagation(); idx = (idx + 1) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; };
+                if (l) l.onclick = ev => { ev.stopPropagation(); idx = (idx - 1 + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; updateChartForSheetOverlap(anchorEl, false); };
+                if (r) r.onclick = ev => { ev.stopPropagation(); idx = (idx + 1) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; updateChartForSheetOverlap(anchorEl, false); };
                 const x = sheetInner.querySelector('.hdr-close'); if (x) x.onclick = (ev) => { ev.stopPropagation(); closeSheet(); };
               }
               wirePager();
               // swipe gestures
               let startX = null; const area = sheetInner; if (area) {
                 area.ontouchstart = ev => { if (ev.touches.length === 1) startX = ev.touches[0].clientX; };
-                area.ontouchend = ev => { if (startX == null) return; const dx = (ev.changedTouches[0].clientX - startX); if (Math.abs(dx) > 50) { idx = (idx + (dx < 0 ? 1 : -1) + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); } startX = null; };
+                area.ontouchend = ev => { if (startX == null) return; const dx = (ev.changedTouches[0].clientX - startX); if (Math.abs(dx) > 50) { idx = (idx + (dx < 0 ? 1 : -1) + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); updateChartForSheetOverlap(anchorEl, false); } startX = null; };
               }
             } else {
               dbg('vertex:click->sheet:single');
@@ -3040,8 +3056,8 @@
               const L = sheetInner.querySelector('.pg-left');
               const R = sheetInner.querySelector('.pg-right');
               const X = sheetInner.querySelector('.hdr-close');
-              if (L) L.onclick = ev => { ev.stopPropagation(); idx = (idx - 1 + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wire(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; };
-              if (R) R.onclick = ev => { ev.stopPropagation(); idx = (idx + 1) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wire(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; };
+              if (L) L.onclick = ev => { ev.stopPropagation(); idx = (idx - 1 + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wire(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; updateChartForSheetOverlap(el, false); };
+              if (R) R.onclick = ev => { ev.stopPropagation(); idx = (idx + 1) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wire(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; updateChartForSheetOverlap(el, false); };
               if (X) X.onclick = ev => { ev.stopPropagation(); closeSheet(); };
             };
             wire();
