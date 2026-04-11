@@ -879,7 +879,7 @@
             stroke: var(--link-dark);
         }
 
-        .node circle {
+        .node circle.visible {
             r: 5;
             cursor: pointer;
             stroke: #333;
@@ -898,22 +898,22 @@
             pointer-events: all;
         }
 
-        .node circle {
+        .node circle.visible {
             fill: #e0f7fa;
             stroke: #00796b;
         }
 
-        body.dark-mode .node circle {
+        body.dark-mode .node circle.visible {
             fill: var(--node-fill-dark);
             stroke: var(--node-stroke-dark);
         }
 
-        .node:hover circle {
+        .node:hover circle.visible {
             fill: #b2ebf2;
             stroke: #004d40;
         }
 
-        body.dark-mode .node:hover circle {
+        body.dark-mode .node:hover circle.visible {
             fill: var(--node-hover-fill-dark);
             stroke: var(--node-hover-stroke-dark);
         }
