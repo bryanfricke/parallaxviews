@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Minimal Facts Tree</title>
+    <title>Tidy Tree</title>
     <!-- Favicons: SVG primary with PNG fallbacks and webmanifest -->
     <!-- Use relative paths so files resolve correctly when hosted under a repo subpath (e.g. /parallaxviews) -->
     <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
@@ -219,6 +219,52 @@
             --safe-left: env(safe-area-inset-left, 0px);
         }
 
+        /* Visually hidden but accessible to screen readers */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Skip link: hidden off-screen until focused */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--bg-light);
+            color: var(--link-accent);
+            padding: 8px 16px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 2px solid var(--link-accent);
+            border-radius: 4px;
+            z-index: 20000;
+            transition: top 0.2s;
+        }
+
+        .skip-link:focus {
+            top: 8px;
+            left: 8px;
+            outline: 3px solid var(--link-accent);
+            outline-offset: 2px;
+        }
+
+        body.dark-mode .skip-link {
+            background: var(--panel-dark);
+            color: var(--accent-dark);
+            border-color: var(--accent-dark);
+        }
+
+        body.dark-mode .skip-link:focus {
+            outline-color: var(--accent-dark);
+        }
+
         /* Visually hidden class for skip link - accessible to screen readers but not visible */
         .visually-hidden {
             position: absolute;
@@ -425,12 +471,12 @@
                 backdrop-filter: blur(6px) saturate(80%);
             }
             
-            /* On iPhone-like landscape (short, touch devices), put Controls before 4+1 Facts
-               to match portrait ordering. Desktop remains unchanged. */
+            /* On iPhone-like landscape (short, touch devices), put Controls before About
+               button to match portrait ordering. Desktop remains unchanged. */
             @media (pointer: coarse) {
                 #topbar { flex-wrap: nowrap; }
                 #controlsToggle { order: 0; }
-                #factsAboutBtn { order: 1; }
+                #aboutBtn { order: 1; }
             }
         }
 
@@ -669,7 +715,7 @@
             box-shadow: none;
         }
 
-        /* Simple modal for the Minimal Facts background */
+        /* Simple modal for optional About/background content */
         .modal-backdrop {
             position: fixed;
             inset: 0;
@@ -1039,7 +1085,7 @@
             filter: drop-shadow(0 0 8px rgba(0, 230, 178, 0.5));
         }
 
-        /* ESV credit footnote (small, unobtrusive, respects dark mode) */
+        /* Footnote credit (small, unobtrusive, respects dark mode) */
         .esv-credit {
             position: fixed;
             left: 12px;
@@ -1066,11 +1112,16 @@
 </head>
 
 <body class="dark-mode">
-    <a href="#chart" class="visually-hidden">Skip to tree visualization</a>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#chart" class="skip-link">Skip to tree visualization</a>
+
+    <!-- Screen reader live region for announcements -->
+    <div id="sr-announcements" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
     <header>
         <div id="topbar">
-            <strong style="font-size:18px; letter-spacing:0.5px; margin-right:16px;">Tidy Tree</strong>
-        <button id="factsAboutBtn" aria-haspopup="dialog">4+1 Facts</button>
+            <strong id="topbarTitle" style="font-size:18px; letter-spacing:0.5px; margin-right:16px;"></strong>
+        <button id="aboutBtn" aria-haspopup="dialog" style="display:none">About</button>
         <button id="controlsToggle" aria-expanded="false">Controls <span class="controls-icon" aria-hidden="true"><svg
                     viewBox="0 0 24 24" focusable="false" aria-hidden="true">
                     <path d="M6 9l6 6 6-6"></path>
@@ -1096,89 +1147,60 @@
         </div>
         </div>
     </header>
-    <main role="main" id="main-content" aria-label="Minimal facts tree visualization">
-        <div id="chart" tabindex="-1"></div>
+    <main role="main" id="main-content" aria-label="Hierarchical tree visualization">
+        <div class="sr-only" id="tree-instructions" tabindex="-1">
+            Tree navigation: Use arrow keys without modifiers for best experience.
+            Right arrow expands a node or moves to its first child.
+            Left arrow collapses a node or moves to its parent.
+            Up and Down arrows move between nodes.
+            Press Enter or Space to activate a node.
+            VoiceOver users: Press Control-Option-Shift-Down to interact with the tree, then use plain arrow keys.
+        </div>
+        <div id="chart"></div>
     </main>
 
     <!-- bottom sheet for mobile node details -->
     <div id="bottomSheet" class="bottom-sheet" role="dialog" aria-hidden="true"></div>
 
-    <!-- modal backdrop for Minimal Facts background -->
-    <div id="factsModal" class="modal-backdrop" role="dialog" aria-hidden="true" aria-modal="true"
-        aria-labelledby="factsModalTitle">
+    <!-- modal backdrop for optional About/background content (populated from JSON meta.aboutModal) -->
+    <div id="aboutModal" class="modal-backdrop" role="dialog" aria-hidden="true" aria-modal="true"
+        aria-labelledby="aboutModalTitle">
         <div class="modal-content" tabindex="-1" role="document">
             <button class="modal-close" aria-label="Close">×</button>
-            <h2 id="factsModalTitle">The "Minimal Facts" (4 + 1)</h2>
-            <div class="modal-body">
-                <p>The “Minimal Facts” approach, developed by Gary Habermas and expanded with Michael Licona in <em>The
-                        Case for the Resurrection of Jesus</em>, identifies a handful of historical claims about Jesus
-                    that meet two criteria:</p>
-                <ul>
-                    <li>They are supported by strong historical evidence.</li>
-                    <li>They are accepted by the majority of scholars writing on the subject, including many who are not
-                        Christians.</li>
-                </ul>
-                <p>The standard list is:</p>
-                <ol>
-                    <li><strong>Jesus died by crucifixion.</strong><br>Jesus of Nazareth was executed under the Roman
-                        governor Pontius Pilate.</li>
-                    <li><strong>Jesus’ disciples believed that he rose and appeared to them.</strong><br>They were
-                        convinced they had real post-mortem encounters with him.</li>
-                    <li><strong>The church persecutor Paul was suddenly changed.</strong><br>Saul of Tarsus, once an
-                        enemy of the early Christian movement, became its leading missionary after what he described as
-                        a resurrection appearance.</li>
-                    <li><strong>The skeptic James, the brother of Jesus, was suddenly changed.</strong><br>Initially an
-                        unbeliever, James became the leader of the Jerusalem church following what he took to be an
-                        encounter with the risen Jesus.</li>
-                    <li><strong>The empty tomb (the “+1”).</strong><br>Many scholars accept that Jesus’ tomb was found
-                        empty by women followers, though this point is debated more than the four above.</li>
-                </ol>
-                <p><em>There is broad scholarly agreement on these core facts. The resurrection of Jesus best explains
-                        them, as competing theories such as hallucination or conspiracy quickly collapse under scrutiny.
-                        Objections usually arise not from the evidence itself but from worldview assumptions that rule
-                        out the possibility of God and miracles in advance.</em></p>
-
-                <!-- Callout as a P (not div) to satisfy strict modal-body selectors -->
-                <p class="callout"
-                    style="margin:12px 0; padding:10px; background:rgba(0,0,0,0.04); border-left:4px solid #666; font-size:14px;">
-                    <strong>How this site helps:</strong> This website lets readers explore the supporting
-                    evidence directly. By clicking through an interactive tree structure, users can locate early sources
-                    that testify to the death, burial, and resurrection of Jesus. The layout reflects the approach in
-                    <em>The Case for the Resurrection of Jesus</em>, with some additions — for example, sources cited
-                    for
-                    the burial connect naturally to the resurrection claims, which themselves imply the discovery of the
-                    empty tomb.
-                </p>
-
-                <hr style="margin-top:12px; margin-bottom:12px; border:none; border-top:1px solid rgba(0,0,0,0.06);">
-                <div class="modal-credit" style="font-size:13px; color:inherit;">
-                    <div>Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®),
-                        copyright © 2001, 2007, 2011, 2016 by Crossway. Used by permission. All rights reserved.</div>
-                    <div style="margin-top:6px;">The "Minimal Facts" approach is adapted from: Gary R. Habermas and
-                        Michael R. Licona, <em><a
-                                href="https://en.wikipedia.org/wiki/The_Case_for_the_Resurrection_of_Jesus"
-                                target="_blank" rel="noopener">The Case for the Resurrection of Jesus</a></em> (B&amp;H
-                        Academic, 2004).
-                    </div>
-                    <div style="margin-top:6px;">
-                        Development note: Large Language Models (principally ChatGPT) and GitHub Copilot were used to
-                        assist
-                        in the development of text and code for this site.
-                    </div>
-                </div>
-            </div>
+            <h2 id="aboutModalTitle"></h2>
+            <div class="modal-body"></div>
         </div>
-
     </div>
 
     <!-- D3 v7 -->
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script>
         async function init() {
-            let response = await fetch('data/ResurrectionDisciplesBelievedItActs01.json');
-            //response = await fetch('data/messianic_prophecies_hierarchical_full.json');
-            
+            // Resolve data file: prefer ?data= URL param, fall back to a sensible default
+            const dataPath = (new URLSearchParams(window.location.search)).get('data')
+                || 'data/minimal-facts.json';
+            let response = await fetch(dataPath);
             let data = await response.json();
+
+            // Apply optional meta configuration from the JSON root
+            const meta = data.meta || {};
+            if (meta.pageTitle) document.title = meta.pageTitle;
+            const topbarTitleEl = document.getElementById('topbarTitle');
+            if (topbarTitleEl) topbarTitleEl.textContent = meta.topbarTitle || '';
+            const mainEl = document.getElementById('main-content');
+            if (mainEl && meta.ariaLabel) mainEl.setAttribute('aria-label', meta.ariaLabel);
+            // Populate the About modal if the JSON provides content
+            const aboutBtn = document.getElementById('aboutBtn');
+            const aboutModal = document.getElementById('aboutModal');
+            if (meta.aboutModal && aboutBtn && aboutModal) {
+                aboutBtn.textContent = meta.aboutModal.buttonLabel || 'About';
+                aboutBtn.style.display = '';
+                const titleEl = aboutModal.querySelector('#aboutModalTitle');
+                if (titleEl) titleEl.textContent = meta.aboutModal.title || '';
+                const bodyEl = aboutModal.querySelector('.modal-body');
+                // bodyHtml is trusted content from the project's own JSON files
+                if (bodyEl) bodyEl.innerHTML = meta.aboutModal.bodyHtml || '';
+            }
 
             // === 2) Basic settings ===
             const container = document.getElementById('chart');
@@ -1186,7 +1208,7 @@
             let height = container.clientHeight;
 
             // Skip link: jump straight into the tree for keyboard/screen-reader users
-            const skipLink = document.querySelector('a[href="#chart"]');
+            const skipLink = document.querySelector('a.skip-link');
             function focusFirstTreeNode() {
                 const firstNode = document.querySelector('#chart g.node');
                 if (firstNode) {
@@ -1636,14 +1658,13 @@
 
             const svg = d3.select("#chart").append("svg")
                 .attr("width", width).attr("height", height)
-                .attr('role', 'img')
-                .attr('aria-label', 'Tidy tree visualization');
+                .attr('role', 'none');
 
             // Create a main group for zoom/pan
-            const g = svg.append("g");
+            const g = svg.append("g").attr("role", "none");
             // Create links and nodes groups in correct order
-            const linkGroup = g.append("g").attr("class", "links");
-            const nodeGroup = g.append("g").attr("class", "nodes");
+            const linkGroup = g.append("g").attr("class", "links").attr("role", "none");
+            const nodeGroup = g.append("g").attr("class", "nodes").attr("role", "none");
 
             // allow broader zoom on touch devices for easier pinch-zooming
             const zoom = d3.zoom().scaleExtent([0.3, 4]).on("zoom", (event) => {
@@ -1859,6 +1880,17 @@
                 try { document.removeEventListener('pointerdown', popupHelpOutsideClickHandler, true); } catch (e) { }
                 try { document.removeEventListener('keydown', popupHelpKeyHandler, true); } catch (e) { }
                 popupHelpNode = null;
+            }
+
+            // Announce a message to screen reader users via the ARIA live region
+            function announceToScreenReader(message) {
+                try {
+                    const region = document.getElementById('sr-announcements');
+                    if (region) {
+                        region.textContent = '';
+                        requestAnimationFrame(() => { region.textContent = message; });
+                    }
+                } catch (e) { /* non-fatal */ }
             }
 
             // After a programmatic pan/zoom, re-evaluate what's under the pointer and show
@@ -2121,6 +2153,17 @@
                 } catch (e) { /* non-fatal */ }
             });
 
+            // Make checkboxes fully keyboard accessible (Space already works by default; add Enter)
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.checked = !this.checked;
+                        this.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                });
+            });
+
             // Word wrap helper
             function wrapText(selection, width = 160) {
                 selection.each(function (d) {
@@ -2256,8 +2299,10 @@
                             // Previously we expanded all descendants via expandAllRecursive;
                             // remove that so a click only toggles the immediate level.
                             expand(d);
+                            announceToScreenReader(`${d.data.name}, expanded`);
                         } else {
                             collapse(d);
+                            announceToScreenReader(`${d.data.name}, collapsed`);
                         }
 
                         // Perform the update and then, on small screens, center the newly-exposed
@@ -2473,7 +2518,7 @@
                                     return; // Don't navigate
                                 }
                                 
-                                // If node has children and is expanded, navigate to a child (go deeper)
+                                // If node has children and is expanded, navigate to first child
                                 if (d.children && d.children.length > 0) {
                                     // Check if we have a "last visited child" stored for this node
                                     // and if that child is still in the current children array
@@ -2484,8 +2529,12 @@
                                         targetNode = d.children[0];
                                     }
                                 }
-                                // If node is collapsed or a leaf, right arrow does nothing
-                                // (use Enter to expand, or Down arrow to move to siblings)
+                                // If node is collapsed, expand it (ARIA APG tree pattern)
+                                else if (d._children) {
+                                    handleNodeActivate(event, d);
+                                    return; // Just expand, don't navigate
+                                }
+                                // If leaf, ArrowRight does nothing
                             } else if (event.key === 'ArrowLeft') {
                                 // Check if popup is currently open for this node
                                 const isPopupOpen = popupHelp.style("opacity") === "1" && popupHelpNode === d;
@@ -2504,7 +2553,12 @@
                                     return; // Don't navigate, just close popup
                                 }
                                 
-                                // When navigating to parent, remember this child
+                                // If node is expanded, collapse it first (ARIA APG tree pattern)
+                                if (d.children) {
+                                    handleNodeActivate(event, d);
+                                    return; // Just collapse, don't navigate to parent
+                                }
+                                // If collapsed or leaf, navigate to parent
                                 if (d.parent) {
                                     d.parent._lastVisitedChild = d;
                                     targetNode = d.parent;
@@ -3321,10 +3375,10 @@
             });
         }
 
-        // Minimal Facts modal behavior
+        // About modal behavior
         (function () {
-            const factsBtn = document.getElementById('factsAboutBtn');
-            const modal = document.getElementById('factsModal');
+            const factsBtn = document.getElementById('aboutBtn');
+            const modal = document.getElementById('aboutModal');
             const closeBtn = modal && modal.querySelector('.modal-close');
             let lastFocused = null;
 

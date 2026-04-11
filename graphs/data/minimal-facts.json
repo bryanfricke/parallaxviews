@@ -1,4 +1,14 @@
 {
+    "meta": {
+        "pageTitle": "Minimal Facts Tree",
+        "topbarTitle": "Minimal Facts",
+        "ariaLabel": "Minimal facts tree visualization",
+        "aboutModal": {
+            "buttonLabel": "4+1 Facts",
+            "title": "The \u201cMinimal Facts\u201d (4 + 1)",
+            "bodyHtml": "<p>The \u201cMinimal Facts\u201d approach, developed by Gary Habermas and expanded with Michael Licona in <em>The Case for the Resurrection of Jesus</em>, identifies a handful of historical claims about Jesus that meet two criteria:</p><ul><li>They are supported by strong historical evidence.</li><li>They are accepted by the majority of scholars writing on the subject, including many who are not Christians.</li></ul><p>The standard list is:</p><ol><li><strong>Jesus died by crucifixion.</strong><br>Jesus of Nazareth was executed under the Roman governor Pontius Pilate.</li><li><strong>Jesus\u2019 disciples believed that he rose and appeared to them.</strong><br>They were convinced they had real post-mortem encounters with him.</li><li><strong>The church persecutor Paul was suddenly changed.</strong><br>Saul of Tarsus, once an enemy of the early Christian movement, became its leading missionary after what he described as a resurrection appearance.</li><li><strong>The skeptic James, the brother of Jesus, was suddenly changed.</strong><br>Initially an unbeliever, James became the leader of the Jerusalem church following what he took to be an encounter with the risen Jesus.</li><li><strong>The empty tomb (the \u201c+1\u201d).</strong><br>Many scholars accept that Jesus\u2019 tomb was found empty by women followers, though this point is debated more than the four above.</li></ol><p><em>There is broad scholarly agreement on these core facts. The resurrection of Jesus best explains them, as competing theories such as hallucination or conspiracy quickly collapse under scrutiny. Objections usually arise not from the evidence itself but from worldview assumptions that rule out the possibility of God and miracles in advance.</em></p><p class=\"callout\" style=\"margin:12px 0; padding:10px; background:rgba(0,0,0,0.04); border-left:4px solid #666; font-size:14px;\"><strong>How this site helps:</strong> This website lets readers explore the supporting evidence directly. By clicking through an interactive tree structure, users can locate early sources that testify to the death, burial, and resurrection of Jesus. The layout reflects the approach in <em>The Case for the Resurrection of Jesus</em>, with some additions \u2014 for example, sources cited for the burial connect naturally to the resurrection claims, which themselves imply the discovery of the empty tomb.</p><hr style=\"margin-top:12px; margin-bottom:12px; border:none; border-top:1px solid rgba(0,0,0,0.06);\"><div class=\"modal-credit\" style=\"font-size:13px; color:inherit;\"><div>Scripture quotations are from the ESV\u00ae Bible (The Holy Bible, English Standard Version\u00ae), copyright \u00a9 2001, 2007, 2011, 2016 by Crossway. Used by permission. All rights reserved.</div><div style=\"margin-top:6px;\">The \u201cMinimal Facts\u201d approach is adapted from: Gary R. Habermas and Michael R. Licona, <em><a href=\"https://en.wikipedia.org/wiki/The_Case_for_the_Resurrection_of_Jesus\" target=\"_blank\" rel=\"noopener\">The Case for the Resurrection of Jesus</a></em> (B&amp;H Academic, 2004).</div><div style=\"margin-top:6px;\">Development note: Large Language Models (principally ChatGPT) and GitHub Copilot were used to assist in the development of text and code for this site.</div></div>"
+        }
+    },
     "name": "Minimal Facts",
     "subtitle": "Overview of key events and testimonies related to the resurrection of Jesus",
     "children": [
@@ -2223,8 +2233,26 @@
                                 },
                                 {
                                     "name": "Oral Tradition",
-                                    "subtitle": "Early oral reports and community memories (non‑literary traditions) documenting Paul’s transformation and reputation across churches",
+                                    "subtitle": "Received tradition and early community testimony about Paul’s transformation",
+                                    "details": "Early tradition about Paul’s transformation was not confined to informal community memory. It appears both in tradition Paul says he received and passed on, and in reports circulating across the churches about the former persecutor who now proclaimed the faith he once tried to destroy.",
                                     "children": [
+                                        {
+                                            "name": "1 Corinthians 15:3–11",
+                                            "subtitle": "Paul adds himself to the received witness tradition",
+                                            "date": "c. AD 53–55",
+                                            "details": "Paul says he delivered what he had also received: that Christ died, was buried, was raised, and appeared to Cephas, the Twelve, more than five hundred, James, and all the apostles. He then adds himself to the list: 'last of all, as to one untimely born, he appeared also to me.' This matters because Paul is not merely repeating anonymous tradition. He is placing his own experience into a received witness stream and then stressing that his message matches the others: 'whether then it was I or they, so we preach and so you believed.'",
+                                            "whyItMatters": [
+                                                "Shows that Paul understood his conversion as grounded in a resurrection appearance.",
+                                                "Connects Paul’s experience to a prior received tradition rather than an isolated private claim.",
+                                                "Names specific witnesses and groups instead of referring only to 'the disciples.'",
+                                                "Ends with a shared-apostolic-message claim, linking Paul’s preaching to that of the earlier witnesses."
+                                            ],
+                                            "source": {
+                                                "title": "1 Corinthians 15:3–11",
+                                                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-11&version=ESV"
+                                            },
+                                            "kind": "evidence"
+                                        },
                                         {
                                             "name": "Galatians 1:22–23",
                                             "subtitle": "Report of Paul’s Radical Transformation",
