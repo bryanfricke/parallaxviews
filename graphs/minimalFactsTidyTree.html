@@ -597,6 +597,8 @@
 
         .bottom-sheet .bottom-content a {
             font-size: 14px;
+            color: var(--link-accent);
+            text-decoration: underline;
         }
 
         /* Specific styles for leaf node popups (keeps non-leaf help unchanged) */
@@ -2268,7 +2270,7 @@
                         html += `<div class="leaf-content">`;
                         if (d.data.date) html += `<div class="leaf-date">${d.data.date}</div>`;
                         if (d.data.details) html += `<div class="leaf-details">${d.data.details}</div>`;
-                        html += `<div class="leaf-link"><a href='${href}' target='_blank' style='color:var(--link-accent);text-decoration:underline'>${d.data.source.title || "View Source"}</a></div>`;
+                        html += `<div class="leaf-link"><a href='${href}' target='_blank'>${d.data.source.title || "View Source"}</a></div>`;
                         html += `</div>`;
                         if (isSmall) {
                             openBottomSheet(html, d);

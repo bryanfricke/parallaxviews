@@ -6,7 +6,7 @@
         "aboutModal": {
             "buttonLabel": "4+1 Facts",
             "title": "The \u201cMinimal Facts\u201d (4 + 1)",
-            "bodyHtml": "<p>The \u201cMinimal Facts\u201d approach, developed by Gary Habermas and expanded with Michael Licona in <em>The Case for the Resurrection of Jesus</em>, identifies a handful of historical claims about Jesus that meet two criteria:</p><ul><li>They are supported by strong historical evidence.</li><li>They are accepted by the majority of scholars writing on the subject, including many who are not Christians.</li></ul><p>The standard list is:</p><ol><li><strong>Jesus died by crucifixion.</strong><br>Jesus of Nazareth was executed under the Roman governor Pontius Pilate.</li><li><strong>Jesus\u2019 disciples believed that he rose and appeared to them.</strong><br>They were convinced they had real post-mortem encounters with him.</li><li><strong>The church persecutor Paul was suddenly changed.</strong><br>Saul of Tarsus, once an enemy of the early Christian movement, became its leading missionary after what he described as a resurrection appearance.</li><li><strong>The skeptic James, the brother of Jesus, was suddenly changed.</strong><br>Initially an unbeliever, James became the leader of the Jerusalem church following what he took to be an encounter with the risen Jesus.</li><li><strong>The empty tomb (the \u201c+1\u201d).</strong><br>Many scholars accept that Jesus\u2019 tomb was found empty by women followers, though this point is debated more than the four above.</li></ol><p><em>There is broad scholarly agreement on these core facts. The resurrection of Jesus best explains them, as competing theories such as hallucination or conspiracy quickly collapse under scrutiny. Objections usually arise not from the evidence itself but from worldview assumptions that rule out the possibility of God and miracles in advance.</em></p><p class=\"callout\" style=\"margin:12px 0; padding:10px; background:rgba(0,0,0,0.04); border-left:4px solid #666; font-size:14px;\"><strong>How this site helps:</strong> This website lets readers explore the supporting evidence directly. By clicking through an interactive tree structure, users can locate early sources that testify to the death, burial, and resurrection of Jesus. The layout reflects the approach in <em>The Case for the Resurrection of Jesus</em>, with some additions \u2014 for example, sources cited for the burial connect naturally to the resurrection claims, which themselves imply the discovery of the empty tomb.</p><hr style=\"margin-top:12px; margin-bottom:12px; border:none; border-top:1px solid rgba(0,0,0,0.06);\"><div class=\"modal-credit\" style=\"font-size:13px; color:inherit;\"><div>Scripture quotations are from the ESV\u00ae Bible (The Holy Bible, English Standard Version\u00ae), copyright \u00a9 2001, 2007, 2011, 2016 by Crossway. Used by permission. All rights reserved.</div><div style=\"margin-top:6px;\">The \u201cMinimal Facts\u201d approach is adapted from: Gary R. Habermas and Michael R. Licona, <em><a href=\"https://en.wikipedia.org/wiki/The_Case_for_the_Resurrection_of_Jesus\" target=\"_blank\" rel=\"noopener\">The Case for the Resurrection of Jesus</a></em> (B&amp;H Academic, 2004).</div><div style=\"margin-top:6px;\">Development note: Large Language Models (principally ChatGPT) and GitHub Copilot were used to assist in the development of text and code for this site.</div></div>"
+            "bodyHtml": "<p>The \u201cMinimal Facts\u201d approach, developed by Gary Habermas and expanded with Michael Licona in <em>The Case for the Resurrection of Jesus</em>, identifies a handful of historical claims about Jesus that meet two criteria:</p><ul><li>They are supported by strong historical evidence.</li><li>They are accepted by the majority of scholars writing on the subject, including many who are not Christians.</li></ul><p>The standard list is:</p><ol><li><strong>Jesus died by crucifixion.</strong><br>Jesus of Nazareth was executed under the Roman governor Pontius Pilate.</li><li><strong>Jesus\u2019 disciples had experiences they took to be appearances of the risen Jesus.</strong><br>Those experiences appear to have generated their belief that God had raised Jesus, not merely that his cause lived on.</li><li><strong>The church persecutor Paul was suddenly changed.</strong><br>Saul of Tarsus, once an enemy of the early Christian movement, became its leading missionary after what he described as a resurrection appearance.</li><li><strong>The skeptic James, the brother of Jesus, was suddenly changed.</strong><br>Initially an unbeliever, James became the leader of the Jerusalem church following what he took to be an encounter with the risen Jesus.</li><li><strong>The empty tomb (the \u201c+1\u201d).</strong><br>Many scholars accept that Jesus\u2019 tomb was found empty by women followers, though this point is debated more than the four above.</li></ol><p><em>There is broad scholarly agreement on these core facts. The resurrection of Jesus best explains them, as competing theories such as hallucination or conspiracy quickly collapse under scrutiny. Objections usually arise not from the evidence itself but from worldview assumptions that rule out the possibility of God and miracles in advance.</em></p><p class=\"callout\" style=\"margin:12px 0; padding:10px; background:rgba(0,0,0,0.04); border-left:4px solid #666; font-size:14px;\"><strong>How this site helps:</strong> This website lets readers explore the supporting evidence directly. By clicking through an interactive tree structure, users can locate early sources that testify to the death, burial, and resurrection of Jesus. The layout reflects the approach in <em>The Case for the Resurrection of Jesus</em>, with some additions \u2014 for example, sources cited for the burial connect naturally to the resurrection claims, which themselves imply the discovery of the empty tomb.</p><hr style=\"margin-top:12px; margin-bottom:12px; border:none; border-top:1px solid rgba(0,0,0,0.06);\"><div class=\"modal-credit\" style=\"font-size:13px; color:inherit;\"><div>Scripture quotations are from the ESV\u00ae Bible (The Holy Bible, English Standard Version\u00ae), copyright \u00a9 2001, 2007, 2011, 2016 by Crossway. Used by permission. All rights reserved.</div><div style=\"margin-top:6px;\">The \u201cMinimal Facts\u201d approach is adapted from: Gary R. Habermas and Michael R. Licona, <em><a href=\"https://en.wikipedia.org/wiki/The_Case_for_the_Resurrection_of_Jesus\" target=\"_blank\" rel=\"noopener\">The Case for the Resurrection of Jesus</a></em> (B&amp;H Academic, 2004).</div><div style=\"margin-top:6px;\">Development note: Large Language Models (principally ChatGPT) and GitHub Copilot were used to assist in the development of text and code for this site.</div></div>"
         }
     },
     "name": "Minimal Facts",
@@ -16,6 +16,187 @@
             "name": "Death",
             "subtitle": "Accounts and sources regarding the death of Jesus",
             "children": [
+                {
+                    "name": "Paul's Letters",
+                    "subtitle": "Earliest Christian written witnesses to Jesus’s death",
+                    "children": [
+                        {
+                            "name": "1 Corinthians 15:3",
+                            "subtitle": "Paul passes on the received tradition that 'Christ died for our sins'",
+                            "date": "Tradition: c. AD 30–35; citation: c. AD 53–55",
+                            "details": "Paul says he delivered to the Corinthians what he had also received: 'that Christ died for our sins in accordance with the Scriptures.' This is one of the earliest surviving summaries of the Christian message and shows that Jesus’s death stood at the center of the proclamation from the beginning.",
+                            "whyItMatters": [
+                                "Among the earliest surviving Christian testimony to Jesus’s death.",
+                                "Presented as received tradition rather than Paul’s personal invention.",
+                                "Shows that Jesus’s death was central to the earliest proclamation."
+                            ],
+                            "source": {
+                                "title": "1 Corinthians 15:3",
+                                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3&version=ESV"
+                            },
+                            "kind": "evidence"
+                        },
+                        {
+                            "name": "Galatians 3:1",
+                            "subtitle": "Paul reminds the Galatians that Christ was publicly portrayed as crucified",
+                            "date": "c. AD 48–55",
+                            "details": "Paul rebukes the Galatians by saying that Jesus Christ was publicly portrayed as crucified before them. The statement assumes that the crucifixion of Jesus was already fixed, central, and widely taught in Paul’s preaching.",
+                            "whyItMatters": [
+                                "Shows the crucifixion was a settled and public feature of Paul’s message.",
+                                "Confirms that Jesus’s death by crucifixion was not a later theological embellishment.",
+                                "Provides another early Pauline witness independent of narrative Gospel form."
+                            ],
+                            "source": {
+                                "title": "Galatians 3:1",
+                                "url": "https://www.biblegateway.com/passage/?search=Galatians+3%3A1&version=ESV"
+                            },
+                            "kind": "evidence"
+                        }
+                    ],
+                    "kind": "collection"
+                },
+                {
+                    "name": "Gospels",
+                    "subtitle": "Narrative accounts of Jesus’s crucifixion in the four Gospels",
+                    "children": [
+                        {
+                            "name": "Mark 15:21–39",
+                            "subtitle": "Earliest Passion narrative account of the crucifixion and death of Jesus",
+                            "date": "c. AD 55–59",
+                            "details": "Mark narrates Jesus’s crucifixion under Roman authority, his public mocking, darkness over the land, his loud cry, and his death. The centurion’s response at the cross highlights the public and memorable character of the event.",
+                            "whyItMatters": [
+                                "Earliest surviving narrative account of Jesus’s death.",
+                                "Presents the crucifixion as a public Roman execution.",
+                                "Forms the narrative foundation for later Gospel Passion accounts."
+                            ],
+                            "source": {
+                                "title": "Mark 15:21–39",
+                                "url": "https://www.biblegateway.com/passage/?search=Mark+15%3A21-39&version=ESV"
+                            },
+                            "kind": "evidence"
+                        },
+                        {
+                            "name": "Matthew 27:27–54",
+                            "subtitle": "Matthew’s Passion narrative of Jesus’s crucifixion and death",
+                            "date": "c. AD 58–62",
+                            "details": "Matthew recounts Jesus’s scourging, mocking, crucifixion, the casting of lots, the darkness, Jesus’s cry, and his death, along with distinctive Matthean details such as the earthquake and the confession of the centurion and those with him.",
+                            "whyItMatters": [
+                                "Provides additional attestation to the crucifixion narrative.",
+                                "Retains the core public execution setting under Roman authority.",
+                                "Includes distinctive details while clearly affirming Jesus’s death."
+                            ],
+                            "source": {
+                                "title": "Matthew 27:27–54",
+                                "url": "https://www.biblegateway.com/passage/?search=Matthew+27%3A27-54&version=ESV"
+                            },
+                            "kind": "evidence"
+                        },
+                        {
+                            "name": "Luke 23:26–49",
+                            "subtitle": "Luke’s account of the crucifixion and death of Jesus",
+                            "date": "c. AD 60–62",
+                            "details": "Luke narrates Jesus’s execution, his interaction with the criminals, his final words, and his death, ending with the centurion glorifying God and acknowledging Jesus’s innocence.",
+                            "whyItMatters": [
+                                "Adds further narrative attestation to Jesus’s death.",
+                                "Shows Luke’s distinctive shaping while preserving the central event.",
+                                "Ends with public recognition that something significant has occurred."
+                            ],
+                            "source": {
+                                "title": "Luke 23:26–49",
+                                "url": "https://www.biblegateway.com/passage/?search=Luke+23%3A26-49&version=ESV"
+                            },
+                            "kind": "evidence"
+                        },
+                        {
+                            "name": "John 19:16–37",
+                            "subtitle": "John’s crucifixion account with distinctive eyewitness-like detail",
+                            "date": "c. AD 70–100",
+                            "details": "John recounts Jesus carrying the cross, the inscription over him, the casting of lots, Jesus’s care for his mother, his final words, and the piercing of his side after death. The narrative strongly emphasizes that Jesus truly died.",
+                            "whyItMatters": [
+                                "Provides a fourth Gospel witness to Jesus’s execution and death.",
+                                "Includes distinctive details reinforcing the reality of Jesus’s death.",
+                                "Shows the crucifixion remained central across differing Gospel presentations."
+                            ],
+                            "source": {
+                                "title": "John 19:16–37",
+                                "url": "https://www.biblegateway.com/passage/?search=John+19%3A16-37&version=ESV"
+                            },
+                            "kind": "evidence"
+                        }
+                    ],
+                    "kind": "collection"
+                },
+                {
+                    "name": "Acts",
+                    "subtitle": "Apostolic preaching summaries that presuppose and proclaim Jesus’s death",
+                    "children": [
+                        {
+                            "name": "Acts 2:23",
+                            "subtitle": "Peter proclaims that Jesus was crucified and killed",
+                            "date": "c. AD 62",
+                            "details": "In Peter’s Pentecost sermon, he says that Jesus was delivered up according to God’s plan and was crucified and killed by lawless men. This shows that Jesus’s death was part of the earliest public preaching in Jerusalem.",
+                            "whyItMatters": [
+                                "Places the proclamation of Jesus’s death in early Jerusalem preaching.",
+                                "Shows continuity between the Passion narratives and apostolic preaching.",
+                                "Confirms that crucifixion was central to the earliest message."
+                            ],
+                            "source": {
+                                "title": "Acts 2:23",
+                                "url": "https://www.biblegateway.com/passage/?search=Acts+2%3A23&version=ESV"
+                            },
+                            "kind": "evidence"
+                        },
+                        {
+                            "name": "Acts 3:13–15",
+                            "subtitle": "Peter contrasts the rejection of Jesus with God’s vindication",
+                            "date": "c. AD 62",
+                            "details": "Peter tells his Jerusalem audience that they denied and killed the Author of life, whom God raised from the dead. The contrast presupposes the public fact of Jesus’s death as part of the earliest proclamation.",
+                            "whyItMatters": [
+                                "Again places Jesus’s death at the center of apostolic preaching.",
+                                "Shows that death and resurrection were proclaimed together from the start.",
+                                "Locates the message in the city where the events occurred."
+                            ],
+                            "source": {
+                                "title": "Acts 3:13–15",
+                                "url": "https://www.biblegateway.com/passage/?search=Acts+3%3A13-15&version=ESV"
+                            },
+                            "kind": "evidence"
+                        },
+                        {
+                            "name": "Acts 4:10",
+                            "subtitle": "Jesus is identified as the one 'whom you crucified'",
+                            "date": "c. AD 62",
+                            "details": "Before the rulers and elders, Peter explicitly refers to Jesus Christ of Nazareth 'whom you crucified, whom God raised from the dead.' This again frames Jesus’s death as public and well known.",
+                            "whyItMatters": [
+                                "Shows bold public proclamation of Jesus’s crucifixion before hostile authorities.",
+                                "Links the resurrection claim directly to the crucifixion claim.",
+                                "Strengthens the Jerusalem setting of the earliest message."
+                            ],
+                            "source": {
+                                "title": "Acts 4:10",
+                                "url": "https://www.biblegateway.com/passage/?search=Acts+4%3A10&version=ESV"
+                            },
+                            "kind": "evidence"
+                        },
+                        {
+                            "name": "Acts 13:28–29",
+                            "subtitle": "Paul’s sermon summarizes Jesus’s condemnation, death, and burial",
+                            "date": "c. AD 62",
+                            "details": "In Pisidian Antioch, Paul says that though no guilt deserving death was found in Jesus, they asked Pilate to have him executed, and when they had carried out all that was written of him, they took him down from the tree and laid him in a tomb.",
+                            "whyItMatters": [
+                                "Compactly summarizes condemnation, execution, and burial.",
+                                "Shows continuity between Paul’s preaching in Acts and the Passion tradition.",
+                                "Bridges the death and burial branches of the tree."
+                            ],
+                            "source": {
+                                "title": "Acts 13:28–29",
+                                "url": "https://www.biblegateway.com/passage/?search=Acts+13%3A28-29&version=ESV"
+                            },
+                            "kind": "evidence"
+                        }
+                    ],
+                    "kind": "collection"
+                },
                 {
                     "name": "Non-Christian Sources",
                     "subtitle": "Historical accounts outside the New Testament",
@@ -176,7 +357,7 @@
                         {
                             "name": "Mark 15:42–47",
                             "subtitle": "Burial before Sabbath; women see where he is laid (v.47)",
-                            "date": "c. AD 66–70",
+                            "date": "c. AD 55–59",
                             "details": "On Preparation Day, Joseph of Arimathea requests Jesus’s body; after death is confirmed, Pilate grants it. Jesus is wrapped and placed in a rock-hewn tomb. Mary Magdalene and Mary the mother of Jesus saw where he was laid (v.47), fixing the tomb’s location.",
                             "whyItMatters": [
                                 "Explains official permission and pre-Sabbath haste.",
@@ -192,7 +373,7 @@
                         {
                             "name": "Matthew 27:57–61",
                             "subtitle": "Joseph of Arimathea's tomb; women sit opposite the tomb (v.61)",
-                            "date": "c. AD 80–90",
+                            "date": "c. AD 58–62",
                             "details": "Joseph of Arimathea asks for the body and lays Jesus in his own new rock-hewn tomb, rolling a great stone to the entrance. Mary Magdalene and “the other Mary” were there, sitting opposite the tomb (v.61), marking its location.",
                             "whyItMatters": [
                                 "Adds ownership/new-tomb detail consistent with purity/time constraints.",
@@ -208,7 +389,7 @@
                         {
                             "name": "Luke 23:50–56",
                             "subtitle": "Council member buries Jesus; women see the tomb and how the body was laid (vv.55–56)",
-                            "date": "c. AD 80–90",
+                            "date": "c. AD 60–62",
                             "details": "Joseph of Arimathea, a council member who had not consented to the decision, wraps Jesus in linen and places him in a rock-hewn tomb. The women who had come from Galilee saw the tomb and how his body was laid (vv.55–56), then prepare spices and rest on the Sabbath.",
                             "whyItMatters": [
                                 "Emphasizes timing: burial just before Sabbath begins.",
@@ -224,7 +405,7 @@
                         {
                             "name": "Acts 13:29",
                             "subtitle": "Early Christian summary: removal and burial after execution",
-                            "date": "c. AD 62–64",
+                            "date": "c. AD 62",
                             "details": "In Paul's sermon at Pisidian Antioch, he recounts that Jesus’s body was taken down from the tree and laid in a tomb, reflecting the same-day removal principle consistent with Jewish law and Gospel narratives.",
                             "whyItMatters": [
                                 "Earliest Christian summary statement connecting crucifixion and immediate burial.",
@@ -240,7 +421,7 @@
                         {
                             "name": "John 19:31, 38–42",
                             "subtitle": "Bodies removed for high Sabbath; Joseph & Nicodemus bury Jesus",
-                            "date": "c. AD 90–100",
+                            "date": "c. AD 70–100",
                             "details": "Because it was Preparation and the next day was a high Sabbath, the Judean leaders ask for the bodies to be removed. Joseph of Arimathea, joined by Nicodemus, receives permission, prepares the body with spices, and lays Jesus in a nearby garden tomb.",
                             "whyItMatters": [
                                 "Links removal directly to Jewish law/Sabbath concerns.",
@@ -572,7 +753,7 @@
                                 {
                                     "name": "Mark 16:1–8",
                                     "subtitle": "Women find the stone rolled away and hear that Jesus has been raised",
-                                    "date": "c. AD 66–70 (traditional dating of Mark; 16:1–8 in earliest manuscripts)",
+                                    "date": "c. AD 55–59 (early dating of Mark; 16:1–8 in earliest manuscripts)",
                                     "details": "After the Sabbath, Mary Magdalene, Mary the mother of James, and Salome come to the tomb at daybreak to anoint Jesus’s body. They find the large stone already rolled away. Inside, they see a young man in a white robe who tells them that Jesus, the crucified one, has been raised and is not there, and shows them the place where he had been laid. He instructs them to tell the disciples and Peter that Jesus is going ahead of them to Galilee. The earliest manuscripts end with the women fleeing in trembling and astonishment, saying nothing to anyone because they were afraid.",
                                     "whyItMatters": [
                                         "Earliest written empty-tomb narrative, widely regarded as Markan priority.",
@@ -589,7 +770,7 @@
                                 {
                                     "name": "Matthew 28:1–10",
                                     "subtitle": "Earthquake, angel, and the women grasp the risen Jesus’s feet",
-                                    "date": "c. AD 80–90 (traditional dating of Matthew)",
+                                    "date": "c. AD 58–62 (early dating of Matthew)",
                                     "details": "Mary Magdalene and “the other Mary” go to see the tomb at dawn on the first day of the week. There is a great earthquake; an angel of the Lord descends, rolls back the stone, and sits on it. The guards shake and become like dead men. The angel tells the women not to fear, announces that Jesus has been crucified but has been raised, and invites them to see the place where he lay. As they run to tell the disciples, Jesus himself meets them; they take hold of his feet and worship him, and he reiterates the command that his brothers go to Galilee.",
                                     "whyItMatters": [
                                         "Clearly presents the tomb as empty with an angelic invitation to inspect the place where Jesus had been laid.",
@@ -606,7 +787,7 @@
                                 {
                                     "name": "Luke 24:1–12",
                                     "subtitle": "Women find the stone rolled away; apostles initially dismiss their report",
-                                    "date": "c. AD 80–90 (traditional dating of Luke)",
+                                    "date": "c. AD 60–62 (early dating of Luke)",
                                     "details": "At early dawn on the first day of the week, the women who had followed Jesus from Galilee come to the tomb with prepared spices. They find the stone rolled away but, entering, do not find the body. Two men in dazzling apparel appear and remind them of Jesus’s prediction that he would be delivered up, crucified, and rise on the third day. The women return and report these things to the eleven and all the rest, but their words seem to the apostles an idle tale and they do not believe them; Peter, however, runs to the tomb, sees the linen cloths by themselves, and goes home marveling.",
                                     "whyItMatters": [
                                         "Explicitly states that the women find no body in the tomb and that the stone is already rolled away.",
@@ -623,7 +804,7 @@
                                 {
                                     "name": "John 20:1–18",
                                     "subtitle": "Mary Magdalene, the beloved disciple, Peter, and a personal encounter with the risen Jesus",
-                                    "date": "c. AD 90–100 (traditional dating of John)",
+                                    "date": "c. AD 70–100 (traditional dating of John)",
                                     "details": "While it is still dark on the first day of the week, Mary Magdalene comes to the tomb and sees the stone taken away. She runs to Simon Peter and the beloved disciple and reports that the body has been taken. Peter and the other disciple run to the tomb, find it empty, and see the linen cloths lying there and the face cloth folded separately. The beloved disciple believes, though they do not yet understand the Scripture. After they leave, Mary remains weeping outside the tomb, sees two angels inside, and then encounters Jesus himself, whom she initially mistakes for the gardener. When he speaks her name, she recognizes him; he instructs her not to cling to him and commissions her to announce his ascension to the disciples.",
                                     "whyItMatters": [
                                         "Provides a detailed empty-tomb scene with multiple witnesses (Mary Magdalene, Peter, the beloved disciple) and specific mention of grave cloths left behind.",
@@ -814,7 +995,7 @@
                                 {
                                     "name": "Matthew 28:11–15",
                                     "subtitle": "“His disciples came by night and stole him away”",
-                                    "date": "c. AD 80–90 (traditional dating of Matthew)",
+                                    "date": "c. AD 58–62 (early dating of Matthew)",
                                     "details": "Matthew preserves the earliest Jewish polemic: a bribed guard is to report that the disciples stole the body while the soldiers slept. The narrative both records the opposing claim and implies that, on all sides, the body was not in the tomb.",
                                     "source": {
                                         "title": "Matthew 28:11-15",
@@ -860,7 +1041,7 @@
                                         {
                                             "name": "Luke 24:11",
                                             "subtitle": "Apostles initially dismiss the women’s report as ‘an idle tale’",
-                                            "date": "c. AD 60–90 (traditional range for Luke)",
+                                            "date": "c. AD 60–62 (early dating of Luke)",
                                             "details": "Luke frankly notes the men did not believe the women, aligning with broader ancient attitudes toward female testimony and undercutting any charge of Christian embellishment.",
                                             "source": {
                                                 "title": "Luke 24:11",
@@ -1019,15 +1200,15 @@
         },
         {
             "name": "Resurrection",
-            "subtitle": "Testimonies and traditions about the resurrection appearances and their impact",
+            "subtitle": "Testimonies and traditions about the appearances that generated resurrection belief and shaped the early movement",
             "children": [
                 {
                     "name": "Disciples",
-                    "subtitle": "Eyewitnesses and early followers who claimed and believed in the resurrection",
+                    "subtitle": "Eyewitnesses and early followers whose claimed encounters with Jesus appear to have originated resurrection belief",
                     "children": [
                         {
                             "name": "Claimed It",
-                            "subtitle": "Sources and traditions where disciples explicitly claimed to have seen the risen Jesus",
+                            "subtitle": "Sources and traditions where disciples explicitly claimed to have seen the risen Jesus, the experiences that best explain the rise of resurrection belief",
                             "children": [
                                 {
                                     "name": "Paul's Letters",
@@ -1096,11 +1277,11 @@
                                                     "name": "1 Corinthians 15:3–7",
                                                     "subtitle": "An early creed Paul received and passed on, summarizing eyewitness claims of the risen Jesus",
                                                     "date": "c. AD 30s",
-                                                    "details": "The Early Creed is an early resurrection creed cited by Paul in 1 Corinthians 15:3-7. It is believed to have been formulated in the AD 30s, predating the letter written around AD 55. This creed is an oral tradition designed for easy memorization and communal recitation, with a formulaic structure rooted in parallelism, repetition, and careful sequencing. It includes core elements of the gospel, stating that Christ died for sins, was buried, was raised on the third day, and appeared to various individuals and groups.",
+                                                    "details": "The Early Creed is an early resurrection creed cited by Paul in 1 Corinthians 15:3-7. It is believed to have been formulated in the AD 30s, predating the letter written around AD 55. This creed is an oral tradition designed for easy memorization and communal recitation, with a formulaic structure rooted in parallelism, repetition, and careful sequencing. It includes the core sequence that Christ died for sins, was buried, was raised on the third day, and then appeared to Cephas, the twelve, more than five hundred, James, and all the apostles. In other words, the earliest preserved formula does not simply announce that Jesus lived on in some vague sense; it ties the resurrection claim to specific appearances that named people took to be encounters with the risen Jesus.",
                                                     "whyItMatters": [
                                                         "It is viewed as an exceptionally early testimony to the resurrection, with many scholars dating it to within five years of the crucifixion.",
-                                                        "The creed names multiple witnesses, including Cephas (Peter), James, the twelve, and a group of more than 500, which underscores the widespread nature of the resurrection appearances.",
-                                                        "The transmission formula (\"received\" and \"delivered\") is similar to how Jewish rabbis passed on sacred tradition, and the use of the Aramaic name \"Cephas\" points to a Semitic style and Jewish-Christian origins in Jerusalem."
+                                                        "By linking \u201che was raised\u201d with named appearances, the creed suggests that the appearances themselves generated the resurrection claim rather than merely illustrating a belief already in place.",
+                                                        "The transmission formula (\u201creceived\u201d and \u201cdelivered\u201d) and the Aramaic name \u201cCephas\u201d point to a Semitic, Jerusalem-rooted tradition in which resurrection meant far more than the survival of Jesus\u2019s memory."
                                                     ],
                                                     "source": {
                                                         "title": "1 Corinthians 15:3–7",
@@ -1118,7 +1299,7 @@
                                                 {
                                                     "name": "Acts 2:22–36",
                                                     "subtitle": "Peter’s Pentecost Sermon",
-                                                    "date": "Event: c. AD 30; Composition: c. AD 60–80",
+                                                    "date": "Event: c. AD 30; Composition: c. AD 62",
                                                     "details": "Peter proclaims Jesus’ resurrection as the fulfillment of Scripture and firsthand apostolic testimony, appealing to the crowd’s knowledge of Jesus’ miracles and crucifixion. He declares that “God raised him up,” citing Psalm 16 and stating, “this Jesus God raised up, and of that we all are witnesses.”",
                                                     "whyItMatters": [
                                                         "Public testimony in Jerusalem: Delivered in the city where Jesus was crucified, strengthening its apologetic force.",
@@ -1132,13 +1313,13 @@
                                                     "kind": "evidence",
                                                     "dates": {
                                                         "event": "c. AD 30",
-                                                        "composition": "c. AD 60–80"
+                                                        "composition": "c. AD 62"
                                                     }
                                                 },
                                                 {
                                                     "name": "Acts 3:13–15",
                                                     "subtitle": "Peter at Solomon’s Portico",
-                                                    "date": "Event: c. AD 30–31; Composition: c. AD 60–80",
+                                                    "date": "Event: c. AD 30–31; Composition: c. AD 62",
                                                     "details": "Peter accuses the crowd of killing the “Author of life,” but states, “God raised him from the dead. To this we are witnesses.”",
                                                     "whyItMatters": [
                                                         "Direct confrontation: Peter boldly blames the crowd and asserts resurrection before them.",
@@ -1151,13 +1332,13 @@
                                                     "kind": "evidence",
                                                     "dates": {
                                                         "event": "c. AD 30–31",
-                                                        "composition": "c. AD 60–80"
+                                                        "composition": "c. AD 62"
                                                     }
                                                 },
                                                 {
                                                     "name": "Acts 4:8–12, 33",
                                                     "subtitle": "Peter before the Sanhedrin",
-                                                    "date": "Event: c. AD 30–31; Composition: c. AD 60–80",
+                                                    "date": "Event: c. AD 30–31; Composition: c. AD 62",
                                                     "details": "Peter, filled with the Holy Spirit, declares before the Jewish council that a lame man was healed “by the name of Jesus Christ of Nazareth, whom you crucified, whom God raised from the dead.” He identifies Jesus as the rejected stone that has become the cornerstone and asserts that “there is salvation in no one else…”",
                                                     "whyItMatters": [
                                                         "Healing provokes hostility: A miraculous healing prompts accusation rather than praise.",
@@ -1171,13 +1352,13 @@
                                                     "kind": "evidence",
                                                     "dates": {
                                                         "event": "c. AD 30–31",
-                                                        "composition": "c. AD 60–80"
+                                                        "composition": "c. AD 62"
                                                     }
                                                 },
                                                 {
                                                     "name": "Acts 5:30–32",
                                                     "subtitle": "Apostles before the Sanhedrin Again",
-                                                    "date": "Event: c. AD 31; Composition: c. AD 60–80",
+                                                    "date": "Event: c. AD 31; Composition: c. AD 62",
                                                     "details": "Peter states, “The God of our fathers raised Jesus, whom you killed by hanging him on a tree… And we are witnesses to these things, and so is the Holy Spirit...”",
                                                     "whyItMatters": [
                                                         "Divine validation: The apostles invoke the Holy Spirit as co-witness.",
@@ -1190,13 +1371,13 @@
                                                     "kind": "evidence",
                                                     "dates": {
                                                         "event": "c. AD 31",
-                                                        "composition": "c. AD 60–80"
+                                                        "composition": "c. AD 62"
                                                     }
                                                 },
                                                 {
                                                     "name": "Acts 10:39–41",
                                                     "subtitle": "Peter at Cornelius’s House",
-                                                    "date": "Event: c. AD 37–38; Composition: c. AD 60–80",
+                                                    "date": "Event: c. AD 37–38; Composition: c. AD 62",
                                                     "details": "Peter states, “We are witnesses of all that he did… They put him to death… but God raised him… and made him appear… to us who had been chosen by God as witnesses.”",
                                                     "whyItMatters": [
                                                         "Gentile mission context: Peter shares resurrection testimony beyond Jewish circles.",
@@ -1209,13 +1390,13 @@
                                                     "kind": "evidence",
                                                     "dates": {
                                                         "event": "c. AD 37–38",
-                                                        "composition": "c. AD 60–80"
+                                                        "composition": "c. AD 62"
                                                     }
                                                 },
                                                 {
                                                     "name": "Acts 13:26–37",
                                                     "subtitle": "Paul in Pisidian Antioch",
-                                                    "date": "Event: c. AD 47–48; Composition: c. AD 60–80",
+                                                    "date": "Event: c. AD 47–48; Composition: c. AD 62",
                                                     "details": "Paul echoes Peter’s Pentecost sermon, citing Psalm 2 and 16 as fulfilled in Jesus’ resurrection. He states, “God raised him from the dead, and for many days he appeared to those… who are now his witnesses...”",
                                                     "whyItMatters": [
                                                         "Scripture-centered: Paul also grounds the resurrection in prophecy.",
@@ -1228,27 +1409,27 @@
                                                     "kind": "evidence",
                                                     "dates": {
                                                         "event": "c. AD 47–48",
-                                                        "composition": "c. AD 60–80"
+                                                        "composition": "c. AD 62"
                                                     }
                                                 },
                                                 {
-                                                    "name": "Acts 17:2–3, 30–31",
+                                                    "name": "Acts 17:2–3, 30–32",
                                                     "subtitle": "Paul in Thessalonica and Athens",
-                                                    "date": "Event: c. AD 49–51; Composition: c. AD 60–80",
-                                                    "details": "In Thessalonica, Paul reasons from the Scriptures that “it was necessary for the Christ to suffer and to rise from the dead,” declaring “this Jesus… is the Christ.” In Athens, he asserts that God “has fixed a day on which he will judge the world… by a man whom he has appointed; and of this he has given assurance to all by raising him from the dead.”",
+                                                    "date": "Event: c. AD 49–51; Composition: c. AD 62",
+                                                    "details": "In Thessalonica, Paul reasons from the Scriptures that “it was necessary for the Christ to suffer and to rise from the dead,” declaring “this Jesus… is the Christ.” In Athens, he asserts that God “has fixed a day on which he will judge the world… by a man whom he has appointed; and of this he has given assurance to all by raising him from the dead.” Luke immediately adds that when the Athenians heard of the resurrection of the dead, some mocked, while others wanted to hear more.",
                                                     "whyItMatters": [
                                                         "Scriptural reasoning: Paul presents Jesus’ death and resurrection as necessary fulfillments of Jewish prophecy.",
-                                                        "Cross-cultural appeal: The resurrection is proclaimed in Jewish synagogues and Greek philosophical settings.",
+                                                        "Cross-cultural proclamation and resistance: The resurrection is preached in Jewish synagogues and Greek philosophical settings, and in Athens it immediately draws mockery from some hearers.",
                                                         "Universal significance: Paul links the resurrection to a future judgment of all people, reinforcing its cosmic importance."
                                                     ],
                                                     "source": {
-                                                        "title": "Acts 17:2–3, 30–31",
-                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+17%3A2-3%2C30-31&version=ESV"
+                                                        "title": "Acts 17:2–3, 30–32",
+                                                        "url": "https://www.biblegateway.com/passage/?search=Acts+17%3A2-3%2C30-32&version=ESV"
                                                     },
                                                     "kind": "evidence",
                                                     "dates": {
                                                         "event": "c. AD 49–51",
-                                                        "composition": "c. AD 60–80"
+                                                        "composition": "c. AD 62"
                                                     }
                                                 }
                                             ],
@@ -1272,7 +1453,7 @@
                                                         {
                                                             "name": "Matthew 28:1–10",
                                                             "subtitle": "Jesus Appears to the Women",
-                                                            "date": "c. AD 80–90 (traditional dating of Matthew)",
+                                                            "date": "c. AD 58–62 (early dating of Matthew)",
                                                             "details": "Mary Magdalene and “the other Mary” visit the tomb after the Sabbath. An angel announces that Jesus has risen and invites them to see the empty tomb. As they go to tell the disciples, Jesus meets them; they take hold of his feet and worship him.",
                                                             "whyItMatters": [
                                                                 "Women as first witnesses counters likely invention in that culture.",
@@ -1288,7 +1469,7 @@
                                                         {
                                                             "name": "Matthew 28:16–20",
                                                             "subtitle": "The Great Commission",
-                                                            "date": "c. AD 80–90 (traditional dating of Matthew)",
+                                                            "date": "c. AD 58–62 (early dating of Matthew)",
                                                             "details": "The risen Jesus appears to the eleven in Galilee. Some worship while some doubt. Jesus declares all authority has been given to him and commissions them to make disciples of all nations, baptizing and teaching, promising to be with them always.",
                                                             "whyItMatters": [
                                                                 "A post-resurrection encounter grounds the commission in a real meeting with Jesus.",
@@ -1311,7 +1492,7 @@
                                                         {
                                                             "name": "Mark 16:1–8",
                                                             "subtitle": "The Empty Tomb and Fear",
-                                                            "date": "c. AD 60–70",
+                                                            "date": "c. AD 55–59",
                                                             "details": "The passage describes Mary Magdalene, Mary the mother of James, and Salome visiting Jesus' tomb on the first day of the week. They discover the stone rolled away and encounter a young man in a white robe who informs them that Jesus has risen. He instructs them to tell the disciples and Peter that Jesus is going to Galilee ahead of them. However, the women flee the tomb in fear and initially tell no one.",
                                                             "whyItMatters": [
                                                                 "It is considered the earliest resurrection account, potentially preserving the oldest narrative.",
@@ -1334,7 +1515,7 @@
                                                         {
                                                             "name": "Luke 24:13–35",
                                                             "subtitle": "The Road to Emmaus",
-                                                            "date": "c. AD 60–80 (traditional dating of Luke)",
+                                                            "date": "c. AD 60–62 (early dating of Luke)",
                                                             "details": "On the day of the resurrection, two disciples walk toward Emmaus, discouraged. A stranger joins them and explains how the Scriptures foretold the Messiah’s suffering and glory. When he breaks bread with them, their eyes are opened—they recognize Jesus; he vanishes, and they hurry back to Jerusalem to report it.",
                                                             "whyItMatters": [
                                                                 "Eyewitness-like narrative with personal detail and emotional realism.",
@@ -1350,7 +1531,7 @@
                                                         {
                                                             "name": "Luke 24:36–49",
                                                             "subtitle": "Jesus Appears to the Disciples",
-                                                            "date": "c. AD 60–80 (traditional dating of Luke)",
+                                                            "date": "c. AD 60–62 (early dating of Luke)",
                                                             "details": "After Emmaus, Jesus appears to the gathered disciples in Jerusalem. Startled and thinking they see a spirit, they are reassured when Jesus shows his hands and feet and eats in their presence. He opens their minds to understand the Scriptures and commissions them as witnesses, promising the Holy Spirit.",
                                                             "whyItMatters": [
                                                                 "Emphasizes bodily resurrection (wounds shown, food eaten).",
@@ -1366,7 +1547,7 @@
                                                         {
                                                             "name": "Luke 24:50–53",
                                                             "subtitle": "The Ascension from Bethany",
-                                                            "date": "c. AD 60–80 (traditional dating of Luke)",
+                                                            "date": "c. AD 60–62 (early dating of Luke)",
                                                             "details": "Jesus leads the disciples to Bethany, blesses them, and is taken up into heaven. They respond with worship and return to Jerusalem with great joy, continually blessing God in the temple.",
                                                             "whyItMatters": [
                                                                 "Affirms a bodily departure and transition to exaltation.",
@@ -1382,7 +1563,7 @@
                                                         {
                                                             "name": "Acts 1:1–3 ",
                                                             "subtitle": "Jesus Appears Over Forty Days",
-                                                            "date": "c. AD 62–64 (traditional dating of Acts)",
+                                                            "date": "c. AD 62 (early dating of Acts)",
                                                             "details": "In his second volume, Luke states that the risen Jesus presented himself alive to the apostles by many proofs, appearing over forty days and speaking about the kingdom of God.",
                                                             "whyItMatters": [
                                                                 "Affirms physical post-resurrection appearances supported by intentional proofs.",
@@ -1405,7 +1586,7 @@
                                                         {
                                                             "name": "John 20:11–18",
                                                             "subtitle": "Jesus Appears to Mary Magdalene",
-                                                            "date": "c. AD 90–100 (traditional dating of John)",
+                                                            "date": "c. AD 70–100 (traditional dating of John)",
                                                             "details": "Mary Magdalene, weeping outside the empty tomb, becomes the first recorded witness of the risen Jesus. Initially mistaking him for the gardener, she recognizes him when he speaks her name. Jesus instructs her not to cling to him, but to go and announce his resurrection to the disciples, calling them “my brothers.”",
                                                             "whyItMatters": [
                                                                 "First appearance to a woman—striking in a culture where women’s testimony held less legal weight.",
@@ -1421,7 +1602,7 @@
                                                         {
                                                             "name": "John 20:19–23",
                                                             "subtitle": "Jesus Appears to the Disciples",
-                                                            "date": "c. AD 90–100 (traditional dating of John)",
+                                                            "date": "c. AD 70–100 (traditional dating of John)",
                                                             "details": "On the evening of the first Easter Sunday, the risen Jesus appears to his disciples, gathered behind locked doors out of fear. He greets them with peace, shows them his hands and side, and breathes on them, saying, “Receive the Holy Spirit.” He then grants authority related to the forgiveness of sins.",
                                                             "whyItMatters": [
                                                                 "Group appearance underscores the public nature of the encounters.",
@@ -1437,7 +1618,7 @@
                                                         {
                                                             "name": "John 21:1–14",
                                                             "subtitle": "Breakfast by the Sea",
-                                                            "date": "c. AD 90–100 (traditional dating of John)",
+                                                            "date": "c. AD 70–100 (traditional dating of John)",
                                                             "details": "After his resurrection, Jesus appears again to several disciples by the Sea of Galilee. Following an unproductive night, he directs them to cast the net on the right side, yielding a miraculous catch. Realizing it is the Lord, Peter jumps into the water to reach him; Jesus then shares a breakfast of bread and fish on the shore.",
                                                             "whyItMatters": [
                                                                 "Another post-resurrection group appearance in a different setting.",
@@ -1453,7 +1634,7 @@
                                                         {
                                                             "name": "John 21:15–19",
                                                             "subtitle": "Jesus Reinstates Peter",
-                                                            "date": "c. AD 90–100 (traditional dating of John)",
+                                                            "date": "c. AD 70–100 (traditional dating of John)",
                                                             "details": "After breakfast on the shore, Jesus addresses Peter with three questions of love, mirroring Peter’s three denials. Each affirmation is met with a commission—“feed my sheep.” Jesus then foretells Peter’s future suffering and death, indicating the manner in which he would glorify God, and ends with “Follow me.”",
                                                             "whyItMatters": [
                                                                 "Public reinstatement of Peter after denial demonstrates grace and restoration.",
@@ -1623,8 +1804,31 @@
                         },
                         {
                             "name": "Believed It",
-                            "subtitle": "Sources and traditions showing disciples’ conviction and willingness to suffer for the resurrection message",
+                            "subtitle": "Sources and traditions showing that these appearances produced settled conviction and endurance, despite the message’s countercultural character",
                             "children": [
+                                {
+                                    "name": "Paul's Letters",
+                                    "subtitle": "Paul admits the message was culturally difficult, which makes the origin of resurrection belief historically significant",
+                                    "children": [
+                                        {
+                                            "name": "1 Corinthians 1:23–24",
+                                            "subtitle": "Paul says the core proclamation was a stumbling block to Jews and folly to Gentiles",
+                                            "date": "c. AD 53–55",
+                                            "details": "Paul openly acknowledges that the apostolic message was not tailored for applause: \u201cwe preach Christ crucified,\u201d a message that was \u201ca stumbling block to Jews and folly to Gentiles.\u201d That admission matters historically. A movement centered on a crucified and risen Messiah was not the path of least resistance in either audience. The specific resurrection belief therefore calls for an originating cause, and the earliest tradition locates that cause in appearances the disciples took to be encounters with the risen Jesus.",
+                                            "whyItMatters": [
+                                                "Counterintuitive message: Paul admits the proclamation cut against the grain for both major audiences of the early movement.",
+                                                "Belief in need of explanation: This was not simply a slogan designed to win easy assent or social advantage.",
+                                                "Fits the larger resurrection tradition: The appearances function in the sources as the reason the disciples began proclaiming the risen Jesus."
+                                            ],
+                                            "source": {
+                                                "title": "1 Corinthians 1:23–24",
+                                                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+1%3A23-24&version=ESV"
+                                            },
+                                            "kind": "evidence"
+                                        }
+                                    ],
+                                    "kind": "collection"
+                                },
                                 {
                                     "name": "Luke",
                                     "subtitle": "Physician, companion of Paul, and author of Luke-Acts; documents apostolic suffering and resurrection faith",
@@ -1632,7 +1836,7 @@
                                         {
                                             "name": "Acts 4:1–22",
                                             "subtitle": "Peter and John before the Sanhedrin",
-                                            "date": "Event: c. AD 30; Composition: c. AD 60–80",
+                                            "date": "Event: c. AD 30; Composition: c. AD 62",
                                             "details": "Peter and John were arrested for healing a lame man and preaching about Jesus' resurrection. They affirmed that they must obey God rather than men, despite threats from the Jewish council.",
                                             "whyItMatters": [
                                                 "The public trial showed early opposition to resurrection preaching",
@@ -1646,13 +1850,13 @@
                                             "kind": "evidence",
                                             "dates": {
                                                 "event": "c. AD 30",
-                                                "composition": "c. AD 60–80"
+                                                "composition": "c. AD 62"
                                             }
                                         },
                                         {
                                             "name": "Acts 5:17–42",
                                             "subtitle": "Apostles Imprisoned and Flogged",
-                                            "date": "Event: c. AD 30; Composition: c. AD 60–80",
+                                            "date": "Event: c. AD 30; Composition: c. AD 62",
                                             "details": "All the apostles were imprisoned for preaching the resurrection. After an angel released them, they were brought before the Sanhedrin again, where Peter stated they were witnesses to these things. They were flogged and warned but left rejoicing.",
                                             "whyItMatters": [
                                                 "The apostles found joy in suffering",
@@ -1666,13 +1870,13 @@
                                             "kind": "evidence",
                                             "dates": {
                                                 "event": "c. AD 30",
-                                                "composition": "c. AD 60–80"
+                                                "composition": "c. AD 62"
                                             }
                                         },
                                         {
                                             "name": "Acts 7:54–60",
                                             "subtitle": "The Martyrdom of Stephen",
-                                            "date": "Event: c. AD 30–35; Composition: c. AD 60–80",
+                                            "date": "Event: c. AD 30–35; Composition: c. AD 62",
                                             "details": "Stephen, a deacon, was stoned after delivering a bold defense. As he was being killed, he saw a vision of the risen Christ and prayed for his killers.",
                                             "whyItMatters": [
                                                 "The vision of the risen Christ reinforced belief even at death",
@@ -1686,13 +1890,13 @@
                                             "kind": "evidence",
                                             "dates": {
                                                 "event": "c. AD 30–35",
-                                                "composition": "c. AD 60–80"
+                                                "composition": "c. AD 62"
                                             }
                                         },
                                         {
                                             "name": "Acts 12:1–5",
                                             "subtitle": "James Killed, Peter Imprisoned",
-                                            "date": "Event: c. AD 44; Composition: c. AD 60–80",
+                                            "date": "Event: c. AD 44; Composition: c. AD 62",
                                             "details": "King Herod executed James, making him the first of the Twelve to be martyred. Peter was then arrested and imprisoned but was later rescued by an angel.",
                                             "whyItMatters": [
                                                 "James's execution underscores the mortal risk of discipleship",
@@ -1706,7 +1910,7 @@
                                             "kind": "evidence",
                                             "dates": {
                                                 "event": "c. AD 44",
-                                                "composition": "c. AD 60–80"
+                                                "composition": "c. AD 62"
                                             }
                                         }
                                     ],
@@ -1910,7 +2114,7 @@
                                         {
                                             "name": "Mark 3:21",
                                             "subtitle": "Jesus’ Family Thinks He’s Out of His Mind",
-                                            "date": "c. AD 60–70",
+                                            "date": "c. AD 55–59",
                                             "details": "This early account shows Jesus' own family, likely including his brother James, thought he was 'out of his mind,' indicating their initial disbelief.",
                                             "whyItMatters": [
                                                 "This sets the stage for understanding James's transformation from a skeptic to a leader of the Jerusalem church, making his later testimony more compelling."
@@ -1924,7 +2128,7 @@
                                         {
                                             "name": "Mark 3:31",
                                             "subtitle": "Jesus’ Mother and Brothers Seek Him",
-                                            "date": "c. AD 60–70",
+                                            "date": "c. AD 55–59",
                                             "details": "Jesus' mother and brothers stand outside and send for him while he is teaching, which suggests they were not actively supporting his ministry.",
                                             "whyItMatters": [
                                                 "This reinforces the picture of his family's distance and highlights the significance of James's later transformation into a central figure in the early church."
@@ -1938,7 +2142,7 @@
                                         {
                                             "name": "Mark 6:3–4",
                                             "subtitle": "Jesus Rejected in His Hometown",
-                                            "date": "c. AD 60–70",
+                                            "date": "c. AD 55–59",
                                             "details": "People in Jesus' hometown took offense at him, referring to him by name and mentioning his brothers, including James.",
                                             "whyItMatters": [
                                                 "This passage places James within a context of familial and communal rejection, which makes his later leadership role in the church more significant."
@@ -1996,7 +2200,7 @@
                                         {
                                             "name": "Acts 15:12–21",
                                             "subtitle": "James Leads at the Jerusalem Council",
-                                            "date": "c. AD 48–50 (Jerusalem Council); c. AD 60–80 (traditional dating of Acts)",
+                                            "date": "c. AD 48–50 (Jerusalem Council); c. AD 62 (early dating of Acts)",
                                             "details": "At the Jerusalem Council, James, who was the brother of Jesus and the leader of the Jerusalem church, speaks after Peter. He affirms that God is calling Gentiles into his people and offers a judgment based on quoting the prophets that helps shape the council’s final decision. His leadership in this pivotal moment reflects his profound transformation from a skeptic to a person of spiritual authority and scriptural discernment within the growing Christian community.",
                                             "whyItMatters": [
                                                 "Post-resurrection transformation: James, who was once a skeptic of Jesus' ministry, is now a central leader in the Jerusalem church, suggesting a deep change after an encounter with the risen Christ.",
@@ -2183,7 +2387,7 @@
                                         {
                                             "name": "Acts 9",
                                             "subtitle": "Paul’s Damascus Road Conversion",
-                                            "date": "c. AD 62–64",
+                                            "date": "c. AD 62",
                                             "details": "Narrates Paul’s sudden conversion on the road to Damascus. Once a persecutor of Christians, he was confronted by the risen Jesus, temporarily blinded, and then baptized. This encounter led him to begin proclaiming the message he once opposed, underscoring the divine origin of his apostleship.",
                                             "whyItMatters": [
                                                 "The dramatic reversal from persecutor to preacher underscores the credibility of his transformation.",
@@ -2199,7 +2403,7 @@
                                         {
                                             "name": "Acts 22",
                                             "subtitle": "Paul’s Defense Before the Crowd",
-                                            "date": "c. AD 62–64",
+                                            "date": "c. AD 62",
                                             "details": "Paul recounts his conversion story before a hostile Jewish audience in Jerusalem. He describes his Pharisaic background, his role in persecuting Christians, and his encounter with the risen Jesus on the road to Damascus. He presents his conversion as sudden and divine, reinforcing his authority as one sent by God.",
                                             "whyItMatters": [
                                                 "His public defense in a hostile setting shows confidence in the truth of his testimony.",
@@ -2215,7 +2419,7 @@
                                         {
                                             "name": "Acts 26",
                                             "subtitle": "Paul’s Testimony Before Agrippa",
-                                            "date": "c. AD 62–64",
+                                            "date": "c. AD 62",
                                             "details": "Before King Agrippa, Paul recounts his persecution of Christians and his encounter with the risen Jesus on the Damascus road. He states that he was given a divine commission to proclaim repentance and forgiveness to both Jews and Gentiles. He frames his conversion as a fulfillment of God’s plan, aligning his mission with prophetic hope.",
                                             "whyItMatters": [
                                                 "Connects his authority directly to a divine commission from the risen Christ.",
@@ -2325,7 +2529,7 @@
                                         {
                                             "name": "Acts 14:19",
                                             "subtitle": "Stoned at Lystra",
-                                            "date": "c. AD 48–49 (event); Acts written c. AD 62–64",
+                                            "date": "c. AD 48–49 (event); Acts written c. AD 62",
                                             "details": "In Lystra, a hostile crowd stones Paul, drags him out of the city, and leaves him for dead. He survives and continues his mission.",
                                             "whyItMatters": [
                                                 "Radical transformation: Once a persecutor, Paul now suffers persecution for the faith.",
@@ -2341,7 +2545,7 @@
                                         {
                                             "name": "Acts 16:19–24",
                                             "subtitle": "Beaten and Imprisoned in Philippi",
-                                            "date": "c. AD 49–50 (event); Acts written c. AD 62–64",
+                                            "date": "c. AD 49–50 (event); Acts written c. AD 62",
                                             "details": "In Philippi, Paul and Silas are seized, beaten with rods, and thrown into prison after freeing a slave girl from a demonic spirit. They respond by praying and singing hymns to God.",
                                             "whyItMatters": [
                                                 "Public suffering: They endure visible, unjust punishment, showing willingness to lose status and safety.",
@@ -2357,7 +2561,7 @@
                                         {
                                             "name": "Acts 17:5",
                                             "subtitle": "Mob Violence in Thessalonica",
-                                            "date": "c. AD 50–51 (event); Acts written c. AD 62–64",
+                                            "date": "c. AD 50–51 (event); Acts written c. AD 62",
                                             "details": "Paul’s preaching provokes jealousy, leading to a mob inciting an uproar. Though the violence targets his hosts, it reflects the consistent opposition he faced.",
                                             "whyItMatters": [
                                                 "Pattern of opposition: Demonstrates how resurrection preaching repeatedly provoked intense resistance.",
@@ -2373,7 +2577,7 @@
                                         {
                                             "name": "Acts 17:13–15",
                                             "subtitle": "Opposition in Berea",
-                                            "date": "c. AD 50–51 (event); Acts written c. AD 62–64",
+                                            "date": "c. AD 50–51 (event); Acts written c. AD 62",
                                             "details": "Jews from Thessalonica travel to Berea to incite crowds against Paul, forcing his early departure for safety.",
                                             "whyItMatters": [
                                                 "Relentless persecution: Opponents travel long distances to silence him.",
@@ -2389,7 +2593,7 @@
                                         {
                                             "name": "Acts 18:12–13",
                                             "subtitle": "Trial Before Gallio",
-                                            "date": "c. AD 51–52 (event); Acts written c. AD 62–64",
+                                            "date": "c. AD 51–52 (event); Acts written c. AD 62",
                                             "details": "In Corinth, Jewish leaders bring charges against Paul before the Roman proconsul Gallio, accusing him of persuading people to worship God contrary to the law. Gallio dismisses the case. The event’s timing is supported by the Delphi Inscription dating Gallio’s term to AD 51–52.",
                                             "whyItMatters": [
                                                 "Religious and civic opposition: His message drew attention from both Jewish and Roman authorities.",
@@ -2405,7 +2609,7 @@
                                         {
                                             "name": "Acts 21:27–36",
                                             "subtitle": "Seized in Jerusalem",
-                                            "date": "c. AD 57 (event); Acts written c. AD 62–64",
+                                            "date": "c. AD 57 (event); Acts written c. AD 62",
                                             "details": "In Jerusalem, Paul is falsely accused of defiling the temple. A mob tries to kill him, but Roman soldiers intervene and arrest him. This incident begins his final imprisonment and trials.",
                                             "whyItMatters": [
                                                 "Turning point: Initiates the final phase of Paul’s imprisonments and trials.",
@@ -2421,7 +2625,7 @@
                                         {
                                             "name": "Acts 23:12–35",
                                             "subtitle": "Assassination Plot",
-                                            "date": "c. AD 57 (event); Acts written c. AD 62–64",
+                                            "date": "c. AD 57 (event); Acts written c. AD 62",
                                             "details": "More than forty men conspire to assassinate Paul. Roman officials discover the plot and secretly escort him under heavy guard to Caesarea.",
                                             "whyItMatters": [
                                                 "Extreme opposition: Shows the intensity of hatred toward Paul for preaching the resurrection.",
