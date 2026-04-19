@@ -1,0 +1,1851 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Interactive Argument Map (D3) — Pro/Con with Disclosure</title>
+  <meta name="theme-color" content="#09131b" />
+  <style>
+    :root{
+      color-scheme: dark;
+      --bg0:#09131b;
+      --bg1:#10212a;
+      --text:#edf5f3;
+      --muted:#b6c7c8;
+      --mutedSoft:#8ea1a4;
+
+      --claim:#8cded6;
+      --conclusion:#b9a2df;
+      --support:#4dd3c6;
+      --objection:#d98572;
+      --rebuttal:#8ebc71;
+      --illustration:#ebbf68;
+
+      --edgeSupport:#4dd3c6;
+      --edgeAttack:#d98572;
+
+      --panelStroke:rgba(237,245,243,0.12);
+      --panelFill:rgba(15,31,39,0.82);
+      --surfaceStrong:#142832;
+      --surfaceMuted:rgba(16,38,48,0.92);
+      --surfaceAlt:rgba(13,30,38,0.74);
+      --buttonBg:rgba(16,38,48,0.92);
+      --buttonBgHover:rgba(20,50,63,0.96);
+      --buttonBorder:rgba(237,245,243,0.12);
+      --chartBg:
+        radial-gradient(circle at 16% 14%, rgba(77,211,198,0.12), transparent 24rem),
+        radial-gradient(circle at 82% 12%, rgba(235,191,104,0.10), transparent 20rem),
+        linear-gradient(180deg, rgba(16,33,41,0.98), rgba(11,24,31,0.92));
+      --tipBg:rgba(20,40,50,0.94);
+      --tipBorder:rgba(237,245,243,0.12);
+      --tipShadow:0 28px 90px rgba(0,0,0,0.42);
+      --selectBg:rgba(16,38,48,0.96);
+      --selectOptionBg:#142832;
+      --selectArrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b6c7c8'/%3E%3C/svg%3E");
+      --sheetBg:rgba(20,40,50,0.98);
+      --badgeFill:rgba(237,245,243,0.08);
+      --badgeStroke:rgba(237,245,243,0.24);
+      --badgeIcon:rgba(237,245,243,0.88);
+      --nodeClaimFill:rgba(22,46,52,0.96);
+      --nodeClaimStroke:rgba(140,222,214,0.82);
+      --nodeConclusionFill:rgba(34,27,49,0.96);
+      --nodeConclusionStroke:rgba(185,162,223,0.76);
+      --nodeSupportFill:rgba(18,47,45,0.96);
+      --nodeSupportStroke:rgba(77,211,198,0.82);
+      --nodeObjectionFill:rgba(54,33,29,0.96);
+      --nodeObjectionStroke:rgba(217,133,114,0.82);
+      --nodeRebuttalFill:rgba(32,44,28,0.96);
+      --nodeRebuttalStroke:rgba(142,188,113,0.82);
+      --nodeIllustrationFill:rgba(56,48,25,0.96);
+      --nodeIllustrationStroke:rgba(235,191,104,0.82);
+      --laneGuideColor:rgba(237,245,243,0.10);
+      --pageGlow1:rgba(77,211,198,0.14);
+      --pageGlow2:rgba(235,191,104,0.10);
+      --labelHalo:rgba(9,19,27,0.94);
+      --selectedHalo:rgba(77,211,198,0.28);
+      --nodeShadow:0 18px 32px rgba(0,0,0,0.24);
+      --supportBadgeFill:rgba(77,211,198,0.18);
+      --supportBadgeStroke:rgba(77,211,198,0.78);
+      --attackBadgeFill:rgba(217,133,114,0.18);
+      --attackBadgeStroke:rgba(217,133,114,0.78);
+      --rebuttalBadgeFill:rgba(142,188,113,0.18);
+      --rebuttalBadgeStroke:rgba(142,188,113,0.78);
+      --haloShine:rgba(255,255,255,0.05);
+      --softShadow:0 18px 42px rgba(0,0,0,0.30);
+      --hoverBorder:rgba(77,211,198,0.22);
+      --headerTint:linear-gradient(180deg, rgba(9,19,27,0.42), rgba(9,19,27,0.12));
+      --headerTintEmbed:linear-gradient(180deg, rgba(9,19,27,0.22), rgba(9,19,27,0.06));
+    }
+
+    :root[data-theme="light"]{
+      color-scheme: light;
+      --bg0:#f5efe4;
+      --bg1:#fffaf2;
+      --text:#182127;
+      --muted:#5b6870;
+      --mutedSoft:#6d7b83;
+      --claim:#2d7c8c;
+      --conclusion:#8c73c6;
+      --support:#0d8f86;
+      --objection:#ba6450;
+      --rebuttal:#5f8644;
+      --illustration:#c2902c;
+      --edgeSupport:#2d7c8c;
+      --edgeAttack:#ba6450;
+      --panelStroke:rgba(24,33,39,0.12);
+      --panelFill:rgba(255,255,255,0.82);
+      --surfaceStrong:#fffdf8;
+      --surfaceMuted:rgba(250,243,232,0.94);
+      --surfaceAlt:rgba(244,250,248,0.78);
+      --buttonBg:rgba(250,243,232,0.94);
+      --buttonBgHover:rgba(255,253,248,0.98);
+      --buttonBorder:rgba(24,33,39,0.12);
+      --chartBg:
+        radial-gradient(circle at 18% 14%, rgba(13,143,134,0.12), transparent 24rem),
+        radial-gradient(circle at 84% 12%, rgba(194,144,44,0.12), transparent 20rem),
+        linear-gradient(180deg, rgba(255,250,242,0.98), rgba(244,250,248,0.92));
+      --tipBg:rgba(255,253,248,0.98);
+      --tipBorder:rgba(24,33,39,0.12);
+      --tipShadow:0 24px 80px rgba(25,40,48,0.16);
+      --selectBg:rgba(255,253,248,0.96);
+      --selectOptionBg:#fffdf8;
+      --selectArrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236d7b83'/%3E%3C/svg%3E");
+      --sheetBg:rgba(255,253,248,0.98);
+      --badgeFill:rgba(24,33,39,0.08);
+      --badgeStroke:rgba(24,33,39,0.22);
+      --badgeIcon:rgba(24,33,39,0.72);
+      --nodeClaimFill:rgba(246,251,251,0.97);
+      --nodeClaimStroke:rgba(45,124,140,0.85);
+      --nodeConclusionFill:rgba(249,246,252,0.97);
+      --nodeConclusionStroke:rgba(140,115,198,0.82);
+      --nodeSupportFill:rgba(244,251,249,0.97);
+      --nodeSupportStroke:rgba(13,143,134,0.82);
+      --nodeObjectionFill:rgba(252,247,244,0.97);
+      --nodeObjectionStroke:rgba(186,100,80,0.82);
+      --nodeRebuttalFill:rgba(247,250,243,0.97);
+      --nodeRebuttalStroke:rgba(95,134,68,0.82);
+      --nodeIllustrationFill:rgba(252,249,242,0.97);
+      --nodeIllustrationStroke:rgba(194,144,44,0.82);
+      --laneGuideColor:rgba(24,33,39,0.08);
+      --pageGlow1:rgba(13,143,134,0.14);
+      --pageGlow2:rgba(194,144,44,0.12);
+      --labelHalo:rgba(255,253,248,0.94);
+      --selectedHalo:rgba(13,143,134,0.24);
+      --nodeShadow:0 14px 28px rgba(25,40,48,0.10);
+      --supportBadgeFill:rgba(45,124,140,0.16);
+      --supportBadgeStroke:rgba(45,124,140,0.76);
+      --attackBadgeFill:rgba(186,100,80,0.16);
+      --attackBadgeStroke:rgba(186,100,80,0.76);
+      --rebuttalBadgeFill:rgba(95,134,68,0.16);
+      --rebuttalBadgeStroke:rgba(95,134,68,0.76);
+      --haloShine:rgba(255,255,255,0.42);
+      --softShadow:0 16px 40px rgba(25,40,48,0.08);
+      --hoverBorder:rgba(13,143,134,0.22);
+      --headerTint:linear-gradient(180deg, rgba(255,252,247,0.78), rgba(255,252,247,0.38));
+      --headerTintEmbed:linear-gradient(180deg, rgba(255,252,247,0.92), rgba(255,252,247,0.56));
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+    html, body{
+      height:100%;
+      margin:0;
+    }
+    body{
+      position:relative;
+      overflow-x:hidden;
+      background:
+        radial-gradient(circle at top left, var(--pageGlow1), transparent 32rem),
+        radial-gradient(circle at 85% 15%, var(--pageGlow2), transparent 24rem),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      color:var(--text);
+      display:flex;
+      flex-direction:column;
+      font:400 16px/1.6 "Avenir Next","Segoe UI Variable","Segoe UI","Helvetica Neue",sans-serif;
+      letter-spacing:0.01em;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size:72px 72px;
+      opacity:0.24;
+      mix-blend-mode:soft-light;
+      z-index:0;
+    }
+    html.embed-mode body{
+      overflow:hidden;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:10;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      align-items:center;
+      gap:10px 14px;
+      padding:16px clamp(16px, 3vw, 28px) 14px;
+      backdrop-filter:blur(18px);
+      background:var(--headerTint);
+    }
+    html.embed-mode header{
+      position:static;
+      padding:12px 14px 10px;
+      border-bottom:1px solid var(--panelStroke);
+      background:var(--headerTintEmbed);
+    }
+    header h1{
+      margin:0;
+      font:600 clamp(1.12rem, 1rem + 0.72vw, 1.52rem)/1.12 "Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,serif;
+      letter-spacing:0.01em;
+      min-width:0;
+    }
+    header h1::before{
+      content:"Argument Explorer";
+      display:block;
+      margin-bottom:6px;
+      color:var(--support);
+      font:700 0.72rem/1 "Avenir Next","Segoe UI Variable","Segoe UI",sans-serif;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+    }
+    html.embed-mode header h1{
+      font-size:1.05rem;
+    }
+    header .sub{
+      grid-column:1 / -1;
+      margin:0;
+      max-width:78ch;
+      font-size:0.88rem;
+      color:var(--muted);
+      line-height:1.45;
+    }
+    html.embed-mode header .sub{
+      display:none;
+    }
+    .sub-key{
+      font-weight:650;
+      white-space:nowrap;
+    }
+    .sub-key.support{ color:var(--edgeSupport); }
+    .sub-key.objection{ color:var(--objection); }
+    .sub-key.rebuttal{ color:var(--rebuttal); }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      padding:18px clamp(16px, 3vw, 28px) 22px;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+    html.embed-mode .wrap{
+      padding:0;
+    }
+
+    .panel{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      min-height:0;
+    }
+    html.embed-mode .panel{
+      gap:0;
+      background:transparent;
+      border:0;
+      border-radius:0;
+      overflow:visible;
+      box-shadow:none;
+      min-height:100%;
+    }
+
+    .toolbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border:1px solid var(--panelStroke);
+      border-radius:22px;
+      background:var(--panelFill);
+      box-shadow:var(--softShadow);
+      flex-wrap:wrap;
+    }
+    html.embed-mode .toolbar{
+      padding:12px 14px;
+      border:0;
+      border-bottom:1px solid var(--panelStroke);
+      border-radius:0;
+      background:transparent;
+      box-shadow:none;
+    }
+    .toolbar .hint{
+      font-size:12px;
+      color:var(--mutedSoft);
+    }
+    .toolbar .selectionInfo{
+      display:inline-flex;
+      align-items:center;
+      min-height:2.5rem;
+      padding:0.5rem 0.8rem;
+      border:1px solid var(--panelStroke);
+      border-radius:999px;
+      background:var(--surfaceMuted);
+      box-shadow:inset 0 1px 0 var(--haloShine);
+      font-size:12px;
+      color:var(--muted);
+      margin-left:auto;
+      white-space:nowrap;
+    }
+    .btns{ display:flex; gap:8px; flex-wrap:wrap; }
+
+    .chart-shell{
+      position:relative;
+      flex:1;
+      min-height:0;
+    }
+
+    .interaction-hint{
+      position:absolute;
+      top:16px;
+      right:16px;
+      z-index:4;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      max-width:min(260px, calc(100% - 32px));
+      padding:8px 12px;
+      border:1px solid var(--buttonBorder);
+      border-radius:999px;
+      background:var(--surfaceAlt);
+      box-shadow:var(--softShadow);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:650;
+      letter-spacing:0.01em;
+      pointer-events:none;
+      opacity:0;
+      transform:translateY(-4px);
+      transition:opacity 180ms ease, transform 180ms ease;
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+    }
+    .interaction-hint::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:var(--support);
+      box-shadow:0 0 0 4px color-mix(in srgb, var(--support) 22%, transparent);
+      flex:0 0 auto;
+    }
+    html.embed-mode.interaction-idle .interaction-hint{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    button{
+      border:1px solid var(--buttonBorder);
+      background:var(--buttonBg);
+      color:var(--text);
+      border-radius:999px;
+      padding:8px 13px;
+      font-size:12px;
+      font-weight:650;
+      font-family:inherit;
+      box-shadow:var(--softShadow);
+      cursor:pointer;
+      user-select:none;
+      transition:transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+    button:hover{
+      background:var(--buttonBgHover);
+      border-color:var(--hoverBorder);
+      box-shadow:var(--softShadow);
+      transform:translateY(-1px);
+    }
+    button:disabled{
+      opacity:0.48;
+      cursor:not-allowed;
+      box-shadow:none;
+      transform:none;
+    }
+
+    #chart{
+      width:100%;
+      height:100%;
+      display:block;
+      min-height:0;
+      background:transparent;
+      touch-action:none;
+    }
+    html.embed-mode #chart{
+      background:var(--chartBg);
+    }
+    html.embed-mode.interaction-idle #chart{
+      touch-action:pan-x pan-y pinch-zoom;
+      cursor:pointer;
+    }
+
+    /* SVG nodes */
+    .node rect{
+      rx:16; ry:16;
+      stroke-width:1.7px;
+      filter:drop-shadow(var(--nodeShadow));
+    }
+    .node text{
+      fill:var(--text);
+      font:600 12.5px/1.3 "Avenir Next","Segoe UI Variable","Segoe UI","Helvetica Neue",sans-serif;
+      letter-spacing:0.01em;
+      paint-order:stroke fill;
+      stroke:var(--labelHalo);
+      stroke-width:4px;
+      stroke-linejoin:round;
+      pointer-events:none;
+    }
+
+    /* Virtual root — invisible connector, never rendered */
+    .node.root { display: none; }
+
+    .node.premise rect { fill:var(--nodeClaimFill); stroke:var(--nodeClaimStroke); }
+    .node.conclusion rect { fill:var(--nodeConclusionFill); stroke:var(--nodeConclusionStroke); }
+    .node.claim rect{ fill:var(--nodeClaimFill); stroke:var(--nodeClaimStroke); }
+    .node.support rect{ fill:var(--nodeSupportFill); stroke:var(--nodeSupportStroke); }
+    .node.objection rect{ fill:var(--nodeObjectionFill); stroke:var(--nodeObjectionStroke); }
+    .node.rebuttal rect{ fill:var(--nodeRebuttalFill); stroke:var(--nodeRebuttalStroke); }
+    .node.illustration rect{ fill:var(--nodeIllustrationFill); stroke:var(--nodeIllustrationStroke); stroke-dasharray:5,3; }
+
+    /* Connector lines from the virtual root are invisible */
+    .link.from-root { display: none; }
+
+    .node .badge circle, .node .badge-item circle{
+      fill:var(--badgeFill);
+      stroke:var(--badgeStroke);
+      stroke-width:1.4px;
+    }
+    .node .badge .icon-line, .node .badge-item .icon-line{
+      stroke:var(--badgeIcon);
+      stroke-width:2.5px;
+      stroke-linecap:round;
+      pointer-events:none;
+    }
+    .node.selected rect{
+      stroke-width:2.6px;
+      filter:drop-shadow(var(--nodeShadow)) drop-shadow(0 0 18px var(--selectedHalo));
+    }
+
+    .laneGuide{
+      stroke:var(--laneGuideColor);
+      stroke-dasharray:4,8;
+    }
+
+    /* Edges */
+    .link{
+      fill:none;
+      stroke-width:2.2px;
+    }
+    .link.supports{ stroke:var(--edgeSupport); }
+    .link.attacks, .link.rebuts{
+      stroke:var(--edgeAttack);
+      stroke-dasharray:7,5;
+    }
+
+    /* Tooltip */
+    .tip{
+      position:fixed;
+      pointer-events:none;
+      padding:10px 12px;
+      background:var(--tipBg);
+      border:1px solid var(--tipBorder);
+      border-radius:14px;
+      font-size:12px;
+      color:var(--text);
+      max-width:min(420px, calc(100vw - 24px));
+      box-shadow:var(--tipShadow);
+      line-height:1.45;
+      opacity:0;
+      transform:translateY(2px);
+      transition: opacity 120ms ease, transform 120ms ease;
+      z-index:9999;
+    }
+    .tip .k{
+      color:var(--mutedSoft);
+      font-size:10px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      margin-bottom:4px;
+    }
+    .tip-node-head,
+    .bs-kind-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .tip-node-head{
+      margin-bottom:6px;
+    }
+    .tip-kind,
+    .bs-kind{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--text);
+      font-size:12px;
+      font-weight:700;
+    }
+    .bs-kind{
+      color:var(--muted);
+      font-size:11px;
+      letter-spacing:0.1em;
+      text-transform:uppercase;
+    }
+    .kind-swatch{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      display:inline-block;
+      flex:none;
+      border:1px solid var(--buttonBorder);
+      box-shadow:0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .kind-swatch.premise,
+    .kind-swatch.claim{ background:var(--claim); }
+    .kind-swatch.conclusion{ background:var(--conclusion); }
+    .kind-swatch.support{ background:var(--support); }
+    .kind-swatch.objection{ background:var(--objection); }
+    .kind-swatch.rebuttal{ background:var(--rebuttal); }
+    .kind-swatch.illustration{ background:var(--illustration); }
+    .tip-node-body{
+      color:var(--text);
+    }
+    select#argumentSelect {
+      background: var(--selectBg);
+      border: 1px solid var(--buttonBorder);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 32px 8px 12px;
+      font-size: 12px;
+      font-weight:650;
+      font-family: inherit;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      box-shadow:var(--softShadow);
+      background-image: var(--selectArrow);
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+    select#argumentSelect:hover { border-color: var(--hoverBorder); }
+    select#argumentSelect option { background: var(--selectOptionBg); }
+
+    /* ── Mobile / responsive additions ── */
+
+    /* Controls toggle button — shown only on mobile */
+    #controlsToggle {
+      display: none;
+      border: 1px solid var(--buttonBorder);
+      background: var(--buttonBg);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 13px;
+      font-size: 12px;
+      font-weight:650;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      align-items: center;
+      gap: 6px;
+    }
+    #controlsToggle:hover { background: var(--buttonBgHover); }
+
+    /* On desktop, #controls is "transparent" so its children flow directly
+       into the parent .toolbar flex row — preserving the existing layout. */
+    #controls { display: contents; }
+
+    html.compact-controls #controlsToggle { display: inline-flex; }
+    html.compact-controls #controls {
+      display: none;
+    }
+    html.compact-controls #controls.open {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: fixed;
+      z-index: 9000;
+      background: var(--sheetBg);
+      border: 1px solid var(--panelStroke);
+      border-radius: 20px;
+      padding: 12px;
+      box-shadow: var(--tipShadow);
+      backdrop-filter: blur(10px) saturate(80%);
+      -webkit-backdrop-filter: blur(10px) saturate(80%);
+      max-width: calc(100vw - 16px);
+      max-height: 60vh;
+      overflow: auto;
+    }
+    html.compact-controls #controls.open .btns { flex-wrap: wrap; }
+    html.compact-controls #controls.open .selectionInfo { margin-left: 0; white-space: normal; font-size: 11px; }
+    html.compact-controls .toolbar {
+      flex-wrap: nowrap;
+      gap: 0;
+      padding: 0;
+      min-height: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    html.embed-mode.compact-controls .toolbar {
+      padding: 0;
+      min-height: 0;
+      border: 0;
+      border-bottom: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    html.compact-controls .toolbar .hint { display: none; }
+    html.compact-controls .toolbar > .selectionInfo { display: none; }
+
+    /* Bottom sheet — slides up from the bottom on mobile to show node details */
+    .bottom-sheet {
+      position: fixed;
+      left: 0; right: 0;
+      bottom: -100%;
+      background: var(--sheetBg);
+      color: var(--text);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      border: 1px solid var(--panelStroke);
+      box-shadow: 0 -18px 40px rgba(0,0,0,0.3);
+      padding: 18px;
+      z-index: 9500;
+      transition: bottom 260ms ease;
+      max-height: 52vh;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .bottom-sheet.open { bottom: 0; }
+    .bs-close {
+      position: absolute;
+      right: 12px; top: 12px;
+      width: 32px; height: 32px;
+      padding: 0;
+      background: var(--buttonBg);
+      border: 1px solid var(--buttonBorder);
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bs-close:hover { background: var(--buttonBgHover); }
+    .bs-text {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+      /* Compact header */
+      header h1 {
+        font-size: 1rem;
+      }
+      header h1::before {
+        font-size: 0.62rem;
+        margin-bottom: 4px;
+      }
+      header .sub { display: none; }
+      header { padding: 10px 12px; }
+      .wrap { padding: 6px 8px; }
+
+      /* Show the toggle, hide the controls panel by default */
+      #controlsToggle { display: inline-flex; }
+      #controls {
+        display: none;
+      }
+      #controls.open {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        position: fixed;
+        z-index: 9000;
+        background: var(--sheetBg);
+        border: 1px solid var(--panelStroke);
+        border-radius: 20px;
+        padding: 12px;
+        box-shadow: var(--tipShadow);
+        backdrop-filter: blur(10px) saturate(80%);
+        -webkit-backdrop-filter: blur(10px) saturate(80%);
+        max-width: calc(100vw - 16px);
+        max-height: 60vh;
+        overflow: auto;
+      }
+      #controls.open .btns { flex-wrap: wrap; }
+      /* Show selection info inside the controls panel on mobile */
+      #controls.open .selectionInfo { margin-left: 0; white-space: normal; font-size: 11px; }
+
+      /* Compact toolbar row */
+      .toolbar {
+        flex-wrap: nowrap;
+        gap: 0;
+        padding: 0;
+        min-height: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+      html.embed-mode .toolbar {
+        padding: 0;
+        min-height: 0;
+        border: 0;
+        border-bottom: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+      .toolbar .hint { display: none; }
+      /* Hide selection info from the main toolbar (it moves into the panel) */
+      .toolbar > .selectionInfo { display: none; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1 id="pageTitle">The Kalam Cosmological Argument</h1>
+  <button id="controlsToggle" type="button" aria-expanded="false">Controls &#9662;</button>
+  <p class="sub">Click a colored badge to expand or collapse that group of connections &mdash; <span class="sub-key support">blue = supports</span>, <span class="sub-key objection">orange = objections</span>, <span class="sub-key rebuttal">green = rebuttals</span>. Click a node body to select it.</p>
+</header>
+
+<div class="wrap">
+  <div class="panel">
+    <div class="toolbar">
+      <div id="controls">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <select id="argumentSelect" title="Choose argument">
+            <option value="data/argument-leibniz.json">Leibniz&rsquo;s Cosmological Argument</option>
+            <option value="data/argument-kalam.json" selected>The Kalam Cosmological Argument</option>
+            <option value="data/argument-design.json">The Design Argument</option>
+            <option value="data/argument-moral.json">The Moral Argument</option>
+            <!-- <option value="data/argument-suffering.json">The Problem of Suffering</option> -->
+          </select>
+          <div class="hint">Single-click to toggle/select &bull; Drag to pan &bull; Scroll to zoom</div>
+        </div>
+        <div class="btns">
+          <button id="expandAllBtn" type="button">Expand all</button>
+          <button id="collapseAllBtn" type="button">Collapse all</button>
+          <button id="expandResponsesBtn" type="button" disabled>Open rebuttal chain</button>
+          <button id="collapseResponsesBtn" type="button" disabled>Close rebuttal chain</button>
+          <button id="resetViewBtn" type="button">Reset view</button>
+        </div>
+        <div class="selectionInfo" id="selectionInfo">Selected: none</div>
+      </div>
+    </div>
+
+    <div class="chart-shell">
+      <div id="interactionHint" class="interaction-hint" aria-hidden="true">Click or tap to interact</div>
+      <svg id="chart" aria-label="Argument map"></svg>
+    </div>
+
+  </div>
+</div>
+
+<div class="tip" id="tip"></div>
+<div id="bottomSheet" class="bottom-sheet" aria-hidden="true"></div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const isEmbedMode = params.get("embed") === "1";
+const requestedTheme = params.get("theme");
+const themeMessageType = "pv-theme";
+const embedStateMessageType = "pv-embed-state";
+const sharedThemeKey = "parallax-theme";
+const legacyThemeKey = "pv_theme";
+const argumentSelectEl = document.getElementById("argumentSelect");
+const pageTitleEl = document.getElementById("pageTitle");
+const interactionHintEl = document.getElementById("interactionHint");
+let isEmbedExpanded = false;
+let embedInteractionActive = !isEmbedMode;
+
+if (isEmbedMode) {
+  document.documentElement.classList.add("embed-mode");
+}
+
+function usesInteractionGate() {
+  return isEmbedMode && !isEmbedExpanded;
+}
+
+function syncInteractionMode() {
+  const gated = usesInteractionGate();
+  const active = !gated || embedInteractionActive;
+  document.documentElement.classList.toggle("interaction-idle", gated && !embedInteractionActive);
+  document.documentElement.classList.toggle("interaction-active", active);
+  if (interactionHintEl) {
+    interactionHintEl.hidden = !(gated && !embedInteractionActive);
+  }
+}
+
+function activateEmbeddedInteraction() {
+  if (!usesInteractionGate() || embedInteractionActive) return;
+  embedInteractionActive = true;
+  syncInteractionMode();
+}
+
+function deactivateEmbeddedInteraction() {
+  if (!usesInteractionGate() || !embedInteractionActive) return;
+  embedInteractionActive = false;
+  hideTip();
+  closeBottomSheet();
+  syncInteractionMode();
+}
+
+syncInteractionMode();
+
+function readStoredTheme() {
+  try {
+    return localStorage.getItem(sharedThemeKey) || localStorage.getItem(legacyThemeKey);
+  } catch (error) {
+    return null;
+  }
+}
+
+function getInitialTheme() {
+  if (requestedTheme === "light" || requestedTheme === "dark") return requestedTheme;
+  const stored = readStoredTheme();
+  if (stored === "light" || stored === "dark") return stored;
+  return (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+}
+
+function applyTheme(theme) {
+  if (theme !== "light" && theme !== "dark") return;
+  document.documentElement.setAttribute("data-theme", theme);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", theme === "light" ? "#f5efe4" : "#09131b");
+  if (typeof updateThemeVisuals === "function") updateThemeVisuals();
+}
+
+function syncArgumentContext() {
+  if (!argumentSelectEl) return;
+  const selectedOption = argumentSelectEl.options[argumentSelectEl.selectedIndex];
+  const selectedLabel = selectedOption ? selectedOption.textContent.trim() : "Interactive Argument Map";
+  if (pageTitleEl) {
+    pageTitleEl.textContent = selectedLabel;
+  }
+  document.title = selectedLabel + " | Interactive Argument Map";
+}
+
+/**
+ * Data model (nested):
+ * - kind: claim | support | objection | rebuttal
+ * - relToParent: supports | attacks | rebuts  (used to style the link from parent → child)
+ * - children: visible children. Hidden children live in _groupedHidden[relToParent].
+ *
+ * IMPORTANT: This is YOUR expression of a structure, not Craig's diagram.
+ */
+
+
+// ---- Layout configuration ----
+const svg = d3.select("#chart");
+const tip = d3.select("#tip");
+
+const margin = { top: 18, right: 24, bottom: 18, left: 24 };
+
+// Lane behavior:
+// - claim lane = 0
+// - support lane is slightly indented right from claim
+// - objections branch farther right for cleaner return arrows
+// - rebuttals return under the positive chain with modest indent
+const laneWidth = 400;        // horizontal separation between lanes
+const rowHeight = 120;        // vertical spacing between rows
+const nodeWidth = 300;
+const nodeHalfHeight = 42;
+const badgeRadius = 12;
+const badgeInset = 24;
+const supportIndent = 0.20;
+const objectionLane = 1.60;
+const rebuttalIndent = 0.55;
+const nodePadX = 14;
+const nodePadY = 12;
+
+// Root and selection state — populated by loadArgument()
+let root = null;
+let selectedNode = null;
+
+function collapseBelow(node, depthLimit){
+  const kids = node.children || [];
+  kids.forEach(ch => collapseBelow(ch, depthLimit));
+  if (node.depth >= depthLimit && kids.length){
+    if (!node._groupedHidden) node._groupedHidden = {};
+    kids.forEach(ch => {
+      const rel = ch.data.relToParent || "supports";
+      if (!node._groupedHidden[rel]) node._groupedHidden[rel] = [];
+      node._groupedHidden[rel].push(ch);
+    });
+    node.children = null;
+  }
+}
+
+// Compute lane index for each node based on parent + kind
+function assignLanes(node){
+  if (!node.parent){
+    node.lane = 0;
+  } else {
+    const k = node.data.kind;
+
+    if (k === "root" || k === "claim" || k === "premise" || k === "conclusion"){
+      node.lane = 0;
+    } else if (k === "support"){
+      node.lane = supportIndent;
+    } else if (k === "objection"){
+      node.lane = objectionLane;
+    } else if (k === "rebuttal"){
+      node.lane = rebuttalIndent;
+    } else if (k === "illustration"){
+      node.lane = supportIndent;
+    } else {
+      node.lane = supportIndent;
+    }
+  }
+
+  const kids = node.children || [];
+  kids.forEach(assignLanes);
+}
+
+// Flatten visible nodes + links, and compute positions
+function computeLayout(){
+  if (!root) return { nodes:[], links:[], vw:800, vh:600, minLane:0, maxLane:0, laneStart:0, laneCount:1 };
+  // Ensure lanes assigned for current disclosure state
+  assignLanes(root);
+
+  // Visible nodes via preorder (so vertical stacking is stable)
+  const nodes = [];
+  root.eachBefore(n => nodes.push(n));
+
+  // Assign vertical order by traversal index
+  // Root is a virtual connector — seat it above the visible area at row -1
+  // so the first real nodes (P1/P2/C) start at row 0 without a gap.
+  let realRow = 0;
+  nodes.forEach((n) => {
+    if (n.data.kind === "root") { n.row = -1; }
+    else { n.row = realRow++; }
+  });
+
+  // Compute coordinates in content space so horizontal placement is stable.
+  const minLane = d3.min(nodes, n => n.lane) ?? 0;
+  const maxLane = d3.max(nodes, n => n.lane) ?? 0;
+  const laneStart = margin.left + nodeWidth / 2;
+  const laneCount = (maxLane - minLane) + 1;
+
+  const { width: svgW, height: svgH } = svg.node().getBoundingClientRect();
+  const vw = svgW || window.innerWidth;
+  const vh = svgH || window.innerHeight;
+
+  nodes.forEach(n => {
+    n.x = laneStart + (n.lane - minLane) * laneWidth;
+    n.y = margin.top + n.row * rowHeight;
+  });
+
+  // Links from parent → child for visible children only
+  // Skip links from the virtual root — its children float as top-level nodes
+  const links = [];
+  nodes.forEach(n => {
+    if (n.children && n.data.kind !== "root"){
+      n.children.forEach(ch => links.push({ source: n, target: ch, rel: ch.data.relToParent || "supports" }));
+    }
+  });
+
+  return { nodes, links, vw, vh, minLane, maxLane, laneStart, laneCount };
+}
+
+// SVG scaffolding — gLinks is painted first (behind), gNodes on top
+const g      = svg.append("g");
+const gLinks = g.append("g").attr("class", "links-layer");
+const gNodes = g.append("g").attr("class", "nodes-layer");
+
+// Arrow markers
+const defs = svg.append("defs");
+defs.append("marker")
+  .attr("id", "arrowSupport")
+  .attr("viewBox", "0 -5 10 10")
+  .attr("refX", 10).attr("refY", 0)
+  .attr("markerWidth", 7).attr("markerHeight", 7)
+  .attr("orient", "auto")
+  .append("path")
+  .attr("d", "M0,-5L10,0L0,5Z")
+  .attr("fill", getComputedStyle(document.documentElement).getPropertyValue("--edgeSupport").trim());
+
+defs.append("marker")
+  .attr("id", "arrowAttack")
+  .attr("viewBox", "0 -5 10 10")
+  .attr("refX", 10).attr("refY", 0)
+  .attr("markerWidth", 7).attr("markerHeight", 7)
+  .attr("orient", "auto")
+  .append("path")
+  .attr("d", "M0,-5L10,0L0,5Z")
+  .attr("fill", getComputedStyle(document.documentElement).getPropertyValue("--edgeAttack").trim());
+
+let themeStyle = getComputedStyle(document.documentElement);
+function cssVar(name) {
+  return themeStyle.getPropertyValue(name).trim();
+}
+
+function updateThemeVisuals() {
+  themeStyle = getComputedStyle(document.documentElement);
+  defs.select("#arrowSupport path").attr("fill", cssVar("--edgeSupport"));
+  defs.select("#arrowAttack path").attr("fill", cssVar("--edgeAttack"));
+}
+
+applyTheme(getInitialTheme());
+updateThemeVisuals();
+
+// Zoom / pan
+const zoom = d3.zoom()
+  .filter((event) => {
+    const allowByDefault = (!event.ctrlKey || event.type === "wheel") && !event.button;
+    if (!allowByDefault) return false;
+    if (!usesInteractionGate()) return true;
+    return embedInteractionActive;
+  })
+  .scaleExtent([0.25, 2.5])
+  .on("zoom", (event) => g.attr("transform", event.transform));
+
+svg.call(zoom);
+svg.on("dblclick.zoom", null);
+svg.on("pointerdown.interactionIntent", () => {
+  activateEmbeddedInteraction();
+});
+svg.on("click.clearSelection", (event) => {
+  if (event.defaultPrevented) return;
+  const target = event.target;
+  if (target && typeof target.closest === "function" && target.closest("g.node")) return;
+  if (!selectedNode && (!bottomSheetEl || !bottomSheetEl.classList.contains("open"))) {
+    hideTip();
+    return;
+  }
+  hideTip();
+  closeBottomSheet();
+  setSelected(null);
+  update();
+});
+
+// Link path: “elbow-ish” curve that respects direction (vertical main, horizontal branches)
+function linkPath(d){
+  const sx = d.source.x;
+  const sy = d.source.y;
+  const tx = d.target.x;
+  const ty = d.target.y;
+  const dx = tx - sx;
+
+  if (d.rel === "supports"){
+    const sX = sx - (nodeWidth / 2 - badgeInset); // left-center of source, aligned with badge
+    const sY = sy;
+    const tX = tx - nodeWidth / 2;        // left-middle of target
+    const tY = ty;
+
+    // Cubic bezier: exit downward, arrive rightward into left face of child
+    const vertDist = tY - sY;
+    return `M${sX},${sY} C${sX},${sY + vertDist * 0.7} ${tX - 60},${tY} ${tX},${tY}`;
+  }
+
+  const sameLane = Math.abs(d.source.lane - d.target.lane) < 0.001;
+
+  if (sameLane){
+    const sX = sx;
+    const sY = sy + nodeHalfHeight;
+    const tX = tx;
+    const tY = ty - nodeHalfHeight;
+    const midY = (sY + tY) / 2;
+    return `M${sX},${sY} C${sX},${midY} ${tX},${midY} ${tX},${tY}`;
+  }
+
+  const rightward = dx > 0;
+  const sX = sx + (rightward ? nodeWidth / 2 : -nodeWidth / 2);
+  const sY = sy;
+  const tX = tx + (rightward ? -nodeWidth / 2 : nodeWidth / 2);
+  const tY = ty;
+  const bend = Math.max(70, Math.abs(dx) * 0.32);
+  const c1X = sX + (rightward ? bend : -bend);
+  const c2X = tX - (rightward ? bend : -bend);
+
+  return `M${sX},${sY} C${c1X},${sY} ${c2X},${tY} ${tX},${tY}`;
+}
+
+// Node label wrapping
+function wrapLines(text, maxChars){
+  const words = String(text).split(/\s+/);
+  const lines = [];
+  let line = "";
+  for (const w of words){
+    const test = line ? (line + " " + w) : w;
+    if (test.length > maxChars){
+      if (line) lines.push(line);
+      line = w;
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+function getKindMeta(kind) {
+  const lookup = {
+    premise: { label: "Premise", className: "premise" },
+    conclusion: { label: "Conclusion", className: "conclusion" },
+    claim: { label: "Claim", className: "claim" },
+    support: { label: "Supporting detail", className: "support" },
+    objection: { label: "Objection", className: "objection" },
+    rebuttal: { label: "Rebuttal", className: "rebuttal" },
+    illustration: { label: "Illustration", className: "illustration" }
+  };
+  if (lookup[kind]) return lookup[kind];
+  const fallback = kind ? String(kind) : "Node";
+  return {
+    label: fallback.charAt(0).toUpperCase() + fallback.slice(1),
+    className: "claim"
+  };
+}
+
+function showTipHtml(event, html) {
+  tip.html(html);
+  tip.style("opacity", 1).style("transform", "translateY(0px)");
+  const pad = 14;
+  const { clientX:x, clientY:y } = event;
+  const rect = tip.node().getBoundingClientRect();
+  const maxX = window.innerWidth - rect.width - pad;
+  const maxY = window.innerHeight - rect.height - pad;
+  const left = Math.max(pad, Math.min(x + 14, maxX));
+  const top  = Math.max(pad, Math.min(y + 14, maxY));
+  tip.style("left", left + "px").style("top", top + "px");
+}
+
+function showTip(event, title, body){
+  showTipHtml(event, `<div class="k">${escapeHtml(title)}</div>${escapeHtml(body)}`);
+}
+
+function showNodeTip(event, node) {
+  const meta = getKindMeta(node.data.kind);
+  const nodeText = escapeHtml(node.data.text || node.data.label || "");
+  showTipHtml(
+    event,
+    `<div class="tip-node-head"><span class="tip-kind"><span class="kind-swatch ${meta.className}"></span>${escapeHtml(meta.label)}</span></div><div class="tip-node-body">${nodeText}</div>`
+  );
+}
+function hideTip(){
+  tip.style("opacity", 0).style("transform", "translateY(2px)");
+}
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+// ---- Mobile helpers ----
+
+function isMobileLike() {
+  try {
+    const smallWidth = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+    const coarsePointer = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+    const viewport = window.visualViewport || window;
+    const smallerDim = Math.min(viewport.width || window.innerWidth, viewport.height || window.innerHeight);
+    return smallWidth || (coarsePointer && smallerDim < 520);
+  } catch(e) {
+    return window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+  }
+}
+
+function useCollapsedControls() {
+  return isEmbedMode ? window.innerWidth <= 1180 : window.innerWidth <= 640;
+}
+
+const bottomSheetEl = document.getElementById('bottomSheet');
+
+function openBottomSheet(node) {
+  if (!bottomSheetEl) return;
+  hideTip();
+  const meta = getKindMeta(node.data.kind);
+  const text = node.data.text || node.data.label || '';
+  bottomSheetEl.innerHTML =
+    `<button class="bs-close" aria-label="Close">\u00d7</button>` +
+    `<div class="bs-kind-row"><span class="bs-kind"><span class="kind-swatch ${meta.className}"></span>${escapeHtml(meta.label)}</span></div>` +
+    `<div class="bs-text">${escapeHtml(text)}</div>`;
+  bottomSheetEl.classList.add('open');
+  bottomSheetEl.setAttribute('aria-hidden', 'false');
+  const closeBtn = bottomSheetEl.querySelector('.bs-close');
+  if (closeBtn) closeBtn.addEventListener('click', closeBottomSheet, { once: true });
+  // After the sheet animates open, ensure the node isn't hidden under it
+  setTimeout(() => ensureNodeAboveSheet(node), 80);
+}
+
+function closeBottomSheet() {
+  if (!bottomSheetEl) return;
+  bottomSheetEl.classList.remove('open');
+  bottomSheetEl.setAttribute('aria-hidden', 'true');
+}
+
+function ensureNodeAboveSheet(node) {
+  if (!bottomSheetEl || !bottomSheetEl.classList.contains('open')) return;
+  try {
+    const sheetRect = bottomSheetEl.getBoundingClientRect();
+    const svgEl = svg.node();
+    const svgRect = svgEl.getBoundingClientRect();
+    const transform = d3.zoomTransform(svgEl);
+    // node.x = horizontal lane, node.y = vertical row in the argument explorer coordinate space
+    const nodeScreenY = svgRect.top + transform.k * node.y + transform.y;
+    const margin = 20;
+    const availableBottom = sheetRect.top - margin;
+    if (nodeScreenY > availableBottom) {
+      const dy = availableBottom - nodeScreenY;
+      const newT = d3.zoomIdentity.translate(transform.x, transform.y + dy).scale(transform.k);
+      svg.transition().duration(320).call(zoom.transform, newT);
+    }
+  } catch(e) { /* non-fatal */ }
+}
+
+// Swipe-down gesture to close the bottom sheet
+(function () {
+  if (!bottomSheetEl) return;
+  let startY = null;
+  bottomSheetEl.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) startY = e.touches[0].clientY;
+  }, { passive: true });
+  bottomSheetEl.addEventListener('touchmove', e => {
+    if (startY == null) return;
+    if (e.touches[0].clientY - startY > 60) { closeBottomSheet(); startY = null; }
+  }, { passive: true });
+  bottomSheetEl.addEventListener('touchend', () => { startY = null; }, { passive: true });
+})();
+
+// ---- Per-type group management ----
+
+// Return all child groups for a node (visible + hidden), keyed by relToParent
+function getChildGroups(node) {
+  const groups = {};
+  (node.children || []).forEach(ch => {
+    const rel = ch.data.relToParent || "supports";
+    if (!groups[rel]) groups[rel] = { rel, visible: [], hidden: [] };
+    groups[rel].visible.push(ch);
+  });
+  const hg = node._groupedHidden || {};
+  Object.entries(hg).forEach(([rel, arr]) => {
+    if (arr && arr.length) {
+      if (!groups[rel]) groups[rel] = { rel, visible: [], hidden: [] };
+      groups[rel].hidden = arr;
+    }
+  });
+  return groups;
+}
+
+// Toggle one relation-type group of children on a node
+function toggleGroup(node, relType) {
+  if (!node._groupedHidden) node._groupedHidden = {};
+  const allVisible    = node.children || [];
+  const visibleOfType = allVisible.filter(ch => (ch.data.relToParent || "supports") === relType);
+  const otherVisible  = allVisible.filter(ch => (ch.data.relToParent || "supports") !== relType);
+  const hiddenOfType  = node._groupedHidden[relType] || [];
+  if (visibleOfType.length > 0) {
+    node._groupedHidden[relType] = visibleOfType;
+    node.children = otherVisible.length ? otherVisible : null;
+    update();
+  } else if (hiddenOfType.length > 0) {
+    node.children = [...otherVisible, ...hiddenOfType];
+    node._groupedHidden[relType] = [];
+    update();
+    centerOnNode(node);
+  }
+}
+
+// Pan so the expanded node (and its new children) are centred in view.
+function centerOnNode(node){
+  const { nodes } = computeLayout();
+  const clicked = nodes.find(n => n.data.id === node.data.id);
+  if (!clicked) return;
+  const rect = svg.node().getBoundingClientRect();
+  const vw = rect.width  || window.innerWidth;
+  const vh = rect.height || window.innerHeight;
+  // On mobile, reserve space for the bottom sheet so the node lands above it
+  const sheetH = (bottomSheetEl && bottomSheetEl.classList.contains('open'))
+    ? bottomSheetEl.getBoundingClientRect().height : 0;
+  const availH = vh - sheetH;
+  const currentTransform = d3.zoomTransform(svg.node());
+  let k = currentTransform.k;
+  let cx, cy;
+  if (isMobileLike()) {
+    // On mobile: keep current zoom so buttons stay comfortably tappable.
+    // Focus on the newly revealed child nodes rather than the whole expanded group.
+    const focusNodes = (clicked.children && clicked.children.length)
+      ? clicked.children
+      : [clicked];
+    const minX = d3.min(focusNodes, n => n.x - nodeWidth / 2);
+    const maxX = d3.max(focusNodes, n => n.x + nodeWidth / 2);
+    const minY = d3.min(focusNodes, n => n.y - nodeHalfHeight);
+    const maxY = d3.max(focusNodes, n => n.y + nodeHalfHeight);
+    cx = (minX + maxX) / 2;
+    cy = (minY + maxY) / 2;
+  } else {
+    // On desktop: centre on parent + children, zoom out as needed to fit.
+    const group = [clicked, ...(clicked.children || [])];
+    const minX = d3.min(group, n => n.x - nodeWidth / 2);
+    const maxX = d3.max(group, n => n.x + nodeWidth / 2);
+    const minY = d3.min(group, n => n.y - nodeHalfHeight);
+    const maxY = d3.max(group, n => n.y + nodeHalfHeight);
+    cx = (minX + maxX) / 2;
+    cy = (minY + maxY) / 2;
+    const pad = 48;
+    const fitK = Math.min(
+      currentTransform.k,
+      (vw  - pad) / Math.max(1, maxX - minX),
+      (availH - pad) / Math.max(1, maxY - minY)
+    );
+    k = Math.max(0.25, fitK);
+  }
+  const tx = vw / 2 - cx * k;
+  const ty = availH / 2 - cy * k;
+  svg.transition().duration(450).ease(d3.easeCubicInOut).call(
+    zoom.transform,
+    d3.zoomIdentity.translate(tx, ty).scale(k)
+  );
+}
+
+function setAll(node, expanded) {
+  if (!node._groupedHidden) node._groupedHidden = {};
+  if (expanded) {
+    const allHidden = Object.values(node._groupedHidden).flat();
+    if (allHidden.length) {
+      node.children = [...(node.children || []), ...allHidden];
+      node._groupedHidden = {};
+    }
+    (node.children || []).forEach(ch => setAll(ch, true));
+  } else {
+    const kids = node.children || [];
+    kids.forEach(ch => setAll(ch, false));
+    if (kids.length) {
+      kids.forEach(ch => {
+        const rel = ch.data.relToParent || "supports";
+        if (!node._groupedHidden[rel]) node._groupedHidden[rel] = [];
+        node._groupedHidden[rel].push(ch);
+      });
+      node.children = null;
+    }
+  }
+}
+
+// Expand/collapse only objection+rebuttal chains recursively
+function setDebateChain(node, expanded) {
+  const debateRels = ["attacks", "rebuts"];
+  if (expanded) _expandGroupRecursive(node, debateRels);
+  else          _collapseGroupRecursive(node, debateRels);
+}
+
+function _expandGroupRecursive(node, relTypes) {
+  if (!node._groupedHidden) node._groupedHidden = {};
+  relTypes.forEach(rel => {
+    const hidden = node._groupedHidden[rel] || [];
+    if (hidden.length) {
+      node.children = [...(node.children || []), ...hidden];
+      node._groupedHidden[rel] = [];
+    }
+  });
+  (node.children || []).forEach(ch => _expandGroupRecursive(ch, relTypes));
+}
+
+function _collapseGroupRecursive(node, relTypes) {
+  if (!node._groupedHidden) node._groupedHidden = {};
+  (node.children || []).forEach(ch => _collapseGroupRecursive(ch, relTypes));
+  const keep     = (node.children || []).filter(ch => !relTypes.includes(ch.data.relToParent || "supports"));
+  const collapse = (node.children || []).filter(ch =>  relTypes.includes(ch.data.relToParent || "supports"));
+  if (collapse.length) {
+    collapse.forEach(ch => {
+      const rel = ch.data.relToParent || "supports";
+      if (!node._groupedHidden[rel]) node._groupedHidden[rel] = [];
+      node._groupedHidden[rel].push(ch);
+    });
+    node.children = keep.length ? keep : null;
+  }
+}
+
+function setSelected(node){
+  selectedNode = node || null;
+  refreshSelectionUI();
+}
+
+function hasAnyChildren(node){
+  if (!node) return false;
+  if (node.children && node.children.length) return true;
+  const hg = node._groupedHidden || {};
+  return Object.values(hg).some(arr => arr && arr.length);
+}
+
+const selectionInfoEl = document.getElementById("selectionInfo");
+const expandResponsesBtn = document.getElementById("expandResponsesBtn");
+const collapseResponsesBtn = document.getElementById("collapseResponsesBtn");
+
+function refreshSelectionUI(){
+  if (!selectedNode){
+    selectionInfoEl.textContent = "Selected: none";
+    expandResponsesBtn.disabled = true;
+    collapseResponsesBtn.disabled = true;
+    return;
+  }
+  const groups = getChildGroups(selectedNode);
+  const totalV = Object.values(groups).reduce((s, g) => s + g.visible.length, 0);
+  const totalH = Object.values(groups).reduce((s, g) => s + g.hidden.length, 0);
+  const kindLabel = getKindMeta(selectedNode.data.kind).label;
+  selectionInfoEl.textContent = `Selected: ${selectedNode.data.id} (${kindLabel})${(totalV + totalH) ? ` • children ${totalV}/${totalV + totalH}` : ""}`;
+  expandResponsesBtn.disabled = !hasAnyChildren(selectedNode);
+  collapseResponsesBtn.disabled = !hasAnyChildren(selectedNode);
+}
+
+// Infer default lane for a hidden child node based on its kind
+function kindToDefaultLane(kind) {
+  if (kind === "objection")                          return objectionLane;
+  if (kind === "rebuttal")                           return rebuttalIndent;
+  if (kind === "support" || kind === "illustration") return supportIndent;
+  return 0;
+}
+
+// Badge fill/stroke per relation type
+function badgeColor(relType) {
+  if (relType === "supports") return cssVar("--supportBadgeFill");
+  if (relType === "attacks")  return cssVar("--attackBadgeFill");
+  if (relType === "rebuts")   return cssVar("--rebuttalBadgeFill");
+  return cssVar("--badgeFill");
+}
+function badgeStroke(relType) {
+  if (relType === "supports") return cssVar("--supportBadgeStroke");
+  if (relType === "attacks")  return cssVar("--attackBadgeStroke");
+  if (relType === "rebuts")   return cssVar("--rebuttalBadgeStroke");
+  return cssVar("--badgeStroke");
+}
+
+// Position a per-type badge at the arrow-tail exit point on the parent node
+function badgePositionForGroup(parentNode, relType, repChild) {
+  if (relType === "supports") {
+    return { x: -(nodeWidth / 2 - badgeInset), y: 0 };
+  }
+  // Lateral arrow — determine direction from child's lane vs parent's
+  let childLane;
+  if (repChild && repChild.lane !== undefined) {
+    childLane = repChild.lane;
+  } else if (repChild) {
+    childLane = kindToDefaultLane(repChild.data.kind);
+  } else {
+    childLane = (parentNode.lane ?? 0) + 1;
+  }
+  const parentLane = parentNode.lane ?? 0;
+  return childLane >= parentLane
+    ? { x:  (nodeWidth / 2 - badgeInset), y: 0 }   // right edge
+    : { x: -(nodeWidth / 2 - badgeInset), y: 0 };  // left edge
+}
+
+function getContentBounds(nodes){
+  const visible = nodes.filter(n => n.data.kind !== "root");
+  const minX = d3.min(visible, n => n.x - nodeWidth / 2) ?? 0;
+  const maxX = d3.max(visible, n => n.x + nodeWidth / 2) ?? 0;
+  const minY = d3.min(visible, n => n.y - nodeHalfHeight) ?? 0;
+  const maxY = d3.max(visible, n => n.y + nodeHalfHeight) ?? 0;
+  return { minX, maxX, minY, maxY, width: maxX - minX, height: maxY - minY };
+}
+
+// Load the argument whose file matches the current select value
+async function loadArgument(file){
+  try {
+    const resp = await fetch(file);
+    if (!resp.ok) throw new Error(resp.statusText);
+    const data = await resp.json();
+    syncArgumentContext();
+    root = d3.hierarchy(data, d => d.children);
+    root.x0 = 0; root.y0 = 0;
+    selectedNode = null;
+    collapseBelow(root, 1);
+    // Clear existing DOM so D3 exit handles old nodes cleanly
+    gLinks.selectAll("*").remove();
+    gNodes.selectAll("*").remove();
+    update();
+    requestAnimationFrame(resetView);
+  } catch(e) {
+    console.error("Failed to load argument:", file, e);
+  }
+}
+
+syncArgumentContext();
+loadArgument(argumentSelectEl.value);
+
+function update(){
+  const { nodes, links, minLane, maxLane, laneStart } = computeLayout();
+
+  // ---- LANE GUIDES ----
+  const laneValues = Array.from(new Set(nodes.map(n => n.lane))).sort((a, b) => a - b);
+  const laneData = laneValues.map(lane => ({
+    lane,
+    x: laneStart + (lane - minLane) * laneWidth
+  }));
+
+  const y1 = margin.top - 56;
+  const y2 = margin.top + Math.max(1, nodes.length - 1) * rowHeight + 56;
+
+  const laneSel = gLinks.selectAll("line.laneGuide")
+    .data(laneData, d => d.lane);
+
+  laneSel.exit().remove();
+
+  laneSel.enter()
+    .append("line")
+    .attr("class", "laneGuide")
+    .merge(laneSel)
+    .attr("x1", d => d.x)
+    .attr("x2", d => d.x)
+    .attr("y1", y1)
+    .attr("y2", y2);
+
+  // ---- LINKS ----
+  const linkSel = gLinks.selectAll("path.link")
+    .data(links, d => d.source.data.id + "->" + d.target.data.id);
+
+  linkSel.exit()
+    .transition().duration(200)
+    .style("opacity", 0)
+    .remove();
+
+  const linkEnter = linkSel.enter()
+    .append("path")
+    .attr("class", d => `link ${d.rel}`)
+    .style("opacity", 0)
+    .attr("marker-end", d => (d.rel === "supports") ? "url(#arrowSupport)" : "url(#arrowAttack)")
+    .on("mousemove", (event, d) => showTip(event, "Edge", `${d.rel}: ${d.source.data.id} → ${d.target.data.id}`))
+    .on("mouseleave", hideTip);
+
+  linkEnter.merge(linkSel)
+    .transition().duration(350)
+    .style("opacity", 1)
+    .attr("d", linkPath);
+
+  // ---- NODES ----
+  const nodeSel = gNodes.selectAll("g.node")
+    .data(nodes, d => d.data.id);
+
+  const nodeExit = nodeSel.exit();
+  nodeExit.select("rect").transition().duration(200).attr("opacity", 0);
+  nodeExit.transition().duration(200).style("opacity", 0).remove();
+
+  const nodeEnter = nodeSel.enter()
+    .append("g")
+    .attr("class", d => `node ${d.data.kind}`)
+    .style("cursor", "pointer")
+    .style("opacity", 0)
+    .attr("transform", d => {
+      // Start at parent position so nodes emerge from their parent
+      const px = d.parent ? d.parent.x : d.x;
+      const py = d.parent ? d.parent.y : d.y;
+      return `translate(${px},${py})`;
+    })
+    .on("click", (event, d) => {
+      event.stopPropagation();
+      setSelected(d);
+      update();
+      // On mobile, show node details in a bottom sheet instead of a hover tooltip
+      if (isMobileLike()) openBottomSheet(d);
+    })
+    .on("mousemove", (event, d) => {
+      if (!isMobileLike()) showNodeTip(event, d);
+    })
+    .on("mouseleave", () => { if (!isMobileLike()) hideTip(); });
+
+  nodeEnter.append("rect")
+    .attr("x", -nodeWidth/2)
+    .attr("y", -42)
+    .attr("width", nodeWidth)
+    .attr("height", 84)
+    .attr("rx", 10)
+    .attr("ry", 10);
+
+  // Text block (multi-line)
+  const textEnter = nodeEnter.append("text")
+    .attr("text-anchor", "middle")
+    .attr("dominant-baseline", "middle");
+
+  textEnter.each(function(d){
+    const lines = wrapLines(d.data.label || d.data.text, 30);
+    const lineHeight = 15;
+    const startY = -(lineHeight * (lines.length - 1)) / 2;
+    const t = d3.select(this);
+    lines.forEach((line, i) => {
+      t.append("tspan")
+        .attr("x", 0)
+        .attr("y", startY + i * lineHeight)
+        .text(line);
+    });
+  });
+
+  // Container for per-group-type disclosure badges (populated in nodeMerge)
+  nodeEnter.append("g").attr("class", "badges-container");
+
+  const nodeMerge = nodeEnter.merge(nodeSel);
+
+  nodeMerge
+    .classed("selected", d => selectedNode && d.data.id === selectedNode.data.id);
+
+  // Per-type disclosure badges — one per child-group, placed at the arrow-exit point
+  nodeMerge.select(".badges-container").each(function(parentD) {
+    const groups = getChildGroups(parentD);
+    const badgeDataArr = Object.values(groups)
+      .filter(g => g.visible.length + g.hidden.length > 0)
+      .map(g => {
+        const repChild = g.visible[0] || g.hidden[0];
+        const pos = badgePositionForGroup(parentD, g.rel, repChild);
+        return { rel: g.rel, isExpanded: g.visible.length > 0, pos, parentNode: parentD };
+      });
+
+    const bSel = d3.select(this).selectAll("g.badge-item")
+      .data(badgeDataArr, b => b.rel);
+
+    bSel.exit().remove();
+
+    const bEnter = bSel.enter()
+      .append("g")
+      .attr("class", "badge-item")
+      .style("cursor", "pointer")
+      .on("click", (event, b) => {
+        event.stopPropagation();
+        setSelected(b.parentNode);
+        toggleGroup(b.parentNode, b.rel);
+      })
+      .on("mousemove", (event, b) => {
+        if (isMobileLike()) return;
+        const label = b.rel === "supports" ? "supporting details"
+                    : b.rel === "attacks"  ? "objections"
+                    : "rebuttals";
+        showTip(event, `Toggle ${label}`, b.isExpanded ? "Click to collapse" : "Click to expand");
+        event.stopPropagation();
+      })
+      .on("mouseleave", () => { if (!isMobileLike()) hideTip(); });
+
+    bEnter.append("circle").attr("r", badgeRadius);
+    bEnter.append("line").attr("class", "icon-line hbar")
+      .attr("x1", -5.5).attr("y1", 0).attr("x2", 5.5).attr("y2", 0);
+    bEnter.append("line").attr("class", "icon-line vbar")
+      .attr("x1", 0).attr("y1", -5.5).attr("x2", 0).attr("y2", 5.5);
+
+    const bMerge = bEnter.merge(bSel);
+    bMerge.attr("transform", b => `translate(${b.pos.x},${b.pos.y})`);
+    bMerge.select("circle")
+      .attr("r", badgeRadius)
+      .style("fill",         b => badgeColor(b.rel))
+      .style("stroke",       b => badgeStroke(b.rel))
+      .style("stroke-width", "1.4px");
+    bMerge.select(".vbar")
+      .attr("display", b => b.isExpanded ? "none" : null);
+  });
+
+  nodeMerge
+    .transition().duration(350)
+    .style("opacity", 1)
+    .attr("transform", d => `translate(${d.x},${d.y})`);
+
+  refreshSelectionUI();
+}
+
+function resetView(){
+  const { nodes } = computeLayout();
+  if (!nodes.length) return;
+
+  const visibleNodes = nodes.filter(n => n.data.kind !== "root");
+  const bounds = getContentBounds(nodes);
+  const rect = svg.node().getBoundingClientRect();
+  const vw = rect.width  || window.innerWidth;
+  const vh = rect.height || window.innerHeight;
+
+  const compactViewport = isMobileLike();
+  const horizontalPad = compactViewport ? 16 : 36;
+  const verticalPad = compactViewport ? 18 : 36;
+  const maxScale = compactViewport ? 1.14 : 1.1;
+  const scale = Math.min(
+    maxScale,
+    (vw - horizontalPad * 2) / Math.max(1, bounds.width),
+    (vh - verticalPad * 2) / Math.max(1, bounds.height)
+  );
+
+  const tx = (vw - bounds.width * scale) / 2 - bounds.minX * scale;
+  const centeredTy = (vh - bounds.height * scale) / 2 - bounds.minY * scale;
+  const topAlignedTy = verticalPad - bounds.minY * scale;
+  let ty = centeredTy;
+
+  if (compactViewport && visibleNodes.length) {
+    const focusNodes = visibleNodes.filter(n => n.row <= 1);
+    const mobileFocus = focusNodes.length ? focusNodes : visibleNodes.slice(0, Math.min(2, visibleNodes.length));
+    const focusMinY = d3.min(mobileFocus, n => n.y - nodeHalfHeight) ?? bounds.minY;
+    const focusMaxY = d3.max(mobileFocus, n => n.y + nodeHalfHeight) ?? bounds.maxY;
+    const focusCenterY = (focusMinY + focusMaxY) / 2;
+    const targetCenterY = Math.max(120, vh * 0.32);
+    ty = Math.max(topAlignedTy, targetCenterY - focusCenterY * scale);
+  }
+
+  svg.transition().duration(250).call(
+    zoom.transform,
+    d3.zoomIdentity.translate(tx, ty).scale(scale)
+  );
+}
+
+// Buttons
+document.getElementById("expandAllBtn").addEventListener("click", () => {
+  setAll(root, true);
+  update();
+});
+document.getElementById("collapseAllBtn").addEventListener("click", () => {
+  // Keep the root expanded; collapse below depth 1
+  setAll(root, true);
+  root.children?.forEach(ch => collapseBelow(ch, 1));
+  update();
+  resetView();
+});
+expandResponsesBtn.addEventListener("click", () => {
+  if (!selectedNode) return;
+  setDebateChain(selectedNode, true);
+  update();
+  resetView();
+});
+collapseResponsesBtn.addEventListener("click", () => {
+  if (!selectedNode) return;
+  setDebateChain(selectedNode, false);
+  update();
+});
+document.getElementById("resetViewBtn").addEventListener("click", () => resetView());
+
+// Switch argument on dropdown change
+argumentSelectEl.addEventListener("change", (e) => {
+  syncArgumentContext();
+  loadArgument(e.target.value);
+});
+
+// Resize redraw
+window.addEventListener("resize", () => {
+  update();
+  resetView();
+});
+
+document.addEventListener("pointerdown", (event) => {
+  if (!usesInteractionGate() || !embedInteractionActive) return;
+  if (event.target && typeof event.target.closest === "function" && event.target.closest("#chart")) return;
+  deactivateEmbeddedInteraction();
+}, { passive: true });
+
+window.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  if (usesInteractionGate()) {
+    deactivateEmbeddedInteraction();
+  }
+});
+
+window.addEventListener("message", (event) => {
+  if (!event.data) return;
+  if (window.location.origin !== "null" && event.origin !== window.location.origin) return;
+  if (event.data.type === themeMessageType) {
+    const incomingTheme = event.data.theme;
+    if (incomingTheme === "light" || incomingTheme === "dark") {
+      applyTheme(incomingTheme);
+    }
+    return;
+  }
+  if (event.data.type === embedStateMessageType) {
+    isEmbedExpanded = event.data.expanded === true;
+    embedInteractionActive = !usesInteractionGate();
+    if (usesInteractionGate()) {
+      hideTip();
+      closeBottomSheet();
+    }
+    syncInteractionMode();
+    requestAnimationFrame(() => resetView());
+  }
+});
+
+const themeMediaQuery = window.matchMedia ? window.matchMedia("(prefers-color-scheme: light)") : null;
+if (themeMediaQuery) {
+  const syncWithSystem = () => {
+    const stored = readStoredTheme();
+    if (!stored && !requestedTheme) {
+      applyTheme(themeMediaQuery.matches ? "light" : "dark");
+    }
+  };
+  if (typeof themeMediaQuery.addEventListener === "function") {
+    themeMediaQuery.addEventListener("change", syncWithSystem);
+  } else if (typeof themeMediaQuery.addListener === "function") {
+    themeMediaQuery.addListener(syncWithSystem);
+  }
+}
+
+// ---- Controls toggle for mobile ----
+(function () {
+  const toggle = document.getElementById('controlsToggle');
+  const panel  = document.getElementById('controls');
+  if (!toggle || !panel) return;
+  const root = document.documentElement;
+
+  function resetPanelState() {
+    panel.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    panel.style.left  = '';
+    panel.style.right = '';
+    panel.style.top   = '';
+  }
+
+  function syncControlsMode() {
+    const compact = useCollapsedControls();
+    root.classList.toggle('compact-controls', compact);
+    if (!compact) resetPanelState();
+  }
+
+  function positionPanel() {
+    const tr = toggle.getBoundingClientRect();
+    panel.style.left  = '';
+    panel.style.right = Math.max(8, window.innerWidth - tr.right) + 'px';
+    panel.style.top   = (tr.bottom + 6) + 'px';
+  }
+
+  syncControlsMode();
+
+  toggle.addEventListener('click', (e) => {
+    if (!useCollapsedControls()) return;
+    e.stopPropagation();
+    const opening = !panel.classList.contains('open');
+    panel.classList.toggle('open', opening);
+    toggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    if (opening) {
+      positionPanel();
+    } else {
+      panel.style.left  = '';
+      panel.style.right = '';
+      panel.style.top   = '';
+    }
+  });
+
+  // Close controls when tapping outside on mobile
+  document.addEventListener('pointerdown', (e) => {
+    if (!useCollapsedControls()) return;
+    if (!panel.classList.contains('open')) return;
+    if (e.target.closest('#controls') || e.target.closest('#controlsToggle')) return;
+    resetPanelState();
+  }, { passive: true });
+
+  // Reposition on resize/orientation change
+  window.addEventListener('resize', () => {
+    syncControlsMode();
+    if (panel.classList.contains('open') && useCollapsedControls()) positionPanel();
+  });
+})();
+</script>
+</body>
+</html>

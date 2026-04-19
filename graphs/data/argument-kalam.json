@@ -1,0 +1,321 @@
+{
+  "id": "KCA",
+  "kind": "root",
+  "label": "Kalam Cosmological Argument",
+  "text": "Kalam Cosmological Argument",
+  "relToParent": null,
+  "children": [
+    {
+      "id": "P1",
+      "kind": "premise",
+      "label": "P1 — Whatever begins to exist has a cause",
+      "text": "P1 — Whatever begins to exist must have a cause. Nothing arises, uncaused, from absolute non-existence.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "P1S2",
+          "kind": "support",
+          "label": "Ex nihilo nihil fit — nothing comes from nothing",
+          "text": "The axiom ‘ex nihilo nihil fit’ (nothing comes from nothing) has been foundational across philosophical traditions: being cannot arise from absolute non-being. If there were ever a state of absolute nothing — no matter, no energy, no space, no laws — nothing could ever have come into existence, for there would be no causal power to bring anything about.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "O1",
+              "kind": "objection",
+              "label": "Quantum particles appear uncaused from the vacuum",
+              "text": "Quantum mechanics shows virtual particles appearing from the vacuum — suggesting uncaused events are physically possible.",
+              "relToParent": "attacks",
+              "children": [
+                {
+                  "id": "R1",
+                  "kind": "rebuttal",
+                  "label": "The vacuum is not nothing — it’s structured energy",
+                  "text": "The quantum vacuum is a structured, energy-laden physical state, not absolute nothingness. Particles are converted within it — not summoned from a total absence of everything.",
+                  "relToParent": "rebuts",
+                  "children": [
+                    {
+                      "id": "O2",
+                      "kind": "objection",
+                      "label": "‘Absolute nothingness’ is an incoherent concept",
+                      "text": "‘Absolute nothingness’ is an incoherent concept with no physical counterpart — the comparison does not apply.",
+                      "relToParent": "attacks",
+                      "children": [
+                        {
+                          "id": "R2",
+                          "kind": "rebuttal",
+                          "label": "‘Nothing’ = no causal conditions — coherent and necessary",
+                          "text": "The argument defines ‘nothing’ as the absence of all causal conditions — a coherent and necessary concept. Without it, the question of why anything exists at all becomes unanswerable.",
+                          "relToParent": "rebuts",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "P1S1",
+          "kind": "support",
+          "label": "Uncaused origins leave existence unexplained",
+          "text": "If uncaused origins were possible, there would be no explanation for why specific things arise rather than everything or nothing arising at random.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "O7",
+              "kind": "objection",
+              "label": "The universe could be an uncaused brute fact",
+              "text": "Even with a beginning, the universe could be an uncaused brute fact — it simply started with no prior reason.",
+              "relToParent": "attacks",
+              "children": [
+                {
+                  "id": "R7",
+                  "kind": "rebuttal",
+                  "label": "No reason why this, not everything or nothing",
+                  "text": "If uncaused origins from nothing were possible, there would be no principled reason why any specific thing — rather than everything or nothing — arises. Causation cannot be selectively suspended without explanation.",
+                  "relToParent": "rebuts",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "P2",
+      "kind": "premise",
+      "label": "P2 — The universe began to exist",
+      "text": "P2 — The universe began to exist, confirmed by both philosophical argument and scientific evidence.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "P2S3",
+          "kind": "support",
+          "label": "Philosophical: An actual infinite cannot exist in reality",
+          "text": "Philosophical argument: There is a crucial difference between a potential infinite — a finite quantity that can always be increased without limit — and an actual infinite — a completed totality with infinitely many members all present at once. While potential infinites are unproblematic, an actually infinite collection cannot be instantiated in reality; attempting to do so produces real-world contradictions. Since a beginningless past would require an actually infinite series of past events, the past cannot be infinite.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "P2S3_ILL",
+              "kind": "illustration",
+              "label": "Hilbert’s Hotel: absurdities of an actual infinite",
+              "text": "Illustration — Hilbert’s Hotel (David Hilbert): Imagine a hotel with infinitely many rooms, every one occupied. A new guest arrives — the manager simply moves each guest from room n to n+1 and the new guest takes room 1. Even infinitely many new guests can be accommodated by shifting every current guest to an even-numbered room. The hotel was full, yet instantly has room for infinitely many more — with no rooms added or removed. Such absurdities reveal that an actual infinite cannot coherently exist in the physical world, even though set theory handles it abstractly without contradiction.",
+              "relToParent": "supports",
+              "children": []
+            },
+            {
+              "id": "O4",
+              "kind": "objection",
+              "label": "Set theory uses actual infinities — why not nature?",
+              "text": "Modern set theory employs actual infinities consistently — why could nature not instantiate one?",
+              "relToParent": "attacks",
+              "children": [
+                {
+                  "id": "R4",
+                  "kind": "rebuttal",
+                  "label": "Math consistency ≠ physical instantiation",
+                  "text": "Mathematical consistency in a formal system does not imply physical instantiation. Abstract sets carry no causal history; real past events must each be actualized one after another. Hilbert’s Hotel itself assumes set-theoretic infinity and yet produces real-world absurdities precisely because it treats the abstract as concrete — confirming the distinction between formal and physical existence.",
+                  "relToParent": "rebuts",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "O3",
+              "kind": "objection",
+              "label": "A beginningless past is conceivable",
+              "text": "A beginningless past is conceivable — the universe may simply have always existed with no starting point.",
+              "relToParent": "attacks",
+              "children": [
+                {
+                  "id": "R3",
+                  "kind": "rebuttal",
+                  "label": "Conceivability ≠ possibility; traversal remains impossible",
+                  "text": "That a beginningless past is conceivable does not imply it is metaphysically possible. Conceivability is a weak guide to possibility, especially when independent arguments — the impossibility of an actual infinite in reality and the impossibility of forming one by successive addition — already rule it out.",
+                  "relToParent": "rebuts",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "P2S4",
+          "kind": "support",
+          "label": "Philosophical: The past cannot be formed by successive addition",
+          "text": "Philosophical argument: Even if an actual infinite were coherent in the abstract, a beginningless past could not be formed by successive addition — by one event following another. To have reached the present moment, an infinite series of past events would have had to be completed one by one. But it is impossible to traverse an actually infinite number of steps and arrive at an end. Therefore the series of past events must be finite, and the universe must have had a beginning.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "P2S4_ILL1",
+              "kind": "illustration",
+              "label": "Illustration: subtracting infinities yields contradictory results",
+              "text": "Illustration — Increasing disparities: If an actual infinite series of past events existed, we could perform subtractions on it that yield contradictory results. Remove all events after the first half of the infinite past and infinitely many remain; remove all but the last three events and only three remain; remove all events from the infinite past entirely and zero remain. In each case we subtracted 'the same' infinite quantity from itself and obtained different, incompatible answers. Such contradictions reveal that the series could never have been completed step by step — completed infinites cannot be manipulated in reality the way abstract set theory manipulates them on paper.",
+              "relToParent": "supports",
+              "children": []
+            },
+            {
+              "id": "P2S4_ILL2",
+              "kind": "illustration",
+              "label": "Illustration: the infinite counter should have finished long ago",
+              "text": "Illustration — The infinite countdown: Suppose someone has been counting down the negative integers toward 0, one number per day, with no beginning — they have always been counting. If they reach 0 today, they would have been at −1 yesterday, −2 the day before, and so on. At any day in the infinite past they have had infinitely many prior days to complete the countdown, yet on none of those days did they finish. This is absurd: there is no principled reason why they complete the count today rather than yesterday, or a trillion years ago, since at every past moment the same infinite number of prior days had already elapsed. The countdown cannot coherently terminate if it has always been in progress — confirming that an infinite series of events cannot be completed by successive addition.",
+              "relToParent": "supports",
+              "children": []
+            },
+            {
+              "id": "O_P2S4_1",
+              "kind": "objection",
+              "label": "From any past event, only a finite distance to the present remains",
+              "text": "The argument illicitly presupposes an infinitely distant starting point and then pronounces it impossible to travel to today. In fact, from any given point in the past there is only a finite distance to the present, which is easily traversed — so the infinite past poses no real problem of traversal.",
+              "relToParent": "attacks",
+              "children": [
+                {
+                  "id": "R_P2S4_1",
+                  "kind": "rebuttal",
+                  "label": "Fallacy of composition: finite segments ≠ infinite whole",
+                  "text": "The argument does not assume an infinitely distant starting point. The question is how the whole series can be formed, not how any finite portion of it can be traversed. To infer that because every finite segment of the series can be formed by successive addition, the whole infinite series can as well, is to commit the fallacy of composition. The absence of any beginning — not even an infinitely distant one — makes the problem of traversal worse, not better.",
+                  "relToParent": "rebuts",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "P2S1",
+          "kind": "support",
+          "label": "BGV theorem: all expanding universes have a past boundary",
+          "text": "Scientific (cosmic expansion): The Borde–Guth–Vilenkin theorem (2003) proves any universe expanding on average must have a past space-time boundary — tracing expansion backward leads to an absolute beginning ~13.8 billion years ago.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "O_BGV1",
+              "kind": "objection",
+              "label": "Alternative models are designed to circumvent the BGV conclusion",
+              "text": "Physicists have proposed alternative cosmological models — Oscillating Universe, Chaotic Inflationary Universe, Vacuum Fluctuation models, the Hartle–Hawking No-Boundary proposal, and Ekpyrotic Cyclic scenarios — specifically intended to avoid the absolute beginning implied by the BGV theorem.",
+              "relToParent": "attacks",
+              "children": [
+                {
+                  "id": "R_BGV1",
+                  "kind": "rebuttal",
+                  "label": "Viable alternative models also require a beginning",
+                  "text": "Twentieth-century cosmology has included repeated attempts to avoid an absolute beginning, but the major alternative models still fail to secure a genuinely past-eternal universe. Oscillating and chaotic inflationary models turn out to have a finite past, vacuum fluctuation models do not explain why an eternal vacuum does not yield an infinitely old universe, the Hartle–Hawking no-boundary proposal still implies an absolute origin if interpreted realistically, and ekpyrotic cyclic scenarios face serious technical problems while still implying an origin. No viable, well-confirmed alternative escapes the need for a beginning.",
+                  "relToParent": "rebuts",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "P2S2",
+          "kind": "support",
+          "label": "Second Law: an eternal universe would be at heat death",
+          "text": "Scientific (Second Law): An eternal universe would already be in maximum disorder (‘heat death’). The continued availability of usable energy implies the universe has not existed forever.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "O5",
+              "kind": "objection",
+              "label": "Cyclic / no-boundary models avoid a beginning",
+              "text": "Alternative models — cyclic universes, bouncing cosmologies, Hawking's no-boundary proposal — may avoid an absolute beginning and reset entropy each cycle, sidestepping the heat-death problem.",
+              "relToParent": "attacks",
+              "children": [
+                {
+                  "id": "R5",
+                  "kind": "rebuttal",
+                  "label": "BGV applies to all; Vilenkin: 'universe had a beginning'",
+                  "text": "The BGV theorem applies to all models expanding on average, including multiverse scenarios. Even no-boundary models have a finite past. Physicist Alexander Vilenkin: 'All the evidence we have says that the universe had a beginning.'",
+                  "relToParent": "rebuts",
+                  "children": [
+                    {
+                      "id": "O6",
+                      "kind": "objection",
+                      "label": "Quantum gravity may permit a past-eternal universe",
+                      "text": "Quantum gravity remains unknown — a future theory may permit a genuinely past-eternal universe.",
+                      "relToParent": "attacks",
+                      "children": [
+                        {
+                          "id": "R6",
+                          "kind": "rebuttal",
+                          "label": "Wall (2013) extends singularity result to quantum gravity",
+                          "text": "Aron Wall (2013) extended the singularity result to quantum gravity using the generalized Second Law of Thermodynamics. The beginning appears robust even before a complete quantum gravity theory exists.",
+                          "relToParent": "rebuts",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "kind": "conclusion",
+      "label": "∴ The universe has a cause",
+      "text": "∴ Therefore, the universe has a cause — whatever began to exist has a cause, and the universe began to exist.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "CS0",
+          "kind": "support",
+          "label": "The cause must be uncaused, timeless, spaceless, and immaterial",
+          "text": "Since the cause produced all space, time, matter, and energy, it cannot itself be spatial, temporal, or material. It must be uncaused (to avoid infinite regress), timeless (it existed before time began), spaceless (it existed before space began), and immaterial (it existed before matter began), and of enormous power.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "CS1",
+              "kind": "support",
+              "label": "Must be personal — only free agency explains a first act",
+              "text": "The cause must also be a personal agent: only a being with free will can explain how an eternal, changeless cause freely initiates a new temporal effect. An impersonal mechanism would produce its effect necessarily and eternally.",
+              "relToParent": "supports",
+              "children": []
+            },
+            {
+              "id": "O8",
+              "kind": "objection",
+              "label": "An impersonal law or force could be the cause",
+              "text": "The cause could be an impersonal physical law or abstract force — a personal Creator is not required.",
+              "relToParent": "attacks",
+              "children": [
+                {
+                  "id": "R8",
+                  "kind": "rebuttal",
+                  "label": "Laws describe; they can't originate matter from nothing",
+                  "text": "Physical laws describe the behavior of existing reality; they carry no independent causal power and cannot account for the origin of matter and energy from nothing.",
+                  "relToParent": "rebuts",
+                  "children": [
+                    {
+                      "id": "O9",
+                      "kind": "objection",
+                      "label": "A multiverse makes a personal agent unnecessary",
+                      "text": "Perhaps a multiverse or necessarily existing physical structure generates universes eternally without any personal agent.",
+                      "relToParent": "attacks",
+                      "children": [
+                        {
+                          "id": "R9",
+                          "kind": "rebuttal",
+                          "label": "Multiverse also needs a beginning; same question recurses",
+                          "text": "Multiverse scenarios are themselves subject to the BGV theorem and require a beginning. Positing a necessary yet undetectable physical structure is an extraordinary claim that faces the same causal question.",
+                          "relToParent": "rebuts",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

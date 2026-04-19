@@ -3,33 +3,1381 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Parallax Views</title>
+  <title>Parallax Views | Guided Argument Maps</title>
+  <meta name="description" content="A guided landing page for exploring the case for God's existence, the minimal facts case for the resurrection, and the assessment of competing hypotheses.">
+  <meta name="theme-color" content="#f5efe4" id="theme-color-meta">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="assets/icons/favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" sizes="180x180">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#0d8f86">
+  <script>
+    (function () {
+      try {
+        var storedTheme = localStorage.getItem("parallax-theme") || localStorage.getItem("pv_theme");
+        var systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.dataset.theme = storedTheme || systemTheme;
+      } catch (error) {
+        document.documentElement.dataset.theme = "light";
+      }
+    }());
+  </script>
   <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5efe4;
+      --bg-elevated: rgba(255, 252, 247, 0.88);
+      --bg-strong: #fffaf2;
+      --surface: rgba(255, 255, 255, 0.82);
+      --surface-strong: #fffdf8;
+      --surface-muted: rgba(250, 243, 232, 0.94);
+      --surface-dashed: rgba(255, 248, 236, 0.76);
+      --text: #182127;
+      --text-soft: #4e5d66;
+      --text-faint: #6d7b83;
+      --border: rgba(24, 33, 39, 0.12);
+      --border-strong: rgba(13, 143, 134, 0.22);
+      --accent: #0d8f86;
+      --accent-deep: #0a5c69;
+      --accent-soft: rgba(13, 143, 134, 0.12);
+      --gold: #c2902c;
+      --gold-soft: rgba(194, 144, 44, 0.14);
+      --shadow: 0 24px 80px rgba(25, 40, 48, 0.12);
+      --shadow-soft: 0 16px 40px rgba(25, 40, 48, 0.08);
+      --page-glow-1: rgba(13, 143, 134, 0.14);
+      --page-glow-2: rgba(194, 144, 44, 0.12);
+      --hero-gradient: linear-gradient(135deg, rgba(255, 250, 242, 0.98), rgba(244, 250, 248, 0.92));
+      --line: rgba(24, 33, 39, 0.12);
+      --button-text: #f6fffd;
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #09131b;
+      --bg-elevated: rgba(11, 24, 31, 0.9);
+      --bg-strong: #10212a;
+      --surface: rgba(15, 31, 39, 0.82);
+      --surface-strong: #142832;
+      --surface-muted: rgba(16, 38, 48, 0.92);
+      --surface-dashed: rgba(13, 30, 38, 0.74);
+      --text: #edf5f3;
+      --text-soft: #b6c7c8;
+      --text-faint: #8ea1a4;
+      --border: rgba(237, 245, 243, 0.12);
+      --border-strong: rgba(77, 211, 198, 0.22);
+      --accent: #4dd3c6;
+      --accent-deep: #8cded6;
+      --accent-soft: rgba(77, 211, 198, 0.12);
+      --gold: #ebbf68;
+      --gold-soft: rgba(235, 191, 104, 0.14);
+      --shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+      --shadow-soft: 0 18px 42px rgba(0, 0, 0, 0.3);
+      --page-glow-1: rgba(77, 211, 198, 0.14);
+      --page-glow-2: rgba(235, 191, 104, 0.1);
+      --hero-gradient: linear-gradient(135deg, rgba(16, 33, 41, 0.98), rgba(11, 24, 31, 0.92));
+      --line: rgba(237, 245, 243, 0.12);
+      --button-text: #08201f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
       margin: 0;
-      padding: 2rem;
-      background: #fafafa;
-      color: #333;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, var(--page-glow-1), transparent 32rem),
+        radial-gradient(circle at 85% 15%, var(--page-glow-2), transparent 24rem),
+        linear-gradient(180deg, var(--bg), var(--bg-strong));
+      color: var(--text);
+      font: 400 16px/1.6 "Avenir Next", "Segoe UI Variable", "Segoe UI", "Helvetica Neue", sans-serif;
+      letter-spacing: 0.01em;
     }
-    h1 {
-      color: #603699;
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 72px 72px;
+      opacity: 0.28;
+      mix-blend-mode: soft-light;
     }
+
     a {
-      color: #603699;
+      color: inherit;
       text-decoration: none;
     }
-    a:hover {
-      text-decoration: underline;
+
+    img,
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .page {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .page::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      background: rgba(9, 19, 27, 0.34);
+      backdrop-filter: blur(10px);
+      transition: opacity 180ms ease;
+      z-index: 30;
+    }
+
+    body.embed-expanded {
+      overflow: hidden;
+    }
+
+    body.embed-expanded .page::after {
+      opacity: 1;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(180deg, rgba(9, 19, 27, 0.06), rgba(9, 19, 27, 0.02));
+      border-bottom: 1px solid transparent;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: baseline;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .brand-mark {
+      font: 700 0.8rem/1 "Avenir Next", "Segoe UI Variable", "Segoe UI", sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .brand-title {
+      font: 600 1rem/1.2 "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      color: var(--text);
+    }
+
+    .topnav {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .topnav a,
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-height: 2.75rem;
+      padding: 0.7rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+      color: var(--text-soft);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .topnav a:hover,
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+    }
+
+    .hero {
+      padding: 3.25rem 0 2rem;
+    }
+
+    .hero-panel {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.95fr);
+      gap: 1.5rem;
+      padding: clamp(1.5rem, 3vw, 2.5rem);
+      background: var(--hero-gradient);
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      inset: auto -5rem -5rem auto;
+      width: 16rem;
+      height: 16rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-soft), transparent 70%);
+      filter: blur(4px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      box-shadow: 0 0 0 0.2rem var(--accent-soft);
+    }
+
+    .hero-copy h1 {
+      margin: 1rem 0 1rem;
+      font: 700 clamp(2.5rem, 5vw, 4.8rem)/0.95 "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      letter-spacing: -0.03em;
+      max-width: 10ch;
+    }
+
+    .hero-copy p {
+      margin: 0;
+      max-width: 40rem;
+      font-size: clamp(1rem, 1.5vw, 1.14rem);
+      color: var(--text-soft);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-top: 1.75rem;
+    }
+
+    .button-primary,
+    .button-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      min-height: 3.2rem;
+      padding: 0.85rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      color: var(--button-text);
+      border-color: transparent;
+      box-shadow: 0 18px 36px rgba(10, 92, 105, 0.24);
+    }
+
+    .button-secondary {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .button-primary:hover,
+    .button-secondary:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-aside {
+      position: relative;
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+    }
+
+    .summary-card,
+    .future-card {
+      padding: 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.4rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .summary-card h2,
+    .future-card h2 {
+      margin: 0 0 0.85rem;
+      font: 700 1.25rem/1.15 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+      color: var(--text);
+    }
+
+    .sequence-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .sequence-list li {
+      display: grid;
+      grid-template-columns: 2.3rem 1fr;
+      gap: 0.85rem;
+      align-items: start;
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 0.85rem;
+      background: linear-gradient(135deg, var(--accent-soft), var(--gold-soft));
+      color: var(--accent-deep);
+      font-weight: 700;
+    }
+
+    .step-copy strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+      font-size: 0.98rem;
+    }
+
+    .step-copy span,
+    .future-card p {
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    .future-card {
+      background: var(--surface-dashed);
+      border-style: dashed;
+    }
+
+    .future-list {
+      display: grid;
+      gap: 0.7rem;
+      padding: 0;
+      margin: 0.95rem 0 0;
+      list-style: none;
+      color: var(--text-soft);
+      font-size: 0.94rem;
+    }
+
+    .future-list li {
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .future-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.65rem;
+      width: 0.38rem;
+      height: 0.38rem;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .section-stack {
+      display: grid;
+      gap: 1.4rem;
+      padding: 0 0 4rem;
+    }
+
+    .stage {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(1.4rem, 2vw, 2rem);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 1.8rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0.4rem;
+      background: linear-gradient(180deg, var(--accent), var(--gold));
+    }
+
+    .stage-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1rem;
+      align-items: end;
+      margin-bottom: 1.3rem;
+    }
+
+    .stage-kicker {
+      margin: 0 0 0.35rem;
+      color: var(--accent);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .stage-header h2 {
+      margin: 0;
+      font: 700 clamp(1.75rem, 3vw, 2.5rem)/1 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    }
+
+    .stage-header p {
+      margin: 0.6rem 0 0;
+      max-width: 46rem;
+      color: var(--text-soft);
+    }
+
+    .stage-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.8rem 1rem;
+      border-radius: 999px;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      white-space: nowrap;
+      align-self: start;
+    }
+
+    .stage-badge strong {
+      color: var(--text);
+      font-size: 0.93rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .single-card-grid {
+      grid-template-columns: minmax(0, 1fr);
+      margin-top: 1rem;
+    }
+
+    .resource-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-height: 100%;
+      padding: 1.2rem;
+      border-radius: 1.4rem;
+      border: 1px solid var(--border);
+      background: var(--surface-strong);
+      box-shadow: var(--shadow-soft);
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .resource-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 0.9rem;
+    }
+
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .card-index {
+      flex: none;
+      width: 2.3rem;
+      height: 2.3rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.85rem;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .resource-card h3 {
+      margin: 0;
+      font: 700 1.45rem/1.08 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+      color: var(--text);
+    }
+
+    .resource-card p {
+      margin: 0;
+      color: var(--text-soft);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2rem;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      color: var(--text-faint);
+      font-size: 0.84rem;
+    }
+
+    .card-footer {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 0.25rem;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+    }
+
+    .card-footer strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .embed-feature {
+      margin-top: 1rem;
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(18rem, 0.9fr) minmax(0, 1.45fr);
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: 1.5rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--surface), var(--surface-muted));
+      box-shadow: var(--shadow-soft);
+      transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+    }
+
+    .embed-feature.is-expanded {
+      position: fixed;
+      inset: 1rem;
+      z-index: 40;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
+      align-items: start;
+      gap: 1rem;
+      padding: 1rem;
+      border-color: var(--border-strong);
+      border-radius: 1.7rem;
+      background: var(--hero-gradient);
+      box-shadow: var(--shadow);
+    }
+
+    .embed-copy {
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+      min-width: 0;
+    }
+
+    .embed-copy h3 {
+      margin: 0;
+      font: 700 1.7rem/1.04 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+      color: var(--text);
+    }
+
+    .embed-copy p {
+      margin: 0;
+      color: var(--text-soft);
+    }
+
+    .embed-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .embed-toggle {
+      cursor: pointer;
+    }
+
+    .embed-frame-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.55rem;
+      min-width: 2.55rem;
+      min-height: 2.55rem;
+      padding: 0;
+      border-color: var(--border-strong);
+      background: var(--bg-elevated);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+      border-radius: 999px;
+      line-height: 0;
+    }
+
+    .embed-frame-toggle svg {
+      width: 1rem;
+      height: 1rem;
+      display: block;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .embed-caption {
+      font-size: 0.92rem;
+      color: var(--text-faint);
+    }
+
+    .embed-frame-shell {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      min-width: 0;
+      padding: 0.55rem;
+      border-radius: 1.35rem;
+      background: linear-gradient(180deg, rgba(13, 143, 134, 0.09), rgba(194, 144, 44, 0.06));
+      border: 1px solid var(--border);
+    }
+
+    .embed-frame-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex: none;
+    }
+
+    .embed-frame {
+      display: block;
+      width: 100%;
+      height: clamp(26rem, 68vh, 46rem);
+      border: 0;
+      border-radius: 1rem;
+      background: var(--surface-strong);
+      box-shadow: inset 0 0 0 1px var(--border), var(--shadow-soft);
+    }
+
+    .embed-frame-tall {
+      height: clamp(30rem, 76vh, 54rem);
+    }
+
+    .embed-feature.is-expanded .embed-copy {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 0.9rem 1rem;
+    }
+
+    .embed-feature.is-expanded .embed-copy > :nth-child(2) {
+      flex: 1 1 26rem;
+      min-width: 0;
+    }
+
+    .embed-feature.is-expanded .embed-copy .pill-row,
+    .embed-feature.is-expanded .embed-caption {
+      display: none;
+    }
+
+    .embed-feature.is-expanded .embed-actions {
+      margin-left: auto;
+      justify-content: flex-end;
+    }
+
+    .embed-feature.is-expanded .embed-frame-shell {
+      height: 100%;
+      min-height: 0;
+      padding: 0.7rem;
+      border-radius: 1.5rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .embed-feature.is-expanded .embed-frame,
+    .embed-feature.is-expanded .embed-frame-tall {
+      height: auto;
+      min-height: 0;
+      flex: 1 1 auto;
+    }
+
+    .media-strip {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .media-card {
+      padding: 1.2rem;
+      border-radius: 1.4rem;
+      border: 1px dashed var(--border);
+      background: var(--surface-dashed);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .media-card h3 {
+      margin: 0;
+      font: 700 1.2rem/1.12 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    }
+
+    .media-card p {
+      margin: 0.7rem 0 0;
+      color: var(--text-soft);
+    }
+
+    .footer {
+      padding: 0 0 2.5rem;
+      color: var(--text-faint);
+      font-size: 0.92rem;
+    }
+
+    .footer-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.2rem;
+      border-radius: 1.2rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    @media (max-width: 980px) {
+      .hero-panel,
+      .card-grid,
+      .embed-feature,
+      .media-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .stage-header {
+        grid-template-columns: 1fr;
+      }
+
+      .stage-badge {
+        justify-self: start;
+      }
+
+      .embed-feature.is-expanded {
+        inset: 0.85rem;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .shell {
+        width: min(100% - 1rem, 1180px);
+      }
+
+      .topbar-inner {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .topnav {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .topnav a,
+      .theme-toggle {
+        flex: 1 1 auto;
+      }
+
+      .hero {
+        padding-top: 1.5rem;
+      }
+
+      .hero-copy h1 {
+        max-width: none;
+      }
+
+      .hero-actions,
+      .embed-actions,
+      .footer-panel,
+      .card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .embed-feature.is-expanded {
+        inset: 0.5rem;
+        grid-template-rows: minmax(0, 1fr);
+        padding: 0.85rem;
+        border-radius: 1.35rem;
+      }
+
+      .embed-feature.is-expanded .embed-copy {
+        display: none;
+      }
+
+      .embed-feature.is-expanded .embed-frame-shell {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        padding: 0.5rem;
+        border-radius: 1.15rem;
+      }
+
+      .embed-frame-toggle {
+        width: 2.35rem;
+        min-width: 2.35rem;
+        min-height: 2.35rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Welcome to Parallax Views</h1>
-  <p>This site is hosted on <strong>GitHub Pages</strong>.</p>
-  <ul>
-    <li><a href="graphs/minimalFactsTidyTree.html">View Tidy Tree Graph</a></li>
-    <!-- Add more links to your graphs or content here -->
-  </ul>
+  <div class="page">
+    <header class="topbar">
+      <div class="shell topbar-inner">
+        <div class="brand-lockup">
+          <span class="brand-mark">Parallax Views</span>
+          <span class="brand-title">Guided argument maps and study pages</span>
+        </div>
+        <nav class="topnav" aria-label="Primary">
+          <a href="#existence">Existence of God</a>
+          <a href="#resurrection">Resurrection Case</a>
+          <a href="#media">Media</a>
+          <button class="theme-toggle" type="button" id="theme-toggle" aria-pressed="false" aria-label="Toggle color theme">
+            <span id="theme-toggle-label">Theme</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-panel">
+          <div class="hero-copy">
+            <span class="eyebrow">A staged path through the case</span>
+            <h1 id="hero-title">Start with God, then move to the resurrection.</h1>
+            <p>This landing page is organized in the order Craig typically argues: first establish the case for God's existence, then examine the historical facts surrounding Jesus' resurrection, and finally compare the best explanatory hypotheses.</p>
+            <div class="hero-actions">
+              <a class="button-primary" href="graphs/theistic-arguments.html">Begin with theistic arguments</a>
+              <a class="button-secondary" href="graphs/minimalFactsTidyTree.html">Jump to the minimal facts</a>
+            </div>
+          </div>
+
+          <aside class="hero-aside" aria-label="Guided route and future media">
+            <section class="summary-card">
+              <h2>Suggested route</h2>
+              <ol class="sequence-list">
+                <li>
+                  <span class="step-number">1</span>
+                  <div class="step-copy">
+                    <strong>Survey the case for God's existence</strong>
+                    <span>Open the overview first to see the main lines of argument together.</span>
+                  </div>
+                </li>
+                <li>
+                  <span class="step-number">2</span>
+                  <div class="step-copy">
+                    <strong>Explore the arguments in more detail</strong>
+                    <span>Use the detailed map to move through claims, objections, and supporting structure.</span>
+                  </div>
+                </li>
+                <li>
+                  <span class="step-number">3</span>
+                  <div class="step-copy">
+                    <strong>Review the minimal facts</strong>
+                    <span>Follow the historical case as Habermas, Licona, and Craig often present it.</span>
+                  </div>
+                </li>
+                <li>
+                  <span class="step-number">4</span>
+                  <div class="step-copy">
+                    <strong>Assess the best hypothesis</strong>
+                    <span>Compare competing explanations against the accepted facts and see where they lead.</span>
+                  </div>
+                </li>
+              </ol>
+            </section>
+
+            <section class="future-card">
+              <h2>Media-ready layout</h2>
+              <p>The page is structured so companion YouTube links and future background clips can be added later without reworking the main navigation.</p>
+              <ul class="future-list">
+                <li>External teaching links can sit beside each stage.</li>
+                <li>Hero media can be introduced later as a background layer.</li>
+                <li>The current layout stays lightweight for desktop and mobile.</li>
+              </ul>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <div class="section-stack">
+        <section class="stage" id="existence" aria-labelledby="existence-title">
+          <div class="stage-header">
+            <div>
+              <p class="stage-kicker">Phase One</p>
+              <h2 id="existence-title">The existence of God</h2>
+              <p>Start with the broad case, then move into a more detailed exploration of the arguments and their structure.</p>
+            </div>
+            <div class="stage-badge">
+              <strong>Use first</strong>
+              <span>Foundational case</span>
+            </div>
+          </div>
+
+          <article class="embed-feature" data-embed-feature aria-labelledby="overview-embed-title">
+            <div class="embed-copy">
+              <div class="card-top">
+                <span class="card-tag">Overview</span>
+                <span class="card-index">01</span>
+              </div>
+              <div>
+                <h3 id="overview-embed-title">Theistic Arguments</h3>
+                <p>Presents the larger set of arguments for God's existence in one place so the overall shape of the case is visible before drilling into individual lines of reasoning.</p>
+              </div>
+              <div class="pill-row" aria-label="Overview features">
+                <span class="pill">Best starting point</span>
+                <span class="pill">Multiple arguments</span>
+                <span class="pill">Bird's-eye view</span>
+                <span class="pill">Theme-synced</span>
+              </div>
+              <div class="embed-actions">
+                <a class="button-secondary" href="graphs/theistic-arguments.html">Open the full overview</a>
+                <a class="button-secondary" href="graphs/theistic-argument-explorer.html">Open the detailed explorer</a>
+              </div>
+              <p class="embed-caption">This overview now lives directly in the guided sequence while keeping the standalone page available when you want to work with it on its own.</p>
+            </div>
+
+            <div class="embed-frame-shell">
+              <div class="embed-frame-toolbar">
+                <button class="button-secondary embed-toggle embed-frame-toggle" type="button" data-embed-toggle data-expand-label="Expand view" data-contract-label="Return to page" aria-expanded="false" aria-label="Expand view" title="Expand view"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg></button>
+              </div>
+              <iframe
+                id="theistic-arguments-embed"
+                class="embed-frame"
+                title="Embedded theistic arguments overview"
+                loading="lazy"
+                referrerpolicy="same-origin"
+                data-embed-src="graphs/theistic-arguments.html"
+              ></iframe>
+            </div>
+          </article>
+
+          <article class="embed-feature" data-embed-feature aria-labelledby="explorer-embed-title">
+            <div class="embed-copy">
+              <div class="card-top">
+                <span class="card-tag">Detailed map</span>
+                <span class="card-index">02</span>
+              </div>
+              <div>
+                <h3 id="explorer-embed-title">Argument Explorer</h3>
+                <p>Moves from the overview into a more detailed exploration of claims, objections, and rebuttals so the structure of the argument can be inspected closely.</p>
+              </div>
+              <div class="pill-row" aria-label="Detailed explorer features">
+                <span class="pill">Interactive detail</span>
+                <span class="pill">Claims and objections</span>
+                <span class="pill">Follow-up study</span>
+                <span class="pill">Disclosure controls</span>
+              </div>
+              <div class="embed-actions">
+                <a class="button-secondary" href="graphs/theistic-argument-explorer.html">Open the full explorer</a>
+                <a class="button-secondary" href="graphs/theistic-arguments.html">Return to the overview</a>
+              </div>
+              <p class="embed-caption">This detailed map now sits directly under the overview so readers can stay in context while moving into objections, rebuttals, and expanded structure.</p>
+            </div>
+
+            <div class="embed-frame-shell">
+              <div class="embed-frame-toolbar">
+                <button class="button-secondary embed-toggle embed-frame-toggle" type="button" data-embed-toggle data-expand-label="Expand view" data-contract-label="Return to page" aria-expanded="false" aria-label="Expand view" title="Expand view"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg></button>
+              </div>
+              <iframe
+                id="theistic-argument-explorer-embed"
+                class="embed-frame embed-frame-tall"
+                title="Embedded detailed argument explorer"
+                loading="lazy"
+                referrerpolicy="same-origin"
+                data-embed-src="graphs/theistic-argument-explorer.html"
+              ></iframe>
+            </div>
+          </article>
+        </section>
+
+        <section class="stage" id="resurrection" aria-labelledby="resurrection-title">
+          <div class="stage-header">
+            <div>
+              <p class="stage-kicker">Phase Two</p>
+              <h2 id="resurrection-title">The resurrection case</h2>
+              <p>After the theistic groundwork, move to the historical data and then compare the major explanations for those facts.</p>
+            </div>
+            <div class="stage-badge">
+              <strong>Use second</strong>
+              <span>Historical argument</span>
+            </div>
+          </div>
+
+          <article class="embed-feature" data-embed-feature aria-labelledby="minimal-facts-embed-title">
+            <div class="embed-copy">
+              <div class="card-top">
+                <span class="card-tag">Facts</span>
+                <span class="card-index">03</span>
+              </div>
+              <div>
+                <h3 id="minimal-facts-embed-title">Minimal Facts</h3>
+                <p>Presents the historical facts in a way that fits the minimal facts approach associated with Habermas, Licona, and Craig before competing hypotheses are evaluated.</p>
+              </div>
+              <div class="pill-row" aria-label="Minimal facts features">
+                <span class="pill">Historical groundwork</span>
+                <span class="pill">Tidy tree view</span>
+                <span class="pill">Case summary</span>
+                <span class="pill">Theme-synced</span>
+              </div>
+              <div class="embed-actions">
+                <a class="button-secondary" href="graphs/minimalFactsTidyTree.html">Open the full facts view</a>
+                <a class="button-secondary" href="graphs/hypotheses.html">Continue to hypotheses</a>
+              </div>
+              <p class="embed-caption">This places the factual groundwork directly in the Phase Two reading path while preserving the standalone page for focused use.</p>
+            </div>
+
+            <div class="embed-frame-shell">
+              <div class="embed-frame-toolbar">
+                <button class="button-secondary embed-toggle embed-frame-toggle" type="button" data-embed-toggle data-expand-label="Expand view" data-contract-label="Return to page" aria-expanded="false" aria-label="Expand view" title="Expand view"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg></button>
+              </div>
+              <iframe
+                id="minimal-facts-embed"
+                class="embed-frame embed-frame-tall"
+                title="Embedded minimal facts tree"
+                loading="lazy"
+                referrerpolicy="same-origin"
+                data-embed-src="graphs/minimalFactsTidyTree.html"
+              ></iframe>
+            </div>
+          </article>
+
+          <article class="embed-feature" data-embed-feature aria-labelledby="hypotheses-embed-title">
+            <div class="embed-copy">
+              <div class="card-top">
+                <span class="card-tag">Assessment</span>
+                <span class="card-index">04</span>
+              </div>
+              <div>
+                <h3 id="hypotheses-embed-title">Hypotheses</h3>
+                <p>Tests the candidate explanations against the accepted facts so the best overall hypothesis can be compared and judged in view of explanatory scope and power.</p>
+              </div>
+              <div class="pill-row" aria-label="Hypotheses features">
+                <span class="pill">Compare explanations</span>
+                <span class="pill">Evaluate fit</span>
+                <span class="pill">Final synthesis</span>
+                <span class="pill">Theme-synced</span>
+              </div>
+              <div class="embed-actions">
+                <a class="button-secondary" href="graphs/hypotheses.html">Open the full assessment</a>
+                <a class="button-secondary" href="graphs/minimalFactsTidyTree.html">Return to the facts</a>
+              </div>
+              <p class="embed-caption">This places the hypothesis assessment directly at the end of the Phase Two reading path while keeping the standalone page available for focused use.</p>
+            </div>
+
+            <div class="embed-frame-shell">
+              <div class="embed-frame-toolbar">
+                <button class="button-secondary embed-toggle embed-frame-toggle" type="button" data-embed-toggle data-expand-label="Expand view" data-contract-label="Return to page" aria-expanded="false" aria-label="Expand view" title="Expand view"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg></button>
+              </div>
+              <iframe
+                id="hypotheses-embed"
+                class="embed-frame embed-frame-tall"
+                title="Embedded hypotheses assessment"
+                loading="lazy"
+                referrerpolicy="same-origin"
+                data-embed-src="graphs/hypotheses.html"
+              ></iframe>
+            </div>
+          </article>
+        </section>
+
+        <section class="stage" id="media" aria-labelledby="media-title">
+          <div class="stage-header">
+            <div>
+              <p class="stage-kicker">Media Layer</p>
+              <h2 id="media-title">External YouTube links and future clips</h2>
+              <p>The structure is already in place for companion videos, but the page stays focused on the core reading path until those links are available.</p>
+            </div>
+            <div class="stage-badge">
+              <strong>Ready next</strong>
+              <span>External media</span>
+            </div>
+          </div>
+
+          <div class="media-strip">
+            <article class="media-card">
+              <h3>YouTube companions</h3>
+              <p>Add external lecture or walkthrough links here later, grouped beside the stage they support so users can move between reading and video instruction without losing the sequence.</p>
+            </article>
+            <article class="media-card">
+              <h3>Background video space</h3>
+              <p>The hero and stage layout can support future ambient clips or motion backgrounds, but the current page remains fast and clean with no media dependency.</p>
+            </article>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="shell footer">
+      <div class="footer-panel">
+        <span>Parallax Views keeps the material ordered as a guided argument path rather than a flat list of files.</span>
+        <div class="footer-links">
+          <a href="graphs/theistic-arguments.html">Start here</a>
+          <a href="graphs/minimalFactsTidyTree.html">Minimal facts</a>
+          <a href="graphs/hypotheses.html">Hypotheses</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var toggle = document.getElementById("theme-toggle");
+      var themeMeta = document.getElementById("theme-color-meta");
+      var embeddedFrames = Array.prototype.slice.call(document.querySelectorAll("[data-embed-src]"));
+      var embedFeatures = Array.prototype.slice.call(document.querySelectorAll("[data-embed-feature]"));
+      var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      var frameOrigin = window.location.origin === "null" ? "*" : window.location.origin;
+      var embedStateMessageType = "pv-embed-state";
+      var palette = {
+        light: "#f5efe4",
+        dark: "#09131b"
+      };
+      var expandedFeature = null;
+      var expandedTrigger = null;
+
+      function getStoredTheme() {
+        try {
+          return localStorage.getItem("parallax-theme") || localStorage.getItem("pv_theme");
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function storeTheme(theme) {
+        try {
+          localStorage.setItem("parallax-theme", theme);
+          localStorage.setItem("pv_theme", theme);
+        } catch (error) {
+        }
+      }
+
+      function getActiveTheme() {
+        var stored = getStoredTheme();
+        if (stored === "light" || stored === "dark") {
+          return stored;
+        }
+        return mediaQuery.matches ? "dark" : "light";
+      }
+
+      function syncEmbeddedTheme(theme) {
+        embeddedFrames.forEach(function (frame) {
+          if (!frame.contentWindow) {
+            return;
+          }
+          frame.contentWindow.postMessage({ type: "pv-theme", theme: theme }, frameOrigin);
+        });
+      }
+
+      function syncEmbeddedState() {
+        embeddedFrames.forEach(function (frame) {
+          if (!frame.contentWindow) {
+            return;
+          }
+          var feature = frame.closest("[data-embed-feature]");
+          var expanded = !!(expandedFeature && feature === expandedFeature);
+          frame.contentWindow.postMessage({ type: embedStateMessageType, expanded: expanded }, frameOrigin);
+        });
+      }
+
+      function ensureEmbeddedFrames(theme) {
+        embeddedFrames.forEach(function (frame) {
+          if (frame.dataset.ready === "true") {
+            return;
+          }
+          frame.addEventListener("load", function () {
+            syncEmbeddedTheme(getActiveTheme());
+            syncEmbeddedState();
+          }, { once: true });
+          frame.src = frame.dataset.embedSrc + "?embed=1&theme=" + encodeURIComponent(theme);
+          frame.dataset.ready = "true";
+        });
+      }
+
+      function applyTheme(theme) {
+        root.dataset.theme = theme;
+        themeMeta.setAttribute("content", palette[theme]);
+        toggle.setAttribute("aria-pressed", String(theme === "dark"));
+        toggle.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
+        toggle.textContent = theme === "dark" ? "Light mode" : "Dark mode";
+        syncEmbeddedTheme(theme);
+      }
+
+      function syncEmbedToggleLabel(button, expanded) {
+        if (!button) {
+          return;
+        }
+        var label = expanded ? (button.dataset.contractLabel || "Return to page") : (button.dataset.expandLabel || "Expand view");
+        button.innerHTML = expanded
+          ? '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2v4H2"/><path d="M10 2v4h4"/><path d="M14 10h-4v4"/><path d="M2 10h4v4"/></svg>'
+          : '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg>';
+        button.setAttribute("aria-label", label);
+        button.setAttribute("title", label);
+        button.setAttribute("aria-expanded", String(expanded));
+      }
+
+      function collapseExpandedFeature(restoreFocus) {
+        if (!expandedFeature) {
+          return;
+        }
+        expandedFeature.classList.remove("is-expanded");
+        document.body.classList.remove("embed-expanded");
+        Array.prototype.slice.call(expandedFeature.querySelectorAll("[data-embed-toggle]")).forEach(function (button) {
+          syncEmbedToggleLabel(button, false);
+        });
+        var restoreTarget = expandedTrigger;
+        expandedFeature = null;
+        expandedTrigger = null;
+        syncEmbeddedState();
+        if (restoreFocus && restoreTarget) {
+          restoreTarget.focus();
+        }
+      }
+
+      function expandFeature(feature, trigger) {
+        if (expandedFeature === feature) {
+          collapseExpandedFeature(true);
+          return;
+        }
+        collapseExpandedFeature(false);
+        expandedFeature = feature;
+        expandedTrigger = trigger || feature.querySelector("[data-embed-toggle]");
+        feature.classList.add("is-expanded");
+        document.body.classList.add("embed-expanded");
+        Array.prototype.slice.call(feature.querySelectorAll("[data-embed-toggle]")).forEach(function (button) {
+          syncEmbedToggleLabel(button, true);
+        });
+        syncEmbeddedState();
+      }
+
+      embedFeatures.forEach(function (feature) {
+        Array.prototype.slice.call(feature.querySelectorAll("[data-embed-toggle]")).forEach(function (button) {
+          syncEmbedToggleLabel(button, false);
+          button.addEventListener("click", function () {
+            expandFeature(feature, button);
+          });
+        });
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          collapseExpandedFeature(true);
+        }
+      });
+
+      toggle.addEventListener("click", function () {
+        var nextTheme = getActiveTheme() === "dark" ? "light" : "dark";
+        storeTheme(nextTheme);
+        applyTheme(nextTheme);
+      });
+
+      if (typeof mediaQuery.addEventListener === "function") {
+        mediaQuery.addEventListener("change", function () {
+          if (!getStoredTheme()) {
+            applyTheme(getActiveTheme());
+          }
+        });
+      } else if (typeof mediaQuery.addListener === "function") {
+        mediaQuery.addListener(function () {
+          if (!getStoredTheme()) {
+            applyTheme(getActiveTheme());
+          }
+        });
+      }
+
+      applyTheme(getActiveTheme());
+      ensureEmbeddedFrames(getActiveTheme());
+      syncEmbeddedState();
+    }());
+  </script>
 </body>
 </html>

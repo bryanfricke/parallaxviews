@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png" sizes="180x180">
     <link rel="manifest" href="../site.webmanifest">
     <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#00BFAE">
-    <meta name="theme-color" content="#00BFAE">
+    <meta name="theme-color" content="#09131b">
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
     <style>
@@ -24,82 +24,242 @@
 
         main {
             display: block;
+            position: relative;
+            z-index: 1;
             width: 100%;
             height: calc(100vh - 48px);
         }
 
+        :root {
+            --ui-font: "Avenir Next", "Segoe UI Variable", "Segoe UI", "Helvetica Neue", sans-serif;
+            --title-font: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+            --bg-light: #fffaf2;
+            --bg-light-base: #f5efe4;
+            --bg-dark: #09131b;
+            --bg-dark-base: #10212a;
+            --panel-dark: #142832;
+            --panel-light-translucent: rgba(255, 253, 248, 0.84);
+            --panel-dark-translucent: rgba(20, 40, 50, 0.82);
+            --panel-stroke-light: rgba(24, 33, 39, 0.12);
+            --panel-stroke-dark: rgba(237, 245, 243, 0.12);
+            --surface-light: rgba(255, 253, 248, 0.96);
+            --surface-muted-light: rgba(250, 243, 232, 0.94);
+            --surface-dark: rgba(16, 38, 48, 0.96);
+            --surface-muted-dark: rgba(16, 38, 48, 0.92);
+            --button-bg-light: rgba(250, 243, 232, 0.94);
+            --button-bg-hover-light: rgba(255, 253, 248, 0.98);
+            --button-border-light: rgba(24, 33, 39, 0.12);
+            --button-text-light: #182127;
+            --button-bg-dark: rgba(16, 38, 48, 0.92);
+            --button-bg-hover-dark: rgba(20, 50, 63, 0.96);
+            --button-border-dark: rgba(237, 245, 243, 0.12);
+            --button-text-dark: #edf5f3;
+            --soft-shadow-light: 0 16px 40px rgba(25, 40, 48, 0.08);
+            --soft-shadow-dark: 0 18px 42px rgba(0, 0, 0, 0.30);
+            --hover-border-light: rgba(13, 143, 134, 0.22);
+            --hover-border-dark: rgba(77, 211, 198, 0.22);
+            --header-tint-light: linear-gradient(180deg, rgba(255, 252, 247, 0.86), rgba(255, 252, 247, 0.56));
+            --header-tint-dark: linear-gradient(180deg, rgba(9, 19, 27, 0.48), rgba(9, 19, 27, 0.18));
+            --chart-bg-light:
+                radial-gradient(circle at 18% 14%, rgba(13, 143, 134, 0.12), transparent 24rem),
+                radial-gradient(circle at 84% 12%, rgba(194, 144, 44, 0.12), transparent 20rem),
+                linear-gradient(180deg, rgba(255, 250, 242, 0.98), rgba(244, 250, 248, 0.92));
+            --chart-bg-dark:
+                radial-gradient(circle at 16% 14%, rgba(77, 211, 198, 0.12), transparent 24rem),
+                radial-gradient(circle at 82% 12%, rgba(235, 191, 104, 0.10), transparent 20rem),
+                linear-gradient(180deg, rgba(16, 33, 41, 0.98), rgba(11, 24, 31, 0.92));
+            --tooltip-bg-light: rgba(255, 253, 248, 0.98);
+            --tooltip-border-light: rgba(24, 33, 39, 0.12);
+            --tooltip-shadow-light: 0 24px 80px rgba(25, 40, 48, 0.16);
+            --tooltip-bg-dark: rgba(20, 40, 50, 0.94);
+            --tooltip-border-dark: rgba(237, 245, 243, 0.12);
+            --tooltip-shadow-dark: 0 28px 90px rgba(0, 0, 0, 0.42);
+            --page-glow-light-1: rgba(13, 143, 134, 0.14);
+            --page-glow-light-2: rgba(194, 144, 44, 0.12);
+            --page-glow-dark-1: rgba(77, 211, 198, 0.14);
+            --page-glow-dark-2: rgba(235, 191, 104, 0.10);
+            --grid-line-light: rgba(24, 33, 39, 0.04);
+            --grid-line-dark: rgba(255, 255, 255, 0.03);
+            --controls-panel-light: linear-gradient(90deg, rgba(13, 143, 134, 0.08), rgba(194, 144, 44, 0.08)), var(--panel-light-translucent);
+            --controls-panel-dark: linear-gradient(90deg, rgba(77, 211, 198, 0.10), rgba(235, 191, 104, 0.08)), var(--panel-dark-translucent);
+            --node-fill-dark: #163038;
+            --node-stroke-dark: #4dd3c6;
+            --node-hover-fill-dark: #1e3d44;
+            --node-hover-stroke-dark: #8cded6;
+            --link-dark: rgba(237, 245, 243, 0.16);
+            --text-dark: #edf5f3;
+            --text-secondary-dark: #b6c7c8;
+            --accent-dark: #4dd3c6;
+            --link-accent: #2d7c8c;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+        }
+
         #topbar {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 8px 24px;
-            background: var(--bg-light);
-            border-bottom: 1px solid #e0e0e0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            grid-template-areas:
+                "title actions"
+                "controls controls";
+            align-items: flex-start;
+            gap: 12px 14px;
+            padding: 16px 24px 14px;
+            background: var(--header-tint-light);
+            border-bottom: 1px solid var(--panel-stroke-light);
+            box-shadow: var(--soft-shadow-light);
             min-height: 48px;
-            /* Prevent vertical panning when user swipes near controls on iOS: allow only horizontal pan */
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             touch-action: pan-x;
             -webkit-user-select: none;
             user-select: none;
         }
 
         body.dark-mode #topbar {
-            background: var(--bg-dark);
-            border-bottom: 1px solid var(--link-dark);
+            background: var(--header-tint-dark);
+            border-bottom: 1px solid var(--panel-stroke-dark);
+            box-shadow: var(--soft-shadow-dark);
+        }
+
+        #topbarTitle {
+            display: block;
+            grid-area: title;
+            min-width: 0;
+            margin: 0;
+            color: #182127;
+            font: 600 clamp(1.22rem, 1.02rem + 0.74vw, 1.56rem)/1.08 var(--title-font);
+            letter-spacing: 0.01em;
+        }
+
+        #topbarActions {
+            grid-area: actions;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+            min-width: 0;
+        }
+
+        #topbarTitle::before {
+            content: "Minimal Facts Explorer";
+            display: block;
+            margin-bottom: 6px;
+            color: #0d8f86;
+            font: 700 0.72rem/1 var(--ui-font);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        body.dark-mode #topbarTitle {
+            color: var(--text-dark);
+        }
+
+        body.dark-mode #topbarTitle::before {
+            color: var(--accent-dark);
         }
 
         #topbar label,
         #topbar button {
-            margin: 0 4px;
+            margin: 0;
+            font-family: var(--ui-font);
         }
 
         #topbar label {
-            font-weight: 500;
-            color: inherit;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 4px;
-        }
-
-        /* Topbar buttons: subtle vertical (top-to-bottom) mint gradient to match nodes/checkbox.
-           Light mode tint deepened for better contrast. */
-        #topbar button {
-            background: linear-gradient(180deg, #33cdbf 0%, #009f92 100%);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
+            gap: 8px;
+            min-height: 40px;
             padding: 8px 14px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 159, 146, 0.16);
-            transition: background 0.18s ease, box-shadow 0.18s ease, color 0.12s ease, transform 0.08s;
-            position: relative; /* Ensure buttons maintain their position */
+            border: 1px solid var(--panel-stroke-light);
+            border-radius: 999px;
+            background: var(--surface-muted-light);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42);
+            color: #5b6870;
+            font-size: 12px;
+            font-weight: 650;
+            letter-spacing: 0.01em;
         }
 
-        /* Hover / focus: slightly deeper mint and subtle lift */
+        body.dark-mode #topbar label {
+            border-color: var(--panel-stroke-dark);
+            background: var(--surface-muted-dark);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary-dark);
+        }
+
+        #topbar button {
+            background: var(--button-bg-light);
+            color: var(--button-text-light);
+            border: 1px solid var(--button-border-light);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 650;
+            cursor: pointer;
+            box-shadow: var(--soft-shadow-light);
+            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+            position: relative;
+        }
+
         #topbar button:hover,
         #topbar button:focus {
-            background: linear-gradient(180deg, #22bfae 0%, #007f6f 100%);
-            color: #fff;
-            box-shadow: 0 6px 18px rgba(0, 159, 146, 0.24);
+            background: var(--button-bg-hover-light);
+            border-color: var(--hover-border-light);
+            box-shadow: var(--soft-shadow-light);
+            transform: translateY(-1px);
         }
 
-        /* Dark mode variant: tuned for dark backgrounds but keep the mint tint */
         body.dark-mode #topbar button {
-            background: linear-gradient(180deg, #2bd1b0 0%, #007a67 100%);
-            color: var(--text-dark);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.36);
+            background: var(--button-bg-dark);
+            color: var(--button-text-dark);
+            border-color: var(--button-border-dark);
+            box-shadow: var(--soft-shadow-dark);
         }
 
         body.dark-mode #topbar button:hover,
         body.dark-mode #topbar button:focus {
-            background: linear-gradient(180deg, #35d8bd 0%, #00604f 100%);
-            color: var(--text-dark);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.44);
+            background: var(--button-bg-hover-dark);
+            border-color: var(--hover-border-dark);
+            box-shadow: var(--soft-shadow-dark);
+        }
+
+        #controls {
+            grid-area: controls;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--panel-stroke-light);
+            border-radius: 22px;
+            background: var(--panel-light-translucent);
+            box-shadow: var(--soft-shadow-light);
+            backdrop-filter: blur(14px) saturate(120%);
+            -webkit-backdrop-filter: blur(14px) saturate(120%);
+        }
+
+        #controls.open {
+            display: flex;
+        }
+
+        body.dark-mode #controls {
+            border-color: var(--panel-stroke-dark);
+            background: rgba(15, 31, 39, 0.82);
+            box-shadow: var(--soft-shadow-dark);
+        }
+
+        #controlsToggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #topbar input[type="checkbox"] {
-            accent-color: #00BFAE;
+            accent-color: #0d8f86;
             width: 16px;
             height: 16px;
             margin-right: 4px;
@@ -108,62 +268,39 @@
         body.dark-mode #topbar input[type="checkbox"] {
             accent-color: var(--accent-dark);
         }
-        
-        /* Special styles for Dark Mode toggle to ensure visibility */
+
         #darkModeToggle {
-            width: 16px;
-            height: 16px;
-            margin-right: 6px;
-            position: relative;
-            flex-shrink: 0; /* Prevent checkbox from shrinking */
-        }
-        
-        /* Specific styling for dark mode label */
-        #darkModeLabel {
-            display: flex;
-            align-items: center;
-            user-select: none;
-            white-space: nowrap;
-            font-weight: 500;
-            height: 40px; /* Match the height of buttons */
-            color: inherit;
-        }
-        
-        /* Ensure dark mode toggle has consistent styling */
-        #darkModeToggle {
-            accent-color: #00BFAE;
             width: 16px;
             height: 16px;
             margin-right: 6px;
             position: relative;
             flex-shrink: 0;
         }
-        
-        body.dark-mode #darkModeToggle {
-            accent-color: var(--accent-dark);
+
+        #darkModeLabel {
+            display: inline-flex;
+            align-items: center;
+            user-select: none;
+            white-space: nowrap;
+            min-height: 40px;
+            color: inherit;
         }
 
         #topbar>* {
-            margin-right: 8px;
+            margin-right: 0;
         }
 
         #topbar>*:last-child {
             margin-right: 0;
         }
 
-        /* Keep related control buttons adjacent when the controls wrap (mobile)
-           Each pair will stay together and wrap as a unit. */
         .control-pair {
             display: inline-flex;
             gap: 8px;
             align-items: center;
             white-space: nowrap;
-            /* prevent inner buttons from breaking onto separate lines */
         }
 
-        /* Controls toggle icon: rotate when the toggle is opened (aria-expanded=true)
-           Use inline-flex on the wrapper and inline-block+vertical-align on the SVG
-           so the chevron sits vertically centered next to the text baseline. */
         #controlsToggle .controls-icon {
             display: inline-flex;
             align-items: center;
@@ -172,17 +309,14 @@
             transition: transform 160ms ease;
             transform-origin: center;
             height: 1em;
-            /* match the font-size to align with the label */
         }
 
         #controlsToggle[aria-expanded="true"] .controls-icon {
             transform: rotate(180deg);
         }
 
-        /* SVG sizing/styling for the chevron icon */
         #controlsToggle .controls-icon svg {
             width: 0.88em;
-            /* slightly under 1em to line up optically */
             height: 0.88em;
             display: inline-block;
             vertical-align: middle;
@@ -191,32 +325,6 @@
             stroke-width: 2.6;
             stroke-linecap: round;
             stroke-linejoin: round;
-        }
-
-        :root {
-            --bg-light: #fff;
-            --bg-dark: #181A20;
-            --panel-dark: #23272F;
-            /* Translucent panel backgrounds for floating UI */
-            --panel-light-translucent: rgba(255, 255, 255, 0.72);
-            --panel-dark-translucent: rgba(35, 39, 47, 0.58);
-            --node-fill-dark: #263238;
-            --node-stroke-dark: #00BFAE;
-            --node-hover-fill-dark: #374151;
-            --node-hover-stroke-dark: #00E6B2;
-            --link-dark: #3B4252;
-            --text-dark: #E0E7EF;
-            --text-secondary-dark: #A0AEC0;
-            --accent-dark: #00BFAE;
-            --tooltip-bg-dark: #23272F;
-            --tooltip-border-dark: #00BFAE;
-            /* link accent (default = blue for light mode). Overridden in .dark-mode below */
-            --link-accent: #0074d9;
-            /* Safe area insets for notched devices */
-            --safe-top: env(safe-area-inset-top, 0px);
-            --safe-right: env(safe-area-inset-right, 0px);
-            --safe-bottom: env(safe-area-inset-bottom, 0px);
-            --safe-left: env(safe-area-inset-left, 0px);
         }
 
         /* Visually hidden but accessible to screen readers */
@@ -234,35 +342,49 @@
 
         /* Skip link: hidden off-screen until focused */
         .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
+            position: fixed;
+            top: calc(env(safe-area-inset-top, 0px) + 8px);
+            left: 12px;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            clip-path: inset(50%);
+            white-space: nowrap;
+            border: 0;
             background: var(--bg-light);
             color: var(--link-accent);
-            padding: 8px 16px;
             text-decoration: none;
             font-weight: 600;
-            border: 2px solid var(--link-accent);
-            border-radius: 4px;
             z-index: 20000;
-            transition: top 0.2s;
         }
 
         .skip-link:focus {
-            top: 8px;
-            left: 8px;
+            width: auto;
+            height: auto;
+            margin: 0;
+            padding: 10px 16px;
+            overflow: visible;
+            clip: auto;
+            clip-path: none;
+            border: 1px solid var(--link-accent);
+            border-radius: 999px;
             outline: 3px solid var(--link-accent);
             outline-offset: 2px;
+            box-shadow: var(--soft-shadow-light);
         }
 
         body.dark-mode .skip-link {
             background: var(--panel-dark);
             color: var(--accent-dark);
-            border-color: var(--accent-dark);
         }
 
         body.dark-mode .skip-link:focus {
+            border-color: var(--accent-dark);
             outline-color: var(--accent-dark);
+            box-shadow: var(--soft-shadow-dark);
         }
 
         /* Visually hidden class for skip link - accessible to screen readers but not visible */
@@ -298,37 +420,65 @@
 
         body {
             margin: 0;
-            font: 14px/1.4 system-ui, sans-serif;
+            font: 400 16px/1.6 var(--ui-font);
             overflow: hidden;
-            background: var(--bg-light);
-            color: #222;
+            background:
+                radial-gradient(circle at top left, var(--page-glow-light-1), transparent 32rem),
+                radial-gradient(circle at 85% 15%, var(--page-glow-light-2), transparent 24rem),
+                linear-gradient(180deg, var(--bg-light-base), var(--bg-light));
+            color: #182127;
+            letter-spacing: 0.01em;
             transition: background 0.3s, color 0.3s;
         }
 
-        body.dark-mode {
-            background: var(--bg-dark);
-            color: var(--text-dark);
-            /* brighter teal for links in dark mode to improve contrast */
-            --link-accent: #00E6B2;
-            /* Slightly stronger translucency on dark for readability */
-            --panel-dark-translucent: rgba(35, 39, 47, 0.78);
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(to right, var(--grid-line-light) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line-light) 1px, transparent 1px);
+            background-size: 72px 72px;
+            opacity: 0.24;
+            mix-blend-mode: soft-light;
+            z-index: 0;
         }
 
-        body.dark-mode #topbar {
-            background: var(--bg-dark);
-            border-bottom: 1px solid var(--link-dark);
+        body.dark-mode {
+            background:
+                radial-gradient(circle at top left, var(--page-glow-dark-1), transparent 32rem),
+                radial-gradient(circle at 85% 15%, var(--page-glow-dark-2), transparent 24rem),
+                linear-gradient(180deg, var(--bg-dark), var(--bg-dark-base));
             color: var(--text-dark);
+            --link-accent: #4dd3c6;
+            --panel-dark-translucent: rgba(20, 40, 50, 0.86);
+        }
+
+        body.dark-mode::before {
+            background-image:
+                linear-gradient(to right, var(--grid-line-dark) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line-dark) 1px, transparent 1px);
+        }
+
+        html.embed-mode #darkModeLabel {
+            display: none !important;
+        }
+
+        html.embed-mode #topbar {
+            padding-left: calc(16px + env(safe-area-inset-left, 0px));
+            padding-right: calc(16px + env(safe-area-inset-right, 0px));
         }
 
         #chart {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: var(--bg-light);
+            background: var(--chart-bg-light);
         }
 
         body.dark-mode #chart {
-            background: var(--bg-dark);
+            background: var(--chart-bg-dark);
         }
 
         svg {
@@ -343,52 +493,61 @@
         /* Small-screen adjustments */
         @media (max-width: 600px) {
             #topbar {
-                /* keep items on one line; allow horizontal scroll if content exceeds width */
-                flex-wrap: nowrap;
-                gap: 8px;
-                padding: 8px 12px;
-                /* Reserve space for the fixed toggle using the runtime-updated var */
-                padding-left: calc(var(--controls-reserve, 140px) + env(safe-area-inset-left, 0px));
-                overflow-x: auto;
-                /* allow horizontal scroll if too many controls */
+                grid-template-columns: minmax(0, 1fr) auto;
+                grid-template-areas:
+                    "title actions"
+                    "controls controls";
+                gap: 10px 8px;
+                padding: 10px 12px;
+                padding-left: calc(12px + env(safe-area-inset-left, 0px));
+                padding-right: calc(12px + env(safe-area-inset-right, 0px));
                 -webkit-overflow-scrolling: touch;
-                /* Ensure top bar respects safe area insets on mobile */
-                padding-top: calc(8px + env(safe-area-inset-top, 0px));
-                justify-content: space-between;
-            }
-            
-            /* On mobile, dark mode is now in controls panel, no special positioning needed */
-
-            /* When the controls toggle is pinned fixed on small screens, reserve
-               space on the left so it doesn't visually overlap other topbar items
-               (iOS portrait frequently pins the toggle into the safe-area). */
-            /* Reserve horizontal space for the fixed controls toggle by offsetting the
-               first child (usually the page title). This avoids increasing the topbar's
-               vertical size or forcing wrapped lines on narrow screens. */
-            /* first-child margin removed; padding-left on #topbar now reserves space */
-            #topbar button {
-                min-width: 110px;
+                padding-top: calc(10px + env(safe-area-inset-top, 0px));
+                align-items: start;
             }
 
-            #topbar>* {
-                margin-right: 8px;
+            #topbarActions {
+                width: auto;
+                justify-content: flex-end;
+                align-self: start;
+                gap: 4px;
+                flex-wrap: nowrap;
+                min-width: 0;
             }
 
-            #topbar strong {
-                font-size: 16px;
+            #topbarTitle {
+                min-width: 0;
+                font-size: clamp(0.92rem, 4.2vw, 1.14rem);
+                line-height: 1.01;
+            }
+
+            #topbarTitle::before {
+                margin-bottom: 3px;
+                font-size: 0.55rem;
             }
 
             #topbar button {
-                padding: 8px 10px;
-                font-size: 15px;
-                min-height: 40px;
+                min-width: 0;
+            }
+
+            #topbar button {
+                padding: 7px 8px;
+                font-size: 11px;
+                min-height: 34px;
+            }
+
+            #aboutBtn,
+            #controlsToggle {
+                white-space: nowrap;
+                flex: 0 1 auto;
+                max-width: none;
             }
 
             .tooltip,
             .popup-help {
                 max-width: calc(100vw - 24px);
-                font-size: 15px;
-                padding: 10px;
+                font-size: 14px;
+                padding: 12px 14px;
             }
 
             .esv-credit {
@@ -404,25 +563,6 @@
                 display: none;
             }
 
-            /* Controls toggle and bottom-sheet */
-            /* make toggle fixed so it doesn't get scrolled/hidden on small screens */
-            #controlsToggle {
-                display: inline-block !important;
-                position: fixed !important;
-                left: 12px;
-                top: calc(env(safe-area-inset-top, 0px) + 8px);
-                z-index: 9000;
-                /* Stop vertical gestures on the fixed toggle from causing the visual viewport to shift */
-                touch-action: none;
-                -webkit-user-select: none;
-                user-select: none;
-            }
-
-            #controls {
-                display: none;
-                width: 100%;
-            }
-
             #controls.open {
                 display: flex;
                 flex-wrap: wrap;
@@ -434,10 +574,9 @@
                so a JS fallback doesn't render an unexpected white box that hides content. */
             body.dark-mode #controls.open,
             body.dark-mode #controls[style] {
-                /* Use translucent dark panel for see-through effect */
-                background: var(--panel-dark-translucent);
+                background: var(--controls-panel-dark);
                 color: var(--text-dark);
-                border: 1px solid rgba(255,255,255,0.06);
+                border: 1px solid var(--panel-stroke-dark);
             }
 
             /* bottom-sheet styles use the base .bottom-sheet rules (theme-aware) */
@@ -484,34 +623,49 @@
            extra left padding so the fixed toggle/panel doesn't overlap the main
            topbar content or the rounded device chrome (helps on iPhone landscape). */
         @media (max-width: 600px) and (orientation: landscape) {
-            #controlsToggle {
-                left: 12px;
-                /* base */
-                transform: translateX(-56px);
-                /* visual shift inward (left) */
-            }
-
-            /* increase reserved padding so the topbar content moves right and avoids overlap */
-            :root {
-                --controls-reserve: 220px;
-            }
-            
             /* Dark mode is in controls panel on mobile landscape, no special positioning needed */
         }
 
-        /* hide the large page title on small screens (we show controls instead) */
         @media (max-width: 600px) {
-            #topbar strong {
-                display: none;
+            #topbarTitle {
+                display: block;
             }
-
-            /* compact mobile controls panel will be positioned by JS to avoid overlapping the divider */
         }
 
-        /* hide the page title on large screens per user request */
+        @media (max-width: 600px) {
+            html.embed-mode #topbar {
+                gap: 8px 6px;
+                padding: 8px 8px 9px;
+                padding-left: calc(8px + env(safe-area-inset-left, 0px));
+                padding-right: calc(8px + env(safe-area-inset-right, 0px));
+                padding-top: calc(8px + env(safe-area-inset-top, 0px));
+            }
+
+            html.embed-mode #topbarActions {
+                gap: 3px;
+            }
+
+            html.embed-mode #topbarTitle {
+                font-size: clamp(0.86rem, 3.9vw, 1.02rem);
+                line-height: 1;
+            }
+
+            html.embed-mode #topbarTitle::before {
+                margin-bottom: 2px;
+                font-size: 0.5rem;
+                letter-spacing: 0.14em;
+            }
+
+            html.embed-mode #topbar button {
+                padding: 6px 7px;
+                font-size: 10px;
+                min-height: 32px;
+            }
+        }
+
         @media (min-width: 601px) {
-            #topbar strong {
-                display: none;
+            #topbarTitle {
+                display: block;
             }
         }
 
@@ -525,26 +679,21 @@
             top: 0;
             left: 0;
             right: 0;
-            width: 100%;
+            /* width: 100% is intentionally omitted — left:0 + right:0 already fills the
+               viewport. Adding width:100% with content-box sizing causes the padding to
+               push the box beyond the right edge, clipping the action buttons. */
         }
 
         /* Special positioning for larger screens */
         @media (min-width: 601px) {
             #topbar {
-                display: flex;
-                flex-wrap: nowrap;
-                align-items: center;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                grid-template-areas:
+                    "title actions"
+                    "controls controls";
                 padding-right: calc(24px + env(safe-area-inset-right, 0px)); /* Ensure enough padding on the right for the dark mode toggle */
             }
-            
-            #controlsToggle {
-                position: relative !important;
-                left: auto !important;
-                top: auto !important;
-                transform: none !important;
-            }
-            
-            /* Dark mode toggle will be in controls panel for desktop too */
         }
 
         /* Dark mode toggle is in controls panel for all screen sizes */
@@ -921,17 +1070,18 @@
         }
 
         .node text {
-            font-size: 12px;
+            font: 600 12px/1.35 var(--ui-font);
+            letter-spacing: 0.01em;
             dominant-baseline: middle;
             paint-order: stroke;
-            stroke: #fff;
+            stroke: rgba(255, 253, 248, 0.94);
             stroke-width: 4px;
             stroke-linejoin: round;
         }
 
         .node text tspan {
             paint-order: stroke;
-            stroke: #fff;
+            stroke: rgba(255, 253, 248, 0.94);
             stroke-width: 4px;
             stroke-linejoin: round;
         }
@@ -943,7 +1093,7 @@
 
         body.dark-mode .node text {
             fill: var(--text-dark) !important;
-            stroke: var(--bg-dark) !important;
+            stroke: rgba(9, 19, 27, 0.94) !important;
         }
 
         body.dark-mode .node text .label {
@@ -954,26 +1104,32 @@
         .tooltip {
             position: fixed;
             pointer-events: auto;
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 8px 10px;
-            border-radius: 6px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, .08);
-            max-width: 320px;
-            font-size: 13px;
+            background: var(--tooltip-bg-light);
+            border: 1px solid var(--tooltip-border-light);
+            padding: 12px 14px;
+            border-radius: 14px;
+            box-shadow: var(--tooltip-shadow-light);
+            max-width: min(360px, calc(100vw - 24px));
+            font: 500 12px/1.55 var(--ui-font);
+            color: #182127;
+            backdrop-filter: blur(14px) saturate(120%);
+            -webkit-backdrop-filter: blur(14px) saturate(120%);
             z-index: 1000;
         }
 
         .popup-help {
             position: fixed;
             pointer-events: auto;
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 8px 10px;
-            border-radius: 6px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, .08);
-            max-width: 320px;
-            font-size: 13px;
+            background: var(--tooltip-bg-light);
+            border: 1px solid var(--tooltip-border-light);
+            padding: 12px 14px;
+            border-radius: 14px;
+            box-shadow: var(--tooltip-shadow-light);
+            max-width: min(360px, calc(100vw - 24px));
+            font: 500 12px/1.55 var(--ui-font);
+            color: #182127;
+            backdrop-filter: blur(14px) saturate(120%);
+            -webkit-backdrop-filter: blur(14px) saturate(120%);
             z-index: 1001;
         }
 
@@ -982,7 +1138,7 @@
             background: var(--tooltip-bg-dark) !important;
             border: 1px solid var(--tooltip-border-dark) !important;
             color: var(--text-dark) !important;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.32) !important;
+            box-shadow: var(--tooltip-shadow-dark) !important;
         }
 
         /* Tooltip / popup links: use the shared --link-accent variable so we can
@@ -999,24 +1155,23 @@
 
         .tooltip a:hover,
         .popup-help a:hover {
-            /* slightly stronger on hover; still derived from the accent variable where appropriate */
             color: var(--node-hover-stroke-dark) !important;
-            background-color: rgba(0, 116, 217, 0.08);
+            background-color: rgba(45, 124, 140, 0.10);
         }
 
         /* Keyboard focus styles for links in popups */
         .tooltip a:focus,
         .popup-help a:focus {
-            outline: 2px solid #0074d9;
+            outline: 2px solid var(--link-accent);
             outline-offset: 2px;
-            background-color: rgba(0, 116, 217, 0.12);
+            background-color: rgba(45, 124, 140, 0.14);
         }
 
         body.dark-mode .tooltip a:focus,
         body.dark-mode .popup-help a:focus {
-            outline: 2px solid #00E6B2;
+            outline: 2px solid var(--accent-dark);
             outline-offset: 2px;
-            background-color: rgba(0, 230, 178, 0.12);
+            background-color: rgba(77, 211, 198, 0.14);
         }
 
         /* Modal links should use the shared link accent so they look correct in dark mode */
@@ -1122,13 +1277,15 @@
 
     <header>
         <div id="topbar">
-            <strong id="topbarTitle" style="font-size:18px; letter-spacing:0.5px; margin-right:16px;"></strong>
-        <button id="aboutBtn" aria-haspopup="dialog" style="display:none">About</button>
+            <strong id="topbarTitle"></strong>
+        <div id="topbarActions">
         <button id="controlsToggle" aria-expanded="false">Controls <span class="controls-icon" aria-hidden="true"><svg
                     viewBox="0 0 24 24" focusable="false" aria-hidden="true">
                     <path d="M6 9l6 6 6-6"></path>
                 </svg></span></button>
-        <div id="controls" style="display:flex; align-items:center; gap:12px;">
+        <button id="aboutBtn" aria-haspopup="dialog" style="display:none">About</button>
+        </div>
+        <div id="controls">
             <label style="display:none;"><input type="checkbox" id="wrap"> Wrap labels</label>
             <label><input type="checkbox" id="clusterToggle"> Cluster layout</label>
             <label style="display:none;">Node size: <input type="range" id="nodesize" min="10" max="100"
@@ -1177,6 +1334,54 @@
     <!-- D3 v7 -->
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script>
+        const params = new URLSearchParams(window.location.search);
+        const isEmbedMode = params.get('embed') === '1';
+        const requestedTheme = params.get('theme');
+        const themeMessageType = 'pv-theme';
+        const embedStateMessageType = 'pv-embed-state';
+        const sharedThemeKey = 'parallax-theme';
+        const legacyThemeKey = 'pv_theme';
+
+        if (isEmbedMode) {
+            document.documentElement.classList.add('embed-mode');
+        }
+
+        function readStoredTheme() {
+            try {
+                return localStorage.getItem(sharedThemeKey) || localStorage.getItem(legacyThemeKey);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function storeTheme(theme) {
+            try {
+                localStorage.setItem(sharedThemeKey, theme);
+                localStorage.setItem(legacyThemeKey, theme);
+            } catch (error) { /* non-fatal */ }
+        }
+
+        function getInitialTheme() {
+            if (requestedTheme === 'light' || requestedTheme === 'dark') return requestedTheme;
+            const stored = readStoredTheme();
+            if (stored === 'light' || stored === 'dark') return stored;
+            return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+        }
+
+        function applyTheme(theme) {
+            if (theme !== 'light' && theme !== 'dark') return;
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            document.body.classList.toggle('dark-mode', theme === 'dark');
+            if (darkModeToggle) {
+                darkModeToggle.checked = theme === 'dark';
+            }
+            const themeMeta = document.querySelector('meta[name="theme-color"]');
+            if (themeMeta) {
+                themeMeta.setAttribute('content', theme === 'dark' ? '#09131b' : '#fffaf2');
+            }
+            try { syncControlsPanelTheme(); } catch (error) { /* non-fatal */ }
+        }
+
         async function init() {
             // Resolve data file: prefer ?data= URL param, fall back to a sensible default
             const dataPath = (new URLSearchParams(window.location.search)).get('data')
@@ -1186,6 +1391,7 @@
 
             // Apply optional meta configuration from the JSON root
             const meta = data.meta || {};
+            applyTheme(getInitialTheme());
             if (meta.pageTitle) document.title = meta.pageTitle;
             const topbarTitleEl = document.getElementById('topbarTitle');
             if (topbarTitleEl) topbarTitleEl.textContent = meta.topbarTitle || '';
@@ -1208,6 +1414,7 @@
             const container = document.getElementById('chart');
             let width = container.clientWidth;
             let height = container.clientHeight;
+            let svg = null;
 
             // Skip link: jump straight into the tree for keyboard/screen-reader users
             const skipLink = document.querySelector('a.skip-link');
@@ -1253,8 +1460,10 @@
                 
                 width = chartEl.clientWidth;
                 height = chartEl.clientHeight;
-                svg.attr('width', width).attr('height', height)
-                    .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } });
+                if (svg) {
+                    svg.attr('width', width).attr('height', height)
+                        .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } });
+                }
             }
 
             // Create bottom-sheet element for mobile node details
@@ -1475,83 +1684,62 @@
             // Controls toggle for small screens
             const controlsToggle = document.getElementById('controlsToggle');
             const controls = document.getElementById('controls');
+            function resetControlsFloatingStyles() {
+                if (!controls) return;
+                controls.style.position = '';
+                controls.style.left = '';
+                controls.style.right = '';
+                controls.style.top = '';
+                controls.style.background = '';
+                controls.style.color = '';
+                controls.style.border = '';
+                controls.style.padding = '';
+                controls.style.borderRadius = '';
+                controls.style.boxShadow = '';
+                controls.style.maxWidth = '';
+                controls.style.maxHeight = '';
+                controls.style.overflow = '';
+                controls.style.zIndex = '';
+                controls.style.backdropFilter = '';
+                controls.style.alignItems = '';
+                controls.style.gap = '';
+            }
+
             function updateControlsVisibility() {
-                const isSmall = isMobileLike();
-                // rely on CSS for toggle visibility to avoid inline style flashing
-                if (!isSmall) { controls.classList.add('open'); controls.style.display = 'flex'; }
-                else { controls.classList.remove('open'); controls.style.display = 'none'; }
-                // Ensure the toggle's aria-expanded reflects the actual state so the
-                // chevron icon rotates correctly (desktop shows controls by default).
+                resetControlsFloatingStyles();
+                controls.classList.remove('open');
+                controls.style.display = 'none';
                 try {
-                    controlsToggle.setAttribute('aria-expanded', !isSmall ? 'true' : 'false');
+                    controlsToggle.setAttribute('aria-expanded', 'false');
                 } catch (e) { /* non-fatal */ }
+                computeChartHeight();
             }
             // Apply small, conservative UI tweaks for mobile-like devices so controls and footer
-            // don't overlap the chart. Pin the toggle only on portrait mobile devices.
+            // don't overlap the chart.
             function applyMobileLikeUI() {
                 try {
                     const mobile = isMobileLike();
-                    const isPortrait = (window.visualViewport ? (window.visualViewport.height > window.visualViewport.width) : (window.innerHeight > window.innerWidth));
                     // hide footer credit on mobile-like screens to avoid covering content
                     const esv = document.querySelector('.esv-credit');
                     if (esv) esv.style.display = mobile ? 'none' : '';
 
-                    // ensure controls toggle is reachable: pin it to safe area on portrait mobile
                     const ctrl = document.getElementById('controlsToggle');
                     if (!ctrl) return;
-                    if (mobile && isPortrait) {
-                        ctrl.style.display = 'inline-block';
-                        ctrl.style.position = 'fixed';
-                        ctrl.style.left = '12px';
-                        // vertical position will be computed and centered
-                        positionControlsToggle();
-                        ctrl.style.zIndex = 9000;
-                    } else {
-                        // reset inline positioning
-                        ctrl.style.position = '';
-                        ctrl.style.left = '';
-                        ctrl.style.top = '';
-                        ctrl.style.zIndex = '';
-                        ctrl.style.display = '';
-                    }
+                    ctrl.style.position = '';
+                    ctrl.style.left = '';
+                    ctrl.style.right = '';
+                    ctrl.style.top = '';
+                    ctrl.style.zIndex = '';
+                    ctrl.style.display = '';
                 } catch (e) { /* non-fatal */ }
             }
-            // Position the fixed controls toggle vertically centered to the topbar
+            // Legacy hook retained because other resize paths call it.
             function positionControlsToggle() {
-                try {
-                    const btn = document.getElementById('controlsToggle');
-                    const topbar = document.getElementById('topbar');
-                    if (!btn || !topbar) return;
-                    // measure and compute centered top relative to viewport
-                    const tbRect = topbar.getBoundingClientRect();
-                    const btnRect = btn.getBoundingClientRect();
-                    // center within topbar
-                    const centeredTop = tbRect.top + Math.max(0, (tbRect.height - btnRect.height) / 2);
-                    // ensure the value is within the visual viewport if available
-                    const vpOffset = (window.visualViewport && window.visualViewport.offsetTop) ? window.visualViewport.offsetTop : 0;
-                    const finalTop = Math.max(centeredTop, vpOffset + 6);
-                    btn.style.top = finalTop + 'px';
-                } catch (e) { /* non-fatal */ }
+                return;
             }
-            // Compute and set the CSS variable that reserves space for the fixed toggle.
+            // Legacy hook retained because other resize paths call it.
             function updateControlsReserve() {
-                try {
-                    const root = document.documentElement;
-                    const btn = document.getElementById('controlsToggle');
-                    if (!btn) {
-                        root.style.removeProperty('--controls-reserve');
-                        return;
-                    }
-                    // Measure the rendered width and include horizontal margins via computed style.
-                    const rect = btn.getBoundingClientRect();
-                    const cs = window.getComputedStyle(btn);
-                    const marginLeft = parseFloat(cs.marginLeft) || 0;
-                    const marginRight = parseFloat(cs.marginRight) || 0;
-                    // Add a slightly larger safety gap to avoid overlap on devices with shadow/blur
-                    const safety = 28;
-                    const reserve = Math.ceil(rect.width + marginLeft + marginRight + safety);
-                    root.style.setProperty('--controls-reserve', reserve + 'px');
-                } catch (e) { /* non-fatal */ }
+                return;
             }
 
             // Update reserve on relevant events
@@ -1565,99 +1753,13 @@
             // call initially after a short delay to ensure styles computed
             setTimeout(updateControlsReserve, 220);
             controlsToggle.addEventListener('click', () => {
-                const open = controls.classList.toggle('open');
+                const open = !controls.classList.contains('open');
+                controls.classList.toggle('open', open);
+                resetControlsFloatingStyles();
                 controls.style.display = open ? 'flex' : 'none';
                 controlsToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-                // position controls right below topbar on small screens
-                const isSmall = isMobileLike();
-                if (isSmall && open) {
-                    // anchor the panel to the controls toggle so it appears directly under the button
-                    const toggleRect = controlsToggle.getBoundingClientRect();
-                    controls.style.position = 'fixed';
-                    // Compute base left from the toggle. On small devices in landscape
-                    // the toggle may sit near the left edge or under UI chrome — add a
-                    // small extra offset in that case so the panel doesn't collide with
-                    // the rounded viewport edges / browser chrome (iPhone notch/home).
-                    let leftPos = Math.max(8, toggleRect.left);
-                    try {
-                        if (window.matchMedia && window.matchMedia('(orientation: landscape)').matches) {
-                            // shift slightly to the right in landscape on small screens
-                            leftPos -= 64; // tuned empirically; conservative value
-                        }
-                    } catch (e) { /* non-fatal */ }
-                    controls.style.left = leftPos + 'px';
-                    controls.style.top = (toggleRect.bottom + 6) + 'px';
-                    // Translucent, blurred floating panel with subtle accent gradient
-                    // Use dark panel variable when in dark mode to avoid a white flash on open
-                    const isDark = document.body && document.body.classList && document.body.classList.contains('dark-mode');
-                    controls.style.background = isDark
-                        ? 'linear-gradient(90deg, rgba(0,191,174,0.08), rgba(0,116,217,0.08)), var(--panel-dark-translucent)'
-                        : 'linear-gradient(90deg, rgba(0,191,174,0.08), rgba(0,116,217,0.08)), var(--panel-light-translucent)';
-                    controls.style.color = isDark ? 'var(--text-dark)' : '';
-                    controls.style.border = isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.06)';
-                    controls.style.padding = '8px';
-                    controls.style.borderRadius = '10px';
-                    controls.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)';
-                    controls.style.maxWidth = 'calc(100vw - 32px)';
-                    // limit height so it doesn't sit on top of the tree; allow internal scrolling
-                    controls.style.maxHeight = '38vh';
-                    controls.style.overflow = 'auto';
-                    controls.style.zIndex = 8600;
-                    controls.style.backdropFilter = 'blur(10px) saturate(80%)';
-                } else {
-                    // reset inline positioning
-                    controls.style.position = '';
-                    controls.style.left = '';
-                    controls.style.top = '';
-                    controls.style.background = '';
-                    controls.style.color = '';
-                    controls.style.border = '';
-                    controls.style.padding = '';
-                    controls.style.borderRadius = '';
-                    controls.style.boxShadow = '';
-                    controls.style.maxWidth = '';
-                    controls.style.zIndex = '';
-                }
-                // Fallback: some browsers (mobile Safari when zoomed) can render the
-                // control panel invisible due to odd hit-testing or CSS. If the
-                // controls are still not visible after toggling, force a fixed,
-                // visible panel anchored to the toggle as a safe fallback.
-                setTimeout(() => {
-                    try {
-                        const cs = window.getComputedStyle(controls);
-                        const rect = controls.getBoundingClientRect();
-                        const hidden = (!controls || cs.display === 'none' || rect.width === 0 || rect.height === 0 || controls.offsetParent === null);
-                        if (open && hidden) {
-                            const toggleRect = controlsToggle.getBoundingClientRect();
-                            const isDark = document.body && document.body.classList && document.body.classList.contains('dark-mode');
-                            controls.style.position = 'fixed';
-                            controls.style.left = Math.max(8, toggleRect.left) + 'px';
-                            controls.style.top = (toggleRect.bottom + 6) + 'px';
-                            controls.style.display = 'flex';
-                            // Use appropriate background/border for dark-mode so content is visible
-                            if (isDark) {
-                                controls.style.background = 'linear-gradient(90deg, rgba(0,191,174,0.08), rgba(0,116,217,0.08)), var(--panel-dark-translucent)';
-                                controls.style.color = 'var(--text-dark)';
-                                controls.style.border = '1px solid rgba(255,255,255,0.06)';
-                            } else {
-                                controls.style.background = 'linear-gradient(90deg, rgba(0,191,174,0.08), rgba(0,116,217,0.08)), var(--panel-light-translucent)';
-                                controls.style.color = '';
-                                controls.style.border = '1px solid rgba(0,0,0,0.06)';
-                            }
-                            controls.style.backdropFilter = 'blur(10px) saturate(80%)';
-                            controls.style.padding = '8px';
-                            controls.style.borderRadius = '10px';
-                            controls.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)';
-                            controls.style.maxWidth = 'calc(100vw - 32px)';
-                            controls.style.maxHeight = '48vh';
-                            controls.style.overflow = 'auto';
-                            controls.style.zIndex = 9999;
-                            // Ensure children are laid out and visible
-                            controls.style.alignItems = 'center';
-                            controls.style.gap = '8px';
-                        }
-                    } catch (e) { /* non-fatal */ }
-                }, 60);
+                computeChartHeight();
+                setTimeout(computeChartHeight, 40);
             });
             updateControlsVisibility();
             // initial application of mobile-like UI tweaks
@@ -1666,7 +1768,7 @@
             if (typeof updateControlsReserve === 'function') updateControlsReserve();
             if (typeof positionControlsToggle === 'function') positionControlsToggle();
 
-            const svg = d3.select("#chart").append("svg")
+            svg = d3.select("#chart").append("svg")
                 .attr("width", width).attr("height", height)
                 .attr('role', 'none');
 
@@ -3355,35 +3457,42 @@
             try {
                 const controlsEl = document.getElementById('controls');
                 if (!controlsEl) return;
-                // Consider it open if it has the open class or is displayed as flex
-                const isOpen = controlsEl.classList.contains('open') || window.getComputedStyle(controlsEl).display === 'flex';
-                if (!isOpen) return;
-                const isDark = document.body.classList.contains('dark-mode');
-                if (isDark) {
-                    controlsEl.style.background = 'linear-gradient(90deg, rgba(0,191,174,0.08), rgba(0,116,217,0.08)), var(--panel-dark-translucent)';
-                    controlsEl.style.color = 'var(--text-dark)';
-                    controlsEl.style.border = '1px solid rgba(255,255,255,0.06)';
-                } else {
-                    controlsEl.style.background = 'linear-gradient(90deg, rgba(0,191,174,0.08), rgba(0,116,217,0.08)), var(--panel-light-translucent)';
-                    controlsEl.style.color = '';
-                    controlsEl.style.border = '1px solid rgba(0,0,0,0.06)';
-                }
-                controlsEl.style.backdropFilter = 'blur(10px) saturate(80%)';
+                controlsEl.style.background = '';
+                controlsEl.style.color = '';
+                controlsEl.style.border = '';
+                controlsEl.style.backdropFilter = '';
             } catch (e) { /* non-fatal */ }
         }
         
         // Set initial state
         if (darkModeToggle) {
-            darkModeToggle.checked = true;
-            document.body.classList.add('dark-mode');
+            applyTheme(getInitialTheme());
             
             // Add event listener
             darkModeToggle.addEventListener('change', function () {
-                document.body.classList.toggle('dark-mode', darkModeToggle.checked);
-                // If the controls panel is open, update its background immediately
-                syncControlsPanelTheme();
+                const nextTheme = darkModeToggle.checked ? 'dark' : 'light';
+                applyTheme(nextTheme);
+                if (!isEmbedMode) {
+                    storeTheme(nextTheme);
+                }
             });
         }
+
+        window.addEventListener('message', (event) => {
+            if (!event.data) return;
+            if (window.location.origin !== 'null' && event.origin !== window.location.origin) return;
+            if (event.data.type === themeMessageType) {
+                const incomingTheme = event.data.theme;
+                if (incomingTheme === 'light' || incomingTheme === 'dark') {
+                    applyTheme(incomingTheme);
+                }
+                return;
+            }
+            if (event.data.type === embedStateMessageType) {
+                setTimeout(() => window.dispatchEvent(new Event('resize')), 30);
+                setTimeout(() => window.dispatchEvent(new Event('resize')), 180);
+            }
+        });
 
         // About modal behavior
         (function () {

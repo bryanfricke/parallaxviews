@@ -1,0 +1,251 @@
+{
+  "id": "LCA",
+  "kind": "root",
+  "label": "Leibniz’s Cosmological Argument",
+  "text": "Leibniz’s Cosmological Argument",
+  "relToParent": null,
+  "children": [
+    {
+      "id": "L_P1",
+      "kind": "premise",
+      "label": "P1 — Every existing thing has an explanation of its existence",
+      "text": "P1 — Every existing thing has an explanation of its existence, either in the necessity of its own nature or in an external cause.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "L_P1S1",
+          "kind": "support",
+          "label": "Premise 1 states a self-evident explanatory principle",
+          "text": "In ordinary reasoning, when we encounter a contingent thing, we naturally look for an explanation rather than treat it as inexplicable. Premise 1 expresses that basic rational intuition.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "L_P1I1",
+              "kind": "illustration",
+              "label": "Richard Taylor’s ball in the woods",
+              "text": "If you found a translucent ball lying in the forest, you would naturally ask why it exists rather than dismiss it as inexplicable. The example makes the explanatory principle in premise 1 feel immediate and self-evident.",
+              "relToParent": "supports",
+              "children": []
+            },
+            {
+              "id": "L_O1",
+              "kind": "objection",
+              "label": "The universe is the exception to the rule",
+              "text": "A common response grants explanations for things within the universe while treating the universe itself as a brute fact that needs no explanation.",
+              "relToParent": "attacks",
+              "children": [
+                {
+                  "id": "L_R1",
+                  "kind": "rebuttal",
+                  "label": "That is the taxicab fallacy",
+                  "text": "Stopping explanatory reasoning exactly at the universe is arbitrary. Merely enlarging the object from a ball in the woods to the whole universe does not remove the need for explanation or cancel contingency.",
+                  "relToParent": "rebuts",
+                  "children": [
+                    {
+                      "id": "L_O2",
+                      "kind": "objection",
+                      "label": "Stopping at the universe is not arbitrary",
+                      "text": "If the universe did not exist, there would be nothing at all, and nothingness cannot explain anything. So the universe may be the natural stopping point for explanation.",
+                      "relToParent": "attacks",
+                      "children": [
+                        {
+                          "id": "L_R2",
+                          "kind": "rebuttal",
+                          "label": "That objection assumes atheism from the start",
+                          "text": "The claim that no universe means nothingness already assumes that reality contains nothing beyond the universe. Leibniz’s proposal is instead that the prior explanatory ground is God and his will.",
+                          "relToParent": "rebuts",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "L_P1S2",
+          "kind": "support",
+          "label": "Necessary beings differ from contingent beings",
+          "text": "Leibniz distinguishes beings that exist by a necessity of their own nature from contingent beings that could have failed to exist. Contingent beings therefore require an explanation outside themselves.",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "L_P1S3",
+          "kind": "support",
+          "label": "Past-eternity would not make the universe necessary",
+          "text": "Even if the universe had no temporal beginning, Leibniz’s question would remain: why is there something rather than nothing? An eternal universe could still have failed to exist.",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "L_O3A",
+          "kind": "objection",
+          "label": "If everything needs an explanation, then God needs one too",
+          "text": "An objection says that if everything must have an explanation, then appealing to God does not solve the problem because God would also require an explanation.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "L_R3A",
+              "kind": "rebuttal",
+              "label": "Premise 1 allows explanation by necessity of nature",
+              "text": "Premise 1 does not say that every being has an external cause. It says that a thing is explained either by the necessity of its own nature or by an external cause. On this view, God is explained by metaphysical necessity rather than as a contingent being needing a further cause.",
+              "relToParent": "rebuts",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "L_P2",
+      "kind": "premise",
+      "label": "P2 — If the universe has an explanation of its existence, that explanation is God",
+      "text": "P2 — If the universe has an explanation of its existence, that explanation is God; more modestly, a metaphysically necessary, transcendent personal being.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "L_P2S1",
+          "kind": "support",
+          "label": "The atheist often grants the equivalent conditional",
+          "text": "When the atheist says that if atheism is true the universe has no explanation, he is implicitly granting the contraposed point that if the universe does have an explanation, atheism is false and God exists.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "L_O3",
+              "kind": "objection",
+              "label": "Perhaps the universe exists by a necessity of its own nature",
+              "text": "The atheist could avoid God by claiming that the universe itself is the metaphysically necessary reality that explains everything else.",
+              "relToParent": "attacks",
+              "children": [
+                {
+                  "id": "L_R3",
+                  "kind": "rebuttal",
+                  "label": "The universe looks contingent, not necessary",
+                  "text": "The universe is a collection of things like stars, galaxies, radiation, and particles that all appear capable of not existing. Treating that whole collection as metaphysically necessary is implausible.",
+                  "relToParent": "rebuts",
+                  "children": [
+                    {
+                      "id": "L_O4",
+                      "kind": "objection",
+                      "label": "Maybe matter is necessary even if its configurations are contingent",
+                      "text": "Perhaps stars and planets are contingent arrangements, but the underlying matter exists necessarily in different forms.",
+                      "relToParent": "attacks",
+                      "children": [
+                        {
+                          "id": "L_R4",
+                          "kind": "rebuttal",
+                          "label": "Matter bottoms out in fundamental particles",
+                          "text": "On standard physics, matter is composed of fundamental particles such as quarks and electrons. If those particles could have been different in number or identity, matter itself is not shown to be necessary.",
+                          "relToParent": "rebuts",
+                          "children": [
+                            {
+                              "id": "L_P2I1",
+                              "kind": "illustration",
+                              "label": "Different material composition means a different object",
+                              "text": "Shoes made of steel would not be the very same shoes made of leather and rubber. Likewise, a universe composed of a different collection of fundamental particles would be a different universe.",
+                              "relToParent": "supports",
+                              "children": [
+                                {
+                                  "id": "L_O5",
+                                  "kind": "objection",
+                                  "label": "But an object can stay the same while its matter is recycled",
+                                  "text": "Human bodies replace their matter over time while remaining numerically the same, so perhaps the same universe could exist with different particles.",
+                                  "relToParent": "attacks",
+                                  "children": [
+                                    {
+                                      "id": "L_R5",
+                                      "kind": "rebuttal",
+                                      "label": "Possible-world comparison is not intrinsic change",
+                                      "text": "Across possible worlds there is no enduring universe-subject persisting through replacement. Without that kind of intrinsic change, wholly different constituent matter implies a numerically different universe.",
+                                      "relToParent": "rebuts",
+                                      "children": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "L_P2S2",
+          "kind": "support",
+          "label": "The explanation must transcend space, time, matter, and energy",
+          "text": "Because the universe includes all physical space-time reality, any explanation of the universe must be non-physical, immaterial, spaceless, and timeless rather than another item within the cosmos.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "L_P2S3",
+              "kind": "support",
+              "label": "Only two live candidates: abstract object or unembodied mind",
+              "text": "The sort of entity that could fit this description seems limited to either an abstract object or an unembodied mind or consciousness.",
+              "relToParent": "supports",
+              "children": [
+                {
+                  "id": "L_P2S4",
+                  "kind": "support",
+                  "label": "Abstract objects are causally impotent",
+                  "text": "Numbers and other abstract objects do not stand in causal relations. If the universe has an explanation, it therefore cannot be an abstract object and must instead be an unembodied mind or person.",
+                  "relToParent": "supports",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "L_P2S5",
+          "kind": "support",
+          "label": "A contingent universe is better explained by personal agency",
+          "text": "If a necessary cause operated impersonally with sufficient conditions eternally in place, its effect would exist necessarily as well. A contingent universe is better explained by a free personal agent who can choose to create.",
+          "relToParent": "supports",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "L_P3",
+      "kind": "premise",
+      "label": "P3 — The universe is an existing thing",
+      "text": "P3 — The universe exists.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "L_P3S1",
+          "kind": "support",
+          "label": "This premise is effectively undeniable",
+          "text": "The dispute in the argument is not over whether the universe exists, but over what sort of explanation its existence requires.",
+          "relToParent": "supports",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "L_C",
+      "kind": "conclusion",
+      "label": "∴ The explanation of the existence of the universe is God",
+      "text": "∴ Therefore, the explanation of the existence of the universe is God: a metaphysically necessary, transcendent, immaterial, spaceless, timeless, personal being.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "L_CS1",
+          "kind": "support",
+          "label": "The inference is deductively valid",
+          "text": "If premises 1 through 3 are true, the conclusion follows necessarily. The key disputes are therefore over the truth of premises 1 and 2, not the logic of the argument.",
+          "relToParent": "supports",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

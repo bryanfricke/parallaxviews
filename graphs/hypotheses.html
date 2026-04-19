@@ -7,23 +7,89 @@
   <title>Resurrection Hypotheses</title>
   <style>
     :root {
-      --bg: #ffffff;
-      --ink: #1f2937;
-      --muted: #6b7280;
-      --line: #e5e7eb;
-      --accent: #334155;
-      --primary: #0b5fff;
-      --primary-600: #084fd6;
-      --panel-bg: #ffffff;
-      --modal-shadow: 0 20px 60px rgba(0, 0, 0, .2);
+      /* shared palette – dark (default) matches kalam2 / minimalFactsTidyTree */
+      color-scheme: dark;
+      --bg0: #09131b;
+      --bg1: #10212a;
+      --ink: #edf5f3;
+      --muted: #b6c7c8;
+      --muted-soft: #8ea1a4;
+      --line: rgba(237, 245, 243, 0.12);
+      --accent: #4dd3c6;
+      --accent-deep: #8cded6;
+      --primary: #4dd3c6;
+      --primary-600: #2d7c8c;
+      --panel-bg: rgba(20, 40, 50, 0.94);
+      --panel-stroke: rgba(237, 245, 243, 0.12);
+      --surface-muted: rgba(16, 38, 48, 0.92);
+      --button-bg: rgba(16, 38, 48, 0.92);
+      --button-bg-hover: rgba(20, 50, 63, 0.96);
+      --button-border: rgba(237, 245, 243, 0.12);
+      --hover-border: rgba(77, 211, 198, 0.22);
+      --soft-shadow: 0 18px 42px rgba(0, 0, 0, 0.30);
+      --modal-shadow: 0 28px 90px rgba(0, 0, 0, 0.52);
+      --tip-bg: rgba(20, 40, 50, 0.94);
+      --tip-border: rgba(237, 245, 243, 0.12);
+      --tip-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+      --sheet-bg: rgba(20, 40, 50, 0.98);
+      --cell-mid: #7b8794;
+      --cell-high: #a3b0c0;
+      --control-accent: #4dd3c6;
+      --page-glow-1: rgba(77, 211, 198, 0.14);
+      --page-glow-2: rgba(235, 191, 104, 0.10);
+      --grid-line: rgba(255, 255, 255, 0.03);
+      --chart-bg:
+        radial-gradient(circle at 16% 14%, rgba(77, 211, 198, 0.12), transparent 24rem),
+        radial-gradient(circle at 82% 12%, rgba(235, 191, 104, 0.10), transparent 20rem),
+        linear-gradient(180deg, rgba(16, 33, 41, 0.98), rgba(11, 24, 31, 0.92));
+      --header-tint: linear-gradient(180deg, rgba(9, 19, 27, 0.48), rgba(9, 19, 27, 0.18));
+      --halo-shine: rgba(255, 255, 255, 0.05);
+    }
+
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg0: #f5efe4;
+      --bg1: #fffaf2;
+      --ink: #182127;
+      --muted: #5b6870;
+      --muted-soft: #6d7b83;
+      --line: rgba(24, 33, 39, 0.12);
+      --accent: #0d8f86;
+      --accent-deep: #2d7c8c;
+      --primary: #0d8f86;
+      --primary-600: #0a5c69;
+      --panel-bg: rgba(255, 253, 248, 0.98);
+      --panel-stroke: rgba(24, 33, 39, 0.12);
+      --surface-muted: rgba(250, 243, 232, 0.94);
+      --button-bg: rgba(250, 243, 232, 0.94);
+      --button-bg-hover: rgba(255, 253, 248, 0.98);
+      --button-border: rgba(24, 33, 39, 0.12);
+      --hover-border: rgba(13, 143, 134, 0.22);
+      --soft-shadow: 0 16px 40px rgba(25, 40, 48, 0.08);
+      --modal-shadow: 0 24px 80px rgba(25, 40, 48, 0.18);
+      --tip-bg: rgba(255, 253, 248, 0.98);
+      --tip-border: rgba(24, 33, 39, 0.12);
+      --tip-shadow: 0 24px 80px rgba(25, 40, 48, 0.16);
+      --sheet-bg: rgba(255, 253, 248, 0.98);
       --cell-mid: #9ca3af;
       --cell-high: #374151;
-      --control-accent: #111
+      --control-accent: #0d8f86;
+      --page-glow-1: rgba(13, 143, 134, 0.14);
+      --page-glow-2: rgba(194, 144, 44, 0.12);
+      --grid-line: rgba(24, 33, 39, 0.04);
+      --chart-bg:
+        radial-gradient(circle at 18% 14%, rgba(13, 143, 134, 0.12), transparent 24rem),
+        radial-gradient(circle at 84% 12%, rgba(194, 144, 44, 0.12), transparent 20rem),
+        linear-gradient(180deg, rgba(255, 250, 242, 0.98), rgba(244, 250, 248, 0.92));
+      --header-tint: linear-gradient(180deg, rgba(255, 252, 247, 0.86), rgba(255, 252, 247, 0.56));
+      --halo-shine: rgba(255, 255, 255, 0.42);
     }
+
+    *, *::before, *::after { box-sizing: border-box; }
 
     html,
     body {
-      height: 100%
+      height: 100%;
     }
 
     /* Reserve scrollbar gutter to avoid layout shifts when scrollbars appear/disappear */
@@ -33,51 +99,116 @@
 
     body {
       margin: 0;
-      font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
+      font: 400 16px/1.6 "Avenir Next", "Segoe UI Variable", "Segoe UI", "Helvetica Neue", sans-serif;
+      letter-spacing: 0.01em;
       color: var(--ink);
-      background: var(--bg);
-      overflow: hidden
+      background:
+        radial-gradient(circle at top left, var(--page-glow-1), transparent 32rem),
+        radial-gradient(circle at 85% 15%, var(--page-glow-2), transparent 24rem),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+      background-size: 72px 72px;
+      opacity: 0.28;
+      mix-blend-mode: soft-light;
+      z-index: 0;
     }
 
     #topbar {
       position: sticky;
       top: 0;
       z-index: 10;
-      background: var(--bg);
-      border-bottom: 1px solid var(--line);
-      padding: 10px 14px;
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "title actions" "controls controls";
       align-items: flex-start;
-      flex-wrap: nowrap;
-      flex-direction: column;
-      gap: 0
+      gap: 12px 14px;
+      padding: 16px 24px 14px;
+      background: var(--header-tint);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--panel-stroke);
+      box-shadow: var(--soft-shadow);
     }
 
-    #topbar h1 {
-      font-size: 16px;
-      margin: 0 12px 0 0;
-      font-weight: 600;
-      color: var(--accent)
+    #topbarTitle {
+      display: block;
+      grid-area: title;
+      min-width: 0;
+      margin: 0;
+      color: var(--ink);
+      font: 600 clamp(1.22rem, 1.02rem + 0.74vw, 1.56rem)/1.08 "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      letter-spacing: 0.01em;
     }
 
-    .topbar-primary {
+    #topbarTitle::before {
+      content: "Hypothesis Analysis";
+      display: block;
+      margin-bottom: 6px;
+      color: var(--accent);
+      font: 700 0.72rem/1 "Avenir Next", "Segoe UI Variable", "Segoe UI", "Helvetica Neue", sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    #topbarActions {
+      grid-area: actions;
       display: flex;
       align-items: center;
-      width: 100%;
-      min-height: 56px
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-width: 0;
     }
 
     #controlsToggle {
-      display: none;
-      margin-left: auto
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* Mobile-only variant for buttons that should appear in the primary row on small screens */
+    #controlsToggle .controls-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+      transition: transform 160ms ease;
+      transform-origin: center;
+      height: 1em;
+    }
+
+    #controlsToggle[aria-expanded="true"] .controls-icon {
+      transform: rotate(180deg);
+    }
+
+    #controlsToggle .controls-icon svg {
+      width: 0.88em;
+      height: 0.88em;
+      display: inline-block;
+      vertical-align: middle;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Mobile-only variant for buttons that should appear in the actions row on small screens */
     .mobile-only {
       display: none;
     }
 
     #controls-panel {
+      grid-area: controls;
       display: flex;
       gap: 16px;
       align-items: center;
@@ -86,20 +217,14 @@
       padding: 6px 0 4px 0
     }
 
-    /* Mobile layout: collapse panel without moving primary row */
+    /* Mobile layout: collapse controls panel */
     @media (max-width:768px) {
       #topbar {
-        padding: 10px 14px 6px 14px
+        padding: 10px 14px 6px 14px;
+        gap: 6px 10px;
       }
 
-      #controlsToggle {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        font-weight: 500
-      }
-
-      /* Show the mobile-only facts button in the topbar and hide the one inside the controls panel */
+      /* Show the mobile-only facts button in the actions row */
       .mobile-only {
         display: inline-flex;
         align-items: center;
@@ -130,18 +255,10 @@
       }
     }
 
-    /* Desktop: row layout with hypothesis pills on separate line */
+    /* Desktop: show full controls panel inline */
     @media (min-width:769px) {
-      #topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        padding: 10px 14px;
-      }
-
-      .topbar-primary {
-        width: 100%;
-        min-height: auto
+      #controlsToggle {
+        display: none;
       }
 
       #controls-panel {
@@ -155,10 +272,49 @@
         justify-content: flex-start;
         margin-left: 0;
       }
+    }
 
-      #controlsToggle {
-        display: none
-      }
+    #topbar button,
+    #topbar .btn {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI Variable", "Segoe UI", "Helvetica Neue", sans-serif;
+      position: relative;
+      min-height: 40px;
+    }
+
+    #topbarActions button,
+    #topbarActions .btn {
+      background: var(--button-bg);
+      color: var(--ink);
+      border: 1px solid var(--button-border);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+      box-shadow: var(--soft-shadow);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    #topbarActions button:hover,
+    #topbarActions button:focus,
+    #topbarActions .btn:hover,
+    #topbarActions .btn:focus {
+      background: var(--button-bg-hover);
+      border-color: var(--hover-border);
+      box-shadow: var(--soft-shadow);
+      transform: translateY(-1px);
+    }
+
+    #topbarActions button:active,
+    #topbarActions .btn:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    #topbarActions button:focus-visible,
+    #topbarActions .btn:focus-visible {
+      outline: none;
     }
 
     #loaders {
@@ -171,19 +327,46 @@
     /* base button */
     button,
     .btn {
-      border: 1px solid var(--line);
-      background: var(--panel-bg);
-      padding: 6px 10px;
-      border-radius: 8px;
+      border: 1px solid var(--button-border);
+      background: var(--button-bg);
+      color: var(--ink);
+      padding: 8px 14px;
+      border-radius: 999px;
       cursor: pointer;
-      font-size: 14px
+      font: 650 12px/1.3 "Avenir Next", "Segoe UI Variable", "Segoe UI", "Helvetica Neue", sans-serif;
+      letter-spacing: 0.01em;
+      box-shadow: var(--soft-shadow);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    button:hover,
+    button:focus,
+    .btn:hover,
+    .btn:focus {
+      background: var(--button-bg-hover);
+      border-color: var(--hover-border);
+      transform: translateY(-1px);
+    }
+
+    button:focus:not(:focus-visible),
+    .btn:focus:not(:focus-visible) {
+      outline: none;
+    }
+
+    button:active,
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: none;
     }
 
     input[type="text"] {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 6px 10px;
-      min-width: 280px
+      border: 1px solid var(--button-border);
+      background: var(--button-bg);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 6px 14px;
+      min-width: 280px;
+      font: inherit;
     }
 
     #hypotheses {
@@ -207,10 +390,14 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      border: 1px solid var(--line);
-      padding: 6px 10px;
+      border: 1px solid var(--button-border);
+      background: var(--surface-muted);
+      padding: 5px 12px;
       border-radius: 999px;
-      flex: 0 0 auto
+      flex: 0 0 auto;
+      font-size: 13px;
+      color: var(--muted);
+      box-shadow: inset 0 1px 0 var(--halo-shine);
     }
 
     /* prevent pill contents from wrapping and increasing vertical size */
@@ -258,7 +445,7 @@
     }
 
     .pill input[type="checkbox"]:focus-visible {
-      outline: 2px solid var(--primary);
+      outline: 2px solid var(--accent);
       outline-offset: 2px;
     }
 
@@ -272,19 +459,23 @@
       background-size: 12px 12px;
     }
 
-    /* Unchecked state should still be visible in dark mode */
-    :root[data-theme="dark"] .pill input[type="checkbox"] {
-      border-color: rgba(255, 255, 255, 0.45);
-      background-color: rgba(255, 255, 255, 0.06);
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2) inset;
+    /* Default (dark) checkbox: show as semi-white border on dark bg */
+    .pill input[type="checkbox"] {
+      border-color: rgba(237, 245, 243, 0.40);
+      background-color: rgba(237, 245, 243, 0.06);
     }
 
-    :root[data-theme="dark"] .pill input[type="checkbox"]:checked {
-      /* Option A: maximum contrast — white box with dark check */
-      background-color: #ffffff;
-      border-color: #ffffff;
-      box-shadow: none;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%230f1724' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='3.5,8.5 6.5,11.5 12.5,4.5'/></svg>");
+    /* In light mode, use a dark border */
+    :root[data-theme="light"] .pill input[type="checkbox"] {
+      border-color: rgba(24, 33, 39, 0.30);
+      background-color: transparent;
+    }
+
+    /* In light mode, checked: dark check on accent background */
+    :root[data-theme="light"] .pill input[type="checkbox"]:checked {
+      background-color: var(--control-accent);
+      border-color: var(--control-accent);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='3.5,8.5 6.5,11.5 12.5,4.5'/></svg>");
       background-repeat: no-repeat;
       background-position: center;
       background-size: 12px 12px;
@@ -297,7 +488,8 @@
 
     .viewtabs button.active {
       background: var(--control-accent);
-      color: var(--panel-bg)
+      color: var(--bg0);
+      border-color: transparent;
     }
 
     #main {
@@ -314,7 +506,8 @@
       padding-top: 14px;
       box-sizing: border-box;
       touch-action: none;
-      overscroll-behavior: contain
+      overscroll-behavior: contain;
+      background: var(--chart-bg);
     }
 
     #chart svg {
@@ -368,30 +561,53 @@
 
     /* Keyboard focus indicator for criteria */
     #chart svg .axis-hit:focus-visible {
-      stroke: var(--primary) !important;
+      stroke: var(--accent) !important;
       stroke-width: 3 !important;
-      fill: rgba(11, 95, 255, 0.1) !important;
+      fill: color-mix(in srgb, var(--accent) 12%, transparent) !important;
     }
 
     .help,
     #controlsToggle,
     #themeToggle {
-      font-size: 14px;
-      color: var(--primary);
-      border: 2px solid var(--primary);
-      background: transparent;
-      padding: 6px 10px;
-      border-radius: 8px;
+      font: 650 12px/1.3 "Avenir Next", "Segoe UI Variable", "Segoe UI", sans-serif;
+      color: var(--ink);
+      border: 1px solid var(--button-border);
+      background: var(--button-bg);
+      padding: 8px 14px;
+      border-radius: 999px;
       cursor: pointer;
-      box-shadow: none;
-      transition: background .12s ease, color .12s ease, transform .12s ease;
+      box-shadow: var(--soft-shadow);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
     }
 
     .help {
       margin-left: 8px;
-      padding: 8px 12px;
-      border-radius: 12px;
-      font-weight: 600;
+      padding: 8px 14px;
+    }
+
+    .help:hover,
+    .help:focus,
+    #controlsToggle:hover,
+    #controlsToggle:focus,
+    #themeToggle:hover,
+    #themeToggle:focus {
+      background: var(--button-bg-hover);
+      border-color: var(--hover-border);
+      transform: translateY(-1px);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .help:active,
+    #controlsToggle:active,
+    #themeToggle:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .help:focus-visible,
+    #controlsToggle:focus-visible,
+    #themeToggle:focus-visible {
+      outline: none;
     }
 
     .legend {
@@ -402,17 +618,20 @@
       position: fixed;
       pointer-events: auto;
       z-index: 9999;
-      background: var(--panel-bg);
-      border: 1px solid var(--line);
-      padding: 8px 10px;
-      border-radius: 8px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, .12);
+      background: var(--tip-bg);
+      border: 1px solid var(--tip-border);
+      padding: 10px 14px;
+      border-radius: 14px;
+      box-shadow: var(--tip-shadow);
       max-width: 360px;
-      font-size: 12px;
+      font: 400 12px/1.5 "Avenir Next", "Segoe UI Variable", "Segoe UI", "Helvetica Neue", sans-serif;
+      color: var(--ink);
       contain: paint;
       will-change: transform;
       max-height: calc(100vh - 96px);
-      overflow: auto
+      overflow: auto;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .tooltip .q {
@@ -424,36 +643,42 @@
       color: var(--muted)
     }
 
-    /* Pager buttons inside the tooltip (left/right) - ensure visibility in dark mode */
+    /* Pager buttons inside the tooltip (left/right) */
     .tooltip button {
-      background: transparent;
-      border: 1px solid var(--line);
+      background: var(--button-bg);
+      border: 1px solid var(--button-border);
       color: var(--ink);
       width: 36px;
       height: 36px;
-      border-radius: 8px;
+      border-radius: 999px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 16px;
-      line-height: 1
+      line-height: 1;
+      box-shadow: var(--soft-shadow);
     }
 
-    .tooltip button:focus {
-      outline: 3px solid rgba(0, 0, 0, 0.08);
-      outline-offset: 2px
+    .tooltip button:hover {
+      background: var(--button-bg-hover);
+      border-color: var(--hover-border);
+    }
+
+    .tooltip button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
     /* Pinned tooltip state (desktop only): colored outline matching hypothesis and draggable cursor */
     .tooltip.pinned {
-      border-color: var(--tooltip-pinned-color, var(--primary));
+      border-color: var(--tooltip-pinned-color, var(--accent));
       border-width: 2px;
-      box-shadow: var(--tooltip-pinned-shadow, 0 12px 36px rgba(11, 95, 255, 0.12));
+      box-shadow: var(--tip-shadow);
       cursor: move;
     }
 
     .tooltip.pinned:focus {
-      outline: 2px solid var(--tooltip-pinned-color, var(--primary));
+      outline: 2px solid var(--tooltip-pinned-color, var(--accent));
       outline-offset: 2px;
     }
 
@@ -477,14 +702,16 @@
     }
 
     .modal {
-      background: var(--panel-bg);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 16px 18px;
+      background: var(--tip-bg);
+      border: 1px solid var(--panel-stroke);
+      border-radius: 18px;
+      padding: 20px 22px;
       width: min(720px, calc(100% - 40px));
       max-height: 80vh;
       overflow: auto;
-      box-shadow: var(--modal-shadow)
+      box-shadow: var(--modal-shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
     .modalHeader {
@@ -492,20 +719,22 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      margin-bottom: 8px
+      margin-bottom: 10px
     }
 
     .modalHeader h2 {
-      font-size: 16px;
-      margin: 0
+      font: 700 1.2rem/1.15 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+      margin: 0;
+      color: var(--ink);
     }
 
     .modalHeader button {
-      border: 1px solid var(--line);
-      background: var(--panel-bg);
-      border-radius: 8px;
-      padding: 4px 8px;
-      cursor: pointer
+      border: 1px solid var(--button-border);
+      background: var(--button-bg);
+      border-radius: 999px;
+      padding: 4px 10px;
+      cursor: pointer;
+      color: var(--ink);
     }
 
     .modalBody p {
@@ -513,8 +742,8 @@
     }
 
     #drop {
-      border: 1px dashed var(--line);
-      border-radius: 10px;
+      border: 1px dashed var(--panel-stroke);
+      border-radius: 14px;
       padding: 8px 10px
     }
 
@@ -526,24 +755,29 @@
     /* Prominent action styles for Help / Facts buttons */
     .btn.primary {
       background: var(--primary);
-      border-color: var(--primary);
-      color: #fff;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-weight: 600;
-      box-shadow: 0 8px 20px rgba(11, 95, 255, 0.14);
-      transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease
+      border-color: transparent;
+      color: var(--bg0);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 30%, transparent);
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
     }
 
     .btn.primary:hover {
       background: var(--primary-600);
-      transform: translateY(-1px);
-      box-shadow: 0 12px 30px rgba(11, 79, 255, 0.18)
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px color-mix(in srgb, var(--primary) 40%, transparent);
     }
 
     .btn.primary:active {
       transform: translateY(0);
-      box-shadow: 0 6px 14px rgba(11, 79, 255, 0.12)
+      box-shadow: none;
+    }
+
+    .btn.primary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
     #themeToggle {
@@ -551,34 +785,11 @@
       align-items: center;
       justify-content: center;
       min-width: 40px;
-      padding: 8px 10px;
+      padding: 8px 12px;
     }
 
     #themeToggle svg {
       display: block;
-    }
-
-    .help:hover,
-    #controlsToggle:hover,
-    #themeToggle:hover {
-      background: var(--primary);
-      color: #fff;
-      transform: translateY(-1px);
-      box-shadow: 0 10px 28px rgba(11, 95, 255, 0.10)
-    }
-
-    .help:active,
-    #controlsToggle:active,
-    #themeToggle:active {
-      transform: translateY(0)
-    }
-
-    .help:focus,
-    #controlsToggle:focus,
-    #themeToggle:focus,
-    .btn.primary:focus {
-      outline: 3px solid rgba(11, 95, 255, 0.16);
-      outline-offset: 2px
     }
 
     /* Slightly larger click targets for accessibility */
@@ -599,77 +810,48 @@
       transition: background-color .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease;
     }
 
-    /* Theme toggle icon visibility */
+    /* Theme toggle icon – default dark: show sun, hide moon */
     #icon-moon {
-      display: inline-block;
-      vertical-align: middle
-    }
-
-    #icon-sun {
       display: none;
       vertical-align: middle
     }
 
-    :root[data-theme="dark"] #icon-moon {
-      display: none
+    #icon-sun {
+      display: inline-block;
+      vertical-align: middle
     }
 
-    :root[data-theme="dark"] #icon-sun {
-      display: inline-block
+    /* In light mode: show moon, hide sun */
+    :root[data-theme="light"] #icon-moon {
+      display: inline-block;
     }
 
-    /* Dark-theme overrides */
-    :root[data-theme="dark"] {
-      --bg: #071022;
-      --ink: #e6eef8;
-      /* brighter muted color so labels are legible on dark backgrounds */
-      --muted: #cbd6e1;
-      /* stronger grid/axis stroke for contrast in dark mode */
-      --line: rgba(255, 255, 255, 0.14);
-      --accent: #93c5fd;
-      --primary: #3b82f6;
-      --primary-600: #2563eb;
-      --panel-bg: #0f1724;
-      --modal-shadow: 0 20px 60px rgba(0, 0, 0, .6);
-      --cell-mid: #7b8794;
-      --cell-high: #a3b0c0;
-      /* Use a brighter accent for checkboxes/toggles to ensure sufficient contrast on dark backgrounds */
-      --control-accent: #9ec6ff;
+    :root[data-theme="light"] #icon-sun {
+      display: none;
     }
 
-    /* Make links inside floating UI readable; use primary color by default and a lighter tint in dark mode */
+    /* Dark-theme overrides – now handled by :root[data-theme='light'] above;
+       the default :root is already dark, so no separate dark block needed.
+       The following icon and focus rules still apply for backwards compatibility. */
+
+    /* Links inside floating UI always use accent variable */
     .tooltip a,
     .modal a,
     .mobile-bottom-sheet a {
-      color: var(--primary);
+      color: var(--accent);
       text-decoration: underline;
     }
 
-    /* Ensure visited links don't fall back to low-contrast purple */
     .tooltip a:visited,
     .modal a:visited,
     .mobile-bottom-sheet a:visited {
-      color: var(--primary);
+      color: var(--accent);
     }
 
-    /* Stronger contrast for dark mode links across tooltip, modal, and bottom sheet */
-    :root[data-theme="dark"] .tooltip a,
-    :root[data-theme="dark"] .modal a,
-    :root[data-theme="dark"] .mobile-bottom-sheet a {
-      color: #9ec6ff;
-    }
-
-    :root[data-theme="dark"] .tooltip a:visited,
-    :root[data-theme="dark"] .modal a:visited,
-    :root[data-theme="dark"] .mobile-bottom-sheet a:visited {
-      color: #9ec6ff;
-    }
-
-    /* Clear focus ring for keyboard users */
     .tooltip a:focus-visible,
     .modal a:focus-visible,
     .mobile-bottom-sheet a:focus-visible {
-      outline: 2px solid currentColor;
+      outline: 2px solid var(--accent);
       outline-offset: 2px;
       border-radius: 4px;
     }
@@ -677,79 +859,25 @@
     /* Header/title color adjustments for dark mode:
   - Keep the non-link title text high-contrast (var(--ink)).
   - Make the linked part of the title use the lighter tint used for tooltip links so the link stands out. */
-    :root[data-theme="dark"] #topbar h1 {
-      color: var(--ink);
+    /* Topbar title link – use accent in both modes */
+    #topbarTitle a,
+    #topbarTitle a:visited {
+      color: var(--accent);
+      text-decoration: none;
     }
 
-    :root[data-theme="dark"] #topbar h1 a,
-    :root[data-theme="dark"] #topbar h1 a:visited {
-      color: #9ec6ff;
-      text-decoration: underline;
-    }
-
-    /* Improve visibility of modal close buttons in dark mode */
-    :root[data-theme="dark"] .modalHeader button {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-      color: var(--ink);
-    }
-
-    :root[data-theme="dark"] .modalHeader button:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Dark-mode: ensure keyboard focus rings are visible (use brighter accent) */
-    :root[data-theme="dark"] .help:focus,
-    :root[data-theme="dark"] #controlsToggle:focus,
-    :root[data-theme="dark"] #themeToggle:focus,
-    :root[data-theme="dark"] .btn.primary:focus,
-    :root[data-theme="dark"] .btn:focus,
-    :root[data-theme="dark"] button:focus,
-    :root[data-theme="dark"] .help:focus-visible,
-    :root[data-theme="dark"] #controlsToggle:focus-visible,
-    :root[data-theme="dark"] #themeToggle:focus-visible,
-    :root[data-theme="dark"] .btn.primary:focus-visible,
-    :root[data-theme="dark"] .btn:focus-visible,
-    :root[data-theme="dark"] button:focus-visible {
-      /* Use the control accent (light tint) with slightly stronger alpha for contrast */
-      outline: 3px solid rgba(158,198,255,0.22);
-      outline-offset: 2px;
-    }
-
-    /* Tooltip and bottom-sheet controls can have separate, slightly smaller rings */
-    :root[data-theme="dark"] .tooltip button:focus,
-    :root[data-theme="dark"] .mobile-bottom-sheet .close-btn:focus,
-    :root[data-theme="dark"] .mobile-bottom-sheet .pager button:focus {
-      outline: 2px solid rgba(158,198,255,0.18);
-      outline-offset: 2px;
-      border-radius: 6px;
-    }
-
-    /* Extra specific rule to override external stylesheet focus-visible for buttons in dark mode */
-    body[data-theme="dark"] .btn:focus-visible,
-    body[data-theme="dark"] button:focus-visible {
-      outline: 3px solid rgba(158,198,255,0.22) !important;
-      outline-offset: 2px !important;
-    }
-
-    /* Make chart axis labels and grid lines use the theme variables so they remain visible in dark mode.
-       IMPORTANT: do not override font-size here; D3 manages sizes responsively via attributes/styles. */
-    :root[data-theme="dark"] #chart svg text {
+    /* Chart axis labels and grid lines always use theme-aware variables */
+    #chart svg text {
       fill: var(--muted);
     }
 
-    :root[data-theme="dark"] #chart svg line {
+    #chart svg line {
       stroke: var(--line);
     }
 
     /* Target only circles that are not inside the .vertices group (grid/axis dots) */
-    :root[data-theme="dark"] #chart svg g:not(.vertices) circle {
+    #chart svg g:not(.vertices) circle {
       stroke: var(--line);
-    }
-
-    :root[data-theme="dark"] #chart svg path {
-      stroke-opacity: 0.9;
     }
 
     /* (Pin functionality removed; legacy pinned styles deleted) */
@@ -760,20 +888,21 @@
       left: 0;
       right: 0;
       bottom: -100%;
-      background: var(--panel-bg);
+      background: var(--sheet-bg);
       color: var(--ink);
-      border-top-left-radius: 16px;
-      border-top-right-radius: 16px;
-      box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.28);
-      border: 1px solid var(--line);
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
+      box-shadow: var(--tip-shadow);
+      border: 1px solid var(--panel-stroke);
       padding: 18px 20px 26px 20px;
       z-index: 11000;
       max-height: 65vh;
       overflow: auto;
       transition: bottom .28s ease;
       -webkit-overflow-scrolling: touch;
-      font-size: 13px;
-      line-height: 1.45
+      font: 400 13px/1.5 "Avenir Next", "Segoe UI Variable", "Segoe UI", sans-serif;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
     .mobile-bottom-sheet.open {
@@ -799,24 +928,26 @@
       width: 34px;
       height: 34px;
       border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid var(--button-border);
+      background: var(--button-bg);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
       line-height: 0;
-      color: inherit
+      color: inherit;
+      transition: background 180ms ease, border-color 180ms ease;
     }
 
-    .mobile-bottom-sheet .close-btn:focus {
-      outline: 2px solid rgba(0, 0, 0, 0.2);
-      outline-offset: 2px
+    .mobile-bottom-sheet .close-btn:hover {
+      background: var(--button-bg-hover);
+      border-color: var(--hover-border);
     }
 
-    :root[data-theme="dark"] .mobile-bottom-sheet .close-btn {
-      background: rgba(255, 255, 255, 0.06)
+    .mobile-bottom-sheet .close-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
     /* Pager controls (top-left) for overlapping vertices on mobile */
@@ -832,8 +963,8 @@
       width: 34px;
       height: 34px;
       border-radius: 999px;
-      border: 1px solid var(--line);
-      background: var(--panel-bg);
+      border: 1px solid var(--button-border);
+      background: var(--button-bg);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -841,16 +972,18 @@
       cursor: pointer;
       padding: 0;
       line-height: 0;
-      color: var(--ink)
+      color: var(--ink);
+      transition: background 180ms ease, border-color 180ms ease;
     }
 
-    .mobile-bottom-sheet .pager button:focus {
-      outline: 2px solid rgba(0, 0, 0, 0.25);
-      outline-offset: 2px
+    .mobile-bottom-sheet .pager button:hover {
+      background: var(--button-bg-hover);
+      border-color: var(--hover-border);
     }
 
-    :root[data-theme="dark"] .mobile-bottom-sheet .pager button {
-      background: rgba(255, 255, 255, 0.06)
+    .mobile-bottom-sheet .pager button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
     /* Ensure content doesn't sit underneath absolute pager row */
@@ -901,8 +1034,8 @@
       width: 34px;
       height: 34px;
       border-radius: 999px;
-      border: 1px solid var(--line);
-      background: var(--panel-bg);
+      border: 1px solid var(--button-border);
+      background: var(--button-bg);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -910,25 +1043,14 @@
       line-height: 0;
       color: inherit;
       cursor: pointer;
+      transition: background 180ms ease;
     }
 
-    :root[data-theme="dark"] .mobile-bottom-sheet .hdr .hdr-close {
-      background: rgba(255, 255, 255, 0.06)
-    }
-
-    /* Add a divider before quotes in the mobile sheet to match desktop affordance */
+    /* Mobile sheet quote divider */
     .mobile-bottom-sheet .q {
-      border-top: 1px solid var(--line);
+      border-top: 1px solid var(--panel-stroke);
       padding-top: 8px;
       margin-top: 10px;
-    }
-
-    :root[data-theme="dark"] .mobile-bottom-sheet {
-      box-shadow: 0 -8px 34px rgba(0, 0, 0, 0.6)
-    }
-
-    :root[data-theme="dark"] .mobile-bottom-sheet .close-btn {
-      background: rgba(255, 255, 255, 0.06)
     }
     /* Visually hidden utility for focus management */
     .sr-only {
@@ -938,6 +1060,12 @@
       overflow: hidden; clip: rect(0, 0, 0, 0);
       white-space: nowrap; border: 0;
     }
+
+    /* In embed mode (inside index.html iframe) hide the theme toggle;
+       the parent page owns the theme and syncs it via postMessage */
+    html.embed-mode #themeToggle {
+      display: none !important;
+    }
   </style>
 </head>
 
@@ -945,30 +1073,30 @@
   <!-- Focus sentinel: ensures first Tab lands on top controls -->
   <a id="focusSentinel" class="sr-only" href="#" aria-hidden="true" tabindex="-1">Start</a>
   <div id="topbar" data-state="collapsed">
-    <div class="topbar-primary">
-      <h1>Resurrection Hypotheses</h1>
-      <!-- Mobile-only Facts button placed to the left of Controls on small screens -->
-      <button id="factsBtnMobile" class="btn primary mobile-only" tabindex="2" aria-expanded="false" aria-controls="factsOverlay" style="margin-right:8px;">Facts</button>
+    <h1 id="topbarTitle">Resurrection Hypotheses</h1>
+    <div id="topbarActions">
       <button id="controlsToggle" tabindex="1" aria-expanded="false" aria-controls="controls-panel"
-        aria-label="Show controls">Controls ▼</button>
-    </div>
-    <div id="controls-panel">
-      <button id="factsBtn" class="btn primary" tabindex="2" aria-expanded="false" aria-controls="factsOverlay">Facts</button>
-      <button id="dimsBtn" class="btn primary" tabindex="3" aria-expanded="false" aria-haspopup="dialog" aria-controls="dimsOverlay"
-        title="About the seven dimensions">Criteria</button>
-      <button id="helpBtn" role="button" tabindex="4" aria-haspopup="dialog" aria-controls="helpOverlay" class="help">? Help</button>
-      <button id="themeToggle" tabindex="5" aria-pressed="false" title="Toggle dark mode" style="margin-left:8px">
-        <span id="icon-moon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
-          </svg></span>
+        aria-label="Show controls">Controls <span class="controls-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span></button>
+      <!-- Mobile-only Facts button appears after Controls on small screens -->
+      <button id="factsBtnMobile" class="btn mobile-only" tabindex="2" aria-expanded="false" aria-controls="factsOverlay">Facts</button>
+      <button id="themeToggle" tabindex="5" aria-pressed="false" title="Toggle dark mode">
         <span id="icon-sun" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="4"></circle>
             <path
               d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
           </svg></span>
+        <span id="icon-moon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+          </svg></span>
       </button>
+    </div>
+    <div id="controls-panel">
+      <button id="factsBtn" class="btn primary" tabindex="2" aria-expanded="false" aria-controls="factsOverlay">Facts</button>
+      <button id="dimsBtn" class="btn primary" tabindex="3" aria-expanded="false" aria-haspopup="dialog" aria-controls="dimsOverlay"
+        title="About the seven dimensions">Criteria</button>
+      <button id="helpBtn" role="button" tabindex="4" aria-haspopup="dialog" aria-controls="helpOverlay" class="help">? Help</button>
       <div id="loaders"></div>
       <div id="hypotheses"></div>
     </div>
@@ -1403,9 +1531,17 @@
     state.currentZoom = null;
 
     function prefersSheet() {
-      // Use bottom sheet if viewport narrow or primary pointer coarse (touch)
-      const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-      return coarse || window.innerWidth < 640;
+      // Match minimalFactsTidyTree: use the bottom sheet for phone-sized layouts,
+      // not simply for every coarse pointer. This keeps desktop embeds on hover tooltips.
+      try {
+        const smallWidth = window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+        const coarsePointer = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+        const viewport = window.visualViewport || window;
+        const smallerDim = Math.min(viewport.width || window.innerWidth, viewport.height || window.innerHeight);
+        return smallWidth || (coarsePointer && smallerDim < 520);
+      } catch (error) {
+        return window.matchMedia && window.matchMedia('(max-width: 600px)').matches;
+      }
     }
 
     // Convert an SVG-bound datum anchor or an element into a screen-space rect.
@@ -1729,6 +1865,13 @@
               state.ttAnchor.x = null; state.ttAnchor.y = null;
             }
           } catch (_) { try { state.ttAnchor.x = null; state.ttAnchor.y = null; } catch(e) {} }
+          // Set tooltip color to match the active hypothesis (so the pinned border is correct)
+          try {
+            if (state.activeVertex) {
+              const hyp = byId(Data.hypotheses)[state.activeVertex.hypId];
+              if (hyp) setTooltipColor(getColorFor(hyp));
+            }
+          } catch (_) {}
           // prevent scheduled hide while pinned
           clearTimeout(hideTimer);
           showTTBlocker();
@@ -2102,19 +2245,38 @@
       });
     }
 
+    // Embed mode: read URL params for theme sync with parent page
+    const _pvParams = new URLSearchParams(window.location.search);
+    const _pvIsEmbedMode = _pvParams.get('embed') === '1';
+    if (_pvIsEmbedMode) document.documentElement.classList.add('embed-mode');
+    const _pvRequestedTheme = _pvParams.get('theme');
+    const _pvSharedThemeKey = 'parallax-theme';
+    const _pvLegacyThemeKey = 'pv_theme';
+
     // Theme handling: toggle and persist theme in localStorage
-    const themeKey = 'pv_theme';
-    function applyTheme(t) { if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.removeAttribute('data-theme'); }
+    function applyTheme(t) {
+      // CSS default (:root) is dark; light mode requires explicit data-theme="light"
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      else document.documentElement.removeAttribute('data-theme');
+    }
+    function _pvReadStoredTheme() {
+      try { return localStorage.getItem(_pvSharedThemeKey) || localStorage.getItem(_pvLegacyThemeKey); } catch (e) { return null; }
+    }
+    function _pvGetInitialTheme() {
+      if (_pvRequestedTheme === 'light' || _pvRequestedTheme === 'dark') return _pvRequestedTheme;
+      const stored = _pvReadStoredTheme();
+      if (stored === 'light' || stored === 'dark') return stored;
+      return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    }
     function initTheme() {
-      const stored = localStorage.getItem(themeKey); if (stored) { applyTheme(stored); d3.select('#themeToggle').attr('aria-pressed', stored === 'dark' ? 'true' : 'false'); } else {
-        // respect prefers-color-scheme as default
-        const prefers = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; applyTheme(prefers); d3.select('#themeToggle').attr('aria-pressed', prefers === 'dark' ? 'true' : 'false');
-      }
+      const initial = _pvGetInitialTheme();
+      applyTheme(initial);
+      d3.select('#themeToggle').attr('aria-pressed', initial === 'dark' ? 'true' : 'false');
       d3.select('#themeToggle').on('click', () => {
-        const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
         const next = cur === 'dark' ? 'light' : 'dark';
         applyTheme(next);
-        localStorage.setItem(themeKey, next);
+        try { localStorage.setItem(_pvSharedThemeKey, next); localStorage.setItem(_pvLegacyThemeKey, next); } catch (e) { /* ignore */ }
         d3.select('#themeToggle').attr('aria-pressed', next === 'dark' ? 'true' : 'false');
         // If a specific vertex is currently selected, reapply highlight so ring fill tones
         // update according to the new theme (dark-only effect). Otherwise do nothing.
@@ -2123,13 +2285,24 @@
             highlightSeries(state.activeVertex.hypId, state.activeVertex.critId);
           } else if (!state.activeVertex) {
             // ensure default look remains (especially when switching from dark->light)
-            d3.selectAll('.vertices .vertex-ring').attr('fill', '#fff');
+            d3.selectAll('.vertices .vertex-ring').attr('fill', document.documentElement.getAttribute('data-theme') !== 'light' ? 'rgba(255,255,255,0.12)' : '#fff');
           }
         } catch (e) { /* ignore */ }
       });
     }
     // initialize theme immediately so colors are correct before UI paints
     try { initTheme(); } catch (e) {/* ignore */ }
+
+    // Listen for theme sync messages from a parent frame (embed mode)
+    window.addEventListener('message', (event) => {
+      try {
+        if (!event.data || typeof event.data !== 'object') return;
+        if (event.data.type === 'pv-theme' && (event.data.theme === 'light' || event.data.theme === 'dark')) {
+          applyTheme(event.data.theme);
+          d3.select('#themeToggle').attr('aria-pressed', event.data.theme === 'dark' ? 'true' : 'false');
+        }
+      } catch (e) { /* ignore */ }
+    });
 
     // Color palettes for light and dark modes (map by hypothesis id)
     const Palettes = {
@@ -2218,7 +2391,7 @@
       // In dark mode, when a specific vertex is selected, tone down the white fill of all
       // unselected vertex rings so they don't pop as bright white. Keep the selected one white.
       try {
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
         if (isDark) {
           // Tone down all unselected hypotheses; keep all points for the selected hypothesis white.
           d3.selectAll('.vertices .vertex').each(function (d) {
@@ -2283,8 +2456,8 @@
         d3.selectAll('.vertices .vertex-ring')
           .attr('stroke', d => getColorFor(d.h))
           .attr('stroke-width', 2)
-          // also restore the default white fill so the chart looks unchanged when nothing is selected
-          .attr('fill', '#fff');
+          // also restore the default white fill (ghostly in dark mode) so the chart looks unchanged when nothing is selected
+          .attr('fill', document.documentElement.getAttribute('data-theme') !== 'light' ? 'rgba(255,255,255,0.12)' : '#fff');
         // restore ring radius based on current zoom and remove glows
         const k = state.zoomK || 1;
         d3.selectAll('.vertices .vertex-ring').attr('r', d => Math.max(4, (d.baseRing || 7) / k));
@@ -2892,6 +3065,7 @@
             `<div><strong>Level:</strong> ${level}</div>` +
             (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
           showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
+          setTooltipColor(getColorFor(d.h));
           highlightSeries(d.h.id, d.c.id);
         })
         .on('mouseleave', () => { if (!prefersSheet()) scheduleHide(); })
@@ -3259,7 +3433,7 @@
         .style('stroke', 'none')
         .style('pointer-events', 'all');
       // draw ring + dot inside each vertex group; store base sizes on the datum for zoom math
-      vwrap.append('circle').attr('class', 'vertex-ring').each(function (d) { d.baseRing = d.baseRing || 7; }).attr('r', d => d.baseRing).attr('fill', '#fff').attr('stroke', d => getColorFor(d.h)).attr('stroke-width', 2).style('stroke-opacity', 0.95);
+      vwrap.append('circle').attr('class', 'vertex-ring').each(function (d) { d.baseRing = d.baseRing || 7; }).attr('r', d => d.baseRing).attr('fill', document.documentElement.getAttribute('data-theme') !== 'light' ? 'rgba(255,255,255,0.12)' : '#fff').attr('stroke', d => getColorFor(d.h)).attr('stroke-width', 2).style('stroke-opacity', 0.95);
       vwrap.append('circle').attr('class', 'vertex-dot').each(function (d) { d.baseR = d.baseR || 5; }).attr('r', d => d.baseR).attr('fill', d => getColorFor(d.h)).attr('stroke', 'none');
   // ensure vertex groups render on top of polygons; keep axis group earlier in DOM order
   // so that keyboard tab order visits criteria (axis endpoints) before hypothesis vertices.
@@ -3575,8 +3749,8 @@
     // Initialize tab navigation system after initial render
     setTimeout(() => {
       setupTabOrder();
-      // Start at first element
-      focusElementAtIndex(0);
+      // Do not auto-focus any element on startup — avoids the teal focus ring appearing
+      // on the Controls button before the user interacts with the page
     }, 2000);
 
     // Load debug-tabindex.js if debug mode is on

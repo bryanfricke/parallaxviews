@@ -1,0 +1,111 @@
+{
+  "id": "MA",
+  "kind": "root",
+  "label": "The Moral Argument",
+  "text": "The Moral Argument for the existence of God",
+  "relToParent": null,
+  "children": [
+    {
+      "id": "M_P1",
+      "kind": "premise",
+      "label": "P1 — If God does not exist, objective moral values do not exist",
+      "text": "P1 — Without God, moral values and duties are merely the products of socio-biological evolution or cultural conditioning — they would be subjective, relative, or illusory rather than genuinely binding and objective.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "M_P1S1",
+          "kind": "support",
+          "label": "Naturalism reduces morality to evolved preferences",
+          "text": "On a purely naturalistic view, moral intuitions are adaptations that promoted reproductive fitness. They carry no more objective authority than a preference for sweet foods — useful but not genuinely obligatory.",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "M_O1",
+          "kind": "objection",
+          "label": "Objective morality can be grounded without God (non-theistic realism)",
+          "text": "Moral realists argue that moral facts are necessary truths, like mathematical facts, that exist independently of any mind — divine or human.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "M_R1",
+              "kind": "rebuttal",
+              "label": "Abstract moral facts can’t ground moral obligations",
+              "text": "Even if abstract moral truths exist, they cannot by themselves explain why anyone is obligated to act on them. Moral obligation requires a personal authority — a law-giver. Abstract platonic objects make no demands.",
+              "relToParent": "rebuts",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M_P2",
+      "kind": "premise",
+      "label": "P2 — Objective moral values and duties do exist",
+      "text": "P2 — We know with confidence that certain things are objectively morally wrong (torturing children for fun, genocide, rape) and others objectively good (love, justice, mercy) — independent of personal or cultural opinion.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "M_P2S1",
+          "kind": "support",
+          "label": "Moral intuitions are strong evidence for objective moral facts",
+          "text": "The near-universal human intuition that gratuitous cruelty is wrong is powerful evidence for objective moral facts. Denying this requires a deeper skepticism that undermines all knowledge, including scientific knowledge.",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "M_O2",
+          "kind": "objection",
+          "label": "Moral beliefs vary across cultures — there are no universal facts",
+          "text": "Anthropology shows significant cross-cultural moral disagreement. This suggests moral ‘facts’ are social constructs rather than objective truths.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "M_R2",
+              "kind": "rebuttal",
+              "label": "Disagreement proves opinion, not the absence of fact",
+              "text": "Historical disagreement about scientific facts did not make science subjective. Moral disagreement is consistent with there being objective moral facts that cultures approximate imperfectly. Moreover, there is broad cross-cultural agreement on core moral norms.",
+              "relToParent": "rebuts",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M_C",
+      "kind": "conclusion",
+      "label": "∴ God exists as the ground of objective moral reality",
+      "text": "∴ Since objective moral values and duties exist, and they require a personal ground to be genuinely binding, the best explanation is a morally perfect, personal being — God — whose nature is the standard of goodness and whose commands constitute moral duty.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "M_CS1",
+          "kind": "support",
+          "label": "God’s nature — not arbitrary will — is the moral standard",
+          "text": "The moral argument does not imply God arbitrarily invents morality (the Euthyphro dilemma). Rather, God’s perfectly good nature is the standard; his commands flow necessarily from that nature.",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "M_O3",
+          "kind": "objection",
+          "label": "Euthyphro: is something good because God wills it, or does God will it because it’s good?",
+          "text": "Plato’s dilemma: if God wills good because it is good, goodness is independent of God. If something is good because God wills it, morality is arbitrary — God could make torture good by decree.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "M_R3",
+              "kind": "rebuttal",
+              "label": "Third option: God’s nature is the standard; commands express that nature",
+              "text": "The dilemma presents a false dichotomy. God neither conforms to an external standard nor arbitrarily invents one — his essentially good nature is the ultimate standard, and his commands necessarily express it.",
+              "relToParent": "rebuts",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

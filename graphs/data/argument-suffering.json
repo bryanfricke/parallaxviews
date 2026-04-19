@@ -1,0 +1,129 @@
+{
+  "id": "PS",
+  "kind": "root",
+  "label": "The Problem of Suffering",
+  "text": "The Problem of Suffering (Evil) as a challenge to theism",
+  "relToParent": null,
+  "children": [
+    {
+      "id": "PS_P1",
+      "kind": "premise",
+      "label": "P1 — A perfect God would prevent all gratuitous suffering",
+      "text": "P1 — If God is omnipotent, omniscient, and omnibenevolent, he would have both the power and the will to prevent any evil that serves no greater good. Such a God would not permit pointless pain.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "PS_P1S1",
+          "kind": "support",
+          "label": "The logical version: any evil is incompatible with God",
+          "text": "J.L. Mackie argued the existence of any evil is logically incompatible with an omnipotent, wholly good God — at least one of these must be false.",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "PS_O1",
+          "kind": "objection",
+          "label": "The free will defense shows God and evil are compatible",
+          "text": "Alvin Plantinga showed that God and evil are logically compatible: God, having good reason to create free beings, may be unable to create free beings who always freely choose good. The logical problem of evil is now widely regarded as defeated.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "PS_R1",
+              "kind": "rebuttal",
+              "label": "Free will doesn’t explain natural evil (earthquakes, cancer)",
+              "text": "The free will defense covers moral evil (human choices), but natural evil — tsunamis, childhood cancer, animal suffering over millions of years before humans — cannot be attributed to human free choices.",
+              "relToParent": "rebuts",
+              "children": [
+                {
+                  "id": "PS_O2",
+                  "kind": "objection",
+                  "label": "Natural evil may involve spiritual agents or soul-making",
+                  "text": "Possible explanations: (1) malevolent spiritual agents whose free choices produce natural disorder; (2) Hick’s soul-making theodicy — a morally challenging environment is necessary for developing virtues like courage and compassion.",
+                  "relToParent": "attacks",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PS_P2",
+      "kind": "premise",
+      "label": "P2 — Gratuitous suffering appears to exist (the evidential problem)",
+      "text": "P2 — Even granting logical compatibility, the sheer amount and distribution of suffering — horrific, seemingly pointless animal pain over millions of years before humans — makes God’s existence improbable. (Rowe’s evidential argument)",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "PS_O3",
+          "kind": "objection",
+          "label": "We cannot know any evil is genuinely gratuitous",
+          "text": "Our cognitive limitations mean we cannot survey all possible goods and whether a given suffering serves them. The appearance of gratuitousness does not establish actual gratuitousness. (Skeptical theism — Wykstra, van Inwagen)",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "PS_R2",
+              "kind": "rebuttal",
+              "label": "Skeptical theism leads to moral paralysis",
+              "text": "If we can’t know whether suffering serves hidden divine goods, we also lose grounds to intervene to prevent it — perhaps our efforts foil God’s purposes.",
+              "relToParent": "rebuts",
+              "children": [
+                {
+                  "id": "PS_O4",
+                  "kind": "objection",
+                  "label": "Epistemic limits apply to God’s reasons, not our obligations",
+                  "text": "We act on our best available moral knowledge. Uncertainty about God’s providential purposes doesn’t undermine our obligation to relieve suffering — the two epistemic positions are different in kind.",
+                  "relToParent": "attacks",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PS_C",
+      "kind": "conclusion",
+      "label": "∴ Suffering is evidence against God, answered by theodicy",
+      "text": "∴ While the logical problem of evil is defeated, the evidential problem remains: the quantity and distribution of suffering constitute evidence against (though not disproof of) a perfectly good, omnipotent God. Theists must offer a credible theodicy.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "PS_CS1",
+          "kind": "support",
+          "label": "Soul-making theodicy: suffering enables virtue and depth of character",
+          "text": "John Hick’s soul-making theodicy: a world designed for comfort would produce shallow, dependent beings. Suffering, struggle, and adversity are necessary conditions for developing courage, compassion, perseverance, and deep love.",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "PS_CS2",
+          "kind": "support",
+          "label": "Eschatological hope: eternal life redeems finite suffering",
+          "text": "From a Christian perspective, present suffering is finite while the joy of resurrection is infinite. Paul: ‘I consider that our present sufferings are not worth comparing with the glory that will be revealed in us.’ (Romans 8:18)",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "PS_O5",
+          "kind": "objection",
+          "label": "Theodicies are ad hoc — no theodicy covers all cases",
+          "text": "Critics argue that theodicies are constructed post-hoc to protect a pre-held belief. Each new category of evil requires a new explanation; together they strain credibility.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "PS_R3",
+              "kind": "rebuttal",
+              "label": "Cumulative theodicy is consistent with how we reason about complex situations",
+              "text": "Multiple explanations for different categories of evil is not ad hoc — it mirrors how we explain complex phenomena in science. The question is whether the explanations are independently plausible, not whether there is only one.",
+              "relToParent": "rebuts",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

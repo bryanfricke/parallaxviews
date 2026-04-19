@@ -1,0 +1,129 @@
+{
+  "id": "DA",
+  "kind": "root",
+  "label": "The Design Argument (Fine-Tuning)",
+  "text": "The Teleological / Fine-Tuning Argument for the existence of God",
+  "relToParent": null,
+  "children": [
+    {
+      "id": "D_P1",
+      "kind": "premise",
+      "label": "P1 — The fine-tuning of the universe for life is a fact",
+      "text": "P1 — The fundamental constants of physics (gravitational constant, cosmological constant, strong nuclear force, etc.) are precisely calibrated to permit complex life. Small deviations would produce a lifeless universe.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "D_P1S1",
+          "kind": "support",
+          "label": "Cosmological constant fine-tuned to 1 in 10¹²°",
+          "text": "The cosmological constant (energy density of the vacuum) must lie within 1 part in 10¹²° for galaxies to form. Physicist Roger Penrose: the odds against our universe arising by chance are ‘enormously greater than’ 1 in 10¹⁰⁰¹²³.",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "D_P1S2",
+          "kind": "support",
+          "label": "Multiple independent constants compounding improbability",
+          "text": "Fine-tuning is not limited to one constant — dozens of independent parameters (mass ratio of proton to electron, strength of electromagnetism, etc.) must all fall in narrow life-permitting ranges simultaneously.",
+          "relToParent": "supports",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "D_P2",
+      "kind": "premise",
+      "label": "P2 — Fine-tuning is due to necessity, chance, or design",
+      "text": "P2 — The fine-tuning of the universe must be explained by one of three options: physical necessity (the constants had to be this way), chance (random luck), or intentional design.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "D_O1",
+          "kind": "objection",
+          "label": "A multiverse dissolves the improbability by chance",
+          "text": "If infinitely many universes exist with varying constants, it is statistically expected that some will permit life — we simply find ourselves in one of those (the Weak Anthropic Principle).",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "D_R1",
+              "kind": "rebuttal",
+              "label": "Multiverse itself requires explanation and is unverifiable",
+              "text": "The multiverse hypothesis requires its own fine-tuned generator (e.g., an inflationary mechanism with specific parameters). It replaces one unexplained precision with another, and remains empirically unverifiable.",
+              "relToParent": "rebuts",
+              "children": [
+                {
+                  "id": "D_O2",
+                  "kind": "objection",
+                  "label": "We can’t reason about observer selection in single-universe models",
+                  "text": "Critics argue fine-tuning arguments fall prey to the observer selection effect: naturally, any universe we observe must permit our existence. The apparent improbability is an artifact of our perspective.",
+                  "relToParent": "attacks",
+                  "children": [
+                    {
+                      "id": "D_R2",
+                      "kind": "rebuttal",
+                      "label": "Selection effects do not explain improbability — only survivorship",
+                      "text": "Observer selection explains why we observe a life-permitting universe if one exists, but it does not explain why a life-permitting universe exists at all. A lottery winner cannot explain away the improbability of winning by noting they had to be alive to observe it.",
+                      "relToParent": "rebuts",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "D_O3",
+          "kind": "objection",
+          "label": "Physical necessity — the constants could not have been otherwise",
+          "text": "Perhaps a Theory of Everything will show the constants are uniquely determined by deeper mathematical necessity — there was no probability space to sample from.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "D_R3",
+              "kind": "rebuttal",
+              "label": "No current physics points to unique necessity; contingency remains",
+              "text": "No existing or candidate physics shows the constants must take their observed values. Even string theory suggests a vast ‘landscape’ of possible values. The necessity hypothesis is speculative and unmotivated.",
+              "relToParent": "rebuts",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D_C",
+      "kind": "conclusion",
+      "label": "∴ Design is the most plausible explanation for fine-tuning",
+      "text": "∴ Given that physical necessity and unguided chance are both highly implausible explanations, the fine-tuning of the universe for life is best explained by intentional design by a supremely intelligent, transcendent being.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "D_CS1",
+          "kind": "support",
+          "label": "Design inference is routine in science (SETI, archaeology)",
+          "text": "Inferring intelligent design from specified complexity is a standard scientific move — used in SETI research, cryptography, forensics, and archaeology. The fine-tuning of physics meets the criteria for such an inference.",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "D_O4",
+          "kind": "objection",
+          "label": "Who designed the designer? Design regresses infinitely",
+          "text": "If complexity requires a designer, then a designer complex enough to fine-tune a universe requires its own designer, generating an infinite regress.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "D_R4",
+              "kind": "rebuttal",
+              "label": "The designer need not be complex in the relevant sense",
+              "text": "The argument requires a cause adequate to produce specified complexity — an unembodied mind is not physically complex (it has no contingent physical constants). The regress objection conflates physical and mental complexity.",
+              "relToParent": "rebuts",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
