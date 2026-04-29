@@ -11,7 +11,7 @@
     <link rel="icon" href="../assets/icons/favicon-16.png" sizes="16x16" type="image/png">
     <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png" sizes="180x180">
     <link rel="manifest" href="../site.webmanifest">
-    <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#00BFAE">
+    <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#00796B">
     <meta name="theme-color" content="#09131b">
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
@@ -141,6 +141,10 @@
             gap: 10px;
             flex-wrap: wrap;
             min-width: 0;
+        }
+
+        #topbarActions #embedReturnBtn {
+            order: 99;
         }
 
         #topbarTitle::before {
@@ -1073,32 +1077,16 @@
             font: 600 12px/1.35 var(--ui-font);
             letter-spacing: 0.01em;
             dominant-baseline: middle;
-            paint-order: stroke;
-            stroke: rgba(255, 253, 248, 0.94);
-            stroke-width: 4px;
-            stroke-linejoin: round;
-        }
-
-        .node text tspan {
-            paint-order: stroke;
-            stroke: rgba(255, 253, 248, 0.94);
-            stroke-width: 4px;
-            stroke-linejoin: round;
+            filter: drop-shadow(0 0 3px rgba(255, 253, 248, 0.92)) drop-shadow(0 0 2px rgba(255, 253, 248, 0.7));
         }
 
         .node text .label {
             fill: #222;
-            stroke: none;
         }
 
         body.dark-mode .node text {
             fill: var(--text-dark) !important;
-            stroke: rgba(9, 19, 27, 0.94) !important;
-        }
-
-        body.dark-mode .node text .label {
-            fill: var(--text-dark) !important;
-            stroke: none !important;
+            filter: drop-shadow(0 0 3px rgba(9, 19, 27, 0.95)) drop-shadow(0 0 2px rgba(9, 19, 27, 0.8)) !important;
         }
 
         .tooltip {
@@ -1283,6 +1271,7 @@
                     viewBox="0 0 24 24" focusable="false" aria-hidden="true">
                     <path d="M6 9l6 6 6-6"></path>
                 </svg></span></button>
+        <button id="embedReturnBtn" type="button" hidden>Return to overview</button>
         <button id="aboutBtn" aria-haspopup="dialog" style="display:none">About</button>
         </div>
         <div id="controls">
@@ -1339,8 +1328,13 @@
         const requestedTheme = params.get('theme');
         const themeMessageType = 'pv-theme';
         const embedStateMessageType = 'pv-embed-state';
+        const embedRequestMessageType = 'pv-embed-request';
         const sharedThemeKey = 'parallax-theme';
         const legacyThemeKey = 'pv_theme';
+        const embedReturnBtn = document.getElementById('embedReturnBtn');
+        let isEmbedExpanded = false;
+        let hasSeenEmbedState = false;
+        let syncEmbedViewport = null;
 
         if (isEmbedMode) {
             document.documentElement.classList.add('embed-mode');
@@ -1380,6 +1374,22 @@
                 themeMeta.setAttribute('content', theme === 'dark' ? '#09131b' : '#fffaf2');
             }
             try { syncControlsPanelTheme(); } catch (error) { /* non-fatal */ }
+        }
+
+        function syncEmbedReturnButton() {
+            if (!embedReturnBtn) return;
+            embedReturnBtn.hidden = !(isEmbedMode && isEmbedExpanded);
+        }
+
+        function requestEmbedCollapse() {
+            if (!isEmbedMode || !isEmbedExpanded || window.parent === window) return;
+            const targetOrigin = window.location.origin === 'null' ? '*' : window.location.origin;
+            window.parent.postMessage({ type: embedRequestMessageType, action: 'collapse' }, targetOrigin);
+        }
+
+        if (embedReturnBtn) {
+            embedReturnBtn.addEventListener('click', requestEmbedCollapse);
+            syncEmbedReturnButton();
         }
 
         async function init() {
@@ -1842,16 +1852,19 @@
             // ensure chart height computed initially (now that svg exists)
             computeChartHeight();
 
-            // Handle resizing: keep SVG sized to container and re-layout tree
-            function resizeHandler() {
-                // recompute chart height using topbar
+            function syncTreeLayoutToViewport() {
                 computeChartHeight();
-                updateControlsVisibility();
-                // Recompute layout origin so root remains roughly centered vertically
                 if (root) {
                     root.x0 = height / 2;
                 }
                 update(root);
+            }
+
+            // Handle resizing: keep SVG sized to container and re-layout tree
+            function resizeHandler() {
+                // recompute chart height using topbar
+                updateControlsVisibility();
+                syncTreeLayoutToViewport();
                 // Maintain a sensible transform after resize
                 const currentTransform = d3.zoomTransform(svg.node());
                 // if transform is identity, re-center root
@@ -1868,8 +1881,16 @@
 
             // Gentle vertical recenter after viewport changes (rotation, iOS chrome show/hide)
             let __recenterTimer = null;
+            let suppressViewportFollowupUntil = 0;
+            function suppressViewportFollowup(ms = 0) {
+                suppressViewportFollowupUntil = Math.max(suppressViewportFollowupUntil, Date.now() + ms);
+            }
+            function shouldSuppressViewportFollowup() {
+                return Date.now() < suppressViewportFollowupUntil;
+            }
             function scheduleRecenter(delay = 200) {
                 try { clearTimeout(__recenterTimer); } catch (e) { }
+                if (shouldSuppressViewportFollowup()) return;
                 __recenterTimer = setTimeout(() => {
                     try { recenterForViewportChange(); } catch (e) { /* non-fatal */ }
                 }, delay);
@@ -3231,6 +3252,47 @@
                 } catch (e) { console.warn('centerSmooth failed', e); suppressAutoEnsure = false; }
             }
 
+            function getCenterAnchor() {
+                try {
+                    const selected = d3.select('g.node[data-selected="true"]');
+                    if (selected && !selected.empty()) {
+                        return selected.datum();
+                    }
+                } catch (e) { /* non-fatal */ }
+                return root;
+            }
+
+            let embedViewportSyncTimer = null;
+            syncEmbedViewport = function (expanded) {
+                isEmbedExpanded = expanded === true;
+                if (!svg || !root) {
+                    return;
+                }
+
+                const run = (duration, exactAnchor) => {
+                    syncTreeLayoutToViewport();
+                    const anchor = getCenterAnchor();
+                    if (!anchor) {
+                        return;
+                    }
+                    centerSmooth(exactAnchor ? [anchor] : anchor, { duration });
+                };
+
+                try {
+                    clearTimeout(embedViewportSyncTimer);
+                    clearTimeout(__recenterTimer);
+                } catch (e) { /* non-fatal */ }
+
+                if (isEmbedExpanded) {
+                    requestAnimationFrame(() => run(280, false));
+                    embedViewportSyncTimer = setTimeout(() => run(180, false), 220);
+                    return;
+                }
+
+                suppressViewportFollowup(520);
+                requestAnimationFrame(() => run(220, true));
+            };
+
 
 
             document.getElementById('collapseAll').onclick = () => {
@@ -3489,8 +3551,22 @@
                 return;
             }
             if (event.data.type === embedStateMessageType) {
-                setTimeout(() => window.dispatchEvent(new Event('resize')), 30);
-                setTimeout(() => window.dispatchEvent(new Event('resize')), 180);
+                const expanded = event.data.expanded === true;
+                const isFirstEmbedState = !hasSeenEmbedState;
+                hasSeenEmbedState = true;
+                isEmbedExpanded = expanded;
+                syncEmbedReturnButton();
+                // Preserve the original inline startup placement. The initial collapsed
+                // embed message arrives after the page has already centered itself.
+                if (isFirstEmbedState && !expanded) {
+                    return;
+                }
+                if (typeof syncEmbedViewport === 'function') {
+                    syncEmbedViewport(expanded);
+                } else {
+                    setTimeout(() => window.dispatchEvent(new Event('resize')), 30);
+                    setTimeout(() => window.dispatchEvent(new Event('resize')), 180);
+                }
             }
         });
 

@@ -11,7 +11,7 @@
   <link rel="icon" href="assets/icons/favicon-16.png" sizes="16x16" type="image/png">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" sizes="180x180">
   <link rel="manifest" href="site.webmanifest">
-  <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#0d8f86">
+  <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#00796B">
   <script>
     (function () {
       try {
@@ -344,8 +344,7 @@
       align-content: start;
     }
 
-    .summary-card,
-    .future-card {
+    .summary-card {
       padding: 1.2rem;
       background: var(--surface);
       border: 1px solid var(--border);
@@ -353,8 +352,7 @@
       box-shadow: var(--shadow-soft);
     }
 
-    .summary-card h2,
-    .future-card h2 {
+    .summary-card h2 {
       margin: 0 0 0.85rem;
       font: 700 1.25rem/1.15 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
       color: var(--text);
@@ -385,6 +383,12 @@
       background: linear-gradient(135deg, var(--accent-soft), var(--gold-soft));
       color: var(--accent-deep);
       font-weight: 700;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    a.step-number:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-soft);
     }
 
     .step-copy strong {
@@ -394,41 +398,9 @@
       font-size: 0.98rem;
     }
 
-    .step-copy span,
-    .future-card p {
+    .step-copy span {
       color: var(--text-soft);
       font-size: 0.95rem;
-    }
-
-    .future-card {
-      background: var(--surface-dashed);
-      border-style: dashed;
-    }
-
-    .future-list {
-      display: grid;
-      gap: 0.7rem;
-      padding: 0;
-      margin: 0.95rem 0 0;
-      list-style: none;
-      color: var(--text-soft);
-      font-size: 0.94rem;
-    }
-
-    .future-list li {
-      padding-left: 1rem;
-      position: relative;
-    }
-
-    .future-list li::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0.65rem;
-      width: 0.38rem;
-      height: 0.38rem;
-      border-radius: 50%;
-      background: var(--gold);
     }
 
     .section-stack {
@@ -440,6 +412,7 @@
     .stage {
       position: relative;
       overflow: hidden;
+      scroll-margin-top: 6.5rem;
       padding: clamp(1.4rem, 2vw, 2rem);
       background: var(--bg-elevated);
       border: 1px solid var(--border);
@@ -577,25 +550,6 @@
       color: var(--text-soft);
     }
 
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.55rem;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 2rem;
-      padding: 0.45rem 0.7rem;
-      border-radius: 999px;
-      background: var(--surface-muted);
-      border: 1px solid var(--border);
-      color: var(--text-faint);
-      font-size: 0.84rem;
-    }
-
     .card-footer {
       margin-top: auto;
       display: flex;
@@ -615,6 +569,7 @@
     .embed-feature {
       margin-top: 1rem;
       position: relative;
+      scroll-margin-top: 6.5rem;
       display: grid;
       grid-template-columns: minmax(18rem, 0.9fr) minmax(0, 1.45fr);
       gap: 1rem;
@@ -631,10 +586,10 @@
       inset: 1rem;
       z-index: 40;
       grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: auto minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr);
       align-items: start;
-      gap: 1rem;
-      padding: 1rem;
+      gap: 0.75rem;
+      padding: 0.8rem;
       border-color: var(--border-strong);
       border-radius: 1.7rem;
       background: var(--hero-gradient);
@@ -665,59 +620,24 @@
       gap: 0.8rem;
     }
 
+    .embed-launch {
+      min-width: min(100%, 19rem);
+    }
+
     .embed-toggle {
       cursor: pointer;
-    }
-
-    .embed-frame-toggle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 2.55rem;
-      min-width: 2.55rem;
-      min-height: 2.55rem;
-      padding: 0;
-      border-color: var(--border-strong);
-      background: var(--bg-elevated);
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(14px);
-      border-radius: 999px;
-      line-height: 0;
-    }
-
-    .embed-frame-toggle svg {
-      width: 1rem;
-      height: 1rem;
-      display: block;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .embed-caption {
-      font-size: 0.92rem;
-      color: var(--text-faint);
     }
 
     .embed-frame-shell {
       position: relative;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
       min-width: 0;
       padding: 0.55rem;
       border-radius: 1.35rem;
       background: linear-gradient(180deg, rgba(13, 143, 134, 0.09), rgba(194, 144, 44, 0.06));
       border: 1px solid var(--border);
-    }
-
-    .embed-frame-toolbar {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      flex: none;
+      overflow: hidden;
     }
 
     .embed-frame {
@@ -735,31 +655,15 @@
     }
 
     .embed-feature.is-expanded .embed-copy {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      gap: 0.9rem 1rem;
-    }
-
-    .embed-feature.is-expanded .embed-copy > :nth-child(2) {
-      flex: 1 1 26rem;
-      min-width: 0;
-    }
-
-    .embed-feature.is-expanded .embed-copy .pill-row,
-    .embed-feature.is-expanded .embed-caption {
       display: none;
     }
 
-    .embed-feature.is-expanded .embed-actions {
-      margin-left: auto;
-      justify-content: flex-end;
-    }
-
     .embed-feature.is-expanded .embed-frame-shell {
+      grid-column: 1 / -1;
+      grid-row: 1;
       height: 100%;
       min-height: 0;
-      padding: 0.7rem;
+      padding: 0.35rem;
       border-radius: 1.5rem;
       box-shadow: var(--shadow-soft);
     }
@@ -769,30 +673,6 @@
       height: auto;
       min-height: 0;
       flex: 1 1 auto;
-    }
-
-    .media-strip {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-    }
-
-    .media-card {
-      padding: 1.2rem;
-      border-radius: 1.4rem;
-      border: 1px dashed var(--border);
-      background: var(--surface-dashed);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .media-card h3 {
-      margin: 0;
-      font: 700 1.2rem/1.12 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
-    }
-
-    .media-card p {
-      margin: 0.7rem 0 0;
-      color: var(--text-soft);
     }
 
     .footer {
@@ -828,8 +708,7 @@
     @media (max-width: 980px) {
       .hero-panel,
       .card-grid,
-      .embed-feature,
-      .media-strip {
+      .embed-feature {
         grid-template-columns: 1fr;
       }
 
@@ -896,14 +775,8 @@
       .embed-feature.is-expanded .embed-frame-shell {
         grid-column: 1 / -1;
         grid-row: 1;
-        padding: 0.5rem;
+        padding: 0.3rem;
         border-radius: 1.15rem;
-      }
-
-      .embed-frame-toggle {
-        width: 2.35rem;
-        min-width: 2.35rem;
-        min-height: 2.35rem;
       }
     }
   </style>
@@ -919,7 +792,6 @@
         <nav class="topnav" aria-label="Primary">
           <a href="#existence">Existence of God</a>
           <a href="#resurrection">Resurrection Case</a>
-          <a href="#media">Media</a>
           <button class="theme-toggle" type="button" id="theme-toggle" aria-pressed="false" aria-label="Toggle color theme">
             <span id="theme-toggle-label">Theme</span>
           </button>
@@ -935,54 +807,44 @@
             <h1 id="hero-title">Start with God, then move to the resurrection.</h1>
             <p>This landing page is organized in the order Craig typically argues: first establish the case for God's existence, then examine the historical facts surrounding Jesus' resurrection, and finally compare the best explanatory hypotheses.</p>
             <div class="hero-actions">
-              <a class="button-primary" href="graphs/theistic-arguments.html">Begin with theistic arguments</a>
-              <a class="button-secondary" href="graphs/minimalFactsTidyTree.html">Jump to the minimal facts</a>
+              <a class="button-primary" href="#theistic-overview">Begin with theistic arguments</a>
+              <a class="button-secondary" href="#minimal-facts">Jump to the minimal facts</a>
             </div>
           </div>
 
-          <aside class="hero-aside" aria-label="Guided route and future media">
+          <aside class="hero-aside" aria-label="Guided route">
             <section class="summary-card">
               <h2>Suggested route</h2>
               <ol class="sequence-list">
                 <li>
-                  <span class="step-number">1</span>
+                  <a class="step-number" href="#theistic-overview" aria-label="Jump to Theistic Arguments">1</a>
                   <div class="step-copy">
                     <strong>Survey the case for God's existence</strong>
                     <span>Open the overview first to see the main lines of argument together.</span>
                   </div>
                 </li>
                 <li>
-                  <span class="step-number">2</span>
+                  <a class="step-number" href="#theistic-explorer" aria-label="Jump to Argument Explorer">2</a>
                   <div class="step-copy">
                     <strong>Explore the arguments in more detail</strong>
                     <span>Use the detailed map to move through claims, objections, and supporting structure.</span>
                   </div>
                 </li>
                 <li>
-                  <span class="step-number">3</span>
+                  <a class="step-number" href="#minimal-facts" aria-label="Jump to Minimal Facts">3</a>
                   <div class="step-copy">
                     <strong>Review the minimal facts</strong>
                     <span>Follow the historical case as Habermas, Licona, and Craig often present it.</span>
                   </div>
                 </li>
                 <li>
-                  <span class="step-number">4</span>
+                  <a class="step-number" href="#hypotheses-assessment" aria-label="Jump to Hypotheses">4</a>
                   <div class="step-copy">
                     <strong>Assess the best hypothesis</strong>
                     <span>Compare competing explanations against the accepted facts and see where they lead.</span>
                   </div>
                 </li>
               </ol>
-            </section>
-
-            <section class="future-card">
-              <h2>Media-ready layout</h2>
-              <p>The page is structured so companion YouTube links and future background clips can be added later without reworking the main navigation.</p>
-              <ul class="future-list">
-                <li>External teaching links can sit beside each stage.</li>
-                <li>Hero media can be introduced later as a background layer.</li>
-                <li>The current layout stays lightweight for desktop and mobile.</li>
-              </ul>
             </section>
           </aside>
         </div>
@@ -1002,7 +864,7 @@
             </div>
           </div>
 
-          <article class="embed-feature" data-embed-feature aria-labelledby="overview-embed-title">
+          <article class="embed-feature" id="theistic-overview" data-embed-feature aria-labelledby="overview-embed-title">
             <div class="embed-copy">
               <div class="card-top">
                 <span class="card-tag">Overview</span>
@@ -1012,23 +874,12 @@
                 <h3 id="overview-embed-title">Theistic Arguments</h3>
                 <p>Presents the larger set of arguments for God's existence in one place so the overall shape of the case is visible before drilling into individual lines of reasoning.</p>
               </div>
-              <div class="pill-row" aria-label="Overview features">
-                <span class="pill">Best starting point</span>
-                <span class="pill">Multiple arguments</span>
-                <span class="pill">Bird's-eye view</span>
-                <span class="pill">Theme-synced</span>
-              </div>
               <div class="embed-actions">
-                <a class="button-secondary" href="graphs/theistic-arguments.html">Open the full overview</a>
-                <a class="button-secondary" href="graphs/theistic-argument-explorer.html">Open the detailed explorer</a>
+                <button class="button-secondary embed-toggle embed-launch" type="button" data-embed-toggle data-toggle-style="text" data-expand-label="Open the full overview" data-contract-label="Return to page" aria-expanded="false">Open the full overview</button>
               </div>
-              <p class="embed-caption">This overview now lives directly in the guided sequence while keeping the standalone page available when you want to work with it on its own.</p>
             </div>
 
             <div class="embed-frame-shell">
-              <div class="embed-frame-toolbar">
-                <button class="button-secondary embed-toggle embed-frame-toggle" type="button" data-embed-toggle data-expand-label="Expand view" data-contract-label="Return to page" aria-expanded="false" aria-label="Expand view" title="Expand view"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg></button>
-              </div>
               <iframe
                 id="theistic-arguments-embed"
                 class="embed-frame"
@@ -1040,7 +891,7 @@
             </div>
           </article>
 
-          <article class="embed-feature" data-embed-feature aria-labelledby="explorer-embed-title">
+          <article class="embed-feature" id="theistic-explorer" data-embed-feature aria-labelledby="explorer-embed-title">
             <div class="embed-copy">
               <div class="card-top">
                 <span class="card-tag">Detailed map</span>
@@ -1050,23 +901,12 @@
                 <h3 id="explorer-embed-title">Argument Explorer</h3>
                 <p>Moves from the overview into a more detailed exploration of claims, objections, and rebuttals so the structure of the argument can be inspected closely.</p>
               </div>
-              <div class="pill-row" aria-label="Detailed explorer features">
-                <span class="pill">Interactive detail</span>
-                <span class="pill">Claims and objections</span>
-                <span class="pill">Follow-up study</span>
-                <span class="pill">Disclosure controls</span>
-              </div>
               <div class="embed-actions">
-                <a class="button-secondary" href="graphs/theistic-argument-explorer.html">Open the full explorer</a>
-                <a class="button-secondary" href="graphs/theistic-arguments.html">Return to the overview</a>
+                <button class="button-secondary embed-toggle embed-launch" type="button" data-embed-toggle data-toggle-style="text" data-expand-label="Open the full explorer" data-contract-label="Return to page" aria-expanded="false">Open the full explorer</button>
               </div>
-              <p class="embed-caption">This detailed map now sits directly under the overview so readers can stay in context while moving into objections, rebuttals, and expanded structure.</p>
             </div>
 
             <div class="embed-frame-shell">
-              <div class="embed-frame-toolbar">
-                <button class="button-secondary embed-toggle embed-frame-toggle" type="button" data-embed-toggle data-expand-label="Expand view" data-contract-label="Return to page" aria-expanded="false" aria-label="Expand view" title="Expand view"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg></button>
-              </div>
               <iframe
                 id="theistic-argument-explorer-embed"
                 class="embed-frame embed-frame-tall"
@@ -1092,7 +932,7 @@
             </div>
           </div>
 
-          <article class="embed-feature" data-embed-feature aria-labelledby="minimal-facts-embed-title">
+          <article class="embed-feature" id="minimal-facts" data-embed-feature aria-labelledby="minimal-facts-embed-title">
             <div class="embed-copy">
               <div class="card-top">
                 <span class="card-tag">Facts</span>
@@ -1100,25 +940,14 @@
               </div>
               <div>
                 <h3 id="minimal-facts-embed-title">Minimal Facts</h3>
-                <p>Presents the historical facts in a way that fits the minimal facts approach associated with Habermas, Licona, and Craig before competing hypotheses are evaluated.</p>
-              </div>
-              <div class="pill-row" aria-label="Minimal facts features">
-                <span class="pill">Historical groundwork</span>
-                <span class="pill">Tidy tree view</span>
-                <span class="pill">Case summary</span>
-                <span class="pill">Theme-synced</span>
+                <p>Builds on the theistic groundwork by making resurrection a live possibility if God exists, then presents the core historical facts that are widely accepted by scholars before competing hypotheses are evaluated.</p>
               </div>
               <div class="embed-actions">
-                <a class="button-secondary" href="graphs/minimalFactsTidyTree.html">Open the full facts view</a>
-                <a class="button-secondary" href="graphs/hypotheses.html">Continue to hypotheses</a>
+                <button class="button-secondary embed-toggle embed-launch" type="button" data-embed-toggle data-toggle-style="text" data-expand-label="Open the full facts view" data-contract-label="Return to page" aria-expanded="false">Open the full facts view</button>
               </div>
-              <p class="embed-caption">This places the factual groundwork directly in the Phase Two reading path while preserving the standalone page for focused use.</p>
             </div>
 
             <div class="embed-frame-shell">
-              <div class="embed-frame-toolbar">
-                <button class="button-secondary embed-toggle embed-frame-toggle" type="button" data-embed-toggle data-expand-label="Expand view" data-contract-label="Return to page" aria-expanded="false" aria-label="Expand view" title="Expand view"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg></button>
-              </div>
               <iframe
                 id="minimal-facts-embed"
                 class="embed-frame embed-frame-tall"
@@ -1130,7 +959,7 @@
             </div>
           </article>
 
-          <article class="embed-feature" data-embed-feature aria-labelledby="hypotheses-embed-title">
+          <article class="embed-feature" id="hypotheses-assessment" data-embed-feature aria-labelledby="hypotheses-embed-title">
             <div class="embed-copy">
               <div class="card-top">
                 <span class="card-tag">Assessment</span>
@@ -1140,23 +969,12 @@
                 <h3 id="hypotheses-embed-title">Hypotheses</h3>
                 <p>Tests the candidate explanations against the accepted facts so the best overall hypothesis can be compared and judged in view of explanatory scope and power.</p>
               </div>
-              <div class="pill-row" aria-label="Hypotheses features">
-                <span class="pill">Compare explanations</span>
-                <span class="pill">Evaluate fit</span>
-                <span class="pill">Final synthesis</span>
-                <span class="pill">Theme-synced</span>
-              </div>
               <div class="embed-actions">
-                <a class="button-secondary" href="graphs/hypotheses.html">Open the full assessment</a>
-                <a class="button-secondary" href="graphs/minimalFactsTidyTree.html">Return to the facts</a>
+                <button class="button-secondary embed-toggle embed-launch" type="button" data-embed-toggle data-toggle-style="text" data-expand-label="Open the full assessment" data-contract-label="Return to page" aria-expanded="false">Open the full assessment</button>
               </div>
-              <p class="embed-caption">This places the hypothesis assessment directly at the end of the Phase Two reading path while keeping the standalone page available for focused use.</p>
             </div>
 
             <div class="embed-frame-shell">
-              <div class="embed-frame-toolbar">
-                <button class="button-secondary embed-toggle embed-frame-toggle" type="button" data-embed-toggle data-expand-label="Expand view" data-contract-label="Return to page" aria-expanded="false" aria-label="Expand view" title="Expand view"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg></button>
-              </div>
               <iframe
                 id="hypotheses-embed"
                 class="embed-frame embed-frame-tall"
@@ -1169,30 +987,6 @@
           </article>
         </section>
 
-        <section class="stage" id="media" aria-labelledby="media-title">
-          <div class="stage-header">
-            <div>
-              <p class="stage-kicker">Media Layer</p>
-              <h2 id="media-title">External YouTube links and future clips</h2>
-              <p>The structure is already in place for companion videos, but the page stays focused on the core reading path until those links are available.</p>
-            </div>
-            <div class="stage-badge">
-              <strong>Ready next</strong>
-              <span>External media</span>
-            </div>
-          </div>
-
-          <div class="media-strip">
-            <article class="media-card">
-              <h3>YouTube companions</h3>
-              <p>Add external lecture or walkthrough links here later, grouped beside the stage they support so users can move between reading and video instruction without losing the sequence.</p>
-            </article>
-            <article class="media-card">
-              <h3>Background video space</h3>
-              <p>The hero and stage layout can support future ambient clips or motion backgrounds, but the current page remains fast and clean with no media dependency.</p>
-            </article>
-          </div>
-        </section>
       </div>
     </main>
 
@@ -1218,12 +1012,22 @@
       var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
       var frameOrigin = window.location.origin === "null" ? "*" : window.location.origin;
       var embedStateMessageType = "pv-embed-state";
+      var embedRequestMessageType = "pv-embed-request";
+      var expandedFeatureStateKey = "pvExpandedFeatureId";
       var palette = {
         light: "#f5efe4",
         dark: "#09131b"
       };
       var expandedFeature = null;
       var expandedTrigger = null;
+      var pendingHistoryNavigation = false;
+      var featureById = {};
+
+      embedFeatures.forEach(function (feature) {
+        if (feature.id) {
+          featureById[feature.id] = feature;
+        }
+      });
 
       function getStoredTheme() {
         try {
@@ -1297,15 +1101,44 @@
           return;
         }
         var label = expanded ? (button.dataset.contractLabel || "Return to page") : (button.dataset.expandLabel || "Expand view");
-        button.innerHTML = expanded
-          ? '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2v4H2"/><path d="M10 2v4h4"/><path d="M14 10h-4v4"/><path d="M2 10h4v4"/></svg>'
-          : '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg>';
+        if (button.dataset.toggleStyle === "text") {
+          button.textContent = label;
+        } else {
+          button.innerHTML = expanded
+            ? '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2v4H2"/><path d="M10 2v4h4"/><path d="M14 10h-4v4"/><path d="M2 10h4v4"/></svg>'
+            : '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg>';
+        }
         button.setAttribute("aria-label", label);
         button.setAttribute("title", label);
         button.setAttribute("aria-expanded", String(expanded));
       }
 
-      function collapseExpandedFeature(restoreFocus) {
+      function getFeatureId(feature) {
+        if (!feature) {
+          return null;
+        }
+        return feature.id || null;
+      }
+
+      function getExpandedFeatureFromState(state) {
+        if (!state || typeof state !== "object") {
+          return null;
+        }
+        var featureId = state[expandedFeatureStateKey];
+        if (!featureId) {
+          return null;
+        }
+        return featureById[featureId] || null;
+      }
+
+      function cloneHistoryState() {
+        if (history.state && typeof history.state === "object") {
+          return Object.assign({}, history.state);
+        }
+        return {};
+      }
+
+      function collapseExpandedFeatureImmediate(restoreFocus) {
         if (!expandedFeature) {
           return;
         }
@@ -1323,12 +1156,28 @@
         }
       }
 
-      function expandFeature(feature, trigger) {
-        if (expandedFeature === feature) {
-          collapseExpandedFeature(true);
+      function collapseExpandedFeature(restoreFocus) {
+        if (!expandedFeature) {
           return;
         }
-        collapseExpandedFeature(false);
+        var featureId = getFeatureId(expandedFeature);
+        if (!pendingHistoryNavigation && featureId && history.state && history.state[expandedFeatureStateKey] === featureId) {
+          pendingHistoryNavigation = true;
+          history.back();
+          return;
+        }
+        collapseExpandedFeatureImmediate(restoreFocus);
+      }
+
+      function expandFeature(feature, trigger, options) {
+        options = options || {};
+        if (expandedFeature === feature) {
+          if (!options.skipHistory) {
+            collapseExpandedFeature(true);
+          }
+          return;
+        }
+        collapseExpandedFeatureImmediate(false);
         expandedFeature = feature;
         expandedTrigger = trigger || feature.querySelector("[data-embed-toggle]");
         feature.classList.add("is-expanded");
@@ -1337,6 +1186,14 @@
           syncEmbedToggleLabel(button, true);
         });
         syncEmbeddedState();
+        if (!options.skipHistory) {
+          var featureId = getFeatureId(feature);
+          if (featureId) {
+            var nextState = cloneHistoryState();
+            nextState[expandedFeatureStateKey] = featureId;
+            history.pushState(nextState, "", window.location.href);
+          }
+        }
       }
 
       embedFeatures.forEach(function (feature) {
@@ -1350,6 +1207,30 @@
 
       document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") {
+          collapseExpandedFeature(true);
+        }
+      });
+
+      window.addEventListener("popstate", function (event) {
+        pendingHistoryNavigation = false;
+        var nextFeature = getExpandedFeatureFromState(event.state);
+        if (nextFeature) {
+          expandFeature(nextFeature, nextFeature.querySelector("[data-embed-toggle]"), { skipHistory: true });
+          return;
+        }
+        if (expandedFeature) {
+          collapseExpandedFeatureImmediate(true);
+        }
+      });
+
+      window.addEventListener("message", function (event) {
+        if (!event.data || typeof event.data !== "object") {
+          return;
+        }
+        if (window.location.origin !== "null" && event.origin !== window.location.origin) {
+          return;
+        }
+        if (event.data.type === embedRequestMessageType && event.data.action === "collapse") {
           collapseExpandedFeature(true);
         }
       });
@@ -1376,6 +1257,10 @@
 
       applyTheme(getActiveTheme());
       ensureEmbeddedFrames(getActiveTheme());
+      var initialExpandedFeature = getExpandedFeatureFromState(history.state);
+      if (initialExpandedFeature) {
+        expandFeature(initialExpandedFeature, initialExpandedFeature.querySelector("[data-embed-toggle]"), { skipHistory: true });
+      }
       syncEmbeddedState();
     }());
   </script>

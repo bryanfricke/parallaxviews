@@ -170,6 +170,10 @@
       min-width: 0;
     }
 
+    #topbarActions #embedReturnBtn {
+      order: 99;
+    }
+
     #controlsToggle {
       display: inline-flex;
       align-items: center;
@@ -257,7 +261,7 @@
 
     /* Desktop: show full controls panel inline */
     @media (min-width:769px) {
-      #controlsToggle {
+      html:not(.embed-mode) #controlsToggle {
         display: none;
       }
 
@@ -272,6 +276,10 @@
         justify-content: flex-start;
         margin-left: 0;
       }
+    }
+
+    html.embed-mode #topbar[data-state='collapsed'] #controls-panel {
+      display: none;
     }
 
     #topbar button,
@@ -372,11 +380,13 @@
     #hypotheses {
       display: flex;
       gap: 10px;
-      /* keep legend on a single row and center it in the topbar */
+      /* keep legend on a single row and center it when it fits */
       flex-wrap: nowrap;
       margin-left: 0;
       flex: 1 1 auto;
-      justify-content: center;
+      /* Fallback to start; browsers that support `safe` center without clipping the first pill. */
+      justify-content: flex-start;
+      justify-content: safe center;
       /* fixed-height single-line scroller so it cannot grow and push the chart down */
       height: 44px;
       line-height: 44px;
@@ -452,8 +462,8 @@
     .pill input[type="checkbox"]:checked {
       background-color: var(--control-accent);
       border-color: var(--control-accent);
-      /* white check glyph for maximum contrast */
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='3.5,8.5 6.5,11.5 12.5,4.5'/></svg>");
+      /* Use a dark check glyph so it matches the other high-contrast accent controls. */
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2309131b' stroke-width='2.15' stroke-linecap='round' stroke-linejoin='round'><polyline points='3.5,8.5 6.5,11.5 12.5,4.5'/></svg>");
       background-repeat: no-repeat;
       background-position: center;
       background-size: 12px 12px;
@@ -471,11 +481,11 @@
       background-color: transparent;
     }
 
-    /* In light mode, checked: dark check on accent background */
+    /* In light mode, checked: white check on accent background for text-matched contrast */
     :root[data-theme="light"] .pill input[type="checkbox"]:checked {
       background-color: var(--control-accent);
       border-color: var(--control-accent);
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='3.5,8.5 6.5,11.5 12.5,4.5'/></svg>");
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23ffffff' stroke-width='2.15' stroke-linecap='round' stroke-linejoin='round'><polyline points='3.5,8.5 6.5,11.5 12.5,4.5'/></svg>");
       background-repeat: no-repeat;
       background-position: center;
       background-size: 12px 12px;
@@ -644,7 +654,8 @@
     }
 
     /* Pager buttons inside the tooltip (left/right) */
-    .tooltip button {
+    .tooltip button,
+    .mobile-bottom-sheet .tt-nav-btn {
       background: var(--button-bg);
       border: 1px solid var(--button-border);
       color: var(--ink);
@@ -659,14 +670,127 @@
       box-shadow: var(--soft-shadow);
     }
 
-    .tooltip button:hover {
+    .tooltip button:hover,
+    .mobile-bottom-sheet .tt-nav-btn:hover {
       background: var(--button-bg-hover);
       border-color: var(--hover-border);
     }
 
-    .tooltip button:focus-visible {
+    .tooltip button:focus-visible,
+    .mobile-bottom-sheet .tt-nav-btn:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
+    }
+
+    .tooltip .tt-shell,
+    .mobile-bottom-sheet .tt-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tooltip .tt-toolbar,
+    .mobile-bottom-sheet .tt-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 2px;
+    }
+
+    .tooltip .tt-toolbar-actions,
+    .mobile-bottom-sheet .tt-toolbar-actions {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      flex: 0 0 auto;
+      margin-left: auto;
+    }
+
+    .tooltip .tt-toolbar-nav,
+    .mobile-bottom-sheet .tt-toolbar-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 14px;
+      border-left: 1px solid var(--panel-stroke);
+      flex: 0 0 auto;
+    }
+
+    .tooltip .tt-toolbar-count,
+    .mobile-bottom-sheet .tt-toolbar-count,
+    .tooltip .tt-criterion-count,
+    .mobile-bottom-sheet .tt-criterion-count {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .tooltip .tt-nav-cluster,
+    .mobile-bottom-sheet .tt-nav-cluster {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .tooltip .tt-nav-btn,
+    .mobile-bottom-sheet .tt-nav-btn {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      min-height: 40px;
+      padding: 0;
+      border-radius: 999px;
+      flex: 0 0 40px;
+      line-height: 1;
+      font-size: 0;
+    }
+
+    .tooltip .tt-nav-icon,
+    .mobile-bottom-sheet .tt-nav-icon {
+      width: 16px;
+      height: 16px;
+      display: block;
+      flex: 0 0 auto;
+      pointer-events: none;
+    }
+
+    .tooltip .tt-title-row,
+    .mobile-bottom-sheet .tt-title-row {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .tooltip .tt-criterion-row,
+    .mobile-bottom-sheet .tt-criterion-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .tooltip .tt-criterion-copy,
+    .mobile-bottom-sheet .tt-criterion-copy {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .tooltip .tt-criterion-controls,
+    .mobile-bottom-sheet .tt-criterion-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: 8px;
+      padding-left: 14px;
+      border-left: 1px solid var(--panel-stroke);
+      flex: 0 0 auto;
     }
 
     /* Pinned tooltip state (desktop only): colored outline matching hypothesis and draggable cursor */
@@ -894,19 +1018,25 @@
       border-top-right-radius: 22px;
       box-shadow: var(--tip-shadow);
       border: 1px solid var(--panel-stroke);
-      padding: 18px 20px 26px 20px;
+      padding: 10px 20px 26px 20px;
       z-index: 11000;
       max-height: 65vh;
       overflow: auto;
-      transition: bottom .28s ease;
+      transition: bottom .28s ease, transform .18s ease;
       -webkit-overflow-scrolling: touch;
       font: 400 13px/1.5 "Avenir Next", "Segoe UI Variable", "Segoe UI", sans-serif;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
+      overscroll-behavior-y: contain;
+      will-change: bottom, transform;
     }
 
     .mobile-bottom-sheet.open {
       bottom: 0
+    }
+
+    .mobile-bottom-sheet.dragging {
+      transition: none;
     }
 
     .mobile-bottom-sheet h3 {
@@ -922,128 +1052,44 @@
     }
 
     .mobile-bottom-sheet .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid var(--button-border);
-      background: var(--button-bg);
-      cursor: pointer;
       display: flex;
+      width: 100%;
+      min-height: 0;
+      padding: 0 0 10px 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      line-height: 0;
       color: inherit;
-      transition: background 180ms ease, border-color 180ms ease;
+      box-shadow: none;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .mobile-bottom-sheet .close-btn:hover {
-      background: var(--button-bg-hover);
-      border-color: var(--hover-border);
+    .mobile-bottom-sheet .close-btn-bar {
+      width: 48px;
+      height: 5px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--muted) 65%, transparent);
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .mobile-bottom-sheet .close-btn:hover .close-btn-bar,
+    .mobile-bottom-sheet .close-btn:focus-visible .close-btn-bar {
+      background: color-mix(in srgb, var(--accent) 34%, var(--muted));
+      transform: scaleX(1.04);
     }
 
     .mobile-bottom-sheet .close-btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
+      outline: none;
     }
 
-    /* Pager controls (top-left) for overlapping vertices on mobile */
-    .mobile-bottom-sheet .pager {
-      position: static;
-      display: flex;
-      gap: 8px;
-      margin-left: auto;
-      z-index: 2
-    }
-
-    .mobile-bottom-sheet .pager button {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid var(--button-border);
-      background: var(--button-bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      cursor: pointer;
-      padding: 0;
-      line-height: 0;
-      color: var(--ink);
-      transition: background 180ms ease, border-color 180ms ease;
-    }
-
-    .mobile-bottom-sheet .pager button:hover {
-      background: var(--button-bg-hover);
-      border-color: var(--hover-border);
-    }
-
-    .mobile-bottom-sheet .pager button:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    /* Ensure content doesn't sit underneath absolute pager row */
+    /* Ensure content doesn't sit underneath compact top handle */
     .mobile-bottom-sheet .with-pager {
       padding-top: 0;
-    }
-
-    /* Pager row now flows in normal document flow (not absolute) */
-    .mobile-bottom-sheet .pager-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 4px 0 8px 0;
-      padding-right: 60px;
-    }
-
-    .mobile-bottom-sheet .pager-info {
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    :root[data-theme="dark"] .mobile-bottom-sheet .pager-info {
-      color: var(--ink)
-    }
-
-    /* Inline header with its own close to align with pager */
-    .mobile-bottom-sheet.has-inline-close>.close-btn {
-      display: none;
-    }
-
-    .mobile-bottom-sheet .hdr {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 2px 0 8px 0;
-    }
-
-    .mobile-bottom-sheet .hdr-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .mobile-bottom-sheet .hdr .hdr-close {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid var(--button-border);
-      background: var(--button-bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      line-height: 0;
-      color: inherit;
-      cursor: pointer;
-      transition: background 180ms ease;
     }
 
     /* Mobile sheet quote divider */
@@ -1079,7 +1125,8 @@
         aria-label="Show controls">Controls <span class="controls-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span></button>
       <!-- Mobile-only Facts button appears after Controls on small screens -->
       <button id="factsBtnMobile" class="btn mobile-only" tabindex="2" aria-expanded="false" aria-controls="factsOverlay">Facts</button>
-      <button id="themeToggle" tabindex="5" aria-pressed="false" title="Toggle dark mode">
+      <button id="embedReturnBtn" class="btn" tabindex="5" type="button" hidden>Return to overview</button>
+      <button id="themeToggle" tabindex="6" aria-pressed="false" title="Toggle dark mode">
         <span id="icon-sun" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="4"></circle>
@@ -1195,8 +1242,8 @@
           pinned it stays open, can be moved (drag) to a convenient position, and will show a leader line back to the
           anchored vertex. Close a pinned tooltip with the × button, by pressing Esc, or by clicking the chart background.
           <br>
-          Mobile: Tap a vertex to open a bottom sheet with the same details; swipe down or tap × to dismiss. When
-          multiple hypotheses share a vertex, use the left/right pager controls (or swipe) to cycle through them.</p>
+          Mobile: Tap a vertex to open a bottom sheet with the criterion details; drag down on or tap the grab handle to dismiss. When
+          multiple hypotheses are available on that criterion, use the left/right pager controls (or swipe) to cycle through them. Use the buttons next to <em>Criteria</em> to move across dimensions for the current hypothesis.</p>
         <p class="small" style="margin-top:8px;color:var(--muted)">Note for advanced users: the snapping behavior, band
           anchors, and the underlying numeric assessments are driven by the JSON data in
           <code>graphs/data/hypotheses.json</code>. If you prefer a different segmentation (for example,
@@ -1236,7 +1283,9 @@
   <div id="tt" class="tooltip" style="display:none" role="dialog" aria-modal="false" aria-live="polite"></div>
   <!-- Mobile bottom-sheet container for tooltip content -->
   <div id="ttSheet" class="mobile-bottom-sheet" aria-hidden="true" role="dialog" aria-modal="false">
-    <button class="close-btn" aria-label="Close" type="button">×</button>
+    <button class="close-btn" aria-label="Dismiss panel" type="button">
+      <span class="close-btn-bar" aria-hidden="true"></span>
+    </button>
     <div class="sheet-inner"></div>
   </div>
 
@@ -1288,18 +1337,21 @@
     const controlsToggle = document.getElementById('controlsToggle');
     const controlsPanel = document.getElementById('controls-panel');
     function isMobile() { return window.innerWidth <= 768; }
+    function isEmbeddedPage() { return document.documentElement.classList.contains('embed-mode'); }
+    function useCollapsibleControls() { return isMobile() || isEmbeddedPage(); }
     function updateHeaderHeight() { if (topbar) document.documentElement.style.setProperty('--header-h', topbar.offsetHeight + 'px'); }
-    function setControls(open) {
+    function setControls(open, options = {}) {
       if (!topbar) return;
-      if (!isMobile()) { topbar.dataset.state = 'expanded'; controlsToggle.setAttribute('aria-expanded', 'true'); controlsToggle.setAttribute('aria-label', 'Hide controls'); updateHeaderHeight(); return; }
+      const shouldFocus = options.focus !== false;
+      if (!useCollapsibleControls()) { topbar.dataset.state = 'expanded'; controlsToggle.setAttribute('aria-expanded', 'true'); controlsToggle.setAttribute('aria-label', 'Hide controls'); updateHeaderHeight(); return; }
       topbar.dataset.state = open ? 'expanded' : 'collapsed';
       controlsToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       controlsToggle.setAttribute('aria-label', open ? 'Hide controls' : 'Show controls');
-      if (open) {
+      if (shouldFocus && open) {
         // focus first interactive control inside panel
         const first = controlsPanel.querySelector('button, input, select');
         if (first) setTimeout(() => { first.focus({ preventScroll: true }); }, 10);
-      } else {
+      } else if (shouldFocus) {
         setTimeout(() => controlsToggle.focus({ preventScroll: true }), 10);
       }
       updateHeaderHeight();
@@ -1318,22 +1370,22 @@
       fs.addEventListener('focus', (e) => {
         try {
           // Ensure controls are visible on mobile before focusing into them
-          if (isMobile() && topbar && topbar.dataset.state !== 'expanded') setControls(true);
+          if (useCollapsibleControls() && topbar && topbar.dataset.state !== 'expanded') setControls(true, { focus: false });
           const first = controlsPanel && controlsPanel.querySelector('button, input, select');
           if (first && typeof first.focus === 'function') { first.focus(); }
         } catch(_) {}
       });
     })();
     window.addEventListener('resize', () => {
-      if (!isMobile()) {
-        setControls(true); // always expanded on desktop
+      if (!useCollapsibleControls()) {
+        setControls(true, { focus: false }); // always expanded on standalone desktop
       } else {
         // remain in whatever state currently set except initialize
         updateHeaderHeight();
       }
     });
     // Initialize state (collapsed on mobile, expanded otherwise)
-    setTimeout(() => { setControls(!isMobile() ? true : false); }, 0);
+    setTimeout(() => { setControls(useCollapsibleControls() ? false : true, { focus: false }); }, 0);
     // drag/drop removed; page will attempt to auto-load `data/hypotheses.json` on load
 
     function loadFromText(txt) {
@@ -1386,6 +1438,26 @@
     const sheetClose = sheetEl ? sheetEl.querySelector('.close-btn') : null;
     // track the bounding rect of the last tapped element so the sheet can avoid obscuring it
     let sheetAnchorRect = null;
+    let sheetHandlePointerId = null;
+    let sheetHandleStartY = null;
+    let sheetHandleDragY = 0;
+    let suppressSheetCloseClick = false;
+    const SHEET_HANDLE_DISMISS_PX = 72;
+
+    function setSheetDragOffset(offsetPx) {
+      if (!sheetEl) return;
+      sheetHandleDragY = Math.max(0, offsetPx || 0);
+      sheetEl.style.transform = sheetHandleDragY ? `translateY(${sheetHandleDragY}px)` : '';
+    }
+
+    function resetSheetDrag() {
+      if (!sheetEl) return;
+      sheetHandlePointerId = null;
+      sheetHandleStartY = null;
+      sheetHandleDragY = 0;
+      sheetEl.classList.remove('dragging');
+      sheetEl.style.transform = '';
+    }
     
     // Leader line SVG for connecting tooltip to anchor point
     let leaderSvg = null;
@@ -1691,6 +1763,7 @@
     function openSheet(html, highlight = null, anchorRect = null) {
       if (!sheetEl) return;
       dbg('openSheet', { highlight, hasAnchorRect: !!anchorRect, prefersSheet: prefersSheet() });
+      resetSheetDrag();
       // Store the currently focused element so we can restore focus when sheet closes
       state.sheetTriggerElement = document.activeElement;
       sheetInner.innerHTML = html;
@@ -1732,6 +1805,7 @@
     function closeSheet() {
       if (!sheetEl) return;
       dbg('closeSheet');
+      resetSheetDrag();
       sheetEl.classList.remove('open');
       sheetEl.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
@@ -1752,20 +1826,63 @@
         state.sheetTriggerElement = null;
       }
     }
-    if (sheetClose) { sheetClose.addEventListener('click', () => closeSheet()); }
-    // swipe-down gesture to close
-    (function () {
-      if (!sheetEl) return;
-      let startY = null, startT = null;
-      // These handlers don't call preventDefault, so we can mark them passive for better scrolling perf
-      sheetEl.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 1) { startY = e.touches[0].clientY; startT = Date.now(); }
-      }, { passive: true });
-      sheetEl.addEventListener('touchmove', (e) => {
-        if (startY == null) return; const dy = e.touches[0].clientY - startY; if (dy > 60) { closeSheet(); startY = null; }
-      }, { passive: true });
-      sheetEl.addEventListener('touchend', () => { startY = null; startT = null; }, { passive: true });
-    })();
+    if (sheetClose) {
+      const finishSheetHandleDrag = (pointerId = null) => {
+        if (pointerId != null && sheetHandlePointerId !== pointerId) return;
+        const dragY = sheetHandleDragY;
+        const shouldDismiss = dragY >= SHEET_HANDLE_DISMISS_PX;
+        resetSheetDrag();
+        if (shouldDismiss) closeSheet();
+        if (suppressSheetCloseClick) {
+          setTimeout(() => { suppressSheetCloseClick = false; }, 0);
+        }
+      };
+
+      sheetClose.addEventListener('click', (e) => {
+        if (suppressSheetCloseClick) {
+          suppressSheetCloseClick = false;
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+        closeSheet();
+      });
+
+      sheetClose.addEventListener('pointerdown', (e) => {
+        if (!sheetEl || !sheetEl.classList.contains('open')) return;
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        sheetHandlePointerId = e.pointerId;
+        sheetHandleStartY = e.clientY;
+        sheetHandleDragY = 0;
+        suppressSheetCloseClick = false;
+        sheetEl.classList.add('dragging');
+        try { sheetClose.setPointerCapture(e.pointerId); } catch (_) { }
+        e.stopPropagation();
+      });
+
+      sheetClose.addEventListener('pointermove', (e) => {
+        if (sheetHandlePointerId !== e.pointerId || sheetHandleStartY == null) return;
+        const dy = Math.max(0, e.clientY - sheetHandleStartY);
+        if (dy <= 0) return;
+        setSheetDragOffset(dy);
+        if (dy > 6) suppressSheetCloseClick = true;
+        e.preventDefault();
+      });
+
+      sheetClose.addEventListener('pointerup', (e) => {
+        if (sheetHandlePointerId !== e.pointerId) return;
+        try { sheetClose.releasePointerCapture(e.pointerId); } catch (_) { }
+        finishSheetHandleDrag(e.pointerId);
+        e.stopPropagation();
+      });
+
+      sheetClose.addEventListener('pointercancel', (e) => {
+        if (sheetHandlePointerId !== e.pointerId) return;
+        try { sheetClose.releasePointerCapture(e.pointerId); } catch (_) { }
+        resetSheetDrag();
+        suppressSheetCloseClick = false;
+      });
+    }
     function showTTAt(html, svgEl, sx, sy, dy = -10) {
       dbg('showTTAt', { mode: prefersSheet() ? 'sheet' : 'tooltip', sx, sy, dy });
       if (prefersSheet()) {
@@ -1981,6 +2098,21 @@
       const r = chartEl.getBoundingClientRect(); b.style.left = r.left + 'px'; b.style.top = r.top + 'px'; b.style.width = r.width + 'px'; b.style.height = r.height + 'px'; b.style.display = 'block';
     }
     function hideTTBlocker() { const b = ensureTTBlocker(); b.style.display = 'none'; }
+    function pinTooltipInPlace() {
+      if (prefersSheet()) return;
+      const node = tt.node();
+      if (!node) return;
+      state.ttPinned = true;
+      tt.classed('pinned', true);
+      const r = node.getBoundingClientRect();
+      state.ttPos.left = r.left;
+      state.ttPos.top = r.top;
+      // Treat pager-click pinning like a manual drag so subsequent pages keep this screen position.
+      state.ttUserMoved = true;
+      clearTimeout(hideTimer);
+      showTTBlocker();
+      updateLeaderLine();
+    }
     function scheduleHide(delay = 200) {
       dbg('scheduleHide', { delay, ttPinned: state.ttPinned, sheetOpen: !!(sheetEl && sheetEl.classList.contains('open')) });
       // Don't auto-hide while a bottom sheet is open or when the tooltip is pinned on desktop
@@ -1990,12 +2122,17 @@
       hideTimer = setTimeout(() => {
         // Respect suppression window: ignore hides right after we pin
         if (Date.now() < (state._suppressHideUntil || 0)) return;
-        if (!state.isOverChart && !state.isOverTT) {
+        // Hide tooltip whenever the mouse is not over the tooltip itself.
+        // (Being over the chart no longer keeps the tooltip open — only hovering
+        //  the tooltip or clicking to pin it does.)
+        if (!state.isOverTT) {
           tt.style('display', 'none');
           state.pagerActive = null;
           // clear any active axis highlight when tooltip fully hides
           try { state.activeAxisId = null; updateAxisSelection(); } catch (_) {}
-          clearHighlight();
+          // Only reset the polygon highlight when the mouse has also left the chart,
+          // so the selected series stays visually emphasized while hovering elsewhere.
+          if (!state.isOverChart) clearHighlight();
         }
       }, delay);
     }
@@ -2248,6 +2385,9 @@
     // Embed mode: read URL params for theme sync with parent page
     const _pvParams = new URLSearchParams(window.location.search);
     const _pvIsEmbedMode = _pvParams.get('embed') === '1';
+    const _pvEmbedStateMessageType = 'pv-embed-state';
+    const _pvEmbedRequestMessageType = 'pv-embed-request';
+    let _pvIsEmbedExpanded = false;
     if (_pvIsEmbedMode) document.documentElement.classList.add('embed-mode');
     const _pvRequestedTheme = _pvParams.get('theme');
     const _pvSharedThemeKey = 'parallax-theme';
@@ -2293,6 +2433,24 @@
     // initialize theme immediately so colors are correct before UI paints
     try { initTheme(); } catch (e) {/* ignore */ }
 
+    const _pvEmbedReturnBtn = document.getElementById('embedReturnBtn');
+    function _pvSyncEmbedReturnButton() {
+      if (!_pvEmbedReturnBtn) return;
+      _pvEmbedReturnBtn.hidden = !(_pvIsEmbedMode && _pvIsEmbedExpanded);
+      if (typeof updateHeaderHeight === 'function') {
+        updateHeaderHeight();
+      }
+    }
+    function _pvRequestEmbedCollapse() {
+      if (!_pvIsEmbedMode || !_pvIsEmbedExpanded || window.parent === window) return;
+      const targetOrigin = window.location.origin === 'null' ? '*' : window.location.origin;
+      window.parent.postMessage({ type: _pvEmbedRequestMessageType, action: 'collapse' }, targetOrigin);
+    }
+    if (_pvEmbedReturnBtn) {
+      _pvEmbedReturnBtn.addEventListener('click', _pvRequestEmbedCollapse);
+      _pvSyncEmbedReturnButton();
+    }
+
     // Listen for theme sync messages from a parent frame (embed mode)
     window.addEventListener('message', (event) => {
       try {
@@ -2300,6 +2458,19 @@
         if (event.data.type === 'pv-theme' && (event.data.theme === 'light' || event.data.theme === 'dark')) {
           applyTheme(event.data.theme);
           d3.select('#themeToggle').attr('aria-pressed', event.data.theme === 'dark' ? 'true' : 'false');
+          return;
+        }
+        if (event.data.type === _pvEmbedStateMessageType) {
+          _pvIsEmbedExpanded = event.data.expanded === true;
+          document.documentElement.classList.toggle('embed-expanded', _pvIsEmbedExpanded);
+          _pvSyncEmbedReturnButton();
+          if (_pvIsEmbedMode) {
+            if (_pvIsEmbedExpanded) {
+              setControls(topbar && topbar.dataset.state === 'expanded', { focus: false });
+            } else {
+              setControls(false, { focus: false });
+            }
+          }
         }
       } catch (e) { /* ignore */ }
     });
@@ -2471,70 +2642,267 @@
       else { state._highlightClearTimer = setTimeout(run, 450); } // 450ms grace period
     }
 
-    // Show a tooltip with pager controls for overlapping vertices
-    function showPagedTooltip(list, startIndex, svgEl, br, sr) {
-      dbg('showPagedTooltip', { startIndex, items: list.map(i => `${i.h.id}@${i.c.id}`) });
-      let idx = startIndex || 0;
-      // If pager is already active for the same list and index, avoid re-rendering
-      const key = list.map(i => i.h.id + '@' + i.c.id).join('|');
-      if (state.pagerActive && state.pagerActive.key === key && state.pagerActive.idx === idx) return;
-      function renderAt(i) {
-        const item = list[i];
-        const level = ordinalLabel(item.c.id, item.raw, byId(Data.criteria));
-        const note = (byId(Data.hypotheses)[item.h.id].notes || {})[item.c.id] || '';
-        const qhtml = quoteHTML(byId(Data.hypotheses), item.h.id, item.c.id);
-        const sw = `<span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(item.h)};margin:0 6px -1px 6px'></span>`;
-        // pager at top to avoid vertical shift when content changes
-        let content = `<div style='position:relative;display:flex;flex-direction:column;gap:8px;min-width:220px'>` +
-          `<div style='display:flex;align-items:center;gap:12px'>` +
-          `<div style='font-weight:600;flex:1 1 auto'>Hypothesis ${i + 1}/${list.length}</div>` +
-          `<div style='display:flex;align-items:center;gap:6px;flex:0 0 auto'>` +
-          `<button id='pager-left' aria-label='Previous' style='width:32px;height:32px'>&#9664;</button>` +
-          `<button id='pager-right' aria-label='Next' style='width:32px;height:32px'>&#9654;</button>` +
-          `</div>` +
-          `</div>` +
-          `<div id='pager-body' style='min-height:56px'>` +
-          `<div style='font-weight:600;display:flex;align-items:center;gap:6px'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(item.h)}'></span><span>${item.h.label}</span></div>` +
-          `<div><strong>Criteria:</strong> ${item.c.label}</div>` +
-          `<div><strong>Level:</strong> ${level}</div>`;
-        if (note) content += `<div style='margin-top:4px;color:var(--muted)'>${note}</div>`;
-        content += qhtml;
-        content += `</div></div>`;
-        
-        // If tooltip has been manually moved by user, update content in place
-        const ttNode = tt.node();
-        const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
-        if (hasMoved && ttNode) {
-          // Just update the HTML content without repositioning
-          tt.html(content);
-        } else {
-          // Normal positioning for initial show or unpinned tooltips
-          showTTAt(content, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
-        }
-        
-        // Update tooltip color to match current hypothesis
-        setTooltipColor(getColorFor(item.h));
-        // highlight current series and selected vertex
-        highlightSeries(item.h.id, item.c.id);
-        // Update leader line to reflect new color
-        updateLeaderLine();
-        // wire pager buttons (delegated via document since TT content is HTML string)
-        setTimeout(() => {
-          const left = document.getElementById('pager-left');
-          const right = document.getElementById('pager-right');
-          if (left) {
-            // stop propagation so the document click handler doesn't close the tooltip
-            left.addEventListener('click', (ev) => { ev.stopPropagation(); idx = (idx - 1 + list.length) % list.length; renderAt(idx); });
-          }
-          if (right) {
-            right.addEventListener('click', (ev) => { ev.stopPropagation(); idx = (idx + 1) % list.length; renderAt(idx); });
-          }
-
-        }, 0);
+    function findVertexNode(hypId, critId, svgEl = null) {
+      try {
+        const svgNode = (svgEl && svgEl.node ? svgEl.node() : svgEl) ||
+          (state.currentSvg && state.currentSvg.node ? state.currentSvg.node() : document.querySelector('#chart svg'));
+        if (!svgNode) return null;
+        return d3.select(svgNode).selectAll('.vertex')
+          .filter(v => v && v.h && v.c && v.h.id === hypId && v.c.id === critId)
+          .node();
+      } catch (_) {
+        return null;
       }
-      renderAt(idx);
-      // mark pager as active so hover handlers won't override it
-      state.pagerActive = { key, ids: list.map(i => i.h.id), idx };
+    }
+
+    function getVertexAnchor(item, svgEl = null, fallbackRect = null) {
+      if (!item || !item.h || !item.c) return { node: null, rect: fallbackRect };
+      const svgNode = (svgEl && svgEl.node ? svgEl.node() : svgEl) ||
+        (state.currentSvg && state.currentSvg.node ? state.currentSvg.node() : document.querySelector('#chart svg'));
+      const node = findVertexNode(item.h.id, item.c.id, svgNode);
+      if (!node) return { node: null, rect: fallbackRect };
+      const rect = getScreenRectForAnchor(node, svgNode) || node.getBoundingClientRect() || fallbackRect;
+      return { node, rect: rect || fallbackRect };
+    }
+
+    function getRenderedVertexItems() {
+      try {
+        const svgNode = (state.currentSvg && state.currentSvg.node ? state.currentSvg.node() : document.querySelector('#chart svg'));
+        if (!svgNode) return [];
+        return Array.from(svgNode.querySelectorAll('.vertex'))
+          .map(node => node && node.__data__)
+          .filter(v => v && v.h && v.c);
+      } catch (_) {
+        return [];
+      }
+    }
+
+    function sortVertexItemsByHypothesis(items) {
+      const order = new Map((Data && Data.hypotheses ? Data.hypotheses : []).map((h, i) => [h.id, i]));
+      return items.slice().sort((a, b) => (order.get(a.h.id) ?? 0) - (order.get(b.h.id) ?? 0));
+    }
+
+    function sortVertexItemsByCriterion(items) {
+      const order = new Map((Data && Data.criteria ? Data.criteria : []).map((c, i) => [c.id, i]));
+      return items.slice().sort((a, b) => (order.get(a.c.id) ?? 0) - (order.get(b.c.id) ?? 0));
+    }
+
+    function getHypothesisPagerItems(item) {
+      return sortVertexItemsByHypothesis(getRenderedVertexItems().filter(v => v.c.id === item.c.id));
+    }
+
+    function getCriterionPagerItems(item) {
+      return sortVertexItemsByCriterion(getRenderedVertexItems().filter(v => v.h.id === item.h.id));
+    }
+
+    function navButtonMarkup(cls, label, direction) {
+      const path = direction === 'left'
+        ? "M10.75 2.75 4.5 8l6.25 5.25V2.75Z"
+        : "M5.25 2.75 11.5 8l-6.25 5.25V2.75Z";
+      return `<button type='button' class='tt-nav-btn ${cls}' aria-label='${label}'>` +
+        `<svg class='tt-nav-icon' viewBox='0 0 16 16' aria-hidden='true' focusable='false'>` +
+          `<path d='${path}' fill='currentColor'></path>` +
+        `</svg>` +
+      `</button>`;
+    }
+
+    function buildVertexDetailMarkup(item, { sheet = false } = {}) {
+      const hypothesisItems = getHypothesisPagerItems(item);
+      const criterionItems = getCriterionPagerItems(item);
+      const hypothesisIndex = Math.max(0, hypothesisItems.findIndex(v => v.h.id === item.h.id && v.c.id === item.c.id));
+      const criterionIndex = Math.max(0, criterionItems.findIndex(v => v.h.id === item.h.id && v.c.id === item.c.id));
+      const level = ordinalLabel(item.c.id, item.raw, byId(Data.criteria));
+      const note = (byId(Data.hypotheses)[item.h.id].notes || {})[item.c.id] || '';
+      const qhtml = sheet ? '' : quoteHTML(byId(Data.hypotheses), item.h.id, item.c.id);
+      const titleHtml = sheet
+        ? `<h3 class='tt-title-row' style='margin:0'><span style='display:inline-block;width:12px;height:12px;border-radius:3px;background:${getColorFor(item.h)}'></span><span>${item.h.label}</span></h3>`
+        : `<div class='tt-title-row'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(item.h)}'></span><span>${item.h.label}</span></div>`;
+      const hypothesisNavHtml = hypothesisItems.length > 1
+        ? `<div class='tt-toolbar-nav'>` +
+            `<span class='tt-toolbar-count'>${hypothesisIndex + 1}/${hypothesisItems.length}</span>` +
+            `<div class='tt-nav-cluster'>` +
+              navButtonMarkup('tt-hyp-prev', 'Previous hypothesis', 'left') +
+              navButtonMarkup('tt-hyp-next', 'Next hypothesis', 'right') +
+            `</div>` +
+          `</div>`
+        : '';
+      const criterionControlsHtml = criterionItems.length > 1
+        ? `<div class='tt-criterion-controls'>` +
+            `<span class='tt-criterion-count'>${criterionIndex + 1}/${criterionItems.length}</span>` +
+            `<div class='tt-nav-cluster'>` +
+              navButtonMarkup('tt-crit-prev', 'Previous criterion', 'left') +
+              navButtonMarkup('tt-crit-next', 'Next criterion', 'right') +
+            `</div>` +
+          `</div>`
+        : '';
+      const bodyHtml =
+        `<div class='tt-criterion-row'>` +
+          `<div class='tt-criterion-copy'><strong>Criteria:</strong> ${item.c.label}</div>` +
+          criterionControlsHtml +
+        `</div>` +
+        `<div><strong>Level:</strong> ${level}</div>` +
+        (note ? `<div style='margin-top:${sheet ? 6 : 4}px;color:var(--muted)'>${note}</div>` : '') +
+        qhtml;
+
+      if (sheet) {
+        return {
+          html: `<div class='with-pager tt-shell'>` +
+            `<div class='tt-toolbar'>` +
+              titleHtml +
+              (hypothesisNavHtml ? `<div class='tt-toolbar-actions'>${hypothesisNavHtml}</div>` : '') +
+            `</div>` +
+            bodyHtml +
+          `</div>`,
+          hypothesisItems,
+          criterionItems,
+          hypothesisIndex,
+          criterionIndex
+        };
+      }
+
+      return {
+        html: `<div class='tt-shell'>` +
+          `<div class='tt-toolbar'>` +
+            titleHtml +
+            (hypothesisNavHtml ? `<div class='tt-toolbar-actions'>${hypothesisNavHtml}</div>` : '') +
+          `</div>` +
+          bodyHtml +
+        `</div>`,
+        hypothesisItems,
+        criterionItems,
+        hypothesisIndex,
+        criterionIndex
+      };
+    }
+
+    function renderVertexTooltip(item, svgEl, fallbackRect, sr, { pin = false } = {}) {
+      if (!item) return;
+      const { html, hypothesisItems, criterionItems, hypothesisIndex } = buildVertexDetailMarkup(item);
+      const anchor = getVertexAnchor(item, svgEl, fallbackRect);
+      const anchorRect = anchor.rect || fallbackRect;
+      const ttNode = tt.node();
+      const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
+      if (hasMoved && ttNode) {
+        tt.html(html).style('display', 'block');
+      } else {
+        showTTAt(html, svgEl, (anchorRect.left + anchorRect.width / 2) - sr.left, (anchorRect.top + anchorRect.height / 2) - sr.top, -10);
+      }
+
+      setTooltipColor(getColorFor(item.h));
+      highlightSeries(item.h.id, item.c.id);
+      if (anchorRect) {
+        state.ttAnchor.x = anchorRect.left + anchorRect.width / 2;
+        state.ttAnchor.y = anchorRect.top + anchorRect.height / 2;
+      }
+      if (hypothesisItems.length > 1) {
+        const key = hypothesisItems.map(v => v.h.id + '@' + v.c.id).join('|');
+        state.pagerActive = { key, ids: hypothesisItems.map(v => v.h.id), idx: hypothesisIndex, critId: item.c.id };
+      } else {
+        state.pagerActive = null;
+      }
+
+      const root = tt.node();
+      if (root) {
+        const hypPrev = root.querySelector('.tt-hyp-prev');
+        const hypNext = root.querySelector('.tt-hyp-next');
+        const critPrev = root.querySelector('.tt-crit-prev');
+        const critNext = root.querySelector('.tt-crit-next');
+        if (hypPrev) hypPrev.onclick = (ev) => {
+          ev.stopPropagation();
+          pinTooltipInPlace();
+          const nextItem = hypothesisItems[(hypothesisIndex - 1 + hypothesisItems.length) % hypothesisItems.length];
+          renderVertexTooltip(nextItem, svgEl, anchorRect, sr, { pin: true });
+        };
+        if (hypNext) hypNext.onclick = (ev) => {
+          ev.stopPropagation();
+          pinTooltipInPlace();
+          const nextItem = hypothesisItems[(hypothesisIndex + 1) % hypothesisItems.length];
+          renderVertexTooltip(nextItem, svgEl, anchorRect, sr, { pin: true });
+        };
+        if (critPrev) critPrev.onclick = (ev) => {
+          ev.stopPropagation();
+          pinTooltipInPlace();
+          const nextItem = criterionItems[(criterionItems.findIndex(v => v.c.id === item.c.id) - 1 + criterionItems.length) % criterionItems.length];
+          renderVertexTooltip(nextItem, svgEl, anchorRect, sr, { pin: true });
+        };
+        if (critNext) critNext.onclick = (ev) => {
+          ev.stopPropagation();
+          pinTooltipInPlace();
+          const nextItem = criterionItems[(criterionItems.findIndex(v => v.c.id === item.c.id) + 1) % criterionItems.length];
+          renderVertexTooltip(nextItem, svgEl, anchorRect, sr, { pin: true });
+        };
+      }
+
+      if (pin) {
+        pinTooltipInPlace();
+      } else {
+        updateLeaderLine();
+      }
+    }
+
+    function renderVertexSheet(item, anchorRef, { open = false } = {}) {
+      if (!item || !sheetEl || !sheetInner) return;
+      const svgEl = state.currentSvg && state.currentSvg.node ? state.currentSvg.node() : document.querySelector('#chart svg');
+      const anchor = getVertexAnchor(item, svgEl, anchorRef);
+      const anchorTarget = anchor.node || anchorRef;
+      const { html, hypothesisItems, criterionItems, hypothesisIndex } = buildVertexDetailMarkup(item, { sheet: true });
+      if (open || !sheetEl.classList.contains('open')) {
+        openSheet(html, { hypId: item.h.id, critId: item.c.id }, anchorTarget);
+      } else {
+        sheetInner.innerHTML = html;
+        highlightSeries(item.h.id, item.c.id);
+        state.sheetActiveVertex = { hypId: item.h.id, critId: item.c.id };
+        updateChartForSheetOverlap(anchorTarget, false);
+      }
+
+      const root = sheetInner;
+      const hypPrev = root.querySelector('.tt-hyp-prev');
+      const hypNext = root.querySelector('.tt-hyp-next');
+      const critPrev = root.querySelector('.tt-crit-prev');
+      const critNext = root.querySelector('.tt-crit-next');
+      if (hypPrev) hypPrev.onclick = (ev) => {
+        ev.stopPropagation();
+        const nextItem = hypothesisItems[(hypothesisIndex - 1 + hypothesisItems.length) % hypothesisItems.length];
+        const nextAnchor = getVertexAnchor(nextItem, svgEl, anchorRef);
+        renderVertexSheet(nextItem, nextAnchor.node || anchorTarget);
+      };
+      if (hypNext) hypNext.onclick = (ev) => {
+        ev.stopPropagation();
+        const nextItem = hypothesisItems[(hypothesisIndex + 1) % hypothesisItems.length];
+        const nextAnchor = getVertexAnchor(nextItem, svgEl, anchorRef);
+        renderVertexSheet(nextItem, nextAnchor.node || anchorTarget);
+      };
+      if (critPrev) critPrev.onclick = (ev) => {
+        ev.stopPropagation();
+        const idx = Math.max(0, criterionItems.findIndex(v => v.c.id === item.c.id));
+        const nextItem = criterionItems[(idx - 1 + criterionItems.length) % criterionItems.length];
+        const nextAnchor = getVertexAnchor(nextItem, svgEl, anchorRef);
+        renderVertexSheet(nextItem, nextAnchor.node || anchorTarget);
+      };
+      if (critNext) critNext.onclick = (ev) => {
+        ev.stopPropagation();
+        const idx = Math.max(0, criterionItems.findIndex(v => v.c.id === item.c.id));
+        const nextItem = criterionItems[(idx + 1) % criterionItems.length];
+        const nextAnchor = getVertexAnchor(nextItem, svgEl, anchorRef);
+        renderVertexSheet(nextItem, nextAnchor.node || anchorTarget);
+      };
+
+      if (root) {
+        let startX = null;
+        root.ontouchstart = ev => {
+          if (hypothesisItems.length > 1 && ev.touches.length === 1) startX = ev.touches[0].clientX;
+        };
+        root.ontouchend = ev => {
+          if (startX == null || hypothesisItems.length <= 1) return;
+          const dx = ev.changedTouches[0].clientX - startX;
+          if (Math.abs(dx) > 50) {
+            const nextItem = hypothesisItems[(hypothesisIndex + (dx < 0 ? 1 : -1) + hypothesisItems.length) % hypothesisItems.length];
+            const nextAnchor = getVertexAnchor(nextItem, svgEl, anchorRef);
+            renderVertexSheet(nextItem, nextAnchor.node || anchorTarget);
+          }
+          startX = null;
+        };
+      }
     }
 
     function render() {
@@ -2606,7 +2974,7 @@
       } catch (e) { /* non-fatal */ }
       // Allow browser pinch zoom globally; only chart D3 gestures use pointer events via touch-action:none on container.
       // track pointer presence over chart to control tooltip auto-hide
-      svg.on('mouseenter', () => { state.isOverChart = true; clearTimeout(hideTimer); }).on('mouseleave', () => { state.isOverChart = false; scheduleHide(); });
+      svg.on('mouseenter', () => { state.isOverChart = true; }).on('mouseleave', () => { state.isOverChart = false; scheduleHide(); });
       // viewport receives the zoom transform; content is centered inside the viewport so zooming is anchored to cursor
       const viewport = svg.append('g');
       // chart content root
@@ -3025,6 +3393,10 @@
 
       // vertex dots
   const vertexData = sel.flatMap(hh => axes.map(a => { const raw = Hy[hh.id].scores[a.id]; const vv = quantize(raw); const rr = rScale(vv); return { h: hh, c: a, raw, x: a.x * rr, y: a.y * rr }; }));
+      const hypothesisOrder = new Map(Data.hypotheses.map((h, i) => [h.id, i]));
+      const getCriterionVertices = (critId) => vertexData
+        .filter(v => v.c.id === critId)
+        .sort((a, b) => (hypothesisOrder.get(a.h.id) ?? 0) - (hypothesisOrder.get(b.h.id) ?? 0));
       const vwrap = g.append('g').attr('class', 'vertices').selectAll('g.vertex').data(vertexData).join('g').attr('class', 'vertex')
         .attr('transform', d => `translate(${d.x},${d.y})`)
         .style('cursor', 'pointer')
@@ -3044,29 +3416,13 @@
           // If an axis (criterion) is currently highlighted, clear it when focusing a vertex
           try { if (state.activeAxisId) { state.activeAxisId = null; updateAxisSelection(); } } catch (_) {}
           const svgEl = svg.node(); const br = getScreenRectForAnchor(e.currentTarget, svgEl) || e.currentTarget.getBoundingClientRect(); const sr = svgEl.getBoundingClientRect();
-          // find overlapping vertices (tolerance in local coords, inverse-scaled by zoom)
-          const tol = (prefersSheet() ? 10 : 3.5) / (state.zoomK || 1); // wider tolerance for touch
-          const overlapping = vertexData.filter(v => Math.hypot(v.x - d.x, v.y - d.y) <= tol);
+          const hypothesisItems = getHypothesisPagerItems(d);
           // If a pager is active for this group, don't let normal hover override it
-          if (state.pagerActive) { const key = overlapping.map(i => i.h.id + '@' + i.c.id).join('|'); if (state.pagerActive.key === key) return; }
-          if (overlapping.length > 1) {
-            // prefer lastActiveHypothesis when choosing start index
-            let startIdx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
-            if (state.lastActiveHypothesis) { const pref = overlapping.findIndex(v => v.h.id === state.lastActiveHypothesis); if (pref >= 0) startIdx = pref; }
-            // show pager on hover (don't pin)
-            showPagedTooltip(overlapping, startIdx, svgEl, br, sr);
-            return;
+          if (state.pagerActive && hypothesisItems.length > 1) {
+            const key = hypothesisItems.map(i => i.h.id + '@' + i.c.id).join('|');
+            if (state.pagerActive.key === key) return;
           }
-          const level = ordinalLabel(d.c.id, d.raw, byId(Data.criteria));
-          const note = (byId(Data.hypotheses)[d.h.id].notes || {})[d.c.id] || '';
-          const qhtml = quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
-          const html = `<div style='font-weight:600;display:flex;align-items:center;gap:6px'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(d.h)}'></span><span>${d.h.label}</span></div>` +
-            `<div><strong>Criteria:</strong> ${d.c.label}</div>` +
-            `<div><strong>Level:</strong> ${level}</div>` +
-            (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
-          showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
-          setTooltipColor(getColorFor(d.h));
-          highlightSeries(d.h.id, d.c.id);
+          renderVertexTooltip(d, svgEl, br, sr);
         })
         .on('mouseleave', () => { if (!prefersSheet()) scheduleHide(); })
         // tap/click (mobile) opens bottom sheet
@@ -3082,115 +3438,18 @@
           e.stopPropagation();
           // Clear any active axis highlight when selecting a vertex
           try { if (state.activeAxisId) { state.activeAxisId = null; updateAxisSelection(); } } catch(_) {}
-          const tol = (prefersSheet() ? 10 : 3.5) / (state.zoomK || 1);
-          const overlapping = vertexData.filter(v => Math.hypot(v.x - d.x, v.y - d.y) <= tol);
-          const C = byId(Data.criteria);
           const svgEl = state.currentSvg && state.currentSvg.node() ? state.currentSvg.node() : document.querySelector('#chart svg');
           const br = getScreenRectForAnchor(e.currentTarget, svgEl) || e.currentTarget.getBoundingClientRect();
           const sr = svgEl ? svgEl.getBoundingClientRect() : document.body.getBoundingClientRect();
           // On desktop, clear any stale pager session; when switching from a single pinned tooltip
-          // back to a paged overlap group (or vice versa), a leftover pagerActive can short-circuit
+          // back to a paged criterion list (or vice versa), a leftover pagerActive can short-circuit
           // rendering. The paged tooltip will set a fresh pagerActive as needed below.
           if (!prefersSheet()) { state.pagerActive = null; }
           if (prefersSheet()) {
-            // mobile: existing bottom-sheet behavior
-            if (overlapping.length > 1) {
-              dbg('vertex:click->sheet:pager', { count: overlapping.length });
-              let idx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
-              if (idx < 0) idx = 0;
-              function sheetContent(i) {
-                const it = overlapping[i];
-                const level = ordinalLabel(it.c.id, it.raw, C);
-                const note = (byId(Data.hypotheses)[it.h.id].notes || {})[it.c.id] || '';
-                const qhtml = quoteHTML(byId(Data.hypotheses), it.h.id, it.c.id);
-                return `<div class='with-pager'>` +
-                  `<div class='hdr'><div class='hdr-left'><div class='pager-info'>Hypothesis ${i + 1}/${overlapping.length}</div><div class='pager'><button type='button' class='pg-left' aria-label='Previous'>&#9664;</button><button type='button' class='pg-right' aria-label='Next'>&#9654;</button></div></div><button type='button' class='hdr-close' aria-label='Close'>×</button></div>` +
-                  `<h3 style='margin:0 0 4px 0;display:flex;align-items:center;gap:8px'><span style='display:inline-block;width:12px;height:12px;border-radius:3px;background:${getColorFor(it.h)}'></span><span>${it.h.label}</span></h3>` +
-                  `<div><strong>Criteria:</strong> ${it.c.label}</div>` +
-                  `<div><strong>Level:</strong> ${level}</div>` +
-                  (note ? `<div style='margin-top:6px;color:var(--muted)'>${note}</div>` : '') + qhtml + `</div>`;
-              }
-              if (sheetEl) sheetEl.classList.add('has-inline-close');
-              const anchorEl = e.currentTarget;
-              openSheet(sheetContent(idx), { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }, anchorEl);
-              function wirePager() {
-                if (!sheetInner) return; const l = sheetInner.querySelector('.pg-left'); const r = sheetInner.querySelector('.pg-right');
-                if (l) l.onclick = ev => { ev.stopPropagation(); idx = (idx - 1 + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; updateChartForSheetOverlap(anchorEl, false); };
-                if (r) r.onclick = ev => { ev.stopPropagation(); idx = (idx + 1) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; updateChartForSheetOverlap(anchorEl, false); };
-                const x = sheetInner.querySelector('.hdr-close'); if (x) x.onclick = (ev) => { ev.stopPropagation(); closeSheet(); };
-              }
-              wirePager();
-              // swipe gestures
-              let startX = null; const area = sheetInner; if (area) {
-                area.ontouchstart = ev => { if (ev.touches.length === 1) startX = ev.touches[0].clientX; };
-                area.ontouchend = ev => { if (startX == null) return; const dx = (ev.changedTouches[0].clientX - startX); if (Math.abs(dx) > 50) { idx = (idx + (dx < 0 ? 1 : -1) + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wirePager(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); updateChartForSheetOverlap(anchorEl, false); } startX = null; };
-              }
-            } else {
-              dbg('vertex:click->sheet:single');
-              const level = ordinalLabel(d.c.id, d.raw, C);
-              const note = (byId(Data.hypotheses)[d.h.id].notes || {})[d.c.id] || '';
-              const qhtml = quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
-              const html = `<h3 style='display:flex;align-items:center;gap:8px'><span style='display:inline-block;width:12px;height:12px;border-radius:3px;background:${getColorFor(d.h)}'></span><span>${d.h.label}</span></h3>` +
-                `<div><strong>Criteria:</strong> ${d.c.label}</div>` +
-                `<div><strong>Level:</strong> ${level}</div>` + (note ? `<div style='margin-top:6px;color:var(--muted)'>${note}</div>` : '') + qhtml;
-              if (sheetEl) sheetEl.classList.remove('has-inline-close');
-              const anchorEl = e.currentTarget;
-              openSheet(html, { hypId: d.h.id, critId: d.c.id }, anchorEl);
-              state.sheetActiveVertex = { hypId: d.h.id, critId: d.c.id };
-            }
+            renderVertexSheet(d, e.currentTarget, { open: true });
           } else {
-            // Desktop: clicking a marker pins the tooltip. Show the same content as hover/pager and pin it.
-            if (overlapping.length > 1) {
-              dbg('vertex:click->desktop:pager', { count: overlapping.length });
-              // show the paged tooltip and pin it
-              let startIdx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
-              if (startIdx < 0) startIdx = 0;
-              showPagedTooltip(overlapping, startIdx, svgEl, br, sr);
-              // pin with color of the currently shown hypothesis
-              const currentHyp = overlapping[startIdx].h;
-              setTooltipColor(getColorFor(currentHyp));
-              // Set anchor to the center of the vertex marker (not tooltip position)
-              state.ttAnchor.x = br.left + br.width / 2;
-              state.ttAnchor.y = br.top + br.height / 2;
-              state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer);
-              // Suppress late document clicks and hides briefly after first pin
-              try { const t = Date.now() + 250; state._suppressClickUntil = t; state._suppressHideUntil = t; } catch(_) {}
-              updateLeaderLine();
-            } else {
-              dbg('vertex:click->desktop:single');
-              const level = ordinalLabel(d.c.id, d.raw, C);
-              const note = (byId(Data.hypotheses)[d.h.id].notes || {})[d.c.id] || '';
-              const qhtml = quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
-              const html = `<div style='font-weight:600;display:flex;align-items:center;gap:6px'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(d.h)}'></span><span>${d.h.label}</span></div>` +
-                `<div><strong>Criteria:</strong> ${d.c.label}</div>` +
-                `<div><strong>Level:</strong> ${level}</div>` +
-                (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
-              
-              // Check if there's a stored tooltip position from a previous user drag
-              const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
-              if (hasMoved) {
-                // Use the stored position and just update content
-                tt.html(html).style('display', 'block');
-                const ttNode = tt.node();
-                if (ttNode) {
-                  ttNode.style.left = state.ttPos.left + 'px';
-                  ttNode.style.top = state.ttPos.top + 'px';
-                }
-              } else {
-                // Normal positioning for first show
-                showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
-              }
-              
-              highlightSeries(d.h.id, d.c.id);
-              // pin with hypothesis color
-              setTooltipColor(getColorFor(d.h));
-              // Set anchor to the center of the vertex marker (not tooltip position)
-              state.ttAnchor.x = br.left + br.width / 2;
-              state.ttAnchor.y = br.top + br.height / 2;
-              state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer);
-              try { const t = Date.now() + 250; state._suppressClickUntil = t; state._suppressHideUntil = t; } catch(_) {}
-              updateLeaderLine();
-            }
+            renderVertexTooltip(d, svgEl, br, sr, { pin: true });
+            try { const t = Date.now() + 250; state._suppressClickUntil = t; state._suppressHideUntil = t; } catch(_) {}
           }
         });
 
@@ -3199,53 +3458,17 @@
         console.log(`[PV-DEBUG] vertex keydown FIRED: key=${e.key} hyp=${d.h.id} crit=${d.c.id}`);
         const svgEl = state.currentSvg && state.currentSvg.node ? state.currentSvg.node() : document.querySelector('#chart svg');
         if (!svgEl) return;
-        const tol = (prefersSheet() ? 10 : 3.5) / (state.zoomK || 1);
-        const overlapping = vertexData.filter(v => Math.hypot(v.x - d.x, v.y - d.y) <= tol);
         const sr = svgEl.getBoundingClientRect();
         const el = this; // current vertex group
         const br = getScreenRectForAnchor(el, svgEl) || (el.getBoundingClientRect ? el.getBoundingClientRect() : sr);
-
-        // Helper to open/refresh a paged tooltip at index i
-        const openPagerAt = (i) => {
+        const openVertexDetails = (item, anchorNode) => {
           if (prefersSheet()) {
-            // Mirror mobile behavior in sheet
-            let idx = i;
-            const Cmap = byId(Data.criteria);
-            function sheetContent(ii) {
-              const it = overlapping[ii];
-              const level = ordinalLabel(it.c.id, it.raw, Cmap);
-              const note = (byId(Data.hypotheses)[it.h.id].notes || {})[it.c.id] || '';
-              const qhtml = quoteHTML(byId(Data.hypotheses), it.h.id, it.c.id);
-              return `<div class='with-pager'>` +
-                `<div class='hdr'><div class='hdr-left'><div class='pager-info'>Hypothesis ${ii + 1}/${overlapping.length}</div><div class='pager'><button type='button' class='pg-left' aria-label='Previous'>&#9664;</button><button type='button' class='pg-right' aria-label='Next'>&#9654;</button></div></div><button type='button' class='hdr-close' aria-label='Close'>×</button></div>` +
-                `<h3 style='margin:0 0 4px 0;display:flex;align-items:center;gap:8px'><span style='display:inline-block;width:12px;height:12px;border-radius:3px;background:${getColorFor(it.h)}'></span><span>${it.h.label}</span></h3>` +
-                `<div><strong>Criteria:</strong> ${it.c.label}</div>` +
-                `<div><strong>Level:</strong> ${level}</div>` +
-                (note ? `<div style='margin-top:6px;color:var(--muted)'>${note}</div>` : '') + qhtml + `</div>`;
-            }
-            if (sheetEl) sheetEl.classList.add('has-inline-close');
-            openSheet(sheetContent(idx), { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }, el);
-            const wire = () => {
-              if (!sheetInner) return;
-              const L = sheetInner.querySelector('.pg-left');
-              const R = sheetInner.querySelector('.pg-right');
-              const X = sheetInner.querySelector('.hdr-close');
-              if (L) L.onclick = ev => { ev.stopPropagation(); idx = (idx - 1 + overlapping.length) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wire(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; updateChartForSheetOverlap(el, false); };
-              if (R) R.onclick = ev => { ev.stopPropagation(); idx = (idx + 1) % overlapping.length; sheetInner.innerHTML = sheetContent(idx); wire(); highlightSeries(overlapping[idx].h.id, overlapping[idx].c.id); state.sheetActiveVertex = { hypId: overlapping[idx].h.id, critId: overlapping[idx].c.id }; updateChartForSheetOverlap(el, false); };
-              if (X) X.onclick = ev => { ev.stopPropagation(); closeSheet(); };
-            };
-            wire();
+            renderVertexSheet(item, anchorNode || el, { open: !(sheetEl && sheetEl.classList.contains('open')) });
             return;
           }
-          // Desktop: use existing showPagedTooltip and pin
-          showPagedTooltip(overlapping, i, svgEl, br, sr);
-          const currentHyp = overlapping[i].h;
-          setTooltipColor(getColorFor(currentHyp));
-          state.ttAnchor.x = br.left + br.width / 2;
-          state.ttAnchor.y = br.top + br.height / 2;
-          state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer);
+          const anchorRect = getScreenRectForAnchor(anchorNode || el, svgEl) || ((anchorNode || el).getBoundingClientRect ? (anchorNode || el).getBoundingClientRect() : br);
+          renderVertexTooltip(item, svgEl, anchorRect, sr, { pin: true });
           try { const t = Date.now() + 250; state._suppressClickUntil = t; state._suppressHideUntil = t; } catch(_) {}
-          updateLeaderLine();
         };
 
         // Activation
@@ -3253,46 +3476,7 @@
           e.preventDefault();
           // Clear any active axis highlight when activating a vertex via keyboard
           try { if (state.activeAxisId) { state.activeAxisId = null; updateAxisSelection(); } } catch(_) {}
-          if (overlapping.length > 1) {
-            const startIdx = overlapping.findIndex(v => v.h.id === d.h.id && v.c.id === d.c.id);
-            openPagerAt(startIdx >= 0 ? startIdx : 0);
-          } else {
-            // Single vertex -> open tooltip/sheet and pin on desktop
-            const Cmap = byId(Data.criteria);
-            const level = ordinalLabel(d.c.id, d.raw, Cmap);
-            const note = (byId(Data.hypotheses)[d.h.id].notes || {})[d.c.id] || '';
-            const qhtml = quoteHTML(byId(Data.hypotheses), d.h.id, d.c.id);
-            const html = `<div style='font-weight:600;display:flex;align-items:center;gap:6px'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(d.h)}'></span><span>${d.h.label}</span></div>` +
-              `<div><strong>Criteria:</strong> ${d.c.label}</div>` +
-              `<div><strong>Level:</strong> ${level}</div>` + (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
-            if (prefersSheet()) {
-              if (sheetEl) sheetEl.classList.remove('has-inline-close');
-              openSheet(html, { hypId: d.h.id, critId: d.c.id }, el);
-              state.sheetActiveVertex = { hypId: d.h.id, critId: d.c.id };
-            } else {
-              // Check if user has moved the tooltip - if so, preserve that position
-              const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
-              if (hasMoved) {
-                // Use the stored position and just update content
-                tt.html(html).style('display', 'block');
-                const ttNode = tt.node();
-                if (ttNode) {
-                  ttNode.style.left = state.ttPos.left + 'px';
-                  ttNode.style.top = state.ttPos.top + 'px';
-                }
-              } else {
-                // Normal positioning for first show
-                showTTAt(html, svgEl, (br.left + br.width / 2) - sr.left, (br.top + br.height / 2) - sr.top, -10);
-              }
-              highlightSeries(d.h.id, d.c.id);
-              setTooltipColor(getColorFor(d.h));
-              state.ttAnchor.x = br.left + br.width / 2; state.ttAnchor.y = br.top + br.height / 2;
-              state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer); 
-              // Suppress late doc clicks briefly after pin
-              try { state._suppressClickUntil = Date.now() + 250; } catch(_) {}
-              updateLeaderLine();
-            }
-          }
+          openVertexDetails(d, el);
           return;
         }
 
@@ -3309,45 +3493,8 @@
             try {
               const node = g.selectAll('.vertex').filter(v => v && v.h && v.c && v.h.id === target.h.id && v.c.id === target.c.id).node();
               if (node && node.focus) node.focus();
-              
-              // Build tooltip content for the new criterion
-              const Cmap = byId(Data.criteria);
-              const level = ordinalLabel(target.c.id, target.raw, Cmap);
-              const note = (byId(Data.hypotheses)[target.h.id].notes || {})[target.c.id] || '';
-              const qhtml = quoteHTML(byId(Data.hypotheses), target.h.id, target.c.id);
-              const html = `<div style='font-weight:600;display:flex;align-items:center;gap:6px'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(target.h)}'></span><span>${target.h.label}</span></div>` +
-                `<div><strong>Criteria:</strong> ${target.c.label}</div>` +
-                `<div><strong>Level:</strong> ${level}</div>` + (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
-              
-              const targetBr = getScreenRectForAnchor(node, svgEl) || node.getBoundingClientRect();
-              
-              if (prefersSheet()) {
-                if (sheetEl) sheetEl.classList.remove('has-inline-close');
-                openSheet(html, { hypId: target.h.id, critId: target.c.id }, node);
-                state.sheetActiveVertex = { hypId: target.h.id, critId: target.c.id };
-              } else {
-                // Check if user has moved the tooltip - if so, preserve that position
-                const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
-                if (hasMoved) {
-                  // Use the stored position and just update content
-                  tt.html(html).style('display', 'block');
-                  const ttNode = tt.node();
-                  if (ttNode) {
-                    ttNode.style.left = state.ttPos.left + 'px';
-                    ttNode.style.top = state.ttPos.top + 'px';
-                  }
-                } else {
-                  // Normal positioning for first show
-                  showTTAt(html, svgEl, (targetBr.left + targetBr.width / 2) - sr.left, (targetBr.top + targetBr.height / 2) - sr.top, -10);
-                }
-                setTooltipColor(getColorFor(target.h));
-                highlightSeries(target.h.id, target.c.id);
-                state.ttAnchor.x = targetBr.left + targetBr.width / 2;
-                state.ttAnchor.y = targetBr.top + targetBr.height / 2;
-                state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer);
-                try { const t = Date.now() + 250; state._suppressClickUntil = t; state._suppressHideUntil = t; } catch(_) {}
-                updateLeaderLine();
-              }
+              state.pagerActive = null;
+              openVertexDetails(target, node);
               // Restore focus lost by DOM reordering in highlightSeries (raise/sort)
               if (node) { state._suppressFocusOpenUntil = Date.now() + 200; node.focus({ preventScroll: true }); }
             } catch (_) {}
@@ -3359,9 +3506,7 @@
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
           e.preventDefault();
           // Build list of vertices for the same criterion across all currently selected hypotheses
-          const sameCrit = vertexData.filter(v => v.c.id === d.c.id);
-          const order = Data.hypotheses.map(h => h.id);
-          sameCrit.sort((a, b) => order.indexOf(a.h.id) - order.indexOf(b.h.id));
+          const sameCrit = getCriterionVertices(d.c.id);
           let idx = sameCrit.findIndex(v => v.h.id === d.h.id);
           if (idx < 0) idx = 0;
           const nextIdx = (idx + (e.key === 'ArrowUp' ? -1 : 1) + sameCrit.length) % sameCrit.length;
@@ -3374,42 +3519,7 @@
             try { syncClickWithTabOrder(targetNode); } catch (_) {}
             // Clear stale pager cache so tooltip content is always refreshed
             state.pagerActive = null;
-            // Build and show tooltip directly for the target vertex
-            const Cmap = byId(Data.criteria);
-            const level = ordinalLabel(nv.c.id, nv.raw, Cmap);
-            const note = (byId(Data.hypotheses)[nv.h.id].notes || {})[nv.c.id] || '';
-            const qhtml = quoteHTML(byId(Data.hypotheses), nv.h.id, nv.c.id);
-            const html = `<div style='font-weight:600;display:flex;align-items:center;gap:6px'><span style='display:inline-block;width:10px;height:10px;border-radius:3px;background:${getColorFor(nv.h)}'></span><span>${nv.h.label}</span></div>` +
-              `<div><strong>Criteria:</strong> ${nv.c.label}</div>` +
-              `<div><strong>Level:</strong> ${level}</div>` + (note ? `<div style='margin-top:4px;color:var(--muted)'>${note}</div>` : '') + qhtml;
-            const targetBr = getScreenRectForAnchor(targetNode, svgEl) || targetNode.getBoundingClientRect();
-            if (prefersSheet()) {
-              if (sheetEl) sheetEl.classList.remove('has-inline-close');
-              openSheet(html, { hypId: nv.h.id, critId: nv.c.id }, targetNode);
-              state.sheetActiveVertex = { hypId: nv.h.id, critId: nv.c.id };
-            } else {
-              // Check if user has moved the tooltip - if so, preserve that position
-              const hasMoved = state.ttUserMoved && state.ttPos.left !== null && state.ttPos.top !== null;
-              if (hasMoved) {
-                // Use the stored position and just update content
-                tt.html(html).style('display', 'block');
-                const ttNode = tt.node();
-                if (ttNode) {
-                  ttNode.style.left = state.ttPos.left + 'px';
-                  ttNode.style.top = state.ttPos.top + 'px';
-                }
-              } else {
-                // Normal positioning for first show
-                showTTAt(html, svgEl, (targetBr.left + targetBr.width / 2) - sr.left, (targetBr.top + targetBr.height / 2) - sr.top, -10);
-              }
-              setTooltipColor(getColorFor(nv.h));
-              highlightSeries(nv.h.id, nv.c.id);
-              state.ttAnchor.x = targetBr.left + targetBr.width / 2;
-              state.ttAnchor.y = targetBr.top + targetBr.height / 2;
-              state.ttPinned = true; tt.classed('pinned', true); showTTBlocker(); clearTimeout(hideTimer);
-              try { const t = Date.now() + 250; state._suppressClickUntil = t; state._suppressHideUntil = t; } catch (_) {}
-              updateLeaderLine();
-            }
+            openVertexDetails(nv, targetNode);
             // Restore focus after highlightSeries DOM reordering
             state._suppressFocusOpenUntil = Date.now() + 200;
             targetNode.focus({ preventScroll: true });
@@ -3464,7 +3574,7 @@
       tabOrder = [];
       
       // 1. Add controls (only if visible)
-  ['controlsToggle', 'factsBtnMobile', 'factsBtn', 'dimsBtn', 'helpBtn', 'themeToggle'].forEach(id => {
+  ['controlsToggle', 'factsBtnMobile', 'embedReturnBtn', 'factsBtn', 'dimsBtn', 'helpBtn', 'themeToggle'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           // Check if element is visible (not display:none or visibility:hidden)
@@ -3601,7 +3711,7 @@
       controlCount = 0;
       
       // Count visible control buttons
-      ['controlsToggle', 'factsBtnMobile', 'factsBtn', 'dimsBtn', 'helpBtn', 'themeToggle'].forEach(id => {
+      ['controlsToggle', 'factsBtnMobile', 'embedReturnBtn', 'factsBtn', 'dimsBtn', 'helpBtn', 'themeToggle'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           const style = window.getComputedStyle(el);
@@ -3691,9 +3801,8 @@
         .on('mouseleave', () => { if (!prefersSheet()) scheduleHide(); })
         .on('click', (e, d) => {
           if (!prefersSheet()) return; // desktop click does nothing extra
-          const raw = Hy[d.h.id].scores[d.c.id]; const level = ordinalLabel(d.c.id, raw, C); const note = (Hy[d.h.id].notes || {})[d.c.id] || ''; const qhtml = quoteHTML(Hy, d.h.id, d.c.id);
-          const html = `<h3>${d.h.label}</h3><div class='sheet-meta'>${C[d.c.id].label}</div><div><strong>Level:</strong> ${level}</div>` + (note ? `<div style='margin-top:6px;color:var(--muted)'>${note}</div>` : '') + qhtml;
-          if (sheetEl) sheetEl.classList.remove('has-inline-close');
+          const raw = Hy[d.h.id].scores[d.c.id]; const level = ordinalLabel(d.c.id, raw, C); const note = (Hy[d.h.id].notes || {})[d.c.id] || '';
+          const html = `<h3>${d.h.label}</h3><div class='sheet-meta'>${C[d.c.id].label}</div><div><strong>Level:</strong> ${level}</div>` + (note ? `<div style='margin-top:6px;color:var(--muted)'>${note}</div>` : '');
           const anchorEl = e.currentTarget;
           openSheet(html, { hypId: d.h.id, critId: d.c.id }, anchorEl);
         });

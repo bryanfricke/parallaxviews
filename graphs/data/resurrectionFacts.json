@@ -1,0 +1,742 @@
+{
+  "meta": {
+    "pageTitle": "Resurrection Case",
+    "topbarTitle": "Resurrection Case",
+    "ariaLabel": "Tree of the historical case for Jesus' resurrection",
+    "aboutModal": {
+      "buttonLabel": "About",
+      "title": "About this tree",
+      "bodyHtml": "<p>This tree organizes the case around three major historical branches: the empty tomb, the appearances, and the origin of resurrection belief. It uses William Lane Craig's evidential structure as a backbone, but also incorporates Paul's undisputed letters, selected historical arguments associated with N. T. Wright, and limited external corroboration where it sharpens the case.</p>"
+    }
+  },
+  "name": "Resurrection Case",
+  "subtitle": "Empty tomb, appearances, and risen belief",
+  "children": [
+    {
+      "name": "Empty Tomb",
+      "subtitle": "Jesus' tomb was found empty",
+      "kind": "collection",
+      "color": "#4D648D",
+      "children": [
+        {
+          "name": "Burial",
+          "subtitle": "The burial both supports and implies the empty tomb",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "Implies Empty Tomb",
+              "subtitle": "Why a historical burial points toward an empty grave",
+              "kind": "collection",
+              "children": [
+                {
+                  "name": "Belief Conflict",
+                  "subtitle": "Resurrection belief conflicts with an occupied tomb",
+                  "kind": "collection",
+                  "children": [
+                    {
+                      "name": "Jewish Meaning",
+                      "subtitle": "Resurrection did not mean a body left in the grave",
+                      "kind": "evidence",
+                      "details": "In first-century Jewish usage, resurrection referred to the dead being raised, not merely exalted, remembered, or spiritually vindicated while the body remained in the tomb. If Jesus was known to be buried in a specific grave, proclaiming resurrection would naturally conflict with an occupied tomb.",
+                      "source": {
+                        "title": "Craig on burial and resurrection meaning",
+                        "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "Jerusalem Test",
+                  "subtitle": "An occupied tomb would have crippled the message in Jerusalem",
+                  "kind": "collection",
+                  "children": [
+                    {
+                      "name": "Place of Crucifixion",
+                      "subtitle": "The claim arose where the death and burial occurred",
+                      "kind": "evidence",
+                      "details": "The resurrection message did not begin in a distant city insulated from local knowledge. It was proclaimed in Jerusalem, the place where Jesus had been crucified and buried, so an occupied known tomb would have directly undercut persuasion there.",
+                      "source": {
+                        "title": "Craig on public proclamation in Jerusalem",
+                        "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "Hostile Reply",
+                  "subtitle": "Opponents had motive and opportunity to contest the claim",
+                  "kind": "collection",
+                  "children": [
+                    {
+                      "name": "Authorities Motivated",
+                      "subtitle": "Opposition was real, not indifferent",
+                      "kind": "evidence",
+                      "details": "The suggestion that Jewish authorities would not have cared enough to challenge the Christian claim sits poorly with the evidence of intense early opposition. Paul himself says he violently persecuted the church, showing that the movement was treated as dangerous enough to suppress.",
+                      "source": {
+                        "title": "Galatians 1 on Paul's persecution",
+                        "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A13-2%3A14&version=NIV"
+                      }
+                    },
+                    {
+                      "name": "Occupied Tomb",
+                      "subtitle": "A known body would have been the obvious rebuttal",
+                      "kind": "evidence",
+                      "details": "If Jesus had remained in a known tomb, the simplest counter to resurrection preaching would have been to point to the occupied grave. Craig makes this public-checkability point explicitly in arguing from burial to empty tomb.",
+                      "source": {
+                        "title": "Craig on the occupied tomb rebuttal",
+                        "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+                      }
+                    },
+                    {
+                      "name": "No Body Dispute",
+                      "subtitle": "We have no evidence of a remains-identification controversy",
+                      "kind": "evidence",
+                      "details": "If the body had still been available but only poorly identifiable, one would expect some trace of a dispute over remains, location, or identity. The surviving early evidence contains no such rival controversy. This is an inference from the shape of the evidence rather than a direct quotation from Craig.",
+                      "source": {
+                        "title": "Early resurrection tradition and public opposition",
+                        "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=NIV"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Burial Evidence",
+              "subtitle": "Why the burial itself is historically credible",
+              "kind": "collection",
+              "children": [
+                {
+                  "name": "Early Core",
+                  "subtitle": "The burial appears in very early tradition",
+                  "kind": "collection",
+                  "children": [
+                    {
+                      "name": "1 Cor 15",
+                      "subtitle": "Paul passes on burial tradition he had already received",
+                      "kind": "evidence",
+                      "details": "Paul says he delivered what he had also received, and the formula includes Jesus' burial. Because Paul is recounting what he had already passed on, the tradition predates 1 Corinthians itself.",
+                      "source": {
+                        "title": "1 Corinthians 15:3-8",
+                        "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=NIV"
+                      }
+                    },
+                    {
+                      "name": "Very Early",
+                      "subtitle": "Many scholars date the tradition to within a few years",
+                      "kind": "evidence",
+                      "details": "The pre-Pauline tradition in 1 Corinthians 15 is commonly dated far earlier than the letter, often within a few years of the crucifixion. Habermas is a widely cited representative of that judgment, and Wright likewise says the material is considerably older than 1 Corinthians itself.",
+                      "source": {
+                        "title": "Habermas and Wright on the early creed",
+                        "url": "https://www.garyhabermas.com/books/inbook_to-everyone-an-answer/habermas_case-for-xp-res.htm"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "Outline and Expansion",
+                  "subtitle": "The early formula is fleshed out in narrative and preaching",
+                  "kind": "collection",
+                  "children": [
+                    {
+                      "name": "Creedal Outline",
+                      "subtitle": "Buried, raised, appeared",
+                      "kind": "evidence",
+                      "details": "The formula in 1 Corinthians 15 gives a compact outline: death, burial, resurrection, appearances. It is brief, but it establishes the burial as part of the earliest proclamation.",
+                      "source": {
+                        "title": "1 Corinthians 15:3-8",
+                        "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=NIV"
+                      }
+                    },
+                    {
+                      "name": "Acts 13",
+                      "subtitle": "Acts preserves the burial sequence in preaching form",
+                      "kind": "evidence",
+                      "details": "Acts 13:28-31 gives the sequence of death, taking down, burial, and resurrection in summary sermon form. Craig treats Acts as preserving early apostolic preaching substance, even if Luke shapes the wording.",
+                      "source": {
+                        "title": "Craig on Acts preaching summaries",
+                        "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+                      }
+                    },
+                    {
+                      "name": "Mark 15-16",
+                      "subtitle": "Mark preserves the fleshed-out burial narrative",
+                      "kind": "evidence",
+                      "details": "Mark 15:37-16:7 gives the concrete burial and empty-tomb narrative. Craig treats this material as rooted in pre-Markan passion tradition rather than as late literary invention.",
+                      "source": {
+                        "title": "Craig on pre-Markan passion material",
+                        "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "Source Lines",
+                  "subtitle": "The burial is attested across multiple streams",
+                  "kind": "collection",
+                  "children": [
+                    {
+                      "name": "Mark",
+                      "subtitle": "Joseph buries Jesus in a tomb",
+                      "kind": "evidence",
+                      "details": "Mark gives the core burial account featuring Joseph of Arimathea, the tomb, the stone, and the women observing the site.",
+                      "source": {
+                        "title": "Mark 15:42-47",
+                        "url": "https://www.biblegateway.com/passage/?search=Mark+15%3A42-47&version=NIV"
+                      }
+                    },
+                    {
+                      "name": "Matthew",
+                      "subtitle": "Matthew provides additional attestation",
+                      "kind": "evidence",
+                      "details": "Matthew includes the burial with distinctive material of his own, adding further attestation rather than merely reproducing Mark without development.",
+                      "source": {
+                        "title": "Matthew 27:57-61",
+                        "url": "https://www.biblegateway.com/passage/?search=Matthew+27%3A57-61&version=NIV"
+                      }
+                    },
+                    {
+                      "name": "Luke",
+                      "subtitle": "Luke also attests the burial with his own shaping",
+                      "kind": "evidence",
+                      "details": "Luke includes the burial account with substantive wording and emphasis differences, contributing another witness-line to the burial tradition.",
+                      "source": {
+                        "title": "Luke 23:50-56",
+                        "url": "https://www.biblegateway.com/passage/?search=Luke+23%3A50-56&version=NIV"
+                      }
+                    },
+                    {
+                      "name": "John",
+                      "subtitle": "John likely preserves an independent burial line",
+                      "kind": "evidence",
+                      "details": "Craig treats John as an additional likely independent source at this point, which would add another witness-line for the burial tradition.",
+                      "source": {
+                        "title": "Craig on John as an independent source",
+                        "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+                      }
+                    },
+                    {
+                      "name": "Acts",
+                      "subtitle": "Acts may preserve early preaching summaries",
+                      "kind": "evidence",
+                      "details": "Craig says Luke's speeches in Acts are not likely fabricated out of whole cloth but preserve the substance of apostolic preaching. That gives Acts evidential value for the burial proclamation.",
+                      "source": {
+                        "title": "Craig on Acts speeches preserving early preaching",
+                        "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "Joseph",
+                  "subtitle": "Joseph of Arimathea is a strong historical marker",
+                  "kind": "collection",
+                  "children": [
+                    {
+                      "name": "Sanhedrin Member",
+                      "subtitle": "An awkward figure to invent",
+                      "kind": "evidence",
+                      "details": "Joseph is identified as a member of the very council associated with Jesus' condemnation, which makes him a surprising choice for a fabricated Christian hero.",
+                      "source": {
+                        "title": "Craig on Joseph of Arimathea",
+                        "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+                      }
+                    },
+                    {
+                      "name": "Named Person",
+                      "subtitle": "The burier is specific, not anonymous",
+                      "kind": "evidence",
+                      "details": "The tradition identifies Joseph by name and role, which increases the concreteness of the report.",
+                      "source": {
+                        "title": "Mark 15:43",
+                        "url": "https://www.biblegateway.com/passage/?search=Mark+15%3A42-47&version=NIV"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "Observed Site",
+                  "subtitle": "The tomb location was observed and remembered",
+                  "kind": "collection",
+                  "children": [
+                    {
+                      "name": "Mark",
+                      "subtitle": "The women saw where he was laid",
+                      "kind": "evidence",
+                      "details": "Mark explicitly says Mary Magdalene and Mary the mother of Joses saw where Jesus was laid.",
+                      "source": {
+                        "title": "Mark 15:47",
+                        "url": "https://www.biblegateway.com/passage/?search=Mark+15%3A42-47&version=NIV"
+                      }
+                    },
+                    {
+                      "name": "Luke",
+                      "subtitle": "Luke also says the women saw the tomb and body placement",
+                      "kind": "evidence",
+                      "details": "Luke says the women followed, saw the tomb, and saw how his body was laid.",
+                      "source": {
+                        "title": "Luke 23:55",
+                        "url": "https://www.biblegateway.com/passage/?search=Luke+23%3A50-56&version=NIV"
+                      }
+                    },
+                    {
+                      "name": "Narrative Link",
+                      "subtitle": "The observed site explains the return visit",
+                      "kind": "evidence",
+                      "details": "Because the women observed the burial location, the empty-tomb visit functions as a return to a known tomb rather than a confused search.",
+                      "source": {
+                        "title": "Craig on burial and empty-tomb linkage",
+                        "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Early Evidence",
+          "subtitle": "The empty-tomb claim is early",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "Pre-Markan Tomb",
+              "subtitle": "The empty-tomb story is very old",
+              "kind": "evidence",
+              "date": "Pre-Markan tradition",
+              "details": "Craig argues that the empty-tomb story, like the burial story, is part of the pre-Markan passion tradition and is therefore very early rather than a late appendix.",
+              "source": {
+                "title": "Craig on the pre-Markan empty-tomb story",
+                "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+              }
+            },
+            {
+              "name": "Third Day",
+              "subtitle": "The dating likely reflects discovery day",
+              "kind": "evidence",
+              "date": "Early formula",
+              "details": "Craig argues that the phrase 'on the third day' probably points back to the day the empty tomb was discovered, since no one was said to have witnessed the resurrection itself. That makes the formula in 1 Corinthians 15 indirect early evidence for the empty tomb.",
+              "source": {
+                "title": "Craig on 'the third day'",
+                "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+              }
+            },
+            {
+              "name": "No Rival Burial",
+              "subtitle": "No competing burial tradition is preserved",
+              "kind": "evidence",
+              "date": "Earliest surviving evidence",
+              "details": "Craig lists the absence of competing burial traditions as one factor supporting the historical reliability of the burial account. That strengthens the move from known burial to empty tomb.",
+              "source": {
+                "title": "Craig on the absence of competing burial traditions",
+                "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Women Witnesses",
+          "subtitle": "The discoverers are unlikely inventions",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "Low Status",
+              "subtitle": "Women were not ideal apologetic witnesses",
+              "kind": "evidence",
+              "date": "First-century Jewish context",
+              "details": "Craig treats the women as the primary discoverers of the empty tomb as a mark of historical authenticity, since women were not the most advantageous public witnesses to invent for apologetic effect in that setting.",
+              "source": {
+                "title": "Doctrine of Christ PDF",
+                "url": "https://www.reasonablefaith.org/images/uploads/07-christ-final.pdf"
+              }
+            },
+            {
+              "name": "Narrative Fit",
+              "subtitle": "Their role arises naturally from the burial story",
+              "kind": "evidence",
+              "date": "Burial to discovery sequence",
+              "details": "The same women who see where Jesus is laid are the ones who return to the tomb. Their presence is coherent within the story rather than artificially inserted at the point of discovery.",
+              "source": {
+                "title": "Craig on burial and empty-tomb linkage",
+                "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Public Challenge",
+          "subtitle": "The claim emerged where it could be checked",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "Jerusalem Setting",
+              "subtitle": "The message arose where the tomb mattered",
+              "kind": "evidence",
+              "date": "Earliest Christian proclamation",
+              "details": "The resurrection proclamation arose in the same broad setting where Jesus had been executed and buried. That gives the empty-tomb claim public and historical weight rather than the feel of a distant legend.",
+              "source": {
+                "title": "Craig on the known grave and public challenge",
+                "url": "https://appearedtoblogly.files.wordpress.com/2011/05/craig-william-lane-22contemporary-scholarship-and-the-historical-evidence-for-the-resurrection-of-jesus-christ22.pdf"
+              }
+            },
+            {
+              "name": "Jewish Reply",
+              "subtitle": "Hostile response still assumes a missing body",
+              "kind": "evidence",
+              "date": "Early polemical context",
+              "details": "Craig argues that the Jewish counterstory presupposes the empty tomb: it attempts to explain why the body was not there rather than denying the issue existed.",
+              "source": {
+                "title": "Doctrine of Christ PDF",
+                "url": "https://www.reasonablefaith.org/images/uploads/07-christ-final.pdf"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Appearances",
+      "subtitle": "Jesus appeared alive after death",
+      "kind": "collection",
+      "color": "#3B7A57",
+      "children": [
+        {
+          "name": "Early Creed",
+          "subtitle": "Paul transmits received witness tradition",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "Received Tradition",
+              "subtitle": "Paul passes on what he received",
+              "kind": "evidence",
+              "date": "Very early tradition",
+              "details": "Paul says he delivered to the Corinthians what he had also received as of first importance. The witness-list therefore belongs to tradition earlier than the letter itself.",
+              "source": {
+                "title": "1 Corinthians 15:3-8",
+                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=NIV"
+              }
+            },
+            {
+              "name": "Named Transmitter",
+              "subtitle": "The tradition comes through Paul himself",
+              "kind": "evidence",
+              "date": "Apostolic transmission",
+              "details": "The appearance tradition is not anonymously preserved. It is transmitted by Paul, a named figure whose own letters survive and who places himself within the witness-list.",
+              "source": {
+                "title": "1 Corinthians 15:3-8",
+                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=NIV"
+              }
+            },
+            {
+              "name": "Known Pillars",
+              "subtitle": "Paul knew Cephas, James, and John",
+              "kind": "evidence",
+              "date": "Early Jerusalem contact",
+              "details": "Paul says he spent fifteen days with Cephas, saw James the Lord's brother, and later identifies James, Cephas, and John as pillars. That means the tradition is being transmitted by someone personally connected to central leaders of the earliest church.",
+              "source": {
+                "title": "Galatians 1:18-19; 2:9",
+                "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A13-2%3A14&version=NIV"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Named Witnesses",
+          "subtitle": "Specific individuals are identified",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "Peter",
+              "subtitle": "Cephas is named in the witness-list",
+              "kind": "evidence",
+              "date": "Earliest witness tradition",
+              "details": "The witness-list names Cephas, Peter's Aramaic name. That supports the primitive character of the tradition and anchors it to a specific person.",
+              "source": {
+                "title": "1 Corinthians 15:3-8",
+                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=NIV"
+              }
+            },
+            {
+              "name": "James",
+              "subtitle": "James is named as a witness",
+              "kind": "evidence",
+              "date": "Early Jerusalem tradition",
+              "details": "The witness-list singles out James, and Paul independently knows James personally. This matters because James later stands as a prominent Jerusalem leader rather than an obscure figure in the tradition.",
+              "source": {
+                "title": "1 Corinthians 15:7; Galatians 1:19",
+                "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A13-2%3A14&version=NIV"
+              }
+            },
+            {
+              "name": "Paul",
+              "subtitle": "Paul includes himself as final witness",
+              "kind": "evidence",
+              "date": "Post-ascension encounter",
+              "details": "Paul adds himself at the end of the witness-list. He also reminds readers elsewhere that he had formerly persecuted the church, which gives special historical weight to his testimony.",
+              "source": {
+                "title": "1 Corinthians 15:8; Galatians 1:13, 23",
+                "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A13-2%3A14&version=NIV"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Group Witness",
+          "subtitle": "The appearances were not merely private",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "The Twelve",
+              "subtitle": "A group appearance belongs to the earliest formula",
+              "kind": "evidence",
+              "date": "Earliest witness tradition",
+              "details": "The witness-list includes an appearance to the Twelve, showing that the evidence is not limited to one private encounter.",
+              "source": {
+                "title": "1 Corinthians 15:5",
+                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=NIV"
+              }
+            },
+            {
+              "name": "Five Hundred",
+              "subtitle": "Paul names a large body of witnesses",
+              "kind": "evidence",
+              "date": "1 Corinthians 15 tradition",
+              "details": "Paul says Jesus appeared to more than five hundred at one time, most of whom were still alive though some had fallen asleep. That makes the claim look publicly exposed rather than insulated. Craig, following C. H. Dodd, treats Paul's comment as implying that these witnesses were in principle available to be questioned.",
+              "source": {
+                "title": "1 Corinthians 15:6 and Craig's discussion",
+                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=NIV"
+              }
+            },
+            {
+              "name": "All the Apostles",
+              "subtitle": "The witness-list extends beyond the Twelve",
+              "kind": "evidence",
+              "date": "Early witness list",
+              "details": "After James, Paul adds 'all the apostles,' showing that the witness tradition extends beyond Peter, James, and the Twelve alone.",
+              "source": {
+                "title": "1 Corinthians 15:7",
+                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=NIV"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Hostile Proximity",
+          "subtitle": "The transmitter came from early opposition",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "Former Persecutor",
+              "subtitle": "Paul attacked the church before joining it",
+              "kind": "evidence",
+              "date": "Earliest church period",
+              "details": "Paul says he intensely persecuted the church of God and tried to destroy it. The appearance tradition therefore comes to us through someone who entered the movement from early hostile proximity rather than from late, detached sympathy.",
+              "source": {
+                "title": "Galatians 1:13",
+                "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A13-2%3A14&version=NIV"
+              }
+            },
+            {
+              "name": "No Rival Core",
+              "subtitle": "No early counter-tradition appears in Paul's letters",
+              "kind": "evidence",
+              "date": "Historical implication",
+              "details": "This is an inference from the evidence structure: Paul was both an early opponent and later a close associate of Cephas and James, yet his letters preserve no rival primitive formula in which Jesus remained in an occupied tomb while followers merely had comforting visions. The earliest form available to us is already resurrection-centered.",
+              "source": {
+                "title": "1 Corinthians 15:3-8; Galatians 1:13-19",
+                "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A13-2%3A14&version=NIV"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Risen Belief",
+      "subtitle": "The resurrection belief arose early and specifically",
+      "kind": "collection",
+      "color": "#A05A2C",
+      "children": [
+        {
+          "name": "Early Belief",
+          "subtitle": "The resurrection message is present from the start",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "From the Start",
+              "subtitle": "The earliest surviving formula is resurrection-centered",
+              "kind": "evidence",
+              "date": "Earliest Christian proclamation",
+              "details": "The earliest explicit summary we have is already specific: Christ died, was buried, was raised, and appeared. Resurrection is not a late doctrinal embellishment added after a period of vaguer belief.",
+              "source": {
+                "title": "1 Corinthians 15:3-8",
+                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=NIV"
+              }
+            },
+            {
+              "name": "Jerusalem Root",
+              "subtitle": "The belief emerged close to the events",
+              "kind": "evidence",
+              "date": "Earliest church",
+              "details": "Paul's contact with Cephas, James, and John places the transmitted belief in direct relation to the Jerusalem leadership. The belief is not traceable first in a distant or anonymous environment.",
+              "source": {
+                "title": "Galatians 1:18-19; 2:9",
+                "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A13-2%3A14&version=NIV"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Specific Claim",
+          "subtitle": "The claim was resurrection, not mere spiritual survival",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "Bodily Meaning",
+              "subtitle": "Resurrection had concrete content",
+              "kind": "evidence",
+              "date": "Jewish context",
+              "details": "Craig argues that, in first-century Jewish thought, 'he was buried' followed by 'he was raised' carried bodily implications. Wright likewise stresses that early Christians retained the Jewish concept of resurrection but made it sharper and more precise around Jesus himself.",
+              "source": {
+                "title": "Craig and Wright on resurrection meaning",
+                "url": "https://ntwrightpage.com/2016/07/12/jesus-resurrection-and-christian-origins/"
+              }
+            },
+            {
+              "name": "No Vision-Only Core",
+              "subtitle": "The earliest pattern is not merely visionary",
+              "kind": "evidence",
+              "date": "Earliest surviving evidence",
+              "details": "The sources do not preserve a primitive formula saying merely that Jesus lived on spiritually or was exalted in vision language alone. The earliest recoverable core already centers on resurrection and appearances.",
+              "source": {
+                "title": "1 Corinthians 15:3-8",
+                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=NIV"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Hard Sell",
+          "subtitle": "The claim did not fit ordinary expectations",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "Jewish Surprise",
+              "subtitle": "One man raised in advance was not the expected pattern",
+              "kind": "evidence",
+              "date": "Second Temple Jewish backdrop",
+              "details": "Wright argues that early Christians retained Jewish resurrection belief but reshaped it around Jesus in a way demanding explanation. Instead of choosing a new messiah after Jesus' death, they continued to proclaim Jesus himself as Messiah because they believed he had been raised.",
+              "source": {
+                "title": "N. T. Wright on the rise of Christian resurrection belief",
+                "url": "https://ntwrightpage.com/2016/07/12/jesus-resurrection-and-christian-origins/"
+              }
+            },
+            {
+              "name": "Greek Resistance",
+              "subtitle": "The message was foolishness to Gentiles",
+              "kind": "evidence",
+              "date": "Pauline context",
+              "details": "Paul says the Christian proclamation was a stumbling block to Jews and foolishness to Gentiles. That makes the resurrection message a hard sell across both cultural worlds rather than an easy invention designed for immediate plausibility.",
+              "source": {
+                "title": "1 Corinthians 1:22-25",
+                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+1%3A18-27%2CGalatians+1%3A9&version=NIV"
+              }
+            },
+            {
+              "name": "No New Messiah",
+              "subtitle": "They did not simply replace Jesus",
+              "kind": "evidence",
+              "date": "Historical development",
+              "details": "Wright notes that when messianic movements lost their leader, the normal task was to find another claimant. The early Christians did not do that; they continued to speak of Jesus himself as Messiah. That is one of the historical features demanding explanation.",
+              "source": {
+                "title": "N. T. Wright on early Christian messiah belief",
+                "url": "https://ntwrightpage.com/2016/07/12/jesus-resurrection-and-christian-origins/"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Changed Lives",
+          "subtitle": "The belief is reflected in major reversals",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "James Changed",
+              "subtitle": "From unbelief to central leadership",
+              "kind": "evidence",
+              "date": "Early Jerusalem church",
+              "details": "James is named in the witness-list and later appears as a central Jerusalem leader. Josephus also independently attests James as 'the brother of Jesus, who was called Christ,' showing that James is a historical figure anchored outside the New Testament as well.",
+              "source": {
+                "title": "Josephus on James, brother of Jesus called Christ",
+                "url": "https://academic.oup.com/book/60034/chapter/513641505"
+              }
+            },
+            {
+              "name": "Paul Changed",
+              "subtitle": "From persecutor to proclaimer",
+              "kind": "evidence",
+              "date": "c. AD 30s",
+              "details": "Paul's own letters present a sharp reversal: the man who formerly persecuted the church is now preaching the faith he once tried to destroy. That gives special force to the rise of resurrection belief.",
+              "source": {
+                "title": "Galatians 1:13, 23",
+                "url": "https://www.biblegateway.com/passage/?search=Galatians+1%3A13-2%3A14&version=NIV"
+              }
+            },
+            {
+              "name": "Movement Endures",
+              "subtitle": "The slain leader still had followers",
+              "kind": "evidence",
+              "date": "Late first-century external corroboration",
+              "details": "Josephus' reference to James as the brother of Jesus who was called Christ shows that Jesus still had an identifiable movement later in the first century. Combined with Paul's undisputed letters, the documented message attached to that movement is resurrection, not mere admiration for a dead teacher.",
+              "source": {
+                "title": "Josephus on James and Jesus called Christ",
+                "url": "https://academic.oup.com/book/60034/chapter/513641505"
+              }
+            }
+          ]
+        },
+        {
+          "name": "External Anchors",
+          "subtitle": "Some key figures and setting are externally confirmed",
+          "kind": "collection",
+          "children": [
+            {
+              "name": "James in Josephus",
+              "subtitle": "James is independently attested",
+              "kind": "evidence",
+              "date": "Josephus, Antiquities 20.200",
+              "details": "Josephus records the execution of James and identifies him as the brother of Jesus who was called Christ. That externally anchors a major figure in the resurrection tradition.",
+              "source": {
+                "title": "Josephus on James, brother of Jesus called Christ",
+                "url": "https://academic.oup.com/book/60034/chapter/513641505"
+              }
+            },
+            {
+              "name": "John the Baptist",
+              "subtitle": "The New Testament setting has external support",
+              "kind": "evidence",
+              "date": "First-century Judaea",
+              "details": "Josephus also attests John the Baptist, confirming that the wider movement-world of the Gospels includes figures known outside Christian sources.",
+              "source": {
+                "title": "Britannica on John the Baptist",
+                "url": "https://www.britannica.com/biography/Saint-John-the-Baptist"
+              }
+            },
+            {
+              "name": "Pilate and Christus",
+              "subtitle": "Jesus' execution and movement are externally noted",
+              "kind": "evidence",
+              "date": "Tacitus, Annals 15.44",
+              "details": "Tacitus reports that Christus was executed by Pontius Pilate and that the movement persisted afterward. This does not prove the resurrection, but it externally confirms the execution context and continued Christian movement.",
+              "source": {
+                "title": "Britannica on Tacitus and Annals 15.44",
+                "url": "https://www.britannica.com/topic/Annals"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

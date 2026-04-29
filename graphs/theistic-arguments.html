@@ -11,7 +11,7 @@
   <link rel="icon" href="../assets/icons/favicon-16.png" sizes="16x16" type="image/png">
   <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png" sizes="180x180">
   <link rel="manifest" href="../site.webmanifest">
-  <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#00BFAE">
+  <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg" color="#00796B">
   <meta name="theme-color" content="#f5efe4">
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
@@ -62,8 +62,8 @@
       --page-glow-1: rgba(13, 143, 134, 0.14);
       --page-glow-2: rgba(194, 144, 44, 0.12);
       --chart-surface:
-        radial-gradient(circle at 18% 24%, rgba(13, 143, 134, 0.22), transparent 26rem),
-        radial-gradient(circle at 82% 34%, rgba(194, 144, 44, 0.20), transparent 24rem),
+        radial-gradient(circle at 18% 24%, rgba(13, 143, 134, 0.12), transparent 26rem),
+        radial-gradient(circle at 82% 34%, rgba(194, 144, 44, 0.12), transparent 24rem),
         linear-gradient(180deg, rgba(255, 253, 248, 0.94), rgba(250, 243, 232, 0.97));
       --shadow-soft: 0 16px 40px rgba(25, 40, 48, 0.08);
       --panel-shadow: 0 24px 80px rgba(25, 40, 48, 0.14);
@@ -112,8 +112,8 @@
         --page-glow-1: rgba(77, 211, 198, 0.14);
         --page-glow-2: rgba(235, 191, 104, 0.10);
         --chart-surface:
-          radial-gradient(circle at 18% 24%, rgba(77, 211, 198, 0.18), transparent 28rem),
-          radial-gradient(circle at 82% 34%, rgba(235, 191, 104, 0.16), transparent 24rem),
+          radial-gradient(circle at 18% 24%, rgba(77, 211, 198, 0.12), transparent 28rem),
+          radial-gradient(circle at 82% 34%, rgba(235, 191, 104, 0.10), transparent 24rem),
           linear-gradient(180deg, rgba(20, 40, 50, 0.96), rgba(12, 25, 33, 0.98));
         --shadow-soft: 0 18px 42px rgba(0, 0, 0, 0.30);
         --panel-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
@@ -159,8 +159,8 @@
       --page-glow-1: rgba(77, 211, 198, 0.14);
       --page-glow-2: rgba(235, 191, 104, 0.10);
       --chart-surface:
-        radial-gradient(circle at 18% 24%, rgba(77, 211, 198, 0.18), transparent 28rem),
-        radial-gradient(circle at 82% 34%, rgba(235, 191, 104, 0.16), transparent 24rem),
+        radial-gradient(circle at 18% 24%, rgba(77, 211, 198, 0.12), transparent 28rem),
+        radial-gradient(circle at 82% 34%, rgba(235, 191, 104, 0.10), transparent 24rem),
         linear-gradient(180deg, rgba(20, 40, 50, 0.96), rgba(12, 25, 33, 0.98));
       --shadow-soft: 0 18px 42px rgba(0, 0, 0, 0.30);
       --panel-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
@@ -250,7 +250,7 @@
       linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 72px 72px;
-    opacity: 0.28;
+    opacity: 0.24;
     mix-blend-mode: soft-light;
   }
   html.embed-mode body { overflow: hidden; }
@@ -526,6 +526,16 @@
     box-shadow: var(--shadow-soft);
     transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
   }
+  .embed-return-btn{
+    width:auto;
+    min-width:0;
+    padding:0 14px;
+    font-weight:600;
+    order:99;
+  }
+  .embed-return-btn[hidden]{
+    display:none !important;
+  }
   .theme-btn svg, .theme-btn span.icon { display:inline-block; width:16px; height:16px }
   .theme-btn:hover,
   .theme-btn:focus-visible {
@@ -550,7 +560,8 @@
   <div class="wrap">
   <div class="page-header">
     <h1>Theistic Arguments and Divine Attributes</h1>
-    <div style="display:inline-flex; gap:8px; align-items:center">
+    <div id="pageHeaderActions" style="display:inline-flex; gap:8px; align-items:center">
+      <button id="embedReturnBtn" class="theme-btn embed-return-btn" type="button" hidden>Return to overview</button>
       <button id="aboutBtn" class="theme-btn" aria-expanded="false" title="About this visualization" aria-label="About this visualization" style="padding:8px 10px; min-width:40px; height:36px;">
         <span aria-hidden="true" class="icon" style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px;">
           <!-- Bolder question mark icon (no faint outer ring) -->
@@ -594,7 +605,9 @@
         const requestedTheme = params.get('theme');
         const themeMessageType = 'pv-theme';
         const embedStateMessageType = 'pv-embed-state';
+        const embedRequestMessageType = 'pv-embed-request';
         const interactionHintEl = document.getElementById('interactionHint');
+        const embedReturnBtn = document.getElementById('embedReturnBtn');
         let isEmbedExpanded = false;
         let embedInteractionActive = !isEmbedMode;
 
@@ -629,7 +642,23 @@
           syncInteractionMode();
         }
 
+        function syncEmbedReturnButton() {
+          if (!embedReturnBtn) return;
+          embedReturnBtn.hidden = !(isEmbedMode && isEmbedExpanded);
+          updateViewportVars();
+        }
+
+        function requestEmbedCollapse() {
+          if (!isEmbedMode || !isEmbedExpanded || window.parent === window) return;
+          const targetOrigin = window.location.origin === 'null' ? '*' : window.location.origin;
+          window.parent.postMessage({ type: embedRequestMessageType, action: 'collapse' }, targetOrigin);
+        }
+
         syncInteractionMode();
+        if (embedReturnBtn) {
+          embedReturnBtn.addEventListener('click', requestEmbedCollapse);
+          syncEmbedReturnButton();
+        }
 
         // Measure dynamic viewport and layout offsets so mobile browsers (esp. iOS Chrome)
         // get a correct SVG height without clipping the bottom.
@@ -729,6 +758,7 @@
           }
           if (event.data.type === embedStateMessageType) {
             isEmbedExpanded = event.data.expanded === true;
+            syncEmbedReturnButton();
             embedInteractionActive = !usesInteractionGate();
             if (usesInteractionGate()) {
               hideTooltipImmediate(true);
@@ -1711,6 +1741,7 @@
     // Explicit sequential tab order: aboutBtn, themeToggle, nodes (visual top->bottom), then links (top->bottom)
     function assignTabOrder(){
       let idx = 1;
+      d3.select('#embedReturnBtn').attr('tabindex', idx++);
       d3.select('#aboutBtn').attr('tabindex', idx++);
       d3.select('#themeToggle').attr('tabindex', idx++);
       // sort nodes by top y position

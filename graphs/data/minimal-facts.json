@@ -207,16 +207,16 @@
                             "children": [
                                 {
                                     "name": "Antiquities 18.3.3",
-                                    "subtitle": "Records Jesus’s crucifixion under Pontius Pilate; widely regarded as authentic",
+                                    "subtitle": "Reports Jesus’s execution under Pilate; commonly seen as preserving a Josephan core",
                                     "date": "c. AD 93–94",
-                                    "details": "The <em>Testimonium Flavianum</em> (Ant. 18.3.3) is Josephus’s best-known reference to Jesus. Many scholars hold that the passage preserves an authentic Josephan core. The main points of dispute are the stronger confessional phrases, especially wording that appears to affirm that Jesus was the Christ and that he rose again. On a common reconstruction, Josephus originally referred to Jesus in more neutral terms and reported his execution under Pontius Pilate. For a recent and substantial defense of fuller authenticity using new manuscript evidence, see: Schmidt, T. C., <em>Josephus and Jesus: New Evidence for the One Called Christ</em> (Oxford: Oxford University Press, 2025; online edn, Oxford Academic, 5 May 2025), <a href=\"https://doi.org/10.1093/9780191957697.001.0001\" target=\"_blank\" rel=\"noopener\">https://doi.org/10.1093/9780191957697.001.0001</a>, accessed 11 Apr. 2026.",
+                                    "details": "The <em>Testimonium Flavianum</em> in Josephus’s <em>Antiquities</em> reports that Jesus was condemned to the cross under Pontius Pilate and that his followers continued afterward. Many scholars regard the passage as preserving an authentic Josephan core, even if stronger confessional phrases are disputed or suspected of Christian shaping. For the crucifixion claim, Josephus is especially useful because the reference to Jesus’s execution under Pilate is commonly treated as part of that historical core. See <a href=\"https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0146%3Abook%3D18%3Awhiston+chapter%3D3%3Awhiston+section%3D3\" target=\"_blank\" rel=\"noopener noreferrer\">Josephus, Antiquities 18.3.3</a> and <a href=\"https://academic.oup.com/book/60034/chapter/513640313\" target=\"_blank\" rel=\"noopener noreferrer\">T. C. Schmidt, <em>Josephus and Jesus</em>, ch. 4</a>.",
                                     "whyItMatters": [
-                                        "Earliest non-Christian reference to Jesus’s death.",
-                                        "Corroborates the Gospel accounts of crucifixion under Pilate.",
-                                        "Confirms Jesus’s existence and significance in the first century."
+                                        "Strong non-Christian corroboration that Jesus was executed under Pontius Pilate.",
+                                        "Many scholars treat the execution notice as part of the Josephan core even where other wording is disputed.",
+                                        "Also notes that Jesus’s followers continued afterward, fitting the emergence of the early movement."
                                     ],
                                     "source": {
-                                        "title": "Antiquities of the Jews, Book 18, Section 63",
+                                        "title": "Josephus, Antiquities 18.3.3",
                                         "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0146%3Abook%3D18%3Awhiston+chapter%3D3%3Awhiston+section%3D3"
                                     },
                                     "kind": "evidence"
@@ -352,15 +352,15 @@
                 },
                 {
                     "name": "Gospels and Acts",
-                    "subtitle": "Narratives of Jesus’s removal and burial before the Sabbath (with women observing the tomb’s location)",
+                    "subtitle": "The Gospels explicitly name Joseph of Arimathea in Jesus’s burial; Acts preserves a shorter burial summary, and the Gospels note women observing the tomb’s location",
                     "children": [
                         {
                             "name": "Mark 15:42–47",
-                            "subtitle": "Burial before Sabbath; women see where he is laid (v.47)",
+                            "subtitle": "Joseph of Arimathea buries Jesus before Sabbath; women see where he is laid (v.47)",
                             "date": "c. AD 55–59",
-                            "details": "On Preparation Day, Joseph of Arimathea requests Jesus’s body; after death is confirmed, Pilate grants it. Jesus is wrapped and placed in a rock-hewn tomb. Mary Magdalene and Mary the mother of Jesus saw where he was laid (v.47), fixing the tomb’s location.",
+                            "details": "On Preparation Day, Joseph of Arimathea requests Jesus’s body; after death is confirmed, Pilate grants it. Jesus is wrapped and placed in a rock-hewn tomb. Mary Magdalene and Mary the mother of Joses saw where he was laid (v.47), fixing the tomb’s location.",
                             "whyItMatters": [
-                                "Explains official permission and pre-Sabbath haste.",
+                                "Names Joseph of Arimathea as the identifiable burial agent.",
                                 "Women witnesses identify the tomb’s location (v.47).",
                                 "Supports a known, checkable burial site."
                             ],
@@ -372,11 +372,11 @@
                         },
                         {
                             "name": "Matthew 27:57–61",
-                            "subtitle": "Joseph of Arimathea's tomb; women sit opposite the tomb (v.61)",
+                            "subtitle": "Joseph of Arimathea buries Jesus in his own tomb; women sit opposite the tomb (v.61)",
                             "date": "c. AD 58–62",
                             "details": "Joseph of Arimathea asks for the body and lays Jesus in his own new rock-hewn tomb, rolling a great stone to the entrance. Mary Magdalene and “the other Mary” were there, sitting opposite the tomb (v.61), marking its location.",
                             "whyItMatters": [
-                                "Adds ownership/new-tomb detail consistent with purity/time constraints.",
+                                "Keeps Joseph of Arimathea central as the named burial figure.",
                                 "Women’s presence locates the burial site (v.61).",
                                 "Corroborates the Markan sequence with independent nuance."
                             ],
@@ -388,11 +388,11 @@
                         },
                         {
                             "name": "Luke 23:50–56",
-                            "subtitle": "Council member buries Jesus; women see the tomb and how the body was laid (vv.55–56)",
+                            "subtitle": "Joseph of Arimathea buries Jesus; women see the tomb and how the body was laid (vv.55–56)",
                             "date": "c. AD 60–62",
                             "details": "Joseph of Arimathea, a council member who had not consented to the decision, wraps Jesus in linen and places him in a rock-hewn tomb. The women who had come from Galilee saw the tomb and how his body was laid (vv.55–56), then prepare spices and rest on the Sabbath.",
                             "whyItMatters": [
-                                "Emphasizes timing: burial just before Sabbath begins.",
+                                "Keeps Joseph of Arimathea explicitly tied to the burial while noting his dissent from the council’s decision.",
                                 "Women observe both location and burial manner (vv.55–56).",
                                 "Explains their return after Sabbath with prepared spices."
                             ],
@@ -404,13 +404,13 @@
                         },
                         {
                             "name": "Acts 13:29",
-                            "subtitle": "Early Christian summary: removal and burial after execution",
+                            "subtitle": "Early Christian summary of removal and burial after execution; Joseph is not named here",
                             "date": "c. AD 62",
-                            "details": "In Paul's sermon at Pisidian Antioch, he recounts that Jesus’s body was taken down from the tree and laid in a tomb, reflecting the same-day removal principle consistent with Jewish law and Gospel narratives.",
+                            "details": "In Paul’s sermon at Pisidian Antioch, he recounts that Jesus’s body was taken down from the tree and laid in a tomb. Acts 13:29 does not name Joseph of Arimathea, but it preserves the early Christian conviction that Jesus was promptly buried, consistent with the Gospel narratives that do name Joseph.",
                             "whyItMatters": [
                                 "Earliest Christian summary statement connecting crucifixion and immediate burial.",
                                 "Demonstrates continuity with Deuteronomic and Gospel patterns of removal before sunset.",
-                                "Corroborates that early believers viewed same-day burial as integral to the Passion events."
+                                "Useful as a compact burial summary, while still leaving the explicit naming of Joseph of Arimathea to the Gospel accounts."
                             ],
                             "source": {
                                 "title": "Acts 13:29",
@@ -420,11 +420,11 @@
                         },
                         {
                             "name": "John 19:31, 38–42",
-                            "subtitle": "Bodies removed for high Sabbath; Joseph & Nicodemus bury Jesus",
+                            "subtitle": "Bodies removed for high Sabbath; Joseph of Arimathea and Nicodemus bury Jesus",
                             "date": "c. AD 70–100",
                             "details": "Because it was Preparation and the next day was a high Sabbath, the Judean leaders ask for the bodies to be removed. Joseph of Arimathea, joined by Nicodemus, receives permission, prepares the body with spices, and lays Jesus in a nearby garden tomb.",
                             "whyItMatters": [
-                                "Links removal directly to Jewish law/Sabbath concerns.",
+                                "Retains Joseph of Arimathea as the principal burial figure, now joined by Nicodemus.",
                                 "Details official permission and proximity/haste.",
                                 "Complements Synoptic testimony about women without duplicating it."
                             ],

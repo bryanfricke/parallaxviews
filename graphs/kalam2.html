@@ -188,28 +188,23 @@
       z-index:10;
       display:grid;
       grid-template-columns:minmax(0,1fr) auto;
-      grid-template-areas:
-        "title actions"
-        "controls controls";
       align-items:center;
       gap:10px 14px;
       padding:16px clamp(16px, 3vw, 28px) 14px;
       backdrop-filter:blur(18px);
       background:var(--headerTint);
-      border-bottom:1px solid var(--panelStroke);
     }
     html.embed-mode header{
       position:static;
       padding:12px 14px 10px;
+      border-bottom:1px solid var(--panelStroke);
       background:var(--headerTintEmbed);
     }
     header h1{
-      grid-area:title;
       margin:0;
       font:600 clamp(1.12rem, 1rem + 0.72vw, 1.52rem)/1.12 "Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,serif;
       letter-spacing:0.01em;
       min-width:0;
-      max-width:min(100%, 44rem);
     }
     header h1::before{
       content:"Argument Explorer";
@@ -223,6 +218,24 @@
     html.embed-mode header h1{
       font-size:1.05rem;
     }
+    header .sub{
+      grid-column:1 / -1;
+      margin:0;
+      max-width:78ch;
+      font-size:0.88rem;
+      color:var(--muted);
+      line-height:1.45;
+    }
+    html.embed-mode header .sub{
+      display:none;
+    }
+    .sub-key{
+      font-weight:650;
+      white-space:nowrap;
+    }
+    .sub-key.support{ color:var(--edgeSupport); }
+    .sub-key.objection{ color:var(--objection); }
+    .sub-key.rebuttal{ color:var(--rebuttal); }
 
     .wrap{
       position:relative;
@@ -254,53 +267,43 @@
       min-height:100%;
     }
 
-    #controls{
-      grid-area:controls;
-      display:none;
+    .toolbar{
+      display:flex;
       align-items:center;
+      justify-content:space-between;
       gap:12px;
-      flex-wrap:wrap;
-      width:100%;
       padding:14px 16px;
       border:1px solid var(--panelStroke);
       border-radius:22px;
       background:var(--panelFill);
       box-shadow:var(--softShadow);
-      backdrop-filter:blur(14px) saturate(120%);
-      -webkit-backdrop-filter:blur(14px) saturate(120%);
+      flex-wrap:wrap;
     }
-    #controls.open{
-      display:flex;
+    html.embed-mode .toolbar{
+      padding:12px 14px;
+      border:0;
+      border-bottom:1px solid var(--panelStroke);
+      border-radius:0;
+      background:transparent;
+      box-shadow:none;
     }
-    .title-select-wrap{
-      position:relative;
-      display:inline-flex;
-      align-items:center;
-      max-width:min(100%, 44rem);
-      min-height:calc(1em + 1rem);
-      padding:0.34rem 1rem 0.48rem 0.88rem;
-      border:1px solid var(--panelStroke);
-      border-radius:18px;
-      background:color-mix(in srgb, var(--surfaceAlt) 82%, transparent);
-      box-shadow:inset 0 1px 0 var(--haloShine);
-      transition:border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
-    }
-    .title-select-wrap::after{
-      content:"";
-      position:absolute;
-      top:50%;
-      right:0.88rem;
-      width:0.86rem;
-      height:0.54rem;
-      transform:translateY(-50%);
-      clip-path:polygon(0 0, 100% 0, 50% 100%);
-      background:color-mix(in srgb, var(--text) 92%, transparent);
-      pointer-events:none;
-      transition:background 180ms ease;
-    }
-    .hint{
+    .toolbar .hint{
       font-size:12px;
       color:var(--mutedSoft);
+    }
+    .toolbar .selectionInfo{
+      display:inline-flex;
+      align-items:center;
+      min-height:2.5rem;
+      padding:0.5rem 0.8rem;
+      border:1px solid var(--panelStroke);
+      border-radius:999px;
+      background:var(--surfaceMuted);
+      box-shadow:inset 0 1px 0 var(--haloShine);
+      font-size:12px;
+      color:var(--muted);
+      margin-left:auto;
+      white-space:nowrap;
     }
     .btns{ display:flex; gap:8px; flex-wrap:wrap; }
 
@@ -525,91 +528,92 @@
       color:var(--text);
     }
     select#argumentSelect {
-      display:block;
-      width:auto;
-      max-width:100%;
-      margin:0;
-      padding:0.06em 1.3rem 0.14em 0;
-      border:0;
-      background-color:transparent;
-      background-image:none;
+      background: var(--selectBg);
+      border: 1px solid var(--buttonBorder);
       color: var(--text);
-      border-radius:0;
-      box-shadow:none;
-      font:inherit;
-      letter-spacing:inherit;
-      line-height:1.18;
+      border-radius: 999px;
+      padding: 8px 32px 8px 12px;
+      font-size: 12px;
+      font-weight:650;
+      font-family: inherit;
       cursor: pointer;
       appearance: none;
       -webkit-appearance: none;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      overflow:hidden;
+      box-shadow:var(--softShadow);
+      background-image: var(--selectArrow);
+      background-repeat: no-repeat;
+      background-position: right 10px center;
     }
-    select#argumentSelect:hover {
-      color:var(--support);
-    }
-    .title-select-wrap:hover::after,
-    .title-select-wrap:focus-within::after{
-      background:var(--support);
-    }
-    .title-select-wrap:hover,
-    .title-select-wrap:focus-within{
-      border-color:var(--hoverBorder);
-      background:color-mix(in srgb, var(--surfaceMuted) 88%, transparent);
-      box-shadow:inset 0 1px 0 var(--haloShine), 0 0 0 1px color-mix(in srgb, var(--support) 10%, transparent);
-    }
-    select#argumentSelect:focus{
-      outline:none;
-    }
+    select#argumentSelect:hover { border-color: var(--hoverBorder); }
     select#argumentSelect option { background: var(--selectOptionBg); }
 
-    .header-actions{
-      grid-area:actions;
-      display:inline-flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:8px;
-      min-width:0;
-      flex-wrap:wrap;
-    }
+    /* ── Mobile / responsive additions ── */
 
-    #embedReturnBtn{
-      order:99;
-    }
-
+    /* Controls toggle button — shown only on mobile */
     #controlsToggle {
-      display:inline-flex;
+      display: none;
+      border: 1px solid var(--buttonBorder);
+      background: var(--buttonBg);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 13px;
+      font-size: 12px;
+      font-weight:650;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
       align-items: center;
-      justify-content:center;
       gap: 6px;
-      align-self:end;
     }
-    #embedReturnBtn[hidden]{
-      display:none !important;
+    #controlsToggle:hover { background: var(--buttonBgHover); }
+
+    /* On desktop, #controls is "transparent" so its children flow directly
+       into the parent .toolbar flex row — preserving the existing layout. */
+    #controls { display: contents; }
+
+    html.compact-controls #controlsToggle { display: inline-flex; }
+    html.compact-controls #controls {
+      display: none;
     }
-    #controlsToggle .controls-icon{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      transition:transform 160ms ease;
-      transform-origin:center;
-      height:1em;
+    html.compact-controls #controls.open {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: fixed;
+      z-index: 9000;
+      background: var(--sheetBg);
+      border: 1px solid var(--panelStroke);
+      border-radius: 20px;
+      padding: 12px;
+      box-shadow: var(--tipShadow);
+      backdrop-filter: blur(10px) saturate(80%);
+      -webkit-backdrop-filter: blur(10px) saturate(80%);
+      max-width: calc(100vw - 16px);
+      max-height: 60vh;
+      overflow: auto;
     }
-    #controlsToggle[aria-expanded="true"] .controls-icon{
-      transform:rotate(180deg);
+    html.compact-controls #controls.open .btns { flex-wrap: wrap; }
+    html.compact-controls #controls.open .selectionInfo { margin-left: 0; white-space: normal; font-size: 11px; }
+    html.compact-controls .toolbar {
+      flex-wrap: nowrap;
+      gap: 0;
+      padding: 0;
+      min-height: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
     }
-    #controlsToggle .controls-icon svg{
-      width:0.88em;
-      height:0.88em;
-      display:inline-block;
-      vertical-align:middle;
-      fill:none;
-      stroke:currentColor;
-      stroke-width:2.6;
-      stroke-linecap:round;
-      stroke-linejoin:round;
+    html.embed-mode.compact-controls .toolbar {
+      padding: 0;
+      min-height: 0;
+      border: 0;
+      border-bottom: 0;
+      background: transparent;
+      box-shadow: none;
     }
+    html.compact-controls .toolbar .hint { display: none; }
+    html.compact-controls .toolbar > .selectionInfo { display: none; }
 
     /* Bottom sheet — slides up from the bottom on mobile to show node details */
     .bottom-sheet {
@@ -654,10 +658,7 @@
     }
 
     @media (max-width: 640px) {
-      header{
-        align-items:start;
-        gap:10px 8px;
-      }
+      /* Compact header */
       header h1 {
         font-size: 1rem;
       }
@@ -665,82 +666,93 @@
         font-size: 0.62rem;
         margin-bottom: 4px;
       }
+      header .sub { display: none; }
       header { padding: 10px 12px; }
       .wrap { padding: 6px 8px; }
-      #controls{
-        gap:10px;
-        padding:12px;
-        border-radius:18px;
-      }
-      .btns{
-        width:100%;
-      }
-      .title-select-wrap{
-        min-height:calc(1em + 0.78rem);
-        padding:0.24rem 0.82rem 0.38rem 0.74rem;
-        border-radius:15px;
-      }
-      .title-select-wrap::after{
-        right:0.72rem;
-        width:0.74rem;
-        height:0.46rem;
-      }
-      #controlsToggle{
-        padding:7px 11px;
-        font-size:11px;
-        min-height:34px;
-      }
-    }
 
-    @media (max-width: 640px) {
-      html.embed-mode header{
-        gap:8px 6px;
-        padding:8px 8px 9px;
+      /* Show the toggle, hide the controls panel by default */
+      #controlsToggle { display: inline-flex; }
+      #controls {
+        display: none;
       }
-      html.embed-mode header h1{
-        font-size:0.96rem;
-        line-height:1.02;
+      #controls.open {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        position: fixed;
+        z-index: 9000;
+        background: var(--sheetBg);
+        border: 1px solid var(--panelStroke);
+        border-radius: 20px;
+        padding: 12px;
+        box-shadow: var(--tipShadow);
+        backdrop-filter: blur(10px) saturate(80%);
+        -webkit-backdrop-filter: blur(10px) saturate(80%);
+        max-width: calc(100vw - 16px);
+        max-height: 60vh;
+        overflow: auto;
       }
-      html.embed-mode header h1::before{
-        margin-bottom:2px;
-        font-size:0.52rem;
-        letter-spacing:0.14em;
+      #controls.open .btns { flex-wrap: wrap; }
+      /* Show selection info inside the controls panel on mobile */
+      #controls.open .selectionInfo { margin-left: 0; white-space: normal; font-size: 11px; }
+
+      /* Compact toolbar row */
+      .toolbar {
+        flex-wrap: nowrap;
+        gap: 0;
+        padding: 0;
+        min-height: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
       }
-      html.embed-mode #controlsToggle{
-        padding:6px 9px;
-        font-size:10px;
-        min-height:32px;
+      html.embed-mode .toolbar {
+        padding: 0;
+        min-height: 0;
+        border: 0;
+        border-bottom: 0;
+        background: transparent;
+        box-shadow: none;
       }
+      .toolbar .hint { display: none; }
+      /* Hide selection info from the main toolbar (it moves into the panel) */
+      .toolbar > .selectionInfo { display: none; }
     }
   </style>
 </head>
 <body>
 <header>
-  <h1 id="pageTitle"><span class="title-select-wrap"><select id="argumentSelect" title="Choose argument" aria-label="Choose argument">
-    <option value="data/argument-leibniz.json">Leibniz&rsquo;s Cosmological Argument</option>
-    <option value="data/argument-kalam.json" selected>The Kalam Cosmological Argument</option>
-    <option value="data/argument-design.json">The Design Argument</option>
-    <option value="data/argument-moral.json">The Moral Argument</option>
-    <!-- <option value="data/argument-suffering.json">The Problem of Suffering</option> -->
-  </select></span></h1>
-  <div class="header-actions">
-    <button id="embedReturnBtn" type="button" hidden>Return to overview</button>
-    <button id="controlsToggle" type="button" aria-expanded="false" aria-controls="controls">Controls <span class="controls-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span></button>
-  </div>
-  <div id="controls">
-    <div class="hint">Single-click to toggle/select &bull; Drag to pan &bull; Scroll to zoom</div>
-    <div class="btns">
-      <button id="expandAllBtn" type="button">Expand all</button>
-      <button id="collapseAllBtn" type="button">Collapse all</button>
-      <button id="expandResponsesBtn" type="button" disabled>Open rebuttal chain</button>
-      <button id="collapseResponsesBtn" type="button" disabled>Close rebuttal chain</button>
-      <button id="resetViewBtn" type="button">Reset view</button>
-    </div>
-  </div>
+  <h1 id="pageTitle">The Kalam Cosmological Argument</h1>
+  <button id="controlsToggle" type="button" aria-expanded="false">Controls &#9662;</button>
+  <p class="sub">Click a colored badge to expand or collapse that group of connections &mdash; <span class="sub-key support">blue = supports</span>, <span class="sub-key objection">orange = objections</span>, <span class="sub-key rebuttal">green = rebuttals</span>. Click a node body to select it.</p>
 </header>
 
 <div class="wrap">
   <div class="panel">
+    <div class="toolbar">
+      <div id="controls">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <select id="argumentSelect" title="Choose argument">
+            <option value="data/argument-leibniz.json">Leibniz&rsquo;s Cosmological Argument</option>
+            <option value="data/argument-kalam.json" selected>The Kalam Cosmological Argument</option>
+            <option value="data/argument-design.json">The Design Argument</option>
+            <option value="data/argument-moral.json">The Moral Argument</option>
+            <!-- <option value="data/argument-suffering.json">The Problem of Suffering</option> -->
+          </select>
+          <div class="hint">Single-click to toggle/select &bull; Drag to pan &bull; Scroll to zoom</div>
+        </div>
+        <div class="btns">
+          <button id="expandAllBtn" type="button">Expand all</button>
+          <button id="collapseAllBtn" type="button">Collapse all</button>
+          <button id="expandResponsesBtn" type="button" disabled>Open rebuttal chain</button>
+          <button id="collapseResponsesBtn" type="button" disabled>Close rebuttal chain</button>
+          <button id="resetViewBtn" type="button">Reset view</button>
+        </div>
+        <div class="selectionInfo" id="selectionInfo">Selected: none</div>
+      </div>
+    </div>
+
     <div class="chart-shell">
       <div id="interactionHint" class="interaction-hint" aria-hidden="true">Click or tap to interact</div>
       <svg id="chart" aria-label="Argument map"></svg>
@@ -759,12 +771,11 @@ const isEmbedMode = params.get("embed") === "1";
 const requestedTheme = params.get("theme");
 const themeMessageType = "pv-theme";
 const embedStateMessageType = "pv-embed-state";
-const embedRequestMessageType = "pv-embed-request";
 const sharedThemeKey = "parallax-theme";
 const legacyThemeKey = "pv_theme";
 const argumentSelectEl = document.getElementById("argumentSelect");
+const pageTitleEl = document.getElementById("pageTitle");
 const interactionHintEl = document.getElementById("interactionHint");
-const embedReturnBtn = document.getElementById("embedReturnBtn");
 let isEmbedExpanded = false;
 let embedInteractionActive = !isEmbedMode;
 
@@ -800,22 +811,7 @@ function deactivateEmbeddedInteraction() {
   syncInteractionMode();
 }
 
-function syncEmbedReturnButton() {
-  if (!embedReturnBtn) return;
-  embedReturnBtn.hidden = !(isEmbedMode && isEmbedExpanded);
-}
-
-function requestEmbedCollapse() {
-  if (!isEmbedMode || !isEmbedExpanded || window.parent === window) return;
-  const targetOrigin = window.location.origin === "null" ? "*" : window.location.origin;
-  window.parent.postMessage({ type: embedRequestMessageType, action: "collapse" }, targetOrigin);
-}
-
 syncInteractionMode();
-if (embedReturnBtn) {
-  embedReturnBtn.addEventListener("click", requestEmbedCollapse);
-  syncEmbedReturnButton();
-}
 
 function readStoredTheme() {
   try {
@@ -844,6 +840,9 @@ function syncArgumentContext() {
   if (!argumentSelectEl) return;
   const selectedOption = argumentSelectEl.options[argumentSelectEl.selectedIndex];
   const selectedLabel = selectedOption ? selectedOption.textContent.trim() : "Interactive Argument Map";
+  if (pageTitleEl) {
+    pageTitleEl.textContent = selectedLabel;
+  }
   document.title = selectedLabel + " | Interactive Argument Map";
 }
 
@@ -1169,6 +1168,10 @@ function isMobileLike() {
   }
 }
 
+function useCollapsedControls() {
+  return isEmbedMode ? window.innerWidth <= 1180 : window.innerWidth <= 640;
+}
+
 const bottomSheetEl = document.getElementById('bottomSheet');
 
 function openBottomSheet(node) {
@@ -1201,7 +1204,7 @@ function ensureNodeAboveSheet(node) {
     const svgEl = svg.node();
     const svgRect = svgEl.getBoundingClientRect();
     const transform = d3.zoomTransform(svgEl);
-    // node.x = horizontal lane, node.y = vertical row in the argument explorer coordinate space
+    // node.x = horizontal lane, node.y = vertical row in kalam2 coordinate space
     const nodeScreenY = svgRect.top + transform.k * node.y + transform.y;
     const margin = 20;
     const availableBottom = sheetRect.top - margin;
@@ -1387,15 +1390,22 @@ function hasAnyChildren(node){
   return Object.values(hg).some(arr => arr && arr.length);
 }
 
+const selectionInfoEl = document.getElementById("selectionInfo");
 const expandResponsesBtn = document.getElementById("expandResponsesBtn");
 const collapseResponsesBtn = document.getElementById("collapseResponsesBtn");
 
 function refreshSelectionUI(){
   if (!selectedNode){
+    selectionInfoEl.textContent = "Selected: none";
     expandResponsesBtn.disabled = true;
     collapseResponsesBtn.disabled = true;
     return;
   }
+  const groups = getChildGroups(selectedNode);
+  const totalV = Object.values(groups).reduce((s, g) => s + g.visible.length, 0);
+  const totalH = Object.values(groups).reduce((s, g) => s + g.hidden.length, 0);
+  const kindLabel = getKindMeta(selectedNode.data.kind).label;
+  selectionInfoEl.textContent = `Selected: ${selectedNode.data.id} (${kindLabel})${(totalV + totalH) ? ` • children ${totalV}/${totalV + totalH}` : ""}`;
   expandResponsesBtn.disabled = !hasAnyChildren(selectedNode);
   collapseResponsesBtn.disabled = !hasAnyChildren(selectedNode);
 }
@@ -1752,7 +1762,6 @@ window.addEventListener("message", (event) => {
   }
   if (event.data.type === embedStateMessageType) {
     isEmbedExpanded = event.data.expanded === true;
-    syncEmbedReturnButton();
     embedInteractionActive = !usesInteractionGate();
     if (usesInteractionGate()) {
       hideTip();
@@ -1778,27 +1787,63 @@ if (themeMediaQuery) {
   }
 }
 
-// ---- Controls toggle ----
+// ---- Controls toggle for mobile ----
 (function () {
   const toggle = document.getElementById('controlsToggle');
   const panel  = document.getElementById('controls');
   if (!toggle || !panel) return;
+  const root = document.documentElement;
 
-  function syncControls(open) {
-    panel.classList.toggle('open', open);
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  function resetPanelState() {
+    panel.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    panel.style.left  = '';
+    panel.style.right = '';
+    panel.style.top   = '';
   }
 
-  syncControls(false);
+  function syncControlsMode() {
+    const compact = useCollapsedControls();
+    root.classList.toggle('compact-controls', compact);
+    if (!compact) resetPanelState();
+  }
 
-  toggle.addEventListener('click', () => {
-    syncControls(!panel.classList.contains('open'));
+  function positionPanel() {
+    const tr = toggle.getBoundingClientRect();
+    panel.style.left  = '';
+    panel.style.right = Math.max(8, window.innerWidth - tr.right) + 'px';
+    panel.style.top   = (tr.bottom + 6) + 'px';
+  }
+
+  syncControlsMode();
+
+  toggle.addEventListener('click', (e) => {
+    if (!useCollapsedControls()) return;
+    e.stopPropagation();
+    const opening = !panel.classList.contains('open');
+    panel.classList.toggle('open', opening);
+    toggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    if (opening) {
+      positionPanel();
+    } else {
+      panel.style.left  = '';
+      panel.style.right = '';
+      panel.style.top   = '';
+    }
   });
 
-  window.addEventListener('keydown', (event) => {
-    if (event.key !== 'Escape' || !panel.classList.contains('open')) return;
-    syncControls(false);
-    toggle.focus({ preventScroll: true });
+  // Close controls when tapping outside on mobile
+  document.addEventListener('pointerdown', (e) => {
+    if (!useCollapsedControls()) return;
+    if (!panel.classList.contains('open')) return;
+    if (e.target.closest('#controls') || e.target.closest('#controlsToggle')) return;
+    resetPanelState();
+  }, { passive: true });
+
+  // Reposition on resize/orientation change
+  window.addEventListener('resize', () => {
+    syncControlsMode();
+    if (panel.classList.contains('open') && useCollapsedControls()) positionPanel();
   });
 })();
 </script>
