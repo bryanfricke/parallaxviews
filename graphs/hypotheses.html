@@ -109,6 +109,19 @@
       overflow: hidden;
     }
 
+    html.embed-mode {
+      overflow: hidden;
+      scrollbar-gutter: auto;
+      background: transparent;
+    }
+
+    html.embed-mode body {
+      border-radius: 16px;
+      overflow: hidden;
+      clip-path: inset(0 round 16px);
+      -webkit-clip-path: inset(0 round 16px);
+    }
+
     body::before {
       content: "";
       position: fixed;
@@ -121,6 +134,11 @@
       opacity: 0.28;
       mix-blend-mode: soft-light;
       z-index: 0;
+    }
+
+    html.embed-mode body::before {
+      clip-path: inset(0 round 16px);
+      -webkit-clip-path: inset(0 round 16px);
     }
 
     #topbar {
@@ -138,6 +156,11 @@
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--panel-stroke);
       box-shadow: var(--soft-shadow);
+    }
+
+    html.embed-mode #topbar {
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
     }
 
     #topbarTitle {
@@ -510,6 +533,7 @@
 
     /* Chart area: restrict touch gestures here only so D3 can manage them; leave page zoom accessible elsewhere */
     #chart {
+      position: relative;
       width: 100%;
       height: calc(var(--vh, 1vh) * 100 - var(--header-h, 92px));
       min-height: 380px;
@@ -520,6 +544,47 @@
       background: var(--chart-bg);
     }
 
+    .interaction-hint {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      max-width: min(260px, calc(100% - 32px));
+      padding: 8px 12px;
+      border: 1px solid var(--panel-stroke);
+      border-radius: 999px;
+      background: var(--panel-bg);
+      box-shadow: var(--soft-shadow);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 180ms ease, transform 180ms ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .interaction-hint::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+      flex: 0 0 auto;
+    }
+
+    html.embed-mode.interaction-idle .interaction-hint {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     #chart svg {
       display: block;
       width: 100%;
@@ -527,6 +592,12 @@
       touch-action: none;
       /* allow soft glows and ring strokes to extend beyond the viewport without being clipped */
       overflow: visible;
+    }
+
+    html.embed-mode.interaction-idle #chart,
+    html.embed-mode.interaction-idle #chart svg {
+      touch-action: pan-x pan-y pinch-zoom;
+      cursor: pointer;
     }
 
     /* Add a touch of side padding on very small screens so the chart doesn't hug the edges */
@@ -545,6 +616,10 @@
       user-select: none;
       -ms-touch-action: none;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    html.embed-mode.interaction-idle #chart svg {
+      touch-action: pan-x pan-y pinch-zoom;
     }
 
     /* Keep strokes visually constant while zooming the chart. Target common axis/path elements and
@@ -1125,7 +1200,7 @@
         aria-label="Show controls">Controls <span class="controls-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span></button>
       <!-- Mobile-only Facts button appears after Controls on small screens -->
       <button id="factsBtnMobile" class="btn mobile-only" tabindex="2" aria-expanded="false" aria-controls="factsOverlay">Facts</button>
-      <button id="embedReturnBtn" class="btn" tabindex="5" type="button" hidden>Return to overview</button>
+      <button id="embedReturnBtn" class="btn" tabindex="5" type="button" hidden>Back to overview</button>
       <button id="themeToggle" tabindex="6" aria-pressed="false" title="Toggle dark mode">
         <span id="icon-sun" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -1151,6 +1226,7 @@
 
   <div id="main">
     <div id="chart" aria-live="polite">
+      <div id="interactionHint" class="interaction-hint" aria-hidden="true">Click or tap to interact</div>
       <div id="loader" class="small">Loading data from <code>data/hypotheses.json</code>…</div>
     </div>
     <!-- Facts modal overlay (opened by Facts button) -->
@@ -2384,14 +2460,56 @@
 
     // Embed mode: read URL params for theme sync with parent page
     const _pvParams = new URLSearchParams(window.location.search);
-    const _pvIsEmbedMode = _pvParams.get('embed') === '1';
+    const _pvIsInlineEmbed = _pvParams.get('embed') === '1';
+    const _pvIsEmbedMode = _pvIsInlineEmbed || window.parent !== window;
     const _pvEmbedStateMessageType = 'pv-embed-state';
-    const _pvEmbedRequestMessageType = 'pv-embed-request';
     let _pvIsEmbedExpanded = false;
+    let _pvEmbedInteractionActive = !_pvIsEmbedMode;
     if (_pvIsEmbedMode) document.documentElement.classList.add('embed-mode');
     const _pvRequestedTheme = _pvParams.get('theme');
     const _pvSharedThemeKey = 'parallax-theme';
     const _pvLegacyThemeKey = 'pv_theme';
+    const _pvInteractionHintEl = document.getElementById('interactionHint');
+    const _pvOverviewHref = '../index.html#hypotheses-assessment';
+
+    function _pvUsesInteractionGate() {
+      return _pvIsEmbedMode && !_pvIsEmbedExpanded;
+    }
+
+    function _pvSyncInteractionMode() {
+      const gated = _pvUsesInteractionGate();
+      const active = !gated || _pvEmbedInteractionActive;
+      document.documentElement.classList.toggle('interaction-idle', gated && !_pvEmbedInteractionActive);
+      document.documentElement.classList.toggle('interaction-active', active);
+      if (_pvInteractionHintEl) {
+        _pvInteractionHintEl.hidden = !(gated && !_pvEmbedInteractionActive);
+      }
+    }
+
+    function _pvResetInteractionUI() {
+      try { state.ttPinned = false; } catch (_) { }
+      try { tt.classed('pinned', false); } catch (_) { }
+      try { clearTooltipColor(); } catch (_) { }
+      try { hideLeaderLine(); } catch (_) { }
+      try { hideTTBlocker(); } catch (_) { }
+      try { hideTT(); } catch (_) { }
+      try { closeSheet(); } catch (_) { }
+    }
+
+    function _pvActivateEmbeddedInteraction() {
+      if (!_pvUsesInteractionGate() || _pvEmbedInteractionActive) return;
+      _pvEmbedInteractionActive = true;
+      _pvSyncInteractionMode();
+    }
+
+    function _pvDeactivateEmbeddedInteraction() {
+      if (!_pvUsesInteractionGate() || !_pvEmbedInteractionActive) return;
+      _pvEmbedInteractionActive = false;
+      _pvResetInteractionUI();
+      _pvSyncInteractionMode();
+    }
+
+    _pvSyncInteractionMode();
 
     // Theme handling: toggle and persist theme in localStorage
     function applyTheme(t) {
@@ -2436,18 +2554,19 @@
     const _pvEmbedReturnBtn = document.getElementById('embedReturnBtn');
     function _pvSyncEmbedReturnButton() {
       if (!_pvEmbedReturnBtn) return;
-      _pvEmbedReturnBtn.hidden = !(_pvIsEmbedMode && _pvIsEmbedExpanded);
+      _pvEmbedReturnBtn.hidden = _pvIsInlineEmbed;
+      _pvEmbedReturnBtn.textContent = 'Back to overview';
+      _pvEmbedReturnBtn.setAttribute('aria-label', 'Back to overview');
+      _pvEmbedReturnBtn.setAttribute('title', 'Back to overview');
       if (typeof updateHeaderHeight === 'function') {
         updateHeaderHeight();
       }
     }
-    function _pvRequestEmbedCollapse() {
-      if (!_pvIsEmbedMode || !_pvIsEmbedExpanded || window.parent === window) return;
-      const targetOrigin = window.location.origin === 'null' ? '*' : window.location.origin;
-      window.parent.postMessage({ type: _pvEmbedRequestMessageType, action: 'collapse' }, targetOrigin);
+    function _pvNavigateToOverview() {
+      window.location.href = _pvOverviewHref;
     }
     if (_pvEmbedReturnBtn) {
-      _pvEmbedReturnBtn.addEventListener('click', _pvRequestEmbedCollapse);
+      _pvEmbedReturnBtn.addEventListener('click', _pvNavigateToOverview);
       _pvSyncEmbedReturnButton();
     }
 
@@ -2462,8 +2581,13 @@
         }
         if (event.data.type === _pvEmbedStateMessageType) {
           _pvIsEmbedExpanded = event.data.expanded === true;
+          _pvEmbedInteractionActive = !_pvUsesInteractionGate();
           document.documentElement.classList.toggle('embed-expanded', _pvIsEmbedExpanded);
           _pvSyncEmbedReturnButton();
+          if (_pvUsesInteractionGate()) {
+            _pvResetInteractionUI();
+          }
+          _pvSyncInteractionMode();
           if (_pvIsEmbedMode) {
             if (_pvIsEmbedExpanded) {
               setControls(topbar && topbar.dataset.state === 'expanded', { focus: false });
@@ -2473,6 +2597,23 @@
           }
         }
       } catch (e) { /* ignore */ }
+    });
+
+    document.addEventListener('pointerdown', (event) => {
+      if (!_pvUsesInteractionGate() || !_pvEmbedInteractionActive) return;
+      if (
+        event.target &&
+        typeof event.target.closest === 'function' &&
+        (event.target.closest('#chart') || event.target.closest('#tt') || event.target.closest('#ttSheet'))
+      ) return;
+      _pvDeactivateEmbeddedInteraction();
+    }, { passive: true });
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (_pvUsesInteractionGate()) {
+        _pvDeactivateEmbeddedInteraction();
+      }
     });
 
     // Color palettes for light and dark modes (map by hypothesis id)
@@ -2906,7 +3047,13 @@
     }
 
     function render() {
-      const el = document.getElementById('chart'); d3.select(el).selectAll('*').remove();
+      const el = document.getElementById('chart');
+      const interactionHint = document.getElementById('interactionHint');
+      Array.prototype.slice.call(el.children).forEach((child) => {
+        if (child !== interactionHint) {
+          child.remove();
+        }
+      });
       const C = byId(Data.criteria), Hy = byId(Data.hypotheses);
       if (state.view === 'radar') renderRadar(el, C, Hy); else renderHeatmap(el, C, Hy);
       // reapply last D3 transform after re-render so pan/zoom (including bumps) persist
@@ -3065,6 +3212,8 @@
   zoom.on('end', (e) => { try { state.lastTransform = e.transform; dbg('zoom:end', { k: e.transform.k, x: e.transform.x, y: e.transform.y }); } catch (err) { } });
       // Only enable zoom when interacting with the SVG background (not when interacting with interactive elements)
       svg.call(zoom.filter(function (event) {
+        const allowByDefault = (!event.ctrlKey || event.type === 'wheel') && !event.button;
+        if (!allowByDefault) return false;
         const t = event.target;
         // Disable zoom when interacting with interactive overlays: vertices, legend pills,
         // and the axis-end hit targets so tooltips/bottom sheets are not interfered with.
@@ -3072,10 +3221,19 @@
         const insidePills = t.closest && t.closest('.pill');
         const onAxisHit = t.closest && t.closest('.axis-hit');
         if (insideVertices || insidePills || onAxisHit) return false;
-        return t === svg.node() || t.tagName === 'svg' || (t.closest && !t.closest('.vertices') && !t.closest('.pill'));
+        const allowByTarget = t === svg.node() || t.tagName === 'svg' || (t.closest && !t.closest('.vertices') && !t.closest('.pill'));
+        if (!allowByTarget) return false;
+        if (!_pvUsesInteractionGate()) return true;
+        return _pvEmbedInteractionActive;
       }));
+      svg.on('pointerdown.interactionIntent', () => {
+        _pvActivateEmbeddedInteraction();
+      });
       // double-click to reset zoom
-      svg.on('dblclick', () => { svg.transition().duration(350).call(zoom.transform, d3.zoomIdentity); });
+      svg.on('dblclick', () => {
+        if (_pvUsesInteractionGate() && !_pvEmbedInteractionActive) return;
+        svg.transition().duration(350).call(zoom.transform, d3.zoomIdentity);
+      });
       // single click on empty chart area should clear current highlight (mobile/desktop)
       svg.on('click.background-clear', (e) => {
         const tgt = e.target;

@@ -138,26 +138,6 @@
       isolation: isolate;
     }
 
-    .page::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      opacity: 0;
-      pointer-events: none;
-      background: rgba(9, 19, 27, 0.34);
-      backdrop-filter: blur(10px);
-      transition: opacity 180ms ease;
-      z-index: 30;
-    }
-
-    body.embed-expanded {
-      overflow: hidden;
-    }
-
-    body.embed-expanded .page::after {
-      opacity: 1;
-    }
-
     .shell {
       width: min(1180px, calc(100% - 2rem));
       margin: 0 auto;
@@ -581,21 +561,6 @@
       transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
     }
 
-    .embed-feature.is-expanded {
-      position: fixed;
-      inset: 1rem;
-      z-index: 40;
-      grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: minmax(0, 1fr);
-      align-items: start;
-      gap: 0.75rem;
-      padding: 0.8rem;
-      border-color: var(--border-strong);
-      border-radius: 1.7rem;
-      background: var(--hero-gradient);
-      box-shadow: var(--shadow);
-    }
-
     .embed-copy {
       display: grid;
       gap: 1rem;
@@ -623,11 +588,6 @@
     .embed-launch {
       min-width: min(100%, 19rem);
     }
-
-    .embed-toggle {
-      cursor: pointer;
-    }
-
     .embed-frame-shell {
       position: relative;
       display: flex;
@@ -652,27 +612,6 @@
 
     .embed-frame-tall {
       height: clamp(30rem, 76vh, 54rem);
-    }
-
-    .embed-feature.is-expanded .embed-copy {
-      display: none;
-    }
-
-    .embed-feature.is-expanded .embed-frame-shell {
-      grid-column: 1 / -1;
-      grid-row: 1;
-      height: 100%;
-      min-height: 0;
-      padding: 0.35rem;
-      border-radius: 1.5rem;
-      box-shadow: var(--shadow-soft);
-    }
-
-    .embed-feature.is-expanded .embed-frame,
-    .embed-feature.is-expanded .embed-frame-tall {
-      height: auto;
-      min-height: 0;
-      flex: 1 1 auto;
     }
 
     .footer {
@@ -719,10 +658,6 @@
       .stage-badge {
         justify-self: start;
       }
-
-      .embed-feature.is-expanded {
-        inset: 0.85rem;
-      }
     }
 
     @media (max-width: 720px) {
@@ -759,24 +694,6 @@
       .card-footer {
         flex-direction: column;
         align-items: flex-start;
-      }
-
-      .embed-feature.is-expanded {
-        inset: 0.5rem;
-        grid-template-rows: minmax(0, 1fr);
-        padding: 0.85rem;
-        border-radius: 1.35rem;
-      }
-
-      .embed-feature.is-expanded .embed-copy {
-        display: none;
-      }
-
-      .embed-feature.is-expanded .embed-frame-shell {
-        grid-column: 1 / -1;
-        grid-row: 1;
-        padding: 0.3rem;
-        border-radius: 1.15rem;
       }
     }
   </style>
@@ -875,7 +792,7 @@
                 <p>Presents the larger set of arguments for God's existence in one place so the overall shape of the case is visible before drilling into individual lines of reasoning.</p>
               </div>
               <div class="embed-actions">
-                <button class="button-secondary embed-toggle embed-launch" type="button" data-embed-toggle data-toggle-style="text" data-expand-label="Open the full overview" data-contract-label="Return to page" aria-expanded="false">Open the full overview</button>
+                <a class="button-secondary embed-launch" href="graphs/theistic-arguments.html">Open the full overview</a>
               </div>
             </div>
 
@@ -902,7 +819,7 @@
                 <p>Moves from the overview into a more detailed exploration of claims, objections, and rebuttals so the structure of the argument can be inspected closely.</p>
               </div>
               <div class="embed-actions">
-                <button class="button-secondary embed-toggle embed-launch" type="button" data-embed-toggle data-toggle-style="text" data-expand-label="Open the full explorer" data-contract-label="Return to page" aria-expanded="false">Open the full explorer</button>
+                <a class="button-secondary embed-launch" href="graphs/theistic-argument-explorer.html">Open the full explorer</a>
               </div>
             </div>
 
@@ -943,7 +860,7 @@
                 <p>Builds on the theistic groundwork by making resurrection a live possibility if God exists, then presents the core historical facts that are widely accepted by scholars before competing hypotheses are evaluated.</p>
               </div>
               <div class="embed-actions">
-                <button class="button-secondary embed-toggle embed-launch" type="button" data-embed-toggle data-toggle-style="text" data-expand-label="Open the full facts view" data-contract-label="Return to page" aria-expanded="false">Open the full facts view</button>
+                <a class="button-secondary embed-launch" href="graphs/minimalFactsTidyTree.html">Open the full facts view</a>
               </div>
             </div>
 
@@ -970,7 +887,7 @@
                 <p>Tests the candidate explanations against the accepted facts so the best overall hypothesis can be compared and judged in view of explanatory scope and power.</p>
               </div>
               <div class="embed-actions">
-                <button class="button-secondary embed-toggle embed-launch" type="button" data-embed-toggle data-toggle-style="text" data-expand-label="Open the full assessment" data-contract-label="Return to page" aria-expanded="false">Open the full assessment</button>
+                <a class="button-secondary embed-launch" href="graphs/hypotheses.html">Open the full assessment</a>
               </div>
             </div>
 
@@ -1008,26 +925,13 @@
       var toggle = document.getElementById("theme-toggle");
       var themeMeta = document.getElementById("theme-color-meta");
       var embeddedFrames = Array.prototype.slice.call(document.querySelectorAll("[data-embed-src]"));
-      var embedFeatures = Array.prototype.slice.call(document.querySelectorAll("[data-embed-feature]"));
       var mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
       var frameOrigin = window.location.origin === "null" ? "*" : window.location.origin;
       var embedStateMessageType = "pv-embed-state";
-      var embedRequestMessageType = "pv-embed-request";
-      var expandedFeatureStateKey = "pvExpandedFeatureId";
       var palette = {
         light: "#f5efe4",
         dark: "#09131b"
       };
-      var expandedFeature = null;
-      var expandedTrigger = null;
-      var pendingHistoryNavigation = false;
-      var featureById = {};
-
-      embedFeatures.forEach(function (feature) {
-        if (feature.id) {
-          featureById[feature.id] = feature;
-        }
-      });
 
       function getStoredTheme() {
         try {
@@ -1067,9 +971,7 @@
           if (!frame.contentWindow) {
             return;
           }
-          var feature = frame.closest("[data-embed-feature]");
-          var expanded = !!(expandedFeature && feature === expandedFeature);
-          frame.contentWindow.postMessage({ type: embedStateMessageType, expanded: expanded }, frameOrigin);
+          frame.contentWindow.postMessage({ type: embedStateMessageType, expanded: false }, frameOrigin);
         });
       }
 
@@ -1096,145 +998,6 @@
         syncEmbeddedTheme(theme);
       }
 
-      function syncEmbedToggleLabel(button, expanded) {
-        if (!button) {
-          return;
-        }
-        var label = expanded ? (button.dataset.contractLabel || "Return to page") : (button.dataset.expandLabel || "Expand view");
-        if (button.dataset.toggleStyle === "text") {
-          button.textContent = label;
-        } else {
-          button.innerHTML = expanded
-            ? '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2v4H2"/><path d="M10 2v4h4"/><path d="M14 10h-4v4"/><path d="M2 10h4v4"/></svg>'
-            : '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4"/><path d="M10 2h4v4"/><path d="M14 10v4h-4"/><path d="M2 10v4h4"/></svg>';
-        }
-        button.setAttribute("aria-label", label);
-        button.setAttribute("title", label);
-        button.setAttribute("aria-expanded", String(expanded));
-      }
-
-      function getFeatureId(feature) {
-        if (!feature) {
-          return null;
-        }
-        return feature.id || null;
-      }
-
-      function getExpandedFeatureFromState(state) {
-        if (!state || typeof state !== "object") {
-          return null;
-        }
-        var featureId = state[expandedFeatureStateKey];
-        if (!featureId) {
-          return null;
-        }
-        return featureById[featureId] || null;
-      }
-
-      function cloneHistoryState() {
-        if (history.state && typeof history.state === "object") {
-          return Object.assign({}, history.state);
-        }
-        return {};
-      }
-
-      function collapseExpandedFeatureImmediate(restoreFocus) {
-        if (!expandedFeature) {
-          return;
-        }
-        expandedFeature.classList.remove("is-expanded");
-        document.body.classList.remove("embed-expanded");
-        Array.prototype.slice.call(expandedFeature.querySelectorAll("[data-embed-toggle]")).forEach(function (button) {
-          syncEmbedToggleLabel(button, false);
-        });
-        var restoreTarget = expandedTrigger;
-        expandedFeature = null;
-        expandedTrigger = null;
-        syncEmbeddedState();
-        if (restoreFocus && restoreTarget) {
-          restoreTarget.focus();
-        }
-      }
-
-      function collapseExpandedFeature(restoreFocus) {
-        if (!expandedFeature) {
-          return;
-        }
-        var featureId = getFeatureId(expandedFeature);
-        if (!pendingHistoryNavigation && featureId && history.state && history.state[expandedFeatureStateKey] === featureId) {
-          pendingHistoryNavigation = true;
-          history.back();
-          return;
-        }
-        collapseExpandedFeatureImmediate(restoreFocus);
-      }
-
-      function expandFeature(feature, trigger, options) {
-        options = options || {};
-        if (expandedFeature === feature) {
-          if (!options.skipHistory) {
-            collapseExpandedFeature(true);
-          }
-          return;
-        }
-        collapseExpandedFeatureImmediate(false);
-        expandedFeature = feature;
-        expandedTrigger = trigger || feature.querySelector("[data-embed-toggle]");
-        feature.classList.add("is-expanded");
-        document.body.classList.add("embed-expanded");
-        Array.prototype.slice.call(feature.querySelectorAll("[data-embed-toggle]")).forEach(function (button) {
-          syncEmbedToggleLabel(button, true);
-        });
-        syncEmbeddedState();
-        if (!options.skipHistory) {
-          var featureId = getFeatureId(feature);
-          if (featureId) {
-            var nextState = cloneHistoryState();
-            nextState[expandedFeatureStateKey] = featureId;
-            history.pushState(nextState, "", window.location.href);
-          }
-        }
-      }
-
-      embedFeatures.forEach(function (feature) {
-        Array.prototype.slice.call(feature.querySelectorAll("[data-embed-toggle]")).forEach(function (button) {
-          syncEmbedToggleLabel(button, false);
-          button.addEventListener("click", function () {
-            expandFeature(feature, button);
-          });
-        });
-      });
-
-      document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape") {
-          collapseExpandedFeature(true);
-        }
-      });
-
-      window.addEventListener("popstate", function (event) {
-        pendingHistoryNavigation = false;
-        var nextFeature = getExpandedFeatureFromState(event.state);
-        if (nextFeature) {
-          expandFeature(nextFeature, nextFeature.querySelector("[data-embed-toggle]"), { skipHistory: true });
-          return;
-        }
-        if (expandedFeature) {
-          collapseExpandedFeatureImmediate(true);
-        }
-      });
-
-      window.addEventListener("message", function (event) {
-        if (!event.data || typeof event.data !== "object") {
-          return;
-        }
-        if (window.location.origin !== "null" && event.origin !== window.location.origin) {
-          return;
-        }
-        if (event.data.type === embedRequestMessageType && event.data.action === "collapse") {
-          collapseExpandedFeature(true);
-        }
-      });
-
       toggle.addEventListener("click", function () {
         var nextTheme = getActiveTheme() === "dark" ? "light" : "dark";
         storeTheme(nextTheme);
@@ -1257,10 +1020,6 @@
 
       applyTheme(getActiveTheme());
       ensureEmbeddedFrames(getActiveTheme());
-      var initialExpandedFeature = getExpandedFeatureFromState(history.state);
-      if (initialExpandedFeature) {
-        expandFeature(initialExpandedFeature, initialExpandedFeature.querySelector("[data-embed-toggle]"), { skipHistory: true });
-      }
       syncEmbeddedState();
     }());
   </script>

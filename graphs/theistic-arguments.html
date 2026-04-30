@@ -253,6 +253,31 @@
     opacity: 0.24;
     mix-blend-mode: soft-light;
   }
+  html.full-page-chart body { overflow: hidden; }
+  html.full-page-chart body::before { opacity: 0.18; }
+  html.full-page-chart .wrap {
+    max-width: none;
+    padding: 0;
+  }
+  html.full-page-chart .page-header {
+    margin-bottom: 0;
+    padding:
+      calc(10px + env(safe-area-inset-top, 0px))
+      calc(16px + env(safe-area-inset-right, 0px))
+      10px
+      calc(16px + env(safe-area-inset-left, 0px));
+    border-radius: 0;
+    border: 0;
+    border-bottom: 1px solid var(--panel-stroke);
+    background: linear-gradient(135deg, var(--surface), var(--surface-muted));
+    box-shadow: none;
+    backdrop-filter: blur(14px);
+  }
+  html.full-page-chart svg#chart {
+    border-radius: 0;
+    border: 0;
+    box-shadow: none;
+  }
   html.embed-mode body { overflow: hidden; }
   html.embed-mode body::before { opacity: 0.18; }
   html.embed-mode .wrap { max-width: none; padding: 0; }
@@ -561,7 +586,7 @@
   <div class="page-header">
     <h1>Theistic Arguments and Divine Attributes</h1>
     <div id="pageHeaderActions" style="display:inline-flex; gap:8px; align-items:center">
-      <button id="embedReturnBtn" class="theme-btn embed-return-btn" type="button" hidden>Return to overview</button>
+      <button id="embedReturnBtn" class="theme-btn embed-return-btn" type="button" hidden>Back to overview</button>
       <button id="aboutBtn" class="theme-btn" aria-expanded="false" title="About this visualization" aria-label="About this visualization" style="padding:8px 10px; min-width:40px; height:36px;">
         <span aria-hidden="true" class="icon" style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px;">
           <!-- Bolder question mark icon (no faint outer ring) -->
@@ -601,18 +626,23 @@
   <script>
       (async () => {
         const params = new URLSearchParams(window.location.search);
-        const isEmbedMode = params.get('embed') === '1';
+        const isInlineEmbed = params.get('embed') === '1';
+        const isEmbedMode = isInlineEmbed;
+        const isStandalonePage = !isInlineEmbed;
         const requestedTheme = params.get('theme');
         const themeMessageType = 'pv-theme';
         const embedStateMessageType = 'pv-embed-state';
-        const embedRequestMessageType = 'pv-embed-request';
         const interactionHintEl = document.getElementById('interactionHint');
         const embedReturnBtn = document.getElementById('embedReturnBtn');
+        const overviewHref = '../index.html#theistic-overview';
         let isEmbedExpanded = false;
         let embedInteractionActive = !isEmbedMode;
 
         if (isEmbedMode) {
           document.documentElement.classList.add('embed-mode');
+        }
+        if (isStandalonePage) {
+          document.documentElement.classList.add('full-page-chart');
         }
 
         function usesInteractionGate(){
@@ -644,19 +674,20 @@
 
         function syncEmbedReturnButton() {
           if (!embedReturnBtn) return;
-          embedReturnBtn.hidden = !(isEmbedMode && isEmbedExpanded);
+          embedReturnBtn.hidden = isInlineEmbed;
+          embedReturnBtn.textContent = 'Back to overview';
+          embedReturnBtn.setAttribute('aria-label', 'Back to overview');
+          embedReturnBtn.setAttribute('title', 'Back to overview');
           updateViewportVars();
         }
 
-        function requestEmbedCollapse() {
-          if (!isEmbedMode || !isEmbedExpanded || window.parent === window) return;
-          const targetOrigin = window.location.origin === 'null' ? '*' : window.location.origin;
-          window.parent.postMessage({ type: embedRequestMessageType, action: 'collapse' }, targetOrigin);
+        function navigateToOverview() {
+          window.location.href = overviewHref;
         }
 
         syncInteractionMode();
         if (embedReturnBtn) {
-          embedReturnBtn.addEventListener('click', requestEmbedCollapse);
+          embedReturnBtn.addEventListener('click', navigateToOverview);
           syncEmbedReturnButton();
         }
 
@@ -982,6 +1013,14 @@
   const width = svg.node().clientWidth;
   const height = svg.node().clientHeight;
   const isMobile = width < 600; // simple breakpoint for responsive adjustments
+  const baseSideInset = isMobile ? 40 : 140;
+  const standaloneAspectRatioCap = 1.22;
+  const standaloneViewportWidth = (!isEmbedMode && !isMobile)
+    ? Math.min(width, Math.round(height * standaloneAspectRatioCap))
+    : width;
+  // Keep the standalone page full-bleed, but avoid stretching the sankey
+  // across ultra-wide viewports by centering a capped working width.
+  const chartHorizontalInset = baseSideInset + Math.max(0, (width - standaloneViewportWidth) / 2);
   // We no longer visually widen nodes beyond the sankey layout width; instead we add separate hit targets for touch.
 
   // Create main group for zoom/pan functionality
@@ -1038,7 +1077,7 @@
       .nodePadding(isMobile ? 12 : 16)
       // sort nodes within each column by the 'order' property (defaults to 0)
       .nodeSort((a, b) => ( (a.order || 0) - (b.order || 0) ))
-      .extent([[isMobile ? 40 : 140, 20], [width - (isMobile ? 40 : 140), height - 20]]);
+      .extent([[chartHorizontalInset, 20], [width - chartHorizontalInset, height - 20]]);
 
     const graph = sankey({ nodes: nodes.map(d => ({ ...d })), links: links.map(d => ({ ...d })) });
 

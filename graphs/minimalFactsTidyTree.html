@@ -168,7 +168,8 @@
         #topbar label,
         #topbar button {
             margin: 0;
-            font-family: var(--ui-font);
+            min-height: 40px;
+            font: 650 12px/1.3 var(--ui-font);
         }
 
         #topbar label {
@@ -475,6 +476,7 @@
         }
 
         #chart {
+            position: relative;
             width: 100%;
             height: 100%;
             overflow: hidden;
@@ -485,6 +487,59 @@
             background: var(--chart-bg-dark);
         }
 
+        .interaction-hint {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 4;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            max-width: min(260px, calc(100% - 32px));
+            padding: 8px 12px;
+            border: 1px solid var(--panel-stroke-light);
+            border-radius: 999px;
+            background: var(--panel-light-translucent);
+            box-shadow: var(--soft-shadow-light);
+            color: #5b6870;
+            font-size: 12px;
+            font-weight: 650;
+            letter-spacing: 0.01em;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(-4px);
+            transition: opacity 180ms ease, transform 180ms ease;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .interaction-hint::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #0d8f86;
+            box-shadow: 0 0 0 4px rgba(13, 143, 134, 0.16);
+            flex: 0 0 auto;
+        }
+
+        body.dark-mode .interaction-hint {
+            border-color: var(--panel-stroke-dark);
+            background: var(--panel-dark-translucent);
+            box-shadow: var(--soft-shadow-dark);
+            color: var(--text-secondary-dark);
+        }
+
+        body.dark-mode .interaction-hint::before {
+            background: var(--accent-dark);
+            box-shadow: 0 0 0 4px rgba(77, 211, 198, 0.18);
+        }
+
+        html.embed-mode.interaction-idle .interaction-hint {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         svg {
             width: 100%;
             height: 100%;
@@ -492,6 +547,11 @@
             background: transparent;
             touch-action: none;
             /* allow d3-zoom to handle gestures on mobile */
+        }
+
+        html.embed-mode.interaction-idle svg {
+            touch-action: pan-x pan-y pinch-zoom;
+            cursor: pointer;
         }
 
         /* Small-screen adjustments */
@@ -1271,7 +1331,7 @@
                     viewBox="0 0 24 24" focusable="false" aria-hidden="true">
                     <path d="M6 9l6 6 6-6"></path>
                 </svg></span></button>
-        <button id="embedReturnBtn" type="button" hidden>Return to overview</button>
+        <button id="embedReturnBtn" type="button" hidden>Back to overview</button>
         <button id="aboutBtn" aria-haspopup="dialog" style="display:none">About</button>
         </div>
         <div id="controls">
@@ -1304,7 +1364,9 @@
             Press Enter or Space to activate a node.
             VoiceOver users: Press Control-Option-Shift-Down to interact with the tree, then use plain arrow keys.
         </div>
-        <div id="chart"></div>
+        <div id="chart">
+            <div id="interactionHint" class="interaction-hint" aria-hidden="true">Click or tap to interact</div>
+        </div>
     </main>
 
     <!-- bottom sheet for mobile node details -->
@@ -1324,21 +1386,56 @@
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script>
         const params = new URLSearchParams(window.location.search);
-        const isEmbedMode = params.get('embed') === '1';
+        const isInlineEmbed = params.get('embed') === '1';
+        const isEmbedMode = isInlineEmbed || window.parent !== window;
         const requestedTheme = params.get('theme');
         const themeMessageType = 'pv-theme';
         const embedStateMessageType = 'pv-embed-state';
-        const embedRequestMessageType = 'pv-embed-request';
         const sharedThemeKey = 'parallax-theme';
         const legacyThemeKey = 'pv_theme';
+        const interactionHintEl = document.getElementById('interactionHint');
         const embedReturnBtn = document.getElementById('embedReturnBtn');
+        const overviewHref = '../index.html#minimal-facts';
         let isEmbedExpanded = false;
+        let embedInteractionActive = !isEmbedMode;
         let hasSeenEmbedState = false;
+        let resetEmbedInteractionUI = null;
         let syncEmbedViewport = null;
 
         if (isEmbedMode) {
             document.documentElement.classList.add('embed-mode');
         }
+
+        function usesInteractionGate() {
+            return isEmbedMode && !isEmbedExpanded;
+        }
+
+        function syncInteractionMode() {
+            const gated = usesInteractionGate();
+            const active = !gated || embedInteractionActive;
+            document.documentElement.classList.toggle('interaction-idle', gated && !embedInteractionActive);
+            document.documentElement.classList.toggle('interaction-active', active);
+            if (interactionHintEl) {
+                interactionHintEl.hidden = !(gated && !embedInteractionActive);
+            }
+        }
+
+        function activateEmbeddedInteraction() {
+            if (!usesInteractionGate() || embedInteractionActive) return;
+            embedInteractionActive = true;
+            syncInteractionMode();
+        }
+
+        function deactivateEmbeddedInteraction() {
+            if (!usesInteractionGate() || !embedInteractionActive) return;
+            embedInteractionActive = false;
+            if (typeof resetEmbedInteractionUI === 'function') {
+                resetEmbedInteractionUI();
+            }
+            syncInteractionMode();
+        }
+
+        syncInteractionMode();
 
         function readStoredTheme() {
             try {
@@ -1378,17 +1475,18 @@
 
         function syncEmbedReturnButton() {
             if (!embedReturnBtn) return;
-            embedReturnBtn.hidden = !(isEmbedMode && isEmbedExpanded);
+            embedReturnBtn.hidden = isInlineEmbed;
+            embedReturnBtn.textContent = 'Back to overview';
+            embedReturnBtn.setAttribute('aria-label', 'Back to overview');
+            embedReturnBtn.setAttribute('title', 'Back to overview');
         }
 
-        function requestEmbedCollapse() {
-            if (!isEmbedMode || !isEmbedExpanded || window.parent === window) return;
-            const targetOrigin = window.location.origin === 'null' ? '*' : window.location.origin;
-            window.parent.postMessage({ type: embedRequestMessageType, action: 'collapse' }, targetOrigin);
+        function navigateToOverview() {
+            window.location.href = overviewHref;
         }
 
         if (embedReturnBtn) {
-            embedReturnBtn.addEventListener('click', requestEmbedCollapse);
+            embedReturnBtn.addEventListener('click', navigateToOverview);
             syncEmbedReturnButton();
         }
 
@@ -1462,11 +1560,6 @@
                 const vh = (vp && vp.height) ? vp.height : window.innerHeight;
                 chartEl.style.height = Math.max(200, vh - hh) + 'px';
                 chartEl.style.marginTop = `${hh}px`; // Adjust margin to account for fixed topbar
-                
-                // On larger screens, make sure topbar doesn't exceed reasonable height
-                if (window.innerWidth > 600) {
-                    topbar.style.maxHeight = '60px'; // Prevent excessive height on desktop
-                }
                 
                 width = chartEl.clientWidth;
                 height = chartEl.clientHeight;
@@ -1789,11 +1882,21 @@
             const nodeGroup = g.append("g").attr("class", "nodes").attr("role", "none");
 
             // allow broader zoom on touch devices for easier pinch-zooming
-            const zoom = d3.zoom().scaleExtent([0.3, 4]).on("zoom", (event) => {
-                g.attr("transform", event.transform);
-                updatePopupHelpPosition();
-            });
+            const zoom = d3.zoom()
+                .filter((event) => {
+                    const allowByDefault = (!event.ctrlKey || event.type === 'wheel') && !event.button;
+                    if (!allowByDefault) return false;
+                    if (!usesInteractionGate()) return true;
+                    return embedInteractionActive;
+                })
+                .scaleExtent([0.3, 4]).on("zoom", (event) => {
+                    g.attr("transform", event.transform);
+                    updatePopupHelpPosition();
+                });
             svg.call(zoom);
+            svg.on('pointerdown.interactionIntent', () => {
+                activateEmbeddedInteraction();
+            });
 
             // Auto-close the controls on mobile when the user taps the chart area.
             // We programmatically click the controls toggle so the aria state and
@@ -1888,6 +1991,15 @@
             function shouldSuppressViewportFollowup() {
                 return Date.now() < suppressViewportFollowupUntil;
             }
+            function shouldPreserveInlineEmbedPlacement() {
+                return isInlineEmbed && !isEmbedExpanded && hasSeenEmbedState;
+            }
+            function preserveInlineEmbedPlacement(ms = 0) {
+                if (!shouldPreserveInlineEmbedPlacement()) return false;
+                suppressViewportFollowup(ms);
+                try { clearTimeout(__recenterTimer); } catch (e) { /* non-fatal */ }
+                return true;
+            }
             function scheduleRecenter(delay = 200) {
                 try { clearTimeout(__recenterTimer); } catch (e) { }
                 if (shouldSuppressViewportFollowup()) return;
@@ -1957,6 +2069,7 @@
                 computeChartHeight();
                 applyMobileLikeUI();
                 try { positionControlsToggle(); updateControlsReserve(); } catch (e) { /* non-fatal */ }
+                if (preserveInlineEmbedPlacement(900)) return;
                 try { scheduleRecenter(200); } catch (e) { /* non-fatal */ }
             });
             document.addEventListener('visibilitychange', () => {
@@ -1978,6 +2091,7 @@
                     }
                     setTimeout(() => {
                         computeChartHeight();
+                        if (preserveInlineEmbedPlacement(700)) return;
                         try { scheduleRecenter(200); } catch (e) { /* non-fatal */ }
                     }, 60);
                 }
@@ -2014,6 +2128,11 @@
                 try { document.removeEventListener('keydown', popupHelpKeyHandler, true); } catch (e) { }
                 popupHelpNode = null;
             }
+
+            resetEmbedInteractionUI = function () {
+                hideTransientUI();
+                closeBottomSheet();
+            };
 
             // Announce a message to screen reader users via the ARIA live region
             function announceToScreenReader(message) {
@@ -3553,12 +3672,25 @@
             if (event.data.type === embedStateMessageType) {
                 const expanded = event.data.expanded === true;
                 const isFirstEmbedState = !hasSeenEmbedState;
+                const wasEmbedExpanded = isEmbedExpanded;
                 hasSeenEmbedState = true;
                 isEmbedExpanded = expanded;
+                embedInteractionActive = !usesInteractionGate();
                 syncEmbedReturnButton();
+                if (usesInteractionGate() && typeof resetEmbedInteractionUI === 'function') {
+                    resetEmbedInteractionUI();
+                }
+                syncInteractionMode();
                 // Preserve the original inline startup placement. The initial collapsed
                 // embed message arrives after the page has already centered itself.
                 if (isFirstEmbedState && !expanded) {
+                    return;
+                }
+                // Ignore repeated collapsed-state broadcasts for inline previews.
+                // They are not real state changes and would otherwise recenter the tree
+                // on the root node when returning to index.html.
+                if (isInlineEmbed && !expanded && !wasEmbedExpanded) {
+                    preserveInlineEmbedPlacement(900);
                     return;
                 }
                 if (typeof syncEmbedViewport === 'function') {
@@ -3567,6 +3699,23 @@
                     setTimeout(() => window.dispatchEvent(new Event('resize')), 30);
                     setTimeout(() => window.dispatchEvent(new Event('resize')), 180);
                 }
+            }
+        });
+
+        document.addEventListener('pointerdown', (event) => {
+            if (!usesInteractionGate() || !embedInteractionActive) return;
+            if (
+                event.target &&
+                typeof event.target.closest === 'function' &&
+                (event.target.closest('#chart') || event.target.closest('#bottomSheet') || event.target.closest('.popup-help'))
+            ) return;
+            deactivateEmbeddedInteraction();
+        }, { passive: true });
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key !== 'Escape') return;
+            if (usesInteractionGate()) {
+                deactivateEmbeddedInteraction();
             }
         });
 
