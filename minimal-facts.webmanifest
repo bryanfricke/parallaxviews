@@ -1,5 +1,5 @@
 {
-  "id": "/",
+  "id": "graphs/minimalFactsTidyTree.html?app=minimal-facts-explorer-20260430c",
   "name": "Minimal Facts Explorer",
   "short_name": "Minimal Facts",
   "icons": [
@@ -16,9 +16,9 @@
       "purpose": "any"
     }
   ],
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "graphs/minimalFactsTidyTree.html",
+  "scope": "graphs/",
   "background_color": "#071022",
-  "theme_color": "#071022",
+  "theme_color": "#09131b",
   "display": "standalone"
 }
