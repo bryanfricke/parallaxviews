@@ -145,6 +145,22 @@
 
         #topbarActions #embedReturnBtn {
             order: 99;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            min-width: 40px;
+            padding: 0;
+        }
+
+        #topbarActions #embedReturnBtn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         #topbarTitle::before {
@@ -1331,7 +1347,13 @@
                     viewBox="0 0 24 24" focusable="false" aria-hidden="true">
                     <path d="M6 9l6 6 6-6"></path>
                 </svg></span></button>
-        <button id="embedReturnBtn" type="button" hidden>Back to overview</button>
+        <button id="embedReturnBtn" type="button" hidden aria-label="Back to overview" title="Back to overview">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3.75 10.5 12 4l8.25 6.5"></path>
+                <path d="M6.5 9.75V20h11V9.75"></path>
+                <path d="M10 20v-5.25h4V20"></path>
+            </svg>
+        </button>
         <button id="aboutBtn" aria-haspopup="dialog" style="display:none">About</button>
         </div>
         <div id="controls">
@@ -1476,7 +1498,6 @@
         function syncEmbedReturnButton() {
             if (!embedReturnBtn) return;
             embedReturnBtn.hidden = isInlineEmbed;
-            embedReturnBtn.textContent = 'Back to overview';
             embedReturnBtn.setAttribute('aria-label', 'Back to overview');
             embedReturnBtn.setAttribute('title', 'Back to overview');
         }

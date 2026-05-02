@@ -195,6 +195,22 @@
 
     #topbarActions #embedReturnBtn {
       order: 99;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      min-width: 40px;
+      padding: 0;
+    }
+
+    #topbarActions #embedReturnBtn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     #controlsToggle {
@@ -1200,7 +1216,13 @@
         aria-label="Show controls">Controls <span class="controls-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span></button>
       <!-- Mobile-only Facts button appears after Controls on small screens -->
       <button id="factsBtnMobile" class="btn mobile-only" tabindex="2" aria-expanded="false" aria-controls="factsOverlay">Facts</button>
-      <button id="embedReturnBtn" class="btn" tabindex="5" type="button" hidden>Back to overview</button>
+      <button id="embedReturnBtn" class="btn" tabindex="5" type="button" hidden aria-label="Back to overview" title="Back to overview">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3.75 10.5 12 4l8.25 6.5"></path>
+          <path d="M6.5 9.75V20h11V9.75"></path>
+          <path d="M10 20v-5.25h4V20"></path>
+        </svg>
+      </button>
       <button id="themeToggle" tabindex="6" aria-pressed="false" title="Toggle dark mode">
         <span id="icon-sun" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -2555,7 +2577,6 @@
     function _pvSyncEmbedReturnButton() {
       if (!_pvEmbedReturnBtn) return;
       _pvEmbedReturnBtn.hidden = _pvIsInlineEmbed;
-      _pvEmbedReturnBtn.textContent = 'Back to overview';
       _pvEmbedReturnBtn.setAttribute('aria-label', 'Back to overview');
       _pvEmbedReturnBtn.setAttribute('title', 'Back to overview');
       if (typeof updateHeaderHeight === 'function') {

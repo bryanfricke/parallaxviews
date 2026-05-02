@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Argument Graph (D3 + Dagre) — Kalam Example</title>
+
+  <!-- CSS (embedded) -->
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #0f172a;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --stroke: #334155;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(148,163,184,0.18);
+      background: linear-gradient(180deg, rgba(15,23,42,0.85), rgba(11,16,32,0.85));
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(8px);
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 14px;
+      margin: 0 0 4px 0;
+      font-weight: 650;
+      letter-spacing: 0.2px;
+    }
+
+    header .sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    .wrap {
+      padding: 14px 16px 20px;
+    }
+
+    .panel {
+      background: rgba(15,23,42,0.65);
+      border: 1px solid rgba(148,163,184,0.18);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(148,163,184,0.14);
+      background: rgba(2,6,23,0.35);
+    }
+
+    .toolbar .hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toolbar .btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 1px solid rgba(148,163,184,0.18);
+      background: rgba(148,163,184,0.10);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    button:hover {
+      background: rgba(148,163,184,0.16);
+    }
+
+    #chart {
+      width: 100%;
+      height: 520px;
+      display: block;
+      background: radial-gradient(1100px 520px at 40% 35%, rgba(30,41,59,0.45), rgba(11,16,32,0.85));
+    }
+
+    /* Dagre-D3 node styling */
+    .node rect {
+      rx: 10;
+      ry: 10;
+      stroke-width: 1.6px;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
+    }
+
+    /* Node types */
+    .node.claim rect {
+      fill: rgba(59,130,246,0.18);
+      stroke: rgba(59,130,246,0.9);
+    }
+    .node.support rect {
+      fill: rgba(6,182,212,0.14);
+      stroke: rgba(6,182,212,0.9);
+    }
+    .node.objection rect {
+      fill: rgba(249,115,22,0.16);
+      stroke: rgba(249,115,22,0.9);
+    }
+    .node.rebuttal rect {
+      fill: rgba(34,197,94,0.14);
+      stroke: rgba(34,197,94,0.9);
+    }
+
+    /* Node label */
+    .node text {
+      fill: var(--text);
+      font-size: 12.5px;
+    }
+
+    /* Edge styling */
+    .edge path {
+      stroke-width: 2.2px;
+      fill: none;
+    }
+
+    .edge.supports path {
+      stroke: rgba(59,130,246,0.95);
+    }
+
+    .edge.attacks path,
+    .edge.rebuts path {
+      stroke: rgba(220,38,38,0.95);
+      stroke-dasharray: 7,5;
+    }
+
+    /* Make arrowheads look crisp on dark backgrounds */
+    marker path {
+      stroke: none;
+    }
+
+    /* Tooltip */
+    .tip {
+      position: fixed;
+      pointer-events: none;
+      padding: 8px 10px;
+      background: rgba(2,6,23,0.92);
+      border: 1px solid rgba(148,163,184,0.22);
+      border-radius: 10px;
+      font-size: 12px;
+      color: var(--text);
+      max-width: min(420px, calc(100vw - 24px));
+      box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+      line-height: 1.35;
+      opacity: 0;
+      transform: translateY(2px);
+      transition: opacity 120ms ease, transform 120ms ease;
+      z-index: 9999;
+    }
+
+    .tip .k {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 10px 12px;
+      border-top: 1px solid rgba(148,163,184,0.14);
+      background: rgba(2,6,23,0.25);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .swatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border: 1px solid rgba(148,163,184,0.16);
+      border-radius: 999px;
+      background: rgba(148,163,184,0.08);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .dot.claim { background: rgba(59,130,246,0.75); }
+    .dot.support { background: rgba(6,182,212,0.75); }
+    .dot.objection { background: rgba(249,115,22,0.75); }
+    .dot.rebuttal { background: rgba(34,197,94,0.75); }
+
+    .line {
+      width: 16px;
+      height: 0;
+      border-top: 2px solid rgba(59,130,246,0.95);
+      display: inline-block;
+      transform: translateY(1px);
+    }
+    .line.attack {
+      border-top-color: rgba(220,38,38,0.95);
+      border-top-style: dashed;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Argument Graph (D3 + Dagre)</h1>
+    <p class="sub">Consumes JSON nodes/links and renders supports vs attacks/rebuts without swim lanes.</p>
+  </header>
+
+  <div class="wrap">
+    <div class="panel">
+      <div class="toolbar">
+        <div class="hint">
+          Drag to pan • Scroll to zoom • Hover nodes/edges for details
+        </div>
+        <div class="btns">
+          <button id="resetBtn" type="button">Reset view</button>
+          <button id="toggleDirBtn" type="button">Toggle direction</button>
+        </div>
+      </div>
+
+      <svg id="chart" aria-label="Argument graph"></svg>
+
+      <div class="legend">
+        <span class="swatch"><span class="dot claim"></span> Claim</span>
+        <span class="swatch"><span class="dot support"></span> Support</span>
+        <span class="swatch"><span class="dot objection"></span> Objection</span>
+        <span class="swatch"><span class="dot rebuttal"></span> Rebuttal</span>
+        <span class="swatch"><span class="line"></span> supports</span>
+        <span class="swatch"><span class="line attack"></span> attacks / rebuts</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+  <!-- Libraries (CDN) -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/dagre-d3@0.6.4/dist/dagre-d3.min.js"></script>
+
+  <!-- JS (embedded) -->
+  <script>
+    // Example JSON (your structure)
+    const data = {
+      nodes: [
+        { id: "C1", type: "claim", text: "Whatever begins to exist has a cause." },
+        { id: "P1", type: "support", text: "Something cannot come into existence from nothing." },
+        { id: "O1", type: "objection", text: "Physics has examples where something comes from nothing." },
+        { id: "R1", type: "rebuttal", text: "The vacuum of space is not nothing." }
+      ],
+      links: [
+        { source: "P1", target: "C1", rel: "supports", note: "Premise supports the causal principle." },
+        { source: "O1", target: "P1", rel: "attacks",  note: "Objection targets the 'from nothing' intuition." },
+        { source: "R1", target: "O1", rel: "rebuts",   note: "Rebuttal: 'vacuum' ≠ metaphysical nothing." }
+      ]
+    };
+
+    const svg = d3.select("#chart");
+    const tip = d3.select("#tip");
+
+    // Keep a stable zoom behavior
+    const zoom = d3.zoom()
+      .scaleExtent([0.25, 2.5])
+      .on("zoom", (event) => inner.attr("transform", event.transform));
+
+    svg.call(zoom);
+
+    // A group that gets transformed by zoom/pan
+    const inner = svg.append("g");
+
+    // Dagre renderer
+    const render = new dagreD3.render();
+
+    let rankdir = "TB"; // Top-to-bottom flow
+
+    function buildGraph() {
+      const g = new dagreD3.graphlib.Graph()
+        .setGraph({
+          rankdir,
+          nodesep: 35,
+          ranksep: 55,
+          edgesep: 10,
+          marginx: 16,
+          marginy: 18
+        })
+        .setDefaultEdgeLabel(() => ({}));
+
+      // Add nodes
+      data.nodes.forEach(n => {
+        g.setNode(n.id, {
+          label: wrapText(n.text, 28),
+          class: `node ${n.type}`,
+          padding: 12
+        });
+      });
+
+      // Add edges (supports vs attacks/rebuts)
+      data.links.forEach(l => {
+        g.setEdge(l.target, l.source, {
+          class: `edge ${l.rel}`,
+          arrowhead: "vee",
+          lineInterpolate: "basis"
+        });
+      });
+
+      return g;
+    }
+
+    function draw() {
+      inner.selectAll("*").remove();
+
+      const g = buildGraph();
+      render(inner, g);
+
+      // Add metadata for tooltips
+      // Node tooltips
+      inner.selectAll("g.node")
+        .on("mousemove", (event, id) => {
+          const node = data.nodes.find(n => n.id === id);
+          showTip(event, `<div class="k">Node • ${escapeHtml(node.type)}</div>${escapeHtml(node.text)}`);
+        })
+        .on("mouseleave", hideTip);
+
+      // Edge tooltips
+      inner.selectAll("g.edgePath")
+        .on("mousemove", (event, edgeObj) => {
+          // edgeObj has .v (source) and .w (target) from dagre
+          // Rendered direction is reversed from data for top-down visual flow.
+          const link = data.links.find(l => l.source === edgeObj.w && l.target === edgeObj.v);
+          const rel = link?.rel ?? "link";
+          const note = link?.note ? `<div style="margin-top:4px;color:#94a3b8">${escapeHtml(link.note)}</div>` : "";
+          showTip(event, `<div class="k">Edge • ${escapeHtml(rel)}</div>${escapeHtml(edgeObj.v)} → ${escapeHtml(edgeObj.w)}${note}`);
+        })
+        .on("mouseleave", hideTip);
+
+      // Fit nicely in view on first draw / redraw
+      fitToView(g);
+    }
+
+    function fitToView(g) {
+      // Compute graph bbox from Dagre graph dimensions
+      const graphWidth = g.graph().width || 800;
+      const graphHeight = g.graph().height || 400;
+
+      const { width: svgW, height: svgH } = svg.node().getBoundingClientRect();
+
+      // Avoid division by zero
+      const scale = Math.min(svgW / (graphWidth + 80), svgH / (graphHeight + 80), 1.15);
+      const tx = (svgW - graphWidth * scale) / 2;
+      const ty = (svgH - graphHeight * scale) / 2;
+
+      svg.transition().duration(250).call(
+        zoom.transform,
+        d3.zoomIdentity.translate(tx, ty).scale(scale)
+      );
+    }
+
+    function showTip(event, html) {
+      tip.html(html);
+      const pad = 14;
+      const { clientX: x, clientY: y } = event;
+
+      // Position tooltip near cursor, clamped to viewport
+      const tipNode = tip.node();
+      tip.style("opacity", 1).style("transform", "translateY(0px)");
+
+      const rect = tipNode.getBoundingClientRect();
+      const maxX = window.innerWidth - rect.width - pad;
+      const maxY = window.innerHeight - rect.height - pad;
+
+      const left = Math.max(pad, Math.min(x + 14, maxX));
+      const top = Math.max(pad, Math.min(y + 14, maxY));
+
+      tip.style("left", left + "px").style("top", top + "px");
+    }
+
+    function hideTip() {
+      tip.style("opacity", 0).style("transform", "translateY(2px)");
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    // Simple wrapping for node labels (Dagre measures label as single line unless we insert line breaks)
+    function wrapText(text, maxChars) {
+      const words = String(text).split(/\s+/);
+      const lines = [];
+      let line = "";
+      for (const w of words) {
+        const test = line ? (line + " " + w) : w;
+        if (test.length > maxChars) {
+          if (line) lines.push(line);
+          line = w;
+        } else {
+          line = test;
+        }
+      }
+      if (line) lines.push(line);
+      return lines.join("\n");
+    }
+
+    // Buttons
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      draw();
+    });
+
+    document.getElementById("toggleDirBtn").addEventListener("click", () => {
+      rankdir = (rankdir === "TB") ? "LR" : "TB";
+      draw();
+    });
+
+    // Redraw on resize
+    window.addEventListener("resize", () => draw());
+
+    // Initial draw
+    draw();
+  </script>
+</body>
+</html>

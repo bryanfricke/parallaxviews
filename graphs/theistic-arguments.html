@@ -552,9 +552,9 @@
     transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
   }
   .embed-return-btn{
-    width:auto;
-    min-width:0;
-    padding:0 14px;
+    width:40px;
+    min-width:40px;
+    padding:0;
     font-weight:600;
     order:99;
   }
@@ -562,6 +562,15 @@
     display:none !important;
   }
   .theme-btn svg, .theme-btn span.icon { display:inline-block; width:16px; height:16px }
+  .embed-return-btn svg{
+    width:18px;
+    height:18px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.9;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
   .theme-btn:hover,
   .theme-btn:focus-visible {
     transform: translateY(-1px);
@@ -586,7 +595,13 @@
   <div class="page-header">
     <h1>Theistic Arguments and Divine Attributes</h1>
     <div id="pageHeaderActions" style="display:inline-flex; gap:8px; align-items:center">
-      <button id="embedReturnBtn" class="theme-btn embed-return-btn" type="button" hidden>Back to overview</button>
+      <button id="embedReturnBtn" class="theme-btn embed-return-btn" type="button" hidden aria-label="Back to overview" title="Back to overview">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3.75 10.5 12 4l8.25 6.5"></path>
+          <path d="M6.5 9.75V20h11V9.75"></path>
+          <path d="M10 20v-5.25h4V20"></path>
+        </svg>
+      </button>
       <button id="aboutBtn" class="theme-btn" aria-expanded="false" title="About this visualization" aria-label="About this visualization" style="padding:8px 10px; min-width:40px; height:36px;">
         <span aria-hidden="true" class="icon" style="display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px;">
           <!-- Bolder question mark icon (no faint outer ring) -->
@@ -675,7 +690,6 @@
         function syncEmbedReturnButton() {
           if (!embedReturnBtn) return;
           embedReturnBtn.hidden = isInlineEmbed;
-          embedReturnBtn.textContent = 'Back to overview';
           embedReturnBtn.setAttribute('aria-label', 'Back to overview');
           embedReturnBtn.setAttribute('title', 'Back to overview');
           updateViewportVars();
