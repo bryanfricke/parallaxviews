@@ -795,7 +795,7 @@
               hideTooltipImmediate(true);
             }
             syncInteractionMode();
-            requestAnimationFrame(() => centerChartToViewport(true));
+            requestAnimationFrame(() => refreshChartLayout({ animateCenter: true }));
           }
         });
       // Load argument metadata (premises/steps) so we can show them on node hover
@@ -1010,17 +1010,26 @@
     }).filter(Boolean);
 
   const svg = d3.select('#chart');
-  const width = svg.node().clientWidth;
-  const height = svg.node().clientHeight;
-  const isMobile = width < 600; // simple breakpoint for responsive adjustments
-  const baseSideInset = isMobile ? 40 : 140;
-  const standaloneAspectRatioCap = 1.22;
-  const standaloneViewportWidth = (!isEmbedMode && !isMobile)
-    ? Math.min(width, Math.round(height * standaloneAspectRatioCap))
-    : width;
-  // Keep the standalone page full-bleed, but avoid stretching the sankey
-  // across ultra-wide viewports by centering a capped working width.
-  const chartHorizontalInset = baseSideInset + Math.max(0, (width - standaloneViewportWidth) / 2);
+  let width = 0;
+  let height = 0;
+  let isMobile = false;
+  let chartHorizontalInset = 0;
+  const standaloneAspectRatioCap = 1.0;
+
+  function updateChartMetrics() {
+    const svgNode = svg.node();
+    width = Math.max(1, svgNode?.clientWidth || 0);
+    height = Math.max(1, svgNode?.clientHeight || 0);
+    isMobile = width < 600; // simple breakpoint for responsive adjustments
+    const baseSideInset = isMobile ? 40 : 140;
+    const standaloneViewportWidth = (!isEmbedMode && !isMobile)
+      ? Math.min(width, Math.round(height * standaloneAspectRatioCap))
+      : width;
+    // Keep the full-page view centered and proportionally close to the embed.
+    chartHorizontalInset = baseSideInset + Math.max(0, (width - standaloneViewportWidth) / 2);
+  }
+
+  updateChartMetrics();
   // We no longer visually widen nodes beyond the sankey layout width; instead we add separate hit targets for touch.
 
   // Create main group for zoom/pan functionality
@@ -1068,51 +1077,65 @@
       }
     }
 
-    // Ensure nodes in the same column keep a desired vertical order by using an explicit 'order' property
-    const sankey = d3.sankey()
-      .nodeId((d, i) => i)
-      .nodeAlign(d3.sankeyLeft)
-      // Use a consistent node width; do not manually stretch rects afterwards.
-      .nodeWidth(14)
-      .nodePadding(isMobile ? 12 : 16)
-      // sort nodes within each column by the 'order' property (defaults to 0)
-      .nodeSort((a, b) => ( (a.order || 0) - (b.order || 0) ))
-      .extent([[chartHorizontalInset, 20], [width - chartHorizontalInset, height - 20]]);
-
-    const graph = sankey({ nodes: nodes.map(d => ({ ...d })), links: links.map(d => ({ ...d })) });
-
-    // Reorder links targeting 'good' to put ontological→good last
-    const goodNode = graph.nodes.find(n => n.id === 'good');
-    if (goodNode && goodNode.targetLinks) {
-      const ontIdx = goodNode.targetLinks.findIndex(l => l.source.id === 'ontological');
-      if (ontIdx !== -1 && ontIdx !== goodNode.targetLinks.length - 1) {
-        // Remove ontological→good and push to end
-        const [ontLink] = goodNode.targetLinks.splice(ontIdx, 1);
-        goodNode.targetLinks.push(ontLink);
-        // Recalculate link positions
-        sankey.update(graph);
-      }
+    function createSankeyLayout() {
+      return d3.sankey()
+        .nodeId((d, i) => i)
+        .nodeAlign(d3.sankeyLeft)
+        // Use a consistent node width; do not manually stretch rects afterwards.
+        .nodeWidth(14)
+        .nodePadding(isMobile ? 12 : 16)
+        // sort nodes within each column by the 'order' property (defaults to 0)
+        .nodeSort((a, b) => ((a.order || 0) - (b.order || 0)))
+        .extent([[chartHorizontalInset, 20], [width - chartHorizontalInset, height - 20]]);
     }
 
-    // Reposition attribute nodes according to their explicit 'order' so right-side order is enforced.
-    // Gather attribute nodes (these are sinks, typically on the right column) and re-stack them.
-    const attrNodes = graph.nodes.filter(n => n.type === 'attr').slice().sort((a,b) => (a.order || 0) - (b.order || 0));
-    if (attrNodes.length) {
+    function centerAttributeNodes(layoutGraph, sankeyLayout) {
+      const attrNodes = layoutGraph.nodes
+        .filter(n => n.type === 'attr')
+        .slice()
+        .sort((a, b) => (a.order || 0) - (b.order || 0));
+      if (!attrNodes.length) return;
       const padTop = 20;
       const padBottom = 20;
       const available = height - padTop - padBottom;
       const totalHeights = attrNodes.reduce((sum, n) => sum + (n.y1 - n.y0), 0);
-      const totalPadding = Math.max(0, (attrNodes.length - 1) * sankey.nodePadding());
+      const totalPadding = Math.max(0, (attrNodes.length - 1) * sankeyLayout.nodePadding());
       const needed = totalHeights + totalPadding;
-      // start centered vertically
       let y = padTop + Math.max(0, (available - needed) / 2);
       for (const n of attrNodes) {
-        const h = n.y1 - n.y0;
+        const nodeHeight = n.y1 - n.y0;
         n.y0 = y;
-        n.y1 = y + h;
-        y += h + sankey.nodePadding();
+        n.y1 = y + nodeHeight;
+        y += nodeHeight + sankeyLayout.nodePadding();
       }
     }
+
+    function buildGraphLayout() {
+      const sankeyLayout = createSankeyLayout();
+      const nextGraph = sankeyLayout({
+        nodes: nodes.map(d => ({ ...d })),
+        links: links.map(d => ({ ...d }))
+      });
+
+      // Reorder links targeting 'good' to put ontological→good last.
+      const goodNode = nextGraph.nodes.find(n => n.id === 'good');
+      if (goodNode && goodNode.targetLinks) {
+        const ontIdx = goodNode.targetLinks.findIndex(l => l.source.id === 'ontological');
+        if (ontIdx !== -1 && ontIdx !== goodNode.targetLinks.length - 1) {
+          const [ontLink] = goodNode.targetLinks.splice(ontIdx, 1);
+          goodNode.targetLinks.push(ontLink);
+          sankeyLayout.update(nextGraph);
+        }
+      }
+
+      centerAttributeNodes(nextGraph, sankeyLayout);
+      sankeyLayout.update(nextGraph);
+      return { sankeyLayout, nextGraph };
+    }
+
+    let sankey;
+    let graph;
+    ({ sankeyLayout: sankey, nextGraph: graph } = buildGraphLayout());
 
     // Function to update gradients with current theme colors
     function updateGradients() {
@@ -1180,7 +1203,7 @@
 
     // Legend and descriptive subtitle removed — labels on the graph provide the context.
 
-    const link = chartGroup.append('g')
+    let link = chartGroup.append('g')
       .attr('fill', 'none')
       .selectAll('path')
       .data(graph.links)
@@ -1493,7 +1516,7 @@
         updateNodeColors();
       });
 
-    const node = chartGroup.append('g')
+    let node = chartGroup.append('g')
       .selectAll('g')
       .data(graph.nodes)
       .join('g')
@@ -1750,7 +1773,7 @@
     }
 
     // Base visual rectangles exactly matching sankey layout coordinates (appended after hit-target to be on top)
-    const nodeRects = node.append('rect')
+    let nodeRects = node.append('rect')
       .attr('class', 'visible-node')
       .attr('x', d => d.x0)
       .attr('y', d => d.y0)
@@ -1759,7 +1782,7 @@
       .attr('rx', 2).attr('ry', 2)
       .attr('fill', d => d.type === 'arg' ? getArgColor(d.id) : getAttrColor(d.id));
 
-    const labels = node.append('text')
+    let labels = node.append('text')
       .attr('class', 'label')
       .attr('x', d => (d.x0 + d.x1) / 2)
       .attr('y', d => (d.y0 + d.y1) / 2)
@@ -1773,6 +1796,56 @@
         return meta.abbrDesktop || meta.abbr || d.label;
       })
       .style('font-size', isMobile ? '12px' : null);
+
+    function refreshChartLayout({ animateCenter = false } = {}) {
+      updateViewportVars();
+      updateChartMetrics();
+      ({ sankeyLayout: sankey, nextGraph: graph } = buildGraphLayout());
+      hideTooltipImmediate(true);
+      updateGradients();
+
+      link = link
+        .data(graph.links)
+        .attr('d', d3.sankeyLinkHorizontal())
+        .attr('stroke', d => `url(#${d.gradId})`)
+        .attr('stroke-width', d => Math.max(1, d.width))
+        .attr('aria-label', d => `Connection from ${d.source.label} to ${d.target.label}`)
+        .attr('id', (d, i) => `link-${i}`)
+        .attr('aria-describedby', (d, i) => `link-${i}-desc`);
+
+      node = node
+        .data(graph.nodes)
+        .attr('class', d => `node ${d.type}`)
+        .attr('aria-label', d => `${d.label} ${d.type === 'arg' ? 'argument' : 'attribute'}`)
+        .attr('id', d => `node-${d.index}`)
+        .attr('aria-describedby', d => `node-${d.index}-desc`);
+
+      node.select('rect.hit-target')
+        .attr('x', d => d.x0 - 8)
+        .attr('y', d => d.y0 - 4)
+        .attr('width', d => (d.x1 - d.x0) + 16)
+        .attr('height', d => (d.y1 - d.y0) + 8);
+
+      nodeRects = node.select('rect.visible-node')
+        .attr('x', d => d.x0)
+        .attr('y', d => d.y0)
+        .attr('height', d => Math.max(6, d.y1 - d.y0))
+        .attr('width', d => d.x1 - d.x0);
+
+      labels = node.select('text.label')
+        .attr('x', d => (d.x0 + d.x1) / 2)
+        .attr('y', d => (d.y0 + d.y1) / 2)
+        .text(d => {
+          const meta = d.type === 'arg' ? (argById.get(d.id) || {}) : (attrById.get(d.id) || {});
+          if (isMobile) return meta.abbr || d.label;
+          return meta.abbrDesktop || meta.abbr || d.label;
+        })
+        .style('font-size', isMobile ? '12px' : null);
+
+      assignTabOrder();
+      updateNodeColors();
+      requestAnimationFrame(() => centerChartToViewport(animateCenter));
+    }
 
     // Apply initial node colors (respects any current focused/active state)
     updateNodeColors();
@@ -1860,19 +1933,15 @@
 
   window.addEventListener('keydown', e => { if (e.key === 'Escape') { deactivateEmbeddedInteraction(); node.classed('faint', false); link.classed('faint', false); hideTooltipImmediate(true); d3.selectAll('.node').classed('hover', false).classed('active', false).classed('focused', false); d3.selectAll('.link').classed('active-link', false).classed('kb-focus', false); updateNodeColors(); }});
 
-    requestAnimationFrame(() => centerChartToViewport(false));
-    let resizeFitTimeout = null;
-    window.addEventListener('resize', () => {
-      if (!isEmbedMode) return;
-      if (resizeFitTimeout) clearTimeout(resizeFitTimeout);
-      resizeFitTimeout = setTimeout(() => centerChartToViewport(true), 90);
-    }, { passive: true });
+    requestAnimationFrame(() => refreshChartLayout({ animateCenter: false }));
+    let resizeLayoutTimeout = null;
+    function scheduleChartRefresh() {
+      if (resizeLayoutTimeout) clearTimeout(resizeLayoutTimeout);
+      resizeLayoutTimeout = setTimeout(() => refreshChartLayout({ animateCenter: true }), 90);
+    }
+    window.addEventListener('resize', scheduleChartRefresh, { passive: true });
     if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', () => {
-        if (!isEmbedMode) return;
-        if (resizeFitTimeout) clearTimeout(resizeFitTimeout);
-        resizeFitTimeout = setTimeout(() => centerChartToViewport(true), 90);
-      }, { passive: true });
+      window.visualViewport.addEventListener('resize', scheduleChartRefresh, { passive: true });
     }
 
       })();
