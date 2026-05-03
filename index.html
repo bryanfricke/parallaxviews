@@ -610,6 +610,11 @@
       min-width: 0;
     }
 
+    .embed-summary {
+      display: grid;
+      gap: 0.8rem;
+    }
+
     .embed-copy h3 {
       margin: 0;
       font: 700 1.7rem/1.04 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
@@ -630,6 +635,20 @@
     .embed-launch {
       min-width: min(100%, 19rem);
     }
+
+    .embed-launch-label--mobile {
+      display: none;
+    }
+
+    .embed-launch::after {
+      content: "";
+      width: 0.6rem;
+      height: 0.6rem;
+      border-top: 2px solid currentColor;
+      border-right: 2px solid currentColor;
+      transform: rotate(45deg) translateY(1px);
+    }
+
     .embed-frame-shell {
       position: relative;
       display: flex;
@@ -654,88 +673,6 @@
 
     .embed-frame-tall {
       height: clamp(30rem, 76vh, 54rem);
-    }
-
-    .embed-mobile-card {
-      display: none;
-      position: relative;
-      overflow: hidden;
-      min-height: 15rem;
-      padding: 1.15rem;
-      border-radius: 1rem;
-      background:
-        radial-gradient(circle at top right, var(--accent-soft), transparent 46%),
-        linear-gradient(145deg, var(--surface-strong), var(--surface-muted));
-      box-shadow: inset 0 0 0 1px var(--border), var(--shadow-soft);
-    }
-
-    .embed-mobile-card::after {
-      content: "";
-      position: absolute;
-      right: 1rem;
-      bottom: 1rem;
-      width: 6.5rem;
-      height: 6.5rem;
-      border-radius: 1.4rem;
-      background:
-        linear-gradient(135deg, rgba(13, 143, 134, 0.2), rgba(194, 144, 44, 0.18)),
-        linear-gradient(180deg, transparent 0 18%, rgba(255, 255, 255, 0.48) 18% 22%, transparent 22% 38%, rgba(255, 255, 255, 0.38) 38% 42%, transparent 42%);
-      border: 1px solid rgba(255, 255, 255, 0.32);
-      box-shadow: 0 18px 30px rgba(10, 92, 105, 0.18);
-      opacity: 0.95;
-      transform: rotate(8deg);
-    }
-
-    .embed-mobile-card > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .embed-mobile-kicker {
-      display: inline-flex;
-      width: fit-content;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.4rem 0.72rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-soft);
-      font-size: 0.76rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .embed-mobile-card strong {
-      display: block;
-      margin-top: 0.9rem;
-      max-width: 12ch;
-      font: 700 1.6rem/1.02 "Iowan Old Style", "Palatino Linotype", Palatino, serif;
-      color: var(--text);
-    }
-
-    .embed-mobile-card p {
-      margin: 0.7rem 0 1.1rem;
-      max-width: 25rem;
-      color: var(--text-soft);
-    }
-
-    .embed-mobile-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      color: var(--accent);
-      font-weight: 700;
-    }
-
-    .embed-mobile-link::after {
-      content: "";
-      width: 0.6rem;
-      height: 0.6rem;
-      border-top: 2px solid currentColor;
-      border-right: 2px solid currentColor;
-      transform: rotate(45deg) translateY(1px);
     }
 
     .footer {
@@ -853,8 +790,8 @@
         font-size: 1.5rem;
       }
 
-      .embed-actions {
-        display: none;
+      .embed-summary {
+        gap: 0.95rem;
       }
 
       .embed-frame-shell {
@@ -863,13 +800,24 @@
         background: transparent;
       }
 
-      .embed-mobile-card {
-        display: grid;
-        align-content: start;
-      }
-
       .embed-frame {
         display: none;
+      }
+
+      .embed-actions {
+        justify-content: flex-start;
+      }
+
+      .embed-launch {
+        min-width: 0;
+      }
+
+      .embed-launch-label--desktop {
+        display: none;
+      }
+
+      .embed-launch-label--mobile {
+        display: inline;
       }
 
       .hero-actions,
@@ -978,22 +926,19 @@
                 <span class="card-tag">Overview</span>
                 <span class="card-index">01</span>
               </div>
-              <div>
+              <div class="embed-summary">
                 <h3 id="overview-embed-title">Theistic Arguments</h3>
                 <p>Presents the larger set of arguments for God's existence in one place so the overall shape of the case is visible before drilling into individual lines of reasoning.</p>
               </div>
               <div class="embed-actions">
-                <a class="button-secondary embed-launch" href="graphs/theistic-arguments.html">Open the full overview</a>
+                <a class="button-secondary embed-launch" href="graphs/theistic-arguments.html">
+                  <span class="embed-launch-label--desktop">Open the full overview</span>
+                  <span class="embed-launch-label--mobile">Open overview</span>
+                </a>
               </div>
             </div>
 
             <div class="embed-frame-shell">
-              <a class="embed-mobile-card" href="graphs/theistic-arguments.html" aria-labelledby="overview-mobile-title">
-                <span class="embed-mobile-kicker">Phone-friendly view</span>
-                <strong id="overview-mobile-title">Theistic Arguments</strong>
-                <p>Open the full diagram on its own page so the overview gets the full screen for reading, panning, and zooming.</p>
-                <span class="embed-mobile-link">Open the full diagram</span>
-              </a>
               <iframe
                 id="theistic-arguments-embed"
                 class="embed-frame"
@@ -1011,22 +956,19 @@
                 <span class="card-tag">Detailed map</span>
                 <span class="card-index">02</span>
               </div>
-              <div>
+              <div class="embed-summary">
                 <h3 id="explorer-embed-title">Argument Explorer</h3>
                 <p>Moves from the overview into a more detailed exploration of claims, objections, and rebuttals so the structure of the argument can be inspected closely.</p>
               </div>
               <div class="embed-actions">
-                <a class="button-secondary embed-launch" href="graphs/theistic-argument-explorer.html">Open the full explorer</a>
+                <a class="button-secondary embed-launch" href="graphs/theistic-argument-explorer.html">
+                  <span class="embed-launch-label--desktop">Open the full explorer</span>
+                  <span class="embed-launch-label--mobile">Open explorer</span>
+                </a>
               </div>
             </div>
 
             <div class="embed-frame-shell">
-              <a class="embed-mobile-card" href="graphs/theistic-argument-explorer.html" aria-labelledby="explorer-mobile-title">
-                <span class="embed-mobile-kicker">Phone-friendly view</span>
-                <strong id="explorer-mobile-title">Argument Explorer</strong>
-                <p>Launch the full explorer in its dedicated view so the detailed map is actually usable on a phone-sized screen.</p>
-                <span class="embed-mobile-link">Open the full diagram</span>
-              </a>
               <iframe
                 id="theistic-argument-explorer-embed"
                 class="embed-frame embed-frame-tall"
@@ -1058,22 +1000,19 @@
                 <span class="card-tag">Facts</span>
                 <span class="card-index">03</span>
               </div>
-              <div>
+              <div class="embed-summary">
                 <h3 id="minimal-facts-embed-title">Minimal Facts</h3>
                 <p>Builds on the theistic groundwork by making resurrection a live possibility if God exists, then presents the core historical facts that are widely accepted by scholars before competing hypotheses are evaluated.</p>
               </div>
               <div class="embed-actions">
-                <a class="button-secondary embed-launch" href="graphs/minimalFactsTidyTree.html">Open the full facts view</a>
+                <a class="button-secondary embed-launch" href="graphs/minimalFactsTidyTree.html">
+                  <span class="embed-launch-label--desktop">Open the full facts view</span>
+                  <span class="embed-launch-label--mobile">Open facts view</span>
+                </a>
               </div>
             </div>
 
             <div class="embed-frame-shell">
-              <a class="embed-mobile-card" href="graphs/minimalFactsTidyTree.html" aria-labelledby="facts-mobile-title">
-                <span class="embed-mobile-kicker">Phone-friendly view</span>
-                <strong id="facts-mobile-title">Minimal Facts</strong>
-                <p>Open the full facts diagram in a focused page where the tree can use the whole viewport instead of a small embed.</p>
-                <span class="embed-mobile-link">Open the full diagram</span>
-              </a>
               <iframe
                 id="minimal-facts-embed"
                 class="embed-frame embed-frame-tall"
@@ -1091,22 +1030,19 @@
                 <span class="card-tag">Assessment</span>
                 <span class="card-index">04</span>
               </div>
-              <div>
+              <div class="embed-summary">
                 <h3 id="hypotheses-embed-title">Hypotheses</h3>
                 <p>Tests the candidate explanations against the accepted facts so the best overall hypothesis can be compared and judged in view of explanatory scope and power.</p>
               </div>
               <div class="embed-actions">
-                <a class="button-secondary embed-launch" href="graphs/hypotheses.html">Open the full assessment</a>
+                <a class="button-secondary embed-launch" href="graphs/hypotheses.html">
+                  <span class="embed-launch-label--desktop">Open the full assessment</span>
+                  <span class="embed-launch-label--mobile">Open assessment</span>
+                </a>
               </div>
             </div>
 
             <div class="embed-frame-shell">
-              <a class="embed-mobile-card" href="graphs/hypotheses.html" aria-labelledby="hypotheses-mobile-title">
-                <span class="embed-mobile-kicker">Phone-friendly view</span>
-                <strong id="hypotheses-mobile-title">Hypotheses</strong>
-                <p>Switch to the full assessment page so the hypothesis comparison has enough room for the controls and chart.</p>
-                <span class="embed-mobile-link">Open the full diagram</span>
-              </a>
               <iframe
                 id="hypotheses-embed"
                 class="embed-frame embed-frame-tall"
