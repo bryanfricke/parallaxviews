@@ -153,6 +153,10 @@
             padding: 0;
         }
 
+        #topbarActions #embedReturnBtn[hidden] {
+            display: none;
+        }
+
         #topbarActions #embedReturnBtn svg {
             width: 18px;
             height: 18px;
@@ -1497,7 +1501,7 @@
 
         function syncEmbedReturnButton() {
             if (!embedReturnBtn) return;
-            embedReturnBtn.hidden = isInlineEmbed;
+            embedReturnBtn.hidden = isEmbedMode;
             embedReturnBtn.setAttribute('aria-label', 'Back to overview');
             embedReturnBtn.setAttribute('title', 'Back to overview');
         }

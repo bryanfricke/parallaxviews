@@ -203,6 +203,10 @@
       padding: 0;
     }
 
+    #topbarActions #embedReturnBtn[hidden] {
+      display: none;
+    }
+
     #topbarActions #embedReturnBtn svg {
       width: 18px;
       height: 18px;
@@ -2576,7 +2580,7 @@
     const _pvEmbedReturnBtn = document.getElementById('embedReturnBtn');
     function _pvSyncEmbedReturnButton() {
       if (!_pvEmbedReturnBtn) return;
-      _pvEmbedReturnBtn.hidden = _pvIsInlineEmbed;
+      _pvEmbedReturnBtn.hidden = _pvIsEmbedMode;
       _pvEmbedReturnBtn.setAttribute('aria-label', 'Back to overview');
       _pvEmbedReturnBtn.setAttribute('title', 'Back to overview');
       if (typeof updateHeaderHeight === 'function') {
