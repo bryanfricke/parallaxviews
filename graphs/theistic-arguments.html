@@ -69,7 +69,8 @@
       --panel-shadow: 0 24px 80px rgba(25, 40, 48, 0.14);
       --text-glow-color: rgba(255, 252, 247, 0.96);
       --node-selection-color: rgba(10, 92, 105, 0.38);
-      --label-halo: rgba(255, 252, 247, 0.98);
+      --label-halo-strong: rgba(255, 252, 247, 0.92);
+      --label-halo-soft: rgba(255, 252, 247, 0.70);
       /* Dynamic layout helpers (updated via JS on load/resize) */
       --app-dvh: 100dvh;           /* measured visual viewport height fallback */
       --header-total: 120px;       /* header + top padding (desktop rule uses this) */
@@ -119,7 +120,8 @@
         --panel-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
         --text-glow-color: rgba(237, 245, 243, 0.82);
         --node-selection-color: rgba(77, 211, 198, 0.56);
-        --label-halo: rgba(9, 19, 27, 0.94);
+        --label-halo-strong: rgba(9, 19, 27, 0.95);
+        --label-halo-soft: rgba(9, 19, 27, 0.80);
         
         /* Dark mode argument colors */
         --kalam-color: #4dd3c6;
@@ -166,7 +168,8 @@
       --panel-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
       --text-glow-color: rgba(237, 245, 243, 0.82);
       --node-selection-color: rgba(77, 211, 198, 0.56);
-      --label-halo: rgba(9, 19, 27, 0.94);
+      --label-halo-strong: rgba(9, 19, 27, 0.95);
+      --label-halo-soft: rgba(9, 19, 27, 0.80);
       
       /* Dark mode argument colors */
       --kalam-color: #4dd3c6;
@@ -212,7 +215,8 @@
       --panel-shadow: 0 24px 80px rgba(25, 40, 48, 0.14);
       --text-glow-color: rgba(255, 252, 247, 0.96);
       --node-selection-color: rgba(10, 92, 105, 0.38);
-      --label-halo: rgba(255, 252, 247, 0.98);
+      --label-halo-strong: rgba(255, 252, 247, 0.92);
+      --label-halo-soft: rgba(255, 252, 247, 0.70);
       
       /* Light mode argument colors */
       --kalam-color: #1d9088;
@@ -401,7 +405,7 @@
     .legend .swatch { width:12px; height:12px; border-radius:2px; display:inline-block; }
 
     /* Desktop baseline height (will be overridden by a dynamic var if available). */
-    svg {
+    svg#chart {
       width:100%;
       height: calc(100vh - 80px);
       display:block;
@@ -424,7 +428,7 @@
     /* On phones, size the chart by the dynamic viewport (visual viewport) minus
        the actual content offset we measure in JS (header + vertical padding).
        This avoids the classic iOS Chrome/Safari 100vh clipping. */
-    svg { height: calc(var(--app-dvh, 100dvh) - var(--content-offset, 110px)); }
+    svg#chart { height: calc(var(--app-dvh, 100dvh) - var(--content-offset, 110px)); }
   }
 
   /* Node rectangles: keep fully opaque so links underneath don't show through (prevents two-tone artifact). */
@@ -433,22 +437,23 @@
   .node rect.hit-target { fill: transparent !important; stroke: none !important; }
   /* Make the node bars and labels visibly interactive */
   .node rect, .node .label { cursor: pointer; }
+  .node, .link { -webkit-tap-highlight-color: transparent; }
+  .node:focus, .node:focus-visible { outline: none; }
   
   /* Mobile-only interactive highlighting (click/tap feedback) */
   @media (max-width: 600px) {
-    .node.hover rect, .node.active rect, .node.focused rect { filter: brightness(1.08); }
-    .node.focused rect, .node.active rect { stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
+    .node.hover rect.visible-node, .node.active rect.visible-node, .node.focused rect.visible-node { filter: brightness(1.08); }
+    .node.focused rect.visible-node, .node.active rect.visible-node { stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
     .node.hover .label, .node.active .label, .node.focused .label { filter: url(#textGlow); }
   }
   
   /* Desktop: hover highlighting similar to mobile */
   @media (min-width: 601px) {
-    .node:focus { outline: none; }
-    .node.hover rect, .node.active rect { filter: brightness(1.08); }
-    .node.hover rect, .node.active rect { stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
+    .node.hover rect.visible-node, .node.active rect.visible-node { filter: brightness(1.08); }
+    .node.hover rect.visible-node, .node.active rect.visible-node { stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
     .node.hover .label, .node.active .label { filter: url(#textGlow); }
     /* Keyboard (true focus) highlighting distinct from mere mouse click focus */
-    .node.focused rect { filter: brightness(1.08); stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
+    .node.focused rect.visible-node { filter: brightness(1.08); stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
     .node.focused .label { filter: url(#textGlow); }
   }
   
@@ -461,11 +466,9 @@
       letter-spacing: 0.01em;
       alignment-baseline: middle;
       fill: var(--fg);
-      paint-order: stroke;
-      stroke: var(--label-halo);
-      stroke-width: 4px;
-      stroke-linejoin: round;
-      stroke-opacity: .98;
+      filter: url(#labelHalo);
+      paint-order: normal;
+      stroke: none;
     }
 
    /* Base (dark or unspecified theme): hover/focus should make link look lighter/brighter
@@ -766,7 +769,11 @@
             } catch (e) { /* ignore meta update errors */ }
             // Update colors after theme change (if chart is already rendered)
             if (typeof updateNodeColors === 'function') {
-              setTimeout(() => { updateNodeColors(); updateGradients(); }, 50);
+              setTimeout(() => {
+                updateNodeColors();
+                updateGradients();
+                if (typeof updateFilterColors === 'function') updateFilterColors();
+              }, 50);
             }
           }
         }
@@ -1176,6 +1183,54 @@
     }
 
     const defs = chartGroup.append('defs');
+
+    const labelHaloFilter = defs.append('filter')
+      .attr('id', 'labelHalo')
+      .attr('x', '-40%')
+      .attr('y', '-40%')
+      .attr('width', '180%')
+      .attr('height', '180%');
+
+    labelHaloFilter.append('feMorphology')
+      .attr('in', 'SourceAlpha')
+      .attr('operator', 'dilate')
+      .attr('radius', '1.1')
+      .attr('result', 'labelDilated');
+
+    labelHaloFilter.append('feGaussianBlur')
+      .attr('in', 'labelDilated')
+      .attr('stdDeviation', '1.1')
+      .attr('result', 'labelBlurStrong');
+
+    labelHaloFilter.append('feGaussianBlur')
+      .attr('in', 'labelDilated')
+      .attr('stdDeviation', '1.9')
+      .attr('result', 'labelBlurSoft');
+
+    labelHaloFilter.append('feFlood')
+      .attr('id', 'labelHaloStrongFlood')
+      .attr('result', 'labelHaloStrongColor');
+
+    labelHaloFilter.append('feComposite')
+      .attr('in', 'labelHaloStrongColor')
+      .attr('in2', 'labelBlurStrong')
+      .attr('operator', 'in')
+      .attr('result', 'labelHaloStrongGlow');
+
+    labelHaloFilter.append('feFlood')
+      .attr('id', 'labelHaloSoftFlood')
+      .attr('result', 'labelHaloSoftColor');
+
+    labelHaloFilter.append('feComposite')
+      .attr('in', 'labelHaloSoftColor')
+      .attr('in2', 'labelBlurSoft')
+      .attr('operator', 'in')
+      .attr('result', 'labelHaloSoftGlow');
+
+    const labelHaloMerge = labelHaloFilter.append('feMerge');
+    labelHaloMerge.append('feMergeNode').attr('in', 'labelHaloSoftGlow');
+    labelHaloMerge.append('feMergeNode').attr('in', 'labelHaloStrongGlow');
+    labelHaloMerge.append('feMergeNode').attr('in', 'SourceGraphic');
     
     // Add text glow filter for label halos - theme-aware colors
     const textGlowFilter = defs.append('filter')
@@ -1187,6 +1242,7 @@
       
     // Create a flood fill with theme-aware glow color
     const flood = textGlowFilter.append('feFlood')
+      .attr('id', 'textGlowFlood')
       .attr('flood-color', 'var(--text-glow-color)')
       .attr('flood-opacity', '0.8')
       .attr('result', 'glowColor');
@@ -1212,8 +1268,22 @@
     const merge = textGlowFilter.append('feMerge');
     merge.append('feMergeNode').attr('in', 'coloredBlur');
     merge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+    function updateFilterColors() {
+      const style = getComputedStyle(document.documentElement);
+      defs.select('#labelHaloStrongFlood')
+        .attr('flood-color', style.getPropertyValue('--label-halo-strong').trim())
+        .attr('flood-opacity', 0.98);
+      defs.select('#labelHaloSoftFlood')
+        .attr('flood-color', style.getPropertyValue('--label-halo-soft').trim())
+        .attr('flood-opacity', 1);
+      defs.select('#textGlowFlood')
+        .attr('flood-color', style.getPropertyValue('--text-glow-color').trim())
+        .attr('flood-opacity', 0.8);
+    }
     
     updateGradients();
+    updateFilterColors();
 
     // Legend and descriptive subtitle removed — labels on the graph provide the context.
 

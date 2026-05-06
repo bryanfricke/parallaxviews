@@ -61,7 +61,8 @@
       --laneGuideColor:rgba(237,245,243,0.10);
       --pageGlow1:rgba(77,211,198,0.14);
       --pageGlow2:rgba(235,191,104,0.10);
-      --labelHalo:rgba(9,19,27,0.94);
+      --labelHaloStrong:rgba(9,19,27,0.95);
+      --labelHaloSoft:rgba(9,19,27,0.80);
       --selectedHalo:rgba(77,211,198,0.28);
       --nodeShadow:0 18px 32px rgba(0,0,0,0.24);
       --supportBadgeFill:rgba(77,211,198,0.18);
@@ -129,7 +130,8 @@
       --laneGuideColor:rgba(24,33,39,0.08);
       --pageGlow1:rgba(13,143,134,0.14);
       --pageGlow2:rgba(194,144,44,0.12);
-      --labelHalo:rgba(255,253,248,0.94);
+      --labelHaloStrong:rgba(255,253,248,0.92);
+      --labelHaloSoft:rgba(255,253,248,0.70);
       --selectedHalo:rgba(13,143,134,0.24);
       --nodeShadow:0 14px 28px rgba(25,40,48,0.10);
       --supportBadgeFill:rgba(45,124,140,0.16);
@@ -404,10 +406,9 @@
       fill:var(--text);
       font:600 12.5px/1.3 "Avenir Next","Segoe UI Variable","Segoe UI","Helvetica Neue",sans-serif;
       letter-spacing:0.01em;
-      paint-order:stroke fill;
-      stroke:var(--labelHalo);
-      stroke-width:4px;
-      stroke-linejoin:round;
+      filter:url(#nodeLabelHalo);
+      paint-order:normal;
+      stroke:none;
       pointer-events:none;
     }
 
@@ -939,6 +940,17 @@ function collapseBelow(node, depthLimit){
   }
 }
 
+function sortChildrenBySourceOrder(node) {
+  if (!node || !node.children || node.children.length < 2) return;
+  const sourceChildren = node.data.children || [];
+  const sourceOrder = new Map(sourceChildren.map((child, index) => [child.id, index]));
+  node.children.sort((a, b) => {
+    const aIndex = sourceOrder.get(a.data.id);
+    const bIndex = sourceOrder.get(b.data.id);
+    return (aIndex ?? Number.MAX_SAFE_INTEGER) - (bIndex ?? Number.MAX_SAFE_INTEGER);
+  });
+}
+
 // Compute lane index for each node based on parent + kind
 function assignLanes(node){
   if (!node.parent){
@@ -1038,6 +1050,54 @@ defs.append("marker")
   .attr("d", "M0,-5L10,0L0,5Z")
   .attr("fill", getComputedStyle(document.documentElement).getPropertyValue("--edgeAttack").trim());
 
+const nodeLabelHaloFilter = defs.append("filter")
+  .attr("id", "nodeLabelHalo")
+  .attr("x", "-40%")
+  .attr("y", "-40%")
+  .attr("width", "180%")
+  .attr("height", "180%");
+
+nodeLabelHaloFilter.append("feMorphology")
+  .attr("in", "SourceAlpha")
+  .attr("operator", "dilate")
+  .attr("radius", "1.15")
+  .attr("result", "labelDilated");
+
+nodeLabelHaloFilter.append("feGaussianBlur")
+  .attr("in", "labelDilated")
+  .attr("stdDeviation", "1.15")
+  .attr("result", "labelBlurStrong");
+
+nodeLabelHaloFilter.append("feGaussianBlur")
+  .attr("in", "labelDilated")
+  .attr("stdDeviation", "2")
+  .attr("result", "labelBlurSoft");
+
+nodeLabelHaloFilter.append("feFlood")
+  .attr("id", "nodeLabelHaloStrongFlood")
+  .attr("result", "labelHaloStrongColor");
+
+nodeLabelHaloFilter.append("feComposite")
+  .attr("in", "labelHaloStrongColor")
+  .attr("in2", "labelBlurStrong")
+  .attr("operator", "in")
+  .attr("result", "labelHaloStrongGlow");
+
+nodeLabelHaloFilter.append("feFlood")
+  .attr("id", "nodeLabelHaloSoftFlood")
+  .attr("result", "labelHaloSoftColor");
+
+nodeLabelHaloFilter.append("feComposite")
+  .attr("in", "labelHaloSoftColor")
+  .attr("in2", "labelBlurSoft")
+  .attr("operator", "in")
+  .attr("result", "labelHaloSoftGlow");
+
+const nodeLabelHaloMerge = nodeLabelHaloFilter.append("feMerge");
+nodeLabelHaloMerge.append("feMergeNode").attr("in", "labelHaloSoftGlow");
+nodeLabelHaloMerge.append("feMergeNode").attr("in", "labelHaloStrongGlow");
+nodeLabelHaloMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
 let themeStyle = getComputedStyle(document.documentElement);
 function cssVar(name) {
   return themeStyle.getPropertyValue(name).trim();
@@ -1047,6 +1107,8 @@ function updateThemeVisuals() {
   themeStyle = getComputedStyle(document.documentElement);
   defs.select("#arrowSupport path").attr("fill", cssVar("--edgeSupport"));
   defs.select("#arrowAttack path").attr("fill", cssVar("--edgeAttack"));
+  defs.select("#nodeLabelHaloStrongFlood").attr("flood-color", cssVar("--labelHaloStrong")).attr("flood-opacity", 0.98);
+  defs.select("#nodeLabelHaloSoftFlood").attr("flood-color", cssVar("--labelHaloSoft")).attr("flood-opacity", 1);
 }
 
 applyTheme(getInitialTheme());
@@ -1301,6 +1363,7 @@ function toggleGroup(node, relType) {
     update();
   } else if (hiddenOfType.length > 0) {
     node.children = [...otherVisible, ...hiddenOfType];
+    sortChildrenBySourceOrder(node);
     node._groupedHidden[relType] = [];
     update();
     centerOnNode(node);
@@ -1365,6 +1428,7 @@ function setAll(node, expanded) {
     const allHidden = Object.values(node._groupedHidden).flat();
     if (allHidden.length) {
       node.children = [...(node.children || []), ...allHidden];
+      sortChildrenBySourceOrder(node);
       node._groupedHidden = {};
     }
     (node.children || []).forEach(ch => setAll(ch, true));
@@ -1391,13 +1455,16 @@ function setDebateChain(node, expanded) {
 
 function _expandGroupRecursive(node, relTypes) {
   if (!node._groupedHidden) node._groupedHidden = {};
+  let didExpand = false;
   relTypes.forEach(rel => {
     const hidden = node._groupedHidden[rel] || [];
     if (hidden.length) {
       node.children = [...(node.children || []), ...hidden];
       node._groupedHidden[rel] = [];
+      didExpand = true;
     }
   });
+  if (didExpand) sortChildrenBySourceOrder(node);
   (node.children || []).forEach(ch => _expandGroupRecursive(ch, relTypes));
 }
 
