@@ -1,0 +1,283 @@
+{
+  "id": "OA",
+  "kind": "root",
+  "label": "The Ontological Argument (Modal Version)",
+  "text": "The Ontological Argument (Modal Version)",
+  "relToParent": null,
+  "children": [
+    {
+      "id": "OA_P1",
+      "kind": "premise",
+      "label": "P1 — It is possible that a maximally great being exists",
+      "text": "P1 — It is possible that a maximally great being exists.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "OA_P1S1",
+          "kind": "support",
+          "label": "The concept appears coherent rather than self-contradictory",
+          "text": "The crucial first premise is a modal coherence claim: the concept of a maximally great being appears metaphysically coherent rather than internally contradictory. If the concept is coherent, then it is possibly instantiated.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "OA_P1I1",
+              "kind": "illustration",
+              "label": "Impossible concepts are false in every possible world",
+              "text": "An impossible concept, such as a square circle or a concrete person who is a prime number, is false in every possible world. If a maximally great being were incoherent in that way, premise 1 would fail; the argument depends on the concept not collapsing into contradiction.",
+              "relToParent": "supports",
+              "children": []
+            },
+            {
+              "id": "OA_O3",
+              "kind": "objection",
+              "label": "The concept may be incoherent like a married bachelor",
+              "text": "An atheist can deny premise 1 by claiming that a maximally great being is conceptually impossible, the way a married bachelor is impossible.",
+              "relToParent": "attacks",
+              "children": [
+                {
+                  "id": "OA_R3",
+                  "kind": "rebuttal",
+                  "label": "Incoherence must be shown, not merely asserted",
+                  "text": "To defeat premise 1, one must identify an actual contradiction in the concept of a being that is omniscient, omnipotent, and morally perfect in every possible world. Absent such a contradiction, the concept retains prima facie modal warrant.",
+                  "relToParent": "rebuts",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "OA_P1S2",
+          "kind": "support",
+          "label": "Other theistic arguments can reinforce premise 1",
+          "text": "The wider case for theism can reinforce premise 1 by giving independent reason to think reality could include a necessary, perfect being. The modal ontological argument still stands or falls on its own logic, but premise 1 need not rest on bare intuition alone.",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "OA_O1",
+          "kind": "objection",
+          "label": "A parallel possibility premise seems to prove the opposite",
+          "text": "If we instead start with ‘It is possible that a maximally great being does not exist,’ the same modal structure appears to yield the opposite conclusion: that no maximally great being exists.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "OA_R1",
+              "kind": "rebuttal",
+              "label": "To reverse the argument, one must claim impossibility, not mere doubt",
+              "text": "The alleged parallel is not genuinely parallel. To get the opposite conclusion, it is not enough merely to withhold assent from premise 1 or to say that one is unsure. One must take on the stronger modal burden that the non-existence of a maximally great being is itself metaphysically possible, which would mean that such a being is impossible.",
+              "relToParent": "rebuts",
+              "children": [
+                {
+                  "id": "OA_O2",
+                  "kind": "objection",
+                  "label": "But maybe no maximally great being exists",
+                  "text": "Perhaps there simply is no maximally great being. Why not say that its non-existence is possible?",
+                  "relToParent": "attacks",
+                  "children": [
+                    {
+                      "id": "OA_R2",
+                      "kind": "rebuttal",
+                      "label": "Possibility is not mere uncertainty",
+                      "text": "Saying 'maybe no maximally great being exists' can express only our uncertainty. But epistemic uncertainty does not establish metaphysical possibility; the relevant question is what reality allows, not what we happen not to know.",
+                      "relToParent": "rebuts",
+                      "children": [
+                        {
+                          "id": "OA_R2S1",
+                          "kind": "support",
+                          "label": "A maximally great being is either necessary or impossible",
+                          "text": "If a maximally great being is possible at all, its existence is not contingent. Such a being either exists necessarily in every possible world or is impossible altogether. So only one of the competing modal premises can be metaphysically true.",
+                          "relToParent": "supports",
+                          "children": [
+                            {
+                              "id": "OA_R1I1",
+                              "kind": "illustration",
+                              "label": "Illustration: an unsolved arithmetic problem",
+                              "text": "Imagine a long arithmetic expression that no one in the room has calculated yet. We may be uncertain whether the answer is 314 or 315, but our uncertainty does not make both answers genuinely possible in reality; the expression already has one determinate value. Likewise, uncertainty about a maximally great being does not show that both existence and non-existence are metaphysically possible.",
+                              "relToParent": "supports",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "OA_O4",
+          "kind": "objection",
+          "label": "Parallel arguments about perfect islands or necessary pizzas prove too much",
+          "text": "If the argument works for God, then seemingly parallel arguments might prove absurd entities such as a most-perfect island, a necessarily existent lion, or a necessarily existent pizza.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "OA_R4",
+              "kind": "rebuttal",
+              "label": "Those arguments are not genuinely parallel to maximal greatness",
+              "text": "Those parallel arguments fail because they lack the sort of objective, intrinsically maximal great-making properties involved in maximal greatness. The concept of a maximally great being is structurally different from rankings of islands, lions, or pizzas.",
+              "relToParent": "rebuts",
+              "children": [
+                {
+                  "id": "OA_R4S1",
+                  "kind": "support",
+                  "label": "Great-making properties like omniscience have intrinsic maxima",
+                  "text": "Omniscience, omnipotence, and moral perfection have built-in upper limits: one cannot be more than all-knowing, more than all-powerful, or morally better than perfectly good. That makes maximal excellence a coherent limiting notion.",
+                  "relToParent": "supports",
+                  "children": []
+                },
+                {
+                  "id": "OA_R4S2",
+                  "kind": "support",
+                  "label": "Islands and pizzas have no objective upper bound",
+                  "text": "Objects like islands or pizzas have no clear, objective ceiling of perfection. There could always be more beaches, more palm trees, more toppings, or different features preferred by different people, so those parallel concepts do not mirror the logic of maximal greatness.",
+                  "relToParent": "supports",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "OA_O5",
+          "kind": "objection",
+          "label": "A quasi-maximally great being seems equally possible",
+          "text": "Even if a maximally great being seems possible, a slightly lesser but still necessary quasi-maximally great being may seem possible as well. That threatens ontological overpopulation.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "OA_R5",
+              "kind": "rebuttal",
+              "label": "Maximal greatness is incompatible with quasi-maximal greatness",
+              "text": "If maximal greatness is possibly exemplified, then quasi-maximal greatness is not. A maximally great being would be omnipotent and therefore able to refrain from creating anything at all, which implies there are possible worlds in which only that being exists.",
+              "relToParent": "rebuts",
+              "children": [
+                {
+                  "id": "OA_R5S1",
+                  "kind": "support",
+                  "label": "There can be a world containing only the maximally great being",
+                  "text": "If a maximally great being exists, its omnipotence includes the ability to create no other concrete reality. So there are possible worlds in which nothing exists except the maximally great being.",
+                  "relToParent": "supports",
+                  "children": []
+                },
+                {
+                  "id": "OA_R5S2",
+                  "kind": "support",
+                  "label": "A necessary quasi-maximal being would escape omnipotent control",
+                  "text": "A quasi-maximally great being with necessary existence would have to exist in every possible world, including worlds in which the maximally great being creates nothing else. That would make the quasi-maximal being independent of the maximally great being’s omnipotence, which is incompatible with maximal greatness.",
+                  "relToParent": "supports",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OA_P2",
+      "kind": "premise",
+      "label": "P2 — If it is possible that a maximally great being exists, then it exists in some possible world",
+      "text": "P2 — If it is possible that a maximally great being exists, then a maximally great being exists in some possible world.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "OA_P2S1",
+          "kind": "support",
+          "label": "Possible worlds are maximal ways reality could have been",
+          "text": "This step simply unpacks modal language: a possible world is not another planet or universe, but a complete, internally consistent way reality might have been. To say that something is possible is to say that it is true in at least one such possible world.",
+          "relToParent": "supports",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "OA_P3",
+      "kind": "premise",
+      "label": "P3 — If a maximally great being exists in some possible world, then it exists in every possible world",
+      "text": "P3 — If a maximally great being exists in some possible world, then it exists in every possible world.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "OA_P3S1",
+          "kind": "support",
+          "label": "Maximal greatness means maximal excellence in every possible world",
+          "text": "A maximally great being is not merely very excellent in one world. Maximal greatness means possessing maximal excellence in every possible world, so existence in one possible world carries necessary existence across all of them.",
+          "relToParent": "supports",
+          "children": [
+            {
+              "id": "OA_P3S1A",
+              "kind": "support",
+              "label": "Maximal excellence includes omniscience, omnipotence, and moral perfection",
+              "text": "Maximal excellence consists in the traditional great-making properties: being all-knowing, all-powerful, and morally perfect. Maximal greatness adds that these are possessed in every possible world.",
+              "relToParent": "supports",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "OA_P4",
+      "kind": "premise",
+      "label": "P4 — If a maximally great being exists in every possible world, then it exists in the actual world",
+      "text": "P4 — If a maximally great being exists in every possible world, then it exists in the actual world.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "OA_P4S1",
+          "kind": "support",
+          "label": "The actual world is one of the possible worlds",
+          "text": "If a being exists in every possible world without exception, then it exists in the actual world as well, since the actual world is simply the world that in fact obtains.",
+          "relToParent": "supports",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "OA_P5",
+      "kind": "premise",
+      "label": "P5 — If a maximally great being exists in the actual world, then it exists",
+      "text": "P5 — If a maximally great being exists in the actual world, then a maximally great being exists.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "OA_P5S1",
+          "kind": "support",
+          "label": "Actual existence is simply existence",
+          "text": "Once the argument reaches the actual world, nothing further modal is needed: if such a being exists in actuality, then such a being exists.",
+          "relToParent": "supports",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "OA_C",
+      "kind": "conclusion",
+      "label": "∴ A maximally great being exists",
+      "text": "∴ Therefore, a maximally great being exists.",
+      "relToParent": "supports",
+      "children": [
+        {
+          "id": "OA_CS1",
+          "kind": "support",
+          "label": "The main controversy is premise 1, not the later modal steps",
+          "text": "Once premise 1 is granted, the remaining modal transitions are comparatively straightforward. The real dispute concerns whether maximal greatness is genuinely possible rather than incoherent.",
+          "relToParent": "supports",
+          "children": []
+        },
+        {
+          "id": "OA_CS2",
+          "kind": "support",
+          "label": "If sound, absolute nothingness is impossible",
+          "text": "If a maximally great being exists in every possible world, then there is no possible world in which absolutely nothing exists. God’s necessary existence rules out a world of sheer nothingness.",
+          "relToParent": "supports",
+          "children": []
+        }
+      ]
+    }
+  ]
+}
