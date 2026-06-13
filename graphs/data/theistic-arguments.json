@@ -103,7 +103,7 @@
     },
     {
       "id": "ontological",
-      "title": "Ontological Argument (Plantinga\u2019s Modal Version)",
+      "title": "Ontological Argument (Modal Version)",
       "abbr": "Ontological",
       "abbrDesktop": "Ontological",
       "steps": [
@@ -120,16 +120,20 @@
           "text": "If a maximally great being exists in every possible world, then it exists in the actual world."
         },
         {
+          "text": "If a maximally great being exists in the actual world, then a maximally great being exists."
+        },
+        {
           "text": "Therefore: A maximally great being exists.",
           "conclusion": true
         }
       ],
       "explanations": [
-        "Possibility claim asserts modal coherence of a maximally great being (omniscient, omnipotent, morally perfect in every possible world).",
-        "By the rules of modal reasoning (which studies what is necessary and what is possible), if it is even possible for such a being to exist, then there is at least one possible way reality could be where that being does exist.",
-        "Maximal greatness includes necessary existence; so existence in one possible world implies existence in all (avoids modal collapse arguments by restricting to great-making properties).",
-        "If in all possible worlds, then in the actual world (actuality is one of the possible worlds).",
-        "Conclusion follows; controversial hinge is premise 1 (modal intuition vs. parodies)."
+        "Premise 1 is a modal coherence claim: a maximally great being is not obviously self-contradictory, and broader theistic arguments can reinforce that judgment.",
+        "A possible world is a complete way reality could have been; if such a being is genuinely possible, then it exists in at least one possible world.",
+        "Maximal greatness means maximal excellence in every possible world; maximal excellence includes omniscience, omnipotence, and moral perfection.",
+        "If such a being exists in every possible world, then it exists in the actual world because the actual world is one of the possible worlds.",
+        "Once actuality is reached, the modal reasoning is finished: actual existence just is existence.",
+        "The main objections target premise 1 through incoherence claims, parody cases like perfect islands or pizzas, and quasi-maximally great-being variants."
       ]
     }
   ],
