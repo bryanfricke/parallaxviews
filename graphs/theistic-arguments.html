@@ -69,6 +69,8 @@
       --panel-shadow: 0 24px 80px rgba(25, 40, 48, 0.14);
       --text-glow-color: rgba(255, 252, 247, 0.96);
       --node-selection-color: rgba(10, 92, 105, 0.38);
+      --node-highlight-filter: brightness(1.08);
+      --node-highlight-weight: 0.22;
       --label-halo-strong: rgba(255, 252, 247, 0.92);
       --label-halo-soft: rgba(255, 252, 247, 0.70);
       /* Dynamic layout helpers (updated via JS on load/resize) */
@@ -120,6 +122,8 @@
         --panel-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
         --text-glow-color: rgba(237, 245, 243, 0.82);
         --node-selection-color: rgba(77, 211, 198, 0.56);
+        --node-highlight-filter: brightness(1.02) saturate(1.06) drop-shadow(0 0 6px rgba(3, 10, 15, 0.68));
+        --node-highlight-weight: 0.08;
         --label-halo-strong: rgba(9, 19, 27, 0.95);
         --label-halo-soft: rgba(9, 19, 27, 0.80);
         
@@ -168,6 +172,8 @@
       --panel-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
       --text-glow-color: rgba(237, 245, 243, 0.82);
       --node-selection-color: rgba(77, 211, 198, 0.56);
+      --node-highlight-filter: brightness(1.02) saturate(1.06) drop-shadow(0 0 6px rgba(3, 10, 15, 0.68));
+      --node-highlight-weight: 0.08;
       --label-halo-strong: rgba(9, 19, 27, 0.95);
       --label-halo-soft: rgba(9, 19, 27, 0.80);
       
@@ -215,6 +221,8 @@
       --panel-shadow: 0 24px 80px rgba(25, 40, 48, 0.14);
       --text-glow-color: rgba(255, 252, 247, 0.96);
       --node-selection-color: rgba(10, 92, 105, 0.38);
+      --node-highlight-filter: brightness(1.08);
+      --node-highlight-weight: 0.22;
       --label-halo-strong: rgba(255, 252, 247, 0.92);
       --label-halo-soft: rgba(255, 252, 247, 0.70);
       
@@ -433,6 +441,7 @@
 
   /* Node rectangles: keep fully opaque so links underneath don't show through (prevents two-tone artifact). */
   .node rect { fill-opacity: 1; shape-rendering: crispEdges; }
+  .node rect.visible-node { transition: fill 120ms ease, stroke 120ms ease, filter 120ms ease; }
   /* Invisible enlarged hit targets (added for coarse pointers) must stay transparent and not receive fill updates */
   .node rect.hit-target { fill: transparent !important; stroke: none !important; }
   /* Make the node bars and labels visibly interactive */
@@ -442,18 +451,18 @@
   
   /* Mobile-only interactive highlighting (click/tap feedback) */
   @media (max-width: 600px) {
-    .node.hover rect.visible-node, .node.active rect.visible-node, .node.focused rect.visible-node { filter: brightness(1.08); }
+    .node.hover rect.visible-node, .node.active rect.visible-node, .node.focused rect.visible-node { filter: var(--node-highlight-filter); }
     .node.focused rect.visible-node, .node.active rect.visible-node { stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
     .node.hover .label, .node.active .label, .node.focused .label { filter: url(#textGlow); }
   }
   
   /* Desktop: hover highlighting similar to mobile */
   @media (min-width: 601px) {
-    .node.hover rect.visible-node, .node.active rect.visible-node { filter: brightness(1.08); }
+    .node.hover rect.visible-node, .node.active rect.visible-node { filter: var(--node-highlight-filter); }
     .node.hover rect.visible-node, .node.active rect.visible-node { stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
     .node.hover .label, .node.active .label { filter: url(#textGlow); }
     /* Keyboard (true focus) highlighting distinct from mere mouse click focus */
-    .node.focused rect.visible-node { filter: brightness(1.08); stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
+    .node.focused rect.visible-node { filter: var(--node-highlight-filter); stroke: var(--node-selection-color); stroke-width: 2px; stroke-opacity: 1; }
     .node.focused .label { filter: url(#textGlow); }
   }
   
@@ -1002,9 +1011,14 @@
       }
     }
 
+    function getHighlightWeight() {
+      const weight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--node-highlight-weight'));
+      return Number.isFinite(weight) ? Math.max(0, Math.min(1, weight)) : 0.22;
+    }
+
     function getLighterForNode(d) {
       const base = d.type === 'arg' ? getArgColor(d.id) : getAttrColor(d.id);
-      return lightenHex(base, 0.22);
+      return lightenHex(base, getHighlightWeight());
     }
 
     const nodes = [
