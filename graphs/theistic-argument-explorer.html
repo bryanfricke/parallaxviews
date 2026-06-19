@@ -191,10 +191,11 @@
       display:grid;
       grid-template-columns:minmax(0,1fr) auto;
       grid-template-areas:
+        "eyebrow eyebrow"
         "title actions"
         "controls controls";
       align-items:center;
-      gap:10px 14px;
+      gap:6px 14px;
       padding:16px clamp(16px, 3vw, 28px) 14px;
       backdrop-filter:blur(18px);
       background:var(--headerTint);
@@ -213,10 +214,9 @@
       min-width:0;
       max-width:min(100%, 44rem);
     }
-    header h1::before{
-      content:"Argument Explorer";
-      display:block;
-      margin-bottom:6px;
+    .header-eyebrow{
+      grid-area:eyebrow;
+      margin:0;
       color:var(--support);
       font:700 0.72rem/1 "Avenir Next","Segoe UI Variable","Segoe UI",sans-serif;
       letter-spacing:0.18em;
@@ -575,13 +575,6 @@
       gap:8px;
       min-width:0;
       flex-wrap:wrap;
-      position:relative;
-      align-self:start;
-      margin-top:calc(0.72rem + 6px);
-    }
-    html.embed-mode .header-actions{
-      margin-top:0;
-      top:calc(0.72rem + 6px);
     }
 
     #embedReturnBtn{
@@ -682,19 +675,13 @@
 
     @media (max-width: 640px) {
       header{
-        align-items:start;
-        gap:10px 8px;
-      }
-      .header-actions{
-        align-self:start;
-        margin-top:0;
+        gap:6px 8px;
       }
       header h1 {
         font-size: 1rem;
       }
-      header h1::before {
+      .header-eyebrow {
         font-size: 0.62rem;
-        margin-bottom: 4px;
       }
       header { padding: 10px 12px; }
       .wrap { padding: 6px 8px; }
@@ -728,16 +715,12 @@
         gap:8px 6px;
         padding:8px 8px 9px;
       }
-      html.embed-mode .header-actions{
-        margin-top:0;
-        top:0;
-      }
+
       html.embed-mode header h1{
         font-size:0.96rem;
         line-height:1.02;
       }
-      html.embed-mode header h1::before{
-        margin-bottom:2px;
+      html.embed-mode .header-eyebrow{
         font-size:0.52rem;
         letter-spacing:0.14em;
       }
@@ -751,6 +734,7 @@
 </head>
 <body>
 <header>
+  <p class="header-eyebrow" aria-hidden="true">Argument Explorer</p>
   <h1 id="pageTitle"><span class="title-select-wrap"><select id="argumentSelect" title="Choose argument" aria-label="Choose argument">
     <option value="data/argument-leibniz.json">Leibniz&rsquo;s Cosmological Argument</option>
     <option value="data/argument-kalam.json" selected>The Kalam Cosmological Argument</option>
