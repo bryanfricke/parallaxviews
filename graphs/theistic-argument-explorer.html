@@ -636,38 +636,68 @@
       position: fixed;
       left: 0; right: 0;
       bottom: -100%;
+      display: flex;
+      flex-direction: column;
       background: var(--sheetBg);
       color: var(--text);
       border-top-left-radius: 24px;
       border-top-right-radius: 24px;
       border: 1px solid var(--panelStroke);
       box-shadow: 0 -18px 40px rgba(0,0,0,0.3);
-      padding: 18px;
+      padding: 10px 18px 18px;
       z-index: 9500;
-      transition: bottom 260ms ease;
+      transition: bottom 260ms ease, transform 180ms ease;
       max-height: 52vh;
       overflow: auto;
       -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
+      will-change: bottom, transform;
     }
     .bottom-sheet.open { bottom: 0; }
+    .bottom-sheet.dragging { transition: none; }
     .bs-close {
-      position: absolute;
-      right: 12px; top: 12px;
-      width: 32px; height: 32px;
+      display: flex;
+      width: 100%;
+      flex: 0 0 auto;
+      min-height: 44px;
       padding: 0;
-      background: var(--buttonBg);
-      border: 1px solid var(--buttonBorder);
-      color: var(--text);
-      font-size: 18px;
-      font-weight: 700;
-      line-height: 0;
-      border-radius: 999px;
+      border: 0;
+      background: transparent;
       cursor: pointer;
-      display: inline-flex;
       align-items: center;
       justify-content: center;
+      color: inherit;
+      box-shadow: none;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+      z-index: 1;
+      pointer-events: auto;
     }
-    .bs-close:hover { background: var(--buttonBgHover); }
+    .bs-close-bar {
+      display: block;
+      width: 48px;
+      height: 5px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--muted) 65%, transparent);
+      transition: background 180ms ease, transform 180ms ease;
+      pointer-events: none;
+    }
+    .bs-close:hover .bs-close-bar,
+    .bs-close:focus-visible .bs-close-bar {
+      background: color-mix(in srgb, var(--support) 34%, var(--muted));
+      transform: scaleX(1.04);
+    }
+    .bs-close:focus-visible {
+      outline: none;
+    }
+    .bottom-sheet-inner {
+      flex: 0 0 auto;
+      margin-top: 10px;
+      padding-top: 0;
+    }
     .bs-text {
       font-size: 13px;
       line-height: 1.5;
@@ -738,7 +768,7 @@
   <h1 id="pageTitle"><span class="title-select-wrap"><select id="argumentSelect" title="Choose argument" aria-label="Choose argument">
     <option value="data/argument-leibniz.json">Leibniz&rsquo;s Cosmological Argument</option>
     <option value="data/argument-kalam.json" selected>The Kalam Cosmological Argument</option>
-    <option value="data/argument-design.json">The Design Argument</option>
+    <option value="data/argument-design.json">Teleological (Fine-Tuning) Argument</option>
     <option value="data/argument-moral.json">The Moral Argument</option>
     <option value="data/argument-ontological.json">The Ontological Argument</option>
     <!-- <option value="data/argument-suffering.json">The Problem of Suffering</option> -->
@@ -776,7 +806,10 @@
 </div>
 
 <div class="tip" id="tip"></div>
-<div id="bottomSheet" class="bottom-sheet" aria-hidden="true"></div>
+<div id="bottomSheet" class="bottom-sheet" aria-hidden="true">
+  <button class="bs-close" aria-label="Dismiss panel" type="button"><span class="bs-close-bar" aria-hidden="true"></span></button>
+  <div class="bottom-sheet-inner"></div>
+</div>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
@@ -1258,28 +1291,51 @@ function isMobileLike() {
 }
 
 const bottomSheetEl = document.getElementById('bottomSheet');
+const bottomSheetInnerEl = bottomSheetEl ? bottomSheetEl.querySelector('.bottom-sheet-inner') : null;
+const bottomSheetCloseEl = bottomSheetEl ? bottomSheetEl.querySelector('.bs-close') : null;
+let sheetHandlePointerId = null;
+let sheetHandleStartY = null;
+let sheetHandleDragY = 0;
+let suppressSheetCloseClick = false;
+const SHEET_HANDLE_DISMISS_PX = 72;
+
+function setSheetDragOffset(offsetPx) {
+  if (!bottomSheetEl) return;
+  sheetHandleDragY = Math.max(0, offsetPx || 0);
+  bottomSheetEl.style.transform = sheetHandleDragY ? `translateY(${sheetHandleDragY}px)` : '';
+}
+
+function resetSheetDrag() {
+  if (!bottomSheetEl) return;
+  sheetHandlePointerId = null;
+  sheetHandleStartY = null;
+  sheetHandleDragY = 0;
+  bottomSheetEl.classList.remove('dragging');
+  bottomSheetEl.style.transform = '';
+}
 
 function openBottomSheet(node) {
-  if (!bottomSheetEl) return;
+  if (!bottomSheetEl || !bottomSheetInnerEl) return;
   hideTip();
   const meta = getKindMeta(node.data.kind);
   const text = node.data.text || node.data.label || '';
-  bottomSheetEl.innerHTML =
-    `<button class="bs-close" aria-label="Close">\u00d7</button>` +
+  bottomSheetInnerEl.innerHTML =
     `<div class="bs-kind-row"><span class="bs-kind"><span class="kind-swatch ${meta.className}"></span>${escapeHtml(meta.label)}</span></div>` +
     `<div class="bs-text">${escapeHtml(text)}</div>`;
+  resetSheetDrag();
   bottomSheetEl.classList.add('open');
   bottomSheetEl.setAttribute('aria-hidden', 'false');
-  const closeBtn = bottomSheetEl.querySelector('.bs-close');
-  if (closeBtn) closeBtn.addEventListener('click', closeBottomSheet, { once: true });
+  document.body.style.overflow = 'hidden';
   // After the sheet animates open, ensure the node isn't hidden under it
   setTimeout(() => ensureNodeAboveSheet(node), 80);
 }
 
 function closeBottomSheet() {
   if (!bottomSheetEl) return;
+  resetSheetDrag();
   bottomSheetEl.classList.remove('open');
   bottomSheetEl.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
 }
 
 function ensureNodeAboveSheet(node) {
@@ -1301,18 +1357,73 @@ function ensureNodeAboveSheet(node) {
   } catch(e) { /* non-fatal */ }
 }
 
-// Swipe-down gesture to close the bottom sheet
+// Handle tap/drag dismissal on the bottom-sheet handle
 (function () {
-  if (!bottomSheetEl) return;
-  let startY = null;
-  bottomSheetEl.addEventListener('touchstart', e => {
-    if (e.touches.length === 1) startY = e.touches[0].clientY;
-  }, { passive: true });
-  bottomSheetEl.addEventListener('touchmove', e => {
-    if (startY == null) return;
-    if (e.touches[0].clientY - startY > 60) { closeBottomSheet(); startY = null; }
-  }, { passive: true });
-  bottomSheetEl.addEventListener('touchend', () => { startY = null; }, { passive: true });
+  if (!bottomSheetEl || !bottomSheetCloseEl) return;
+
+  const finishSheetHandleDrag = (pointerId = null) => {
+    if (pointerId != null && sheetHandlePointerId !== pointerId) return;
+    const dragY = sheetHandleDragY;
+    const shouldDismiss = dragY >= SHEET_HANDLE_DISMISS_PX;
+    resetSheetDrag();
+    if (shouldDismiss) closeBottomSheet();
+    if (suppressSheetCloseClick) {
+      setTimeout(() => { suppressSheetCloseClick = false; }, 0);
+    }
+  };
+
+  bottomSheetCloseEl.addEventListener('click', (e) => {
+    if (suppressSheetCloseClick) {
+      suppressSheetCloseClick = false;
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    closeBottomSheet();
+  });
+
+  bottomSheetCloseEl.addEventListener('pointerdown', (e) => {
+    if (!bottomSheetEl.classList.contains('open')) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    sheetHandlePointerId = e.pointerId;
+    sheetHandleStartY = e.clientY;
+    sheetHandleDragY = 0;
+    suppressSheetCloseClick = false;
+    bottomSheetEl.classList.add('dragging');
+    try { bottomSheetCloseEl.setPointerCapture(e.pointerId); } catch (_) { }
+    e.stopPropagation();
+  });
+
+  bottomSheetCloseEl.addEventListener('pointermove', (e) => {
+    if (sheetHandlePointerId !== e.pointerId || sheetHandleStartY == null) return;
+    const dy = Math.max(0, e.clientY - sheetHandleStartY);
+    if (dy <= 0) return;
+    setSheetDragOffset(dy);
+    if (dy > 6) suppressSheetCloseClick = true;
+    e.preventDefault();
+  });
+
+  bottomSheetCloseEl.addEventListener('pointerup', (e) => {
+    if (sheetHandlePointerId !== e.pointerId) return;
+    const dragY = sheetHandleDragY;
+    try { bottomSheetCloseEl.releasePointerCapture(e.pointerId); } catch (_) { }
+    if (dragY <= 6) {
+      suppressSheetCloseClick = true;
+      resetSheetDrag();
+      closeBottomSheet();
+      e.stopPropagation();
+      return;
+    }
+    finishSheetHandleDrag(e.pointerId);
+    e.stopPropagation();
+  });
+
+  bottomSheetCloseEl.addEventListener('pointercancel', (e) => {
+    if (sheetHandlePointerId !== e.pointerId) return;
+    try { bottomSheetCloseEl.releasePointerCapture(e.pointerId); } catch (_) { }
+    resetSheetDrag();
+    suppressSheetCloseClick = false;
+  });
 })();
 
 // ---- Per-type group management ----

@@ -1130,6 +1130,8 @@
       left: 0;
       right: 0;
       bottom: -100%;
+      display: flex;
+      flex-direction: column;
       background: var(--sheet-bg);
       color: var(--ink);
       border-top-left-radius: 22px;
@@ -1172,8 +1174,9 @@
     .mobile-bottom-sheet .close-btn {
       display: flex;
       width: 100%;
-      min-height: 0;
-      padding: 0 0 10px 0;
+      flex: 0 0 auto;
+      min-height: 44px;
+      padding: 0;
       border: 0;
       background: transparent;
       cursor: pointer;
@@ -1185,6 +1188,9 @@
       -webkit-user-select: none;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
+      position: relative;
+      z-index: 1;
+      pointer-events: auto;
     }
 
     .mobile-bottom-sheet .close-btn-bar {
@@ -1193,6 +1199,7 @@
       border-radius: 999px;
       background: color-mix(in srgb, var(--muted) 65%, transparent);
       transition: background 180ms ease, transform 180ms ease;
+      pointer-events: none;
     }
 
     .mobile-bottom-sheet .close-btn:hover .close-btn-bar,
@@ -1203,6 +1210,11 @@
 
     .mobile-bottom-sheet .close-btn:focus-visible {
       outline: none;
+    }
+
+    .mobile-bottom-sheet .sheet-inner {
+      flex: 0 0 auto;
+      margin-top: 10px;
     }
 
     /* Ensure content doesn't sit underneath compact top handle */
@@ -2008,7 +2020,15 @@
 
       sheetClose.addEventListener('pointerup', (e) => {
         if (sheetHandlePointerId !== e.pointerId) return;
+        const dragY = sheetHandleDragY;
         try { sheetClose.releasePointerCapture(e.pointerId); } catch (_) { }
+        if (dragY <= 6) {
+          suppressSheetCloseClick = true;
+          resetSheetDrag();
+          closeSheet();
+          e.stopPropagation();
+          return;
+        }
         finishSheetHandleDrag(e.pointerId);
         e.stopPropagation();
       });
