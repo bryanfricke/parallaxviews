@@ -282,6 +282,10 @@
         display: none;
       }
 
+      #themeToggle {
+        display: none !important;
+      }
+
       #topbar[data-state='collapsed'] #controls-panel {
         display: none
       }
@@ -1049,6 +1053,25 @@
       display: none;
     }
 
+    /* Mobile theme toggle icons – same logic */
+    #icon-moon-mobile {
+      display: none;
+      vertical-align: middle
+    }
+
+    #icon-sun-mobile {
+      display: inline-block;
+      vertical-align: middle
+    }
+
+    :root[data-theme="light"] #icon-moon-mobile {
+      display: inline-block;
+    }
+
+    :root[data-theme="light"] #icon-sun-mobile {
+      display: none;
+    }
+
     /* Dark-theme overrides – now handled by :root[data-theme='light'] above;
        the default :root is already dark, so no separate dark block needed.
        The following icon and focus rules still apply for backwards compatibility. */
@@ -1245,6 +1268,18 @@
       <button id="dimsBtn" class="btn primary" tabindex="3" aria-expanded="false" aria-haspopup="dialog" aria-controls="dimsOverlay"
         title="About the seven dimensions">Criteria</button>
       <button id="helpBtn" role="button" tabindex="4" aria-haspopup="dialog" aria-controls="helpOverlay" class="help">? Help</button>
+      <button id="themeToggleMobile" class="btn mobile-only" tabindex="5" aria-pressed="false" title="Toggle dark mode">
+        <span id="icon-sun-mobile" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+          </svg></span>
+        <span id="icon-moon-mobile" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+          </svg></span>
+      </button>
       <div id="loaders"></div>
       <div id="hypotheses"></div>
     </div>
@@ -1264,7 +1299,7 @@
           <button id="factsClose" aria-label="Close facts">×</button>
         </div>
         <div class="modalBody">
-          <p><strong>Source</strong>: <a href="https://www.reasonablefaith.org/" target="_blank"
+          <p><strong>Source</strong>: <a href="https://www.reasonablefaith.org/writings/popular-writings/jesus-of-nazareth/the-resurrection-of-jesus/" target="_blank"
               rel="noopener">reasonablefaith.org</a></p>
 
           <h4>Burial of Jesus by Joseph of Arimathea</h4>
@@ -2556,12 +2591,14 @@
       const initial = _pvGetInitialTheme();
       applyTheme(initial);
       d3.select('#themeToggle').attr('aria-pressed', initial === 'dark' ? 'true' : 'false');
-      d3.select('#themeToggle').on('click', () => {
+      d3.select('#themeToggleMobile').attr('aria-pressed', initial === 'dark' ? 'true' : 'false');
+      function _pvDoThemeToggle() {
         const cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
         const next = cur === 'dark' ? 'light' : 'dark';
         applyTheme(next);
         try { localStorage.setItem(_pvSharedThemeKey, next); localStorage.setItem(_pvLegacyThemeKey, next); } catch (e) { /* ignore */ }
         d3.select('#themeToggle').attr('aria-pressed', next === 'dark' ? 'true' : 'false');
+        d3.select('#themeToggleMobile').attr('aria-pressed', next === 'dark' ? 'true' : 'false');
         // If a specific vertex is currently selected, reapply highlight so ring fill tones
         // update according to the new theme (dark-only effect). Otherwise do nothing.
         try {
@@ -2572,7 +2609,9 @@
             d3.selectAll('.vertices .vertex-ring').attr('fill', document.documentElement.getAttribute('data-theme') !== 'light' ? 'rgba(255,255,255,0.12)' : '#fff');
           }
         } catch (e) { /* ignore */ }
-      });
+      }
+      d3.select('#themeToggle').on('click', _pvDoThemeToggle);
+      d3.select('#themeToggleMobile').on('click', _pvDoThemeToggle);
     }
     // initialize theme immediately so colors are correct before UI paints
     try { initTheme(); } catch (e) {/* ignore */ }
@@ -2602,6 +2641,7 @@
         if (event.data.type === 'pv-theme' && (event.data.theme === 'light' || event.data.theme === 'dark')) {
           applyTheme(event.data.theme);
           d3.select('#themeToggle').attr('aria-pressed', event.data.theme === 'dark' ? 'true' : 'false');
+          d3.select('#themeToggleMobile').attr('aria-pressed', event.data.theme === 'dark' ? 'true' : 'false');
           return;
         }
         if (event.data.type === _pvEmbedStateMessageType) {
@@ -3757,7 +3797,7 @@
       tabOrder = [];
       
       // 1. Add controls (only if visible)
-  ['controlsToggle', 'factsBtnMobile', 'embedReturnBtn', 'factsBtn', 'dimsBtn', 'helpBtn', 'themeToggle'].forEach(id => {
+  ['controlsToggle', 'factsBtnMobile', 'embedReturnBtn', 'factsBtn', 'dimsBtn', 'helpBtn', 'themeToggle', 'themeToggleMobile'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           // Check if element is visible (not display:none or visibility:hidden)
@@ -3894,7 +3934,7 @@
       controlCount = 0;
       
       // Count visible control buttons
-      ['controlsToggle', 'factsBtnMobile', 'embedReturnBtn', 'factsBtn', 'dimsBtn', 'helpBtn', 'themeToggle'].forEach(id => {
+      ['controlsToggle', 'factsBtnMobile', 'embedReturnBtn', 'factsBtn', 'dimsBtn', 'helpBtn', 'themeToggle', 'themeToggleMobile'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           const style = window.getComputedStyle(el);
