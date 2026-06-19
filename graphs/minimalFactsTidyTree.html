@@ -2096,11 +2096,6 @@
                 try { positionControlsToggle(); updateControlsReserve(); } catch (e) { /* non-fatal */ }
                 if (preserveInlineEmbedPlacement(900)) return;
                 try { scheduleRecenter(200); } catch (e) { /* non-fatal */ }
-                // iOS Chrome restores its browser chrome (address/nav bars) asynchronously
-                // after pageshow — no resize event fires. Re-measure at 300ms and 600ms
-                // to catch the UI settling and correct the chart height.
-                setTimeout(() => { computeChartHeight(); try { scheduleRecenter(160); } catch (e) { /* non-fatal */ } }, 300);
-                setTimeout(() => { computeChartHeight(); try { scheduleRecenter(160); } catch (e) { /* non-fatal */ } }, 600);
             });
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'visible') {
