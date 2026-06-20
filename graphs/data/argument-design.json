@@ -1,14 +1,14 @@
 {
   "id": "DA",
   "kind": "root",
-  "label": "The Design Argument (Fine-Tuning)",
+  "label": "Teleological (Fine-Tuning) Argument",
   "text": "A structured presentation of the teleological argument from cosmic fine-tuning.",
   "relToParent": null,
   "children": [
     {
       "id": "D_P1",
       "kind": "premise",
-      "label": "P1 — Necessity, chance, or design",
+      "label": "The fine-tuning of the universe is due to either physical necessity, chance, or design.",
       "text": "The fine-tuning of the universe for embodied conscious life is due to physical necessity, chance, or design.",
       "relToParent": "supports",
       "children": [
@@ -33,7 +33,7 @@
     {
       "id": "D_P2",
       "kind": "premise",
-      "label": "P2 — Not necessity or chance",
+      "label": "It is not due to physical necessity or chance.",
       "text": "The fine-tuning of the universe is not best explained by physical necessity or by chance.",
       "relToParent": "supports",
       "children": [
@@ -161,7 +161,7 @@
     {
       "id": "D_P3",
       "kind": "premise",
-      "label": "P3 — Therefore, design",
+      "label": "∴ The fine-tuning of the universe is due to design.",
       "text": "Therefore, the best explanation of the fine-tuning of the universe is design.",
       "relToParent": "supports",
       "children": [
