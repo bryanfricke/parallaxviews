@@ -8,7 +8,7 @@
     {
       "id": "D_P1",
       "kind": "premise",
-      "label": "The fine-tuning of the universe is due to either physical necessity, chance, or design.",
+      "label": "P1 — The fine-tuning of the universe is due to either physical necessity, chance, or design.",
       "text": "The fine-tuning of the universe for embodied conscious life is due to physical necessity, chance, or design.",
       "relToParent": "supports",
       "children": [
@@ -33,7 +33,7 @@
     {
       "id": "D_P2",
       "kind": "premise",
-      "label": "It is not due to physical necessity or chance.",
+      "label": "P2 — It is not due to physical necessity or chance.",
       "text": "The fine-tuning of the universe is not best explained by physical necessity or by chance.",
       "relToParent": "supports",
       "children": [
@@ -160,7 +160,7 @@
     },
     {
       "id": "D_P3",
-      "kind": "premise",
+      "kind": "conclusion",
       "label": "∴ The fine-tuning of the universe is due to design.",
       "text": "Therefore, the best explanation of the fine-tuning of the universe is design.",
       "relToParent": "supports",
