@@ -725,6 +725,387 @@
           "explanation": "This bonus question points to the 1986 JAMA article often cited in discussions of the medical effects of scourging and crucifixion. It is marked as a bonus because it fits better under medical evidence for Jesus' death than under the main lesson category of early testimony and the disciples' conviction."
         }
       ]
+    },
+    {
+      "id": "lesson-03",
+      "title": "Converted Skeptics: Paul and James",
+      "category": "Converted Skeptics",
+      "questions": [
+        {
+          "id": "l3-q001",
+          "type": "multiple-choice",
+          "category": "Converted Skeptics",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "Why are the testimonies of Paul and James especially significant?",
+          "choices": [
+            {
+              "id": "previously-rejected",
+              "text": "They had previously rejected or opposed the message of Jesus",
+              "isCorrect": true,
+              "feedback": "Correct. Their prior skepticism or opposition makes their later belief historically significant."
+            },
+            {
+              "id": "never-heard",
+              "text": "They had never heard of Jesus before becoming Christians",
+              "isCorrect": false,
+              "feedback": "Not quite. The point is not that they were ignorant of Jesus, but that they had not accepted the Christian claim."
+            },
+            {
+              "id": "roman-officials",
+              "text": "They were Roman officials assigned to investigate Christianity",
+              "isCorrect": false,
+              "feedback": "Not quite. Paul and James were not Roman investigators."
+            },
+            {
+              "id": "wrote-all-gospels",
+              "text": "They personally wrote all four Gospels",
+              "isCorrect": false,
+              "feedback": "Not quite. Their importance does not depend on having written the Gospels."
+            }
+          ],
+          "explanation": "Paul had persecuted Christians, and James, the brother of Jesus, appears not to have believed in Jesus during his ministry. Their later commitment is significant because both came to believe after what they regarded as encounters with the risen Jesus."
+        },
+        {
+          "id": "l3-q002",
+          "type": "multiple-choice",
+          "category": "James",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "Which non-Christian first-century author reports the martyrdom of James, the brother of Jesus?",
+          "choices": [
+            {
+              "id": "josephus",
+              "text": "Josephus",
+              "isCorrect": true,
+              "feedback": "Correct. Josephus reports the death of James, the brother of Jesus."
+            },
+            {
+              "id": "tacitus",
+              "text": "Tacitus",
+              "isCorrect": false,
+              "feedback": "Not quite. Tacitus is important for other references to early Christianity, but Josephus is the source in view here."
+            },
+            {
+              "id": "pliny",
+              "text": "Pliny the Younger",
+              "isCorrect": false,
+              "feedback": "Not quite. Pliny discusses Christians, but not this report about James."
+            },
+            {
+              "id": "suetonius",
+              "text": "Suetonius",
+              "isCorrect": false,
+              "feedback": "Not quite. Josephus is the first-century author connected to James's martyrdom."
+            }
+          ],
+          "explanation": "Josephus, a first-century Jewish historian and non-Christian source, reports the death of James, identifying him as the brother of Jesus who was called Christ."
+        },
+        {
+          "id": "l3-q003",
+          "type": "multiple-choice",
+          "category": "Converted Skeptics",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "Which two skeptics came to believe after they thought the risen Jesus had appeared to them?",
+          "choices": [
+            {
+              "id": "james-and-paul",
+              "text": "James, the brother of Jesus, and Paul, the persecutor of Christians",
+              "isCorrect": true,
+              "feedback": "Correct. James and Paul are the two skeptics in view."
+            },
+            {
+              "id": "peter-and-john",
+              "text": "Peter and John",
+              "isCorrect": false,
+              "feedback": "Not quite. Peter and John were disciples, not the two skeptics highlighted here."
+            },
+            {
+              "id": "pilate-and-herod",
+              "text": "Pilate and Herod",
+              "isCorrect": false,
+              "feedback": "Not quite. They are not presented as converted resurrection witnesses."
+            },
+            {
+              "id": "thomas-and-matthew",
+              "text": "Thomas and Matthew",
+              "isCorrect": false,
+              "feedback": "Not quite. Thomas had doubts, but the pair in this argument is James and Paul."
+            }
+          ],
+          "explanation": "Habermas and Licona emphasize James and Paul because they were not followers in the same way as the original disciples. James had not believed in Jesus during his ministry, and Paul had actively opposed the church."
+        },
+        {
+          "id": "l3-q004",
+          "type": "multiple-choice",
+          "category": "Paul",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "Which first-century authors report the conversion of Paul?",
+          "choices": [
+            {
+              "id": "paul-and-luke",
+              "text": "Paul and Luke",
+              "isCorrect": true,
+              "feedback": "Correct. Paul refers to his own conversion, and Luke narrates it in Acts."
+            },
+            {
+              "id": "josephus-and-tacitus",
+              "text": "Josephus and Tacitus",
+              "isCorrect": false,
+              "feedback": "Not quite. They are important non-Christian sources, but not the sources in view for Paul's conversion."
+            },
+            {
+              "id": "mark-and-john",
+              "text": "Mark and John",
+              "isCorrect": false,
+              "feedback": "Not quite. Paul and Luke are the two first-century authors in view."
+            },
+            {
+              "id": "clement-and-polycarp",
+              "text": "Clement and Polycarp",
+              "isCorrect": false,
+              "feedback": "Not quite. They are later early Christian writers, not the first-century pair intended here."
+            }
+          ],
+          "explanation": "Paul refers to his own former persecution of the church and his later calling, while Luke gives narrative accounts of Paul's conversion in Acts."
+        },
+        {
+          "id": "l3-q005",
+          "type": "multiple-choice",
+          "category": "Paul",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "According to Habermas and Licona, how many ancient sources report Paul's willingness to suffer and die for the gospel?",
+          "choices": [
+            {
+              "id": "seven",
+              "text": "Seven",
+              "isCorrect": true,
+              "feedback": "Correct. The number given in this argument is seven."
+            },
+            {
+              "id": "three",
+              "text": "Three",
+              "isCorrect": false,
+              "feedback": "Not quite. The number used in the argument is higher."
+            },
+            {
+              "id": "five",
+              "text": "Five",
+              "isCorrect": false,
+              "feedback": "Not quite. Habermas and Licona give seven in this argument."
+            },
+            {
+              "id": "twelve",
+              "text": "Twelve",
+              "isCorrect": false,
+              "feedback": "Not quite. That overstates the specific number in view."
+            }
+          ],
+          "explanation": "Habermas and Licona argue that seven ancient sources report Paul's willingness to suffer and die for the gospel. The point is that Paul's conversion was not casual or convenient; it led to costly commitment."
+        },
+        {
+          "id": "l3-q006",
+          "type": "multiple-choice",
+          "category": "James",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "Where is the appearance of the risen Jesus to James first reported?",
+          "choices": [
+            {
+              "id": "first-corinthians-15",
+              "text": "1 Corinthians 15",
+              "isCorrect": true,
+              "feedback": "Correct. Paul mentions an appearance to James in 1 Corinthians 15."
+            },
+            {
+              "id": "acts-15",
+              "text": "Acts 15",
+              "isCorrect": false,
+              "feedback": "Not quite. Acts 15 shows James as a leader, but the appearance to James is reported in 1 Corinthians 15."
+            },
+            {
+              "id": "mark-16",
+              "text": "Mark 16",
+              "isCorrect": false,
+              "feedback": "Not quite. The source in view is Paul's summary in 1 Corinthians 15."
+            },
+            {
+              "id": "revelation",
+              "text": "Revelation",
+              "isCorrect": false,
+              "feedback": "Not quite. Revelation is not the first report of the appearance to James."
+            }
+          ],
+          "explanation": "In 1 Corinthians 15, Paul lists appearances of the risen Jesus and includes an appearance to James. This is significant because James had not been a believer during Jesus' public ministry."
+        },
+        {
+          "id": "l3-q007",
+          "type": "multiple-choice",
+          "category": "James",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "Which two ancient sources indicate that James, the brother of Jesus, became a leader in the Jerusalem church?",
+          "choices": [
+            {
+              "id": "paul-and-luke",
+              "text": "Paul and Luke",
+              "isCorrect": true,
+              "feedback": "Correct. Paul and Luke both indicate James's important leadership role."
+            },
+            {
+              "id": "tacitus-and-pliny",
+              "text": "Tacitus and Pliny",
+              "isCorrect": false,
+              "feedback": "Not quite. They are not the two sources in view for James's leadership in Jerusalem."
+            },
+            {
+              "id": "augustine-and-jerome",
+              "text": "Augustine and Jerome",
+              "isCorrect": false,
+              "feedback": "Not quite. These are later Christian writers, not the pair intended here."
+            },
+            {
+              "id": "luther-and-calvin",
+              "text": "Luther and Calvin",
+              "isCorrect": false,
+              "feedback": "Not quite. They are Reformation figures, not ancient sources."
+            }
+          ],
+          "explanation": "Paul's letters and Luke's account in Acts indicate that James became a major leader in the Jerusalem church. This is historically significant given James's earlier unbelief."
+        },
+        {
+          "id": "l3-q008",
+          "type": "multiple-choice",
+          "category": "James",
+          "difficulty": "intermediate",
+          "shuffleChoices": false,
+          "question": "James, the brother of Jesus, was martyred for the gospel according to which ancient authors?",
+          "choices": [
+            {
+              "id": "hegesippus",
+              "text": "Hegesippus",
+              "isCorrect": false,
+              "feedback": "True, but incomplete. Hegesippus is one of the sources, but not the only one listed."
+            },
+            {
+              "id": "josephus",
+              "text": "Josephus",
+              "isCorrect": false,
+              "feedback": "True, but incomplete. Josephus is one of the sources, but not the only one listed."
+            },
+            {
+              "id": "clement-alexandria",
+              "text": "Clement of Alexandria",
+              "isCorrect": false,
+              "feedback": "True, but incomplete. Clement of Alexandria is one of the sources, but not the only one listed."
+            },
+            {
+              "id": "all-of-the-above",
+              "text": "A, B, and C",
+              "isCorrect": true,
+              "feedback": "Correct. All three are included in the list of sources for James's martyrdom."
+            }
+          ],
+          "explanation": "Hegesippus, Josephus, and Clement of Alexandria are all cited in connection with the martyrdom of James. Because the answer choice refers to A, B, and C, this question should not shuffle its answer order."
+        },
+        {
+          "id": "l3-q009",
+          "type": "true-false",
+          "category": "James",
+          "difficulty": "beginner",
+          "shuffleChoices": false,
+          "question": "True or false: Jesus had a brother named James who did not believe in him prior to the resurrection.",
+          "choices": [
+            {
+              "id": "true",
+              "text": "True",
+              "isCorrect": true,
+              "feedback": "Correct. James is presented as Jesus' brother and as someone who did not believe during Jesus' ministry."
+            },
+            {
+              "id": "false",
+              "text": "False",
+              "isCorrect": false,
+              "feedback": "Not quite. The evidence indicates that James was Jesus' brother and was not a believer before the resurrection."
+            }
+          ],
+          "explanation": "The New Testament identifies James as Jesus' brother, and John 7:5 says Jesus' brothers did not believe in him during his ministry. James later appears as a leader in the Jerusalem church, which makes his change especially significant."
+        },
+        {
+          "id": "l3-q010",
+          "type": "multiple-choice",
+          "category": "Converted Skeptics",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "What is an important difference between early skeptics like Paul and James and many modern skeptics?",
+          "choices": [
+            {
+              "id": "primary-vs-secondary",
+              "text": "Paul and James changed because of what they regarded as direct encounters, while modern skeptics usually evaluate later testimony and evidence",
+              "isCorrect": true,
+              "feedback": "Correct. Paul and James were not merely evaluating a distant tradition; they believed they had encountered the risen Jesus."
+            },
+            {
+              "id": "modern-skeptics-smarter",
+              "text": "Modern skeptics are always more careful than ancient people",
+              "isCorrect": false,
+              "feedback": "Not quite. That is too broad and dismissive of ancient witnesses."
+            },
+            {
+              "id": "ancient-no-questions",
+              "text": "Ancient people never questioned religious claims",
+              "isCorrect": false,
+              "feedback": "Not quite. Paul and James themselves show that skepticism existed in the first century."
+            },
+            {
+              "id": "no-difference",
+              "text": "There is no meaningful difference between a firsthand claim and a later evaluation of evidence",
+              "isCorrect": false,
+              "feedback": "Not quite. Firsthand claims and later historical evaluation are different kinds of evidence."
+            }
+          ],
+          "explanation": "Modern skeptics typically assess Christianity from later testimony, documents, and arguments. Paul and James are different because they moved from rejection or opposition to belief after what they regarded as direct appearances of the risen Jesus."
+        },
+        {
+          "id": "l3-bonus-001",
+          "type": "multiple-choice",
+          "category": "Bonus: Alternative Theories",
+          "difficulty": "bonus",
+          "isBonus": true,
+          "shuffleChoices": true,
+          "question": "Bonus: If someone suggests Jesus' body left the tomb because he merely revived after crucifixion, what is the best response?",
+          "choices": [
+            {
+              "id": "fails-best-explanation",
+              "text": "That explanation fails as an inference to the best explanation given the evidence we have",
+              "isCorrect": true,
+              "feedback": "Correct. The survival theory does not explain the evidence as well as the resurrection hypothesis."
+            },
+            {
+              "id": "possible-enough",
+              "text": "Any possible explanation is just as good as any other",
+              "isCorrect": false,
+              "feedback": "Not quite. Historical reasoning weighs which explanation best accounts for the evidence."
+            },
+            {
+              "id": "ignore-medical-evidence",
+              "text": "The medical and historical evidence should simply be ignored",
+              "isCorrect": false,
+              "feedback": "Not quite. The evidence surrounding scourging, crucifixion, burial, and appearances matters."
+            },
+            {
+              "id": "ancient-energy-drink",
+              "text": "Jesus probably found an ancient energy drink in the tomb",
+              "isCorrect": false,
+              "feedback": "Creative, but not a serious historical explanation."
+            }
+          ],
+          "explanation": "A survival or swoon-style theory must account for the severity of Roman scourging and crucifixion, Jesus' burial, the empty tomb claim, the disciples' belief that he appeared risen and glorified, and the conversions of Paul and James. As an inference to the best explanation, it is generally much weaker than the resurrection hypothesis."
+        }
+      ]
     }
   ]
 }

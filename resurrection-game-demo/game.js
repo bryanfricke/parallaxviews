@@ -16,7 +16,11 @@ const state = {
   checkedResult: null,
   lastFocusedElement: null,
   soundEnabled: true,
-  audioContext: null
+  audioContext: null,
+  audioUnlocked: false,
+  audioPrimed: false,
+  audioUnavailable: false,
+  audioUnlockPromise: null
 };
 
 const els = {
@@ -82,12 +86,12 @@ async function init() {
 }
 
 function bindEvents() {
-  els.startButton.addEventListener("click", startFirstLesson);
-  els.continueLessonButton.addEventListener("click", continueToNextLesson);
-  els.restartButton.addEventListener("click", replayCurrentLesson);
-  els.answerActionButton.addEventListener("click", handleAnswerAction);
+  els.startButton.addEventListener("click", withAudioUnlock(startFirstLesson));
+  els.continueLessonButton.addEventListener("click", withAudioUnlock(continueToNextLesson));
+  els.restartButton.addEventListener("click", withAudioUnlock(replayCurrentLesson));
+  els.answerActionButton.addEventListener("click", withAudioUnlock(handleAnswerAction));
   els.reviewButton.addEventListener("click", toggleMissedReview);
-  els.soundToggle.addEventListener("click", toggleSound);
+  els.soundToggle.addEventListener("click", withAudioUnlock(toggleSound));
   els.explainButton.addEventListener("click", openExplanationModal);
   els.modalBackdrop.addEventListener("click", closeExplanationModal);
   els.modalCloseIcon.addEventListener("click", closeExplanationModal);
@@ -109,6 +113,7 @@ function bindEvents() {
 
     const keyNumber = Number(event.key);
     if (keyNumber >= 1 && keyNumber <= 4) {
+      void unlockAudio();
       const button = els.choiceList.querySelector(`[data-choice-position="${keyNumber - 1}"]`);
       button?.click();
       return;
@@ -116,10 +121,18 @@ function bindEvents() {
 
     const letterIndex = ANSWER_LABELS.indexOf(event.key.toUpperCase());
     if (letterIndex >= 0) {
+      void unlockAudio();
       const button = els.choiceList.querySelector(`[data-choice-position="${letterIndex}"]`);
       button?.click();
     }
   });
+}
+
+function withAudioUnlock(callback) {
+  return (...args) => {
+    void unlockAudio();
+    callback(...args);
+  };
 }
 
 async function loadQuestions() {
@@ -277,7 +290,10 @@ function renderQuestion() {
       <span class="choice-text">${escapeHtml(choice.text)}</span>
       <span class="choice-status" aria-hidden="true"></span>
     `;
-    button.addEventListener("click", () => selectChoice(choice.id));
+    button.addEventListener("click", () => {
+      void unlockAudio();
+      selectChoice(choice.id);
+    });
     els.choiceList.appendChild(button);
   });
 
@@ -731,7 +747,7 @@ function toggleSound() {
   updateSoundToggle();
 
   if (state.soundEnabled) {
-    playToneSequence([
+    void playToneSequence([
       { frequency: 660, start: 0, duration: 0.06, gain: 0.08 },
       { frequency: 880, start: 0.07, duration: 0.08, gain: 0.08 }
     ]);
@@ -739,38 +755,108 @@ function toggleSound() {
 }
 
 function updateSoundToggle() {
-  els.soundToggle.setAttribute("aria-pressed", String(state.soundEnabled));
-  els.soundToggleText.textContent = state.soundEnabled ? "Sound on" : "Sound off";
-  els.soundToggle.querySelector(".sound-icon").textContent = state.soundEnabled ? "♪" : "x";
+  const soundIsUsable = state.soundEnabled && !state.audioUnavailable;
+  els.soundToggle.setAttribute("aria-pressed", String(soundIsUsable));
+  els.soundToggleText.textContent = state.audioUnavailable
+    ? "Sound unavailable"
+    : state.soundEnabled ? "Sound on" : "Sound off";
+  els.soundToggle.querySelector(".sound-icon").textContent = soundIsUsable ? "♪" : "x";
 }
 
 function playFeedbackSound(isCorrect) {
   if (isCorrect) {
-    playToneSequence([
+    void playToneSequence([
       { frequency: 523.25, start: 0, duration: 0.07, gain: 0.07 },
       { frequency: 659.25, start: 0.08, duration: 0.07, gain: 0.08 },
       { frequency: 783.99, start: 0.16, duration: 0.09, gain: 0.08 }
     ]);
   } else {
-    playToneSequence([
+    void playToneSequence([
       { frequency: 220, start: 0, duration: 0.09, gain: 0.055 },
       { frequency: 185, start: 0.11, duration: 0.12, gain: 0.045 }
     ]);
   }
 }
 
-function playToneSequence(notes) {
+async function unlockAudio() {
+  if (state.audioUnavailable || state.audioUnlocked) {
+    return state.audioUnlocked;
+  }
+
+  if (state.audioUnlockPromise) {
+    return state.audioUnlockPromise;
+  }
+
+  state.audioUnlockPromise = (async () => {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContextClass) {
+      state.audioUnavailable = true;
+      updateSoundToggle();
+      return false;
+    }
+
+    try {
+      if (!state.audioContext || state.audioContext.state === "closed") {
+        state.audioContext = new AudioContextClass();
+      }
+
+      if (state.audioContext.state !== "running" && typeof state.audioContext.resume === "function") {
+        await Promise.race([
+          state.audioContext.resume(),
+          waitForAudioUnlockTimeout()
+        ]);
+      }
+
+      if (state.audioContext.state === "running") {
+        primeAudioContext();
+        state.audioUnlocked = true;
+      }
+
+      return state.audioUnlocked;
+    } catch (error) {
+      console.warn("Audio could not be initialized.", error);
+      return false;
+    } finally {
+      state.audioUnlockPromise = null;
+    }
+  })();
+
+  return state.audioUnlockPromise;
+}
+
+function waitForAudioUnlockTimeout() {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, 750);
+  });
+}
+
+function primeAudioContext() {
+  if (!state.audioContext || state.audioPrimed) {
+    return;
+  }
+
+  try {
+    const source = state.audioContext.createBufferSource();
+    const gain = state.audioContext.createGain();
+    source.buffer = state.audioContext.createBuffer(1, 1, state.audioContext.sampleRate);
+    gain.gain.setValueAtTime(0.00001, state.audioContext.currentTime);
+    source.connect(gain).connect(state.audioContext.destination);
+    source.start(0);
+    state.audioPrimed = true;
+  } catch (error) {
+    console.warn("Audio priming was skipped.", error);
+  }
+}
+
+async function playToneSequence(notes) {
   if (!state.soundEnabled) {
     return;
   }
 
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContext) {
+  const isAudioReady = await unlockAudio();
+  if (!isAudioReady || !state.audioContext || state.audioContext.state !== "running") {
     return;
-  }
-
-  if (!state.audioContext) {
-    state.audioContext = new AudioContext();
   }
 
   const now = state.audioContext.currentTime;
