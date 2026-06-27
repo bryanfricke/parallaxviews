@@ -1,0 +1,730 @@
+{
+  "lessons": [
+    {
+      "id": "lesson-01",
+      "title": "Historical Method and Minimal Facts",
+      "category": "Foundations",
+      "questions": [
+        {
+          "id": "q001",
+          "type": "multiple-choice",
+          "category": "Historical Method",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "What was the Jerusalem factor?",
+          "choices": [
+            {
+              "id": "jerusalem-public-location",
+              "text": "The resurrection message began in the very city where Jesus had been publicly executed and buried",
+              "isCorrect": true,
+              "feedback": "Correct. The claim was proclaimed where it could be checked most directly."
+            },
+            {
+              "id": "jerusalem-only-crucifixions",
+              "text": "Jerusalem was the only city in the Roman Empire where crucifixions took place",
+              "isCorrect": false,
+              "feedback": "Not quite. Crucifixion was practiced throughout the Roman world."
+            },
+            {
+              "id": "disciples-avoided-jerusalem",
+              "text": "The disciples avoided Jerusalem because no one there could check their claims",
+              "isCorrect": false,
+              "feedback": "Not quite. The point is almost the opposite: Jerusalem was the place where the claim could be checked."
+            },
+            {
+              "id": "late-distant-city",
+              "text": "The resurrection was first preached centuries later in a distant city",
+              "isCorrect": false,
+              "feedback": "Not quite. The resurrection proclamation was early and centered in Jerusalem."
+            }
+          ],
+          "explanation": "The Jerusalem factor means the resurrection was proclaimed in the same city where Jesus had been killed and buried. If the tomb still contained Jesus' body, the claim could have been challenged immediately."
+        },
+        {
+          "id": "q002",
+          "type": "multiple-choice",
+          "category": "Historical Method",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "What is the principle of embarrassment?",
+          "choices": [
+            {
+              "id": "awkward-details",
+              "text": "A report is more likely to be authentic when it includes details awkward or damaging to the author's side",
+              "isCorrect": true,
+              "feedback": "Correct. People are less likely to invent details that embarrass their own side."
+            },
+            {
+              "id": "remove-embarrassment",
+              "text": "A report is more reliable when it removes embarrassing details",
+              "isCorrect": false,
+              "feedback": "Not quite. Removing embarrassing details may make a story smoother, but it does not increase credibility."
+            },
+            {
+              "id": "leaders-look-good",
+              "text": "A report is historical only if it makes religious leaders look good",
+              "isCorrect": false,
+              "feedback": "Not quite. Embarrassing or inconvenient details can sometimes support authenticity."
+            },
+            {
+              "id": "reject-uncomfortable",
+              "text": "A report should be rejected whenever it contains uncomfortable information",
+              "isCorrect": false,
+              "feedback": "Not quite. Uncomfortable details may actually count in favor of authenticity."
+            }
+          ],
+          "explanation": "The principle of embarrassment says people are less likely to invent details that weaken their own case, embarrass themselves, or make their side look bad."
+        },
+        {
+          "id": "q003",
+          "type": "multiple-choice",
+          "category": "Historical Method",
+          "difficulty": "intermediate",
+          "shuffleChoices": false,
+          "question": "When can an event reasonably be considered historical?",
+          "choices": [
+            {
+              "id": "strong-evidence",
+              "text": "When it is supported by strong evidence",
+              "isCorrect": false,
+              "feedback": "True, but incomplete. Strong evidence matters, but historical reasoning also weighs context and rival explanations."
+            },
+            {
+              "id": "historical-context",
+              "text": "When it fits the known historical context",
+              "isCorrect": false,
+              "feedback": "True, but incomplete. Historical fit matters, but it is not the whole test by itself."
+            },
+            {
+              "id": "best-explanation",
+              "text": "When it is better explained by that event than by rival explanations",
+              "isCorrect": false,
+              "feedback": "True, but incomplete. Explanatory power matters, but it works together with evidence and context."
+            },
+            {
+              "id": "abc",
+              "text": "A, B, and C",
+              "isCorrect": true,
+              "feedback": "Correct. A historical conclusion is strongest when evidence, context, and explanatory power all work together."
+            }
+          ],
+          "explanation": "A historical conclusion is strongest when it is supported by evidence, fits the context, and explains the known data better than competing theories."
+        },
+        {
+          "id": "q004",
+          "type": "multiple-choice",
+          "category": "Minimal Facts",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "What is the minimal facts approach?",
+          "choices": [
+            {
+              "id": "strong-widely-granted",
+              "text": "An argument that uses only facts supported by strong evidence and widely granted by relevant scholars",
+              "isCorrect": true,
+              "feedback": "Correct. The approach builds from facts that have strong evidence and broad scholarly acceptance."
+            },
+            {
+              "id": "assume-inspiration",
+              "text": "An argument that assumes the Bible is inspired before examining the evidence",
+              "isCorrect": false,
+              "feedback": "Not quite. The minimal facts approach does not require the skeptic to first accept biblical inspiration."
+            },
+            {
+              "id": "personal-experience-only",
+              "text": "An argument that avoids history and relies only on personal experience",
+              "isCorrect": false,
+              "feedback": "Not quite. The approach is historical and evidential."
+            },
+            {
+              "id": "prove-every-detail",
+              "text": "An argument that says every Gospel detail must first be proven beyond doubt",
+              "isCorrect": false,
+              "feedback": "Not quite. The approach does not require proving every Gospel detail before considering the resurrection."
+            }
+          ],
+          "explanation": "The minimal facts approach builds a case from facts that have strong evidential support and are widely accepted by scholars, including many who are not Christians."
+        },
+        {
+          "id": "q005",
+          "type": "multiple-choice",
+          "category": "Answering Objections",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "If a skeptic says, \"I don't believe in the resurrection because I don't believe in the Bible,\" what could a Christian say?",
+          "choices": [
+            {
+              "id": "historical-documents",
+              "text": "You do not have to assume the Bible is inspired to examine its documents as historical sources",
+              "isCorrect": true,
+              "feedback": "Correct. The documents can be examined historically before someone accepts them as Scripture."
+            },
+            {
+              "id": "no-point",
+              "text": "Then there is no point discussing historical evidence",
+              "isCorrect": false,
+              "feedback": "Not quite. The minimal facts approach is designed to keep the historical discussion open."
+            },
+            {
+              "id": "accept-first",
+              "text": "The resurrection can only be discussed after someone already accepts Christianity",
+              "isCorrect": false,
+              "feedback": "Not quite. The resurrection can be investigated historically before someone accepts Christianity."
+            },
+            {
+              "id": "feelings-only",
+              "text": "The best response is to avoid evidence and appeal only to feelings",
+              "isCorrect": false,
+              "feedback": "Not quite. Personal experience may matter, but this approach emphasizes public historical evidence."
+            }
+          ],
+          "explanation": "A Christian can say that the New Testament documents may be examined historically, even by someone who does not yet believe they are inspired Scripture."
+        },
+        {
+          "id": "q006",
+          "type": "true-false",
+          "category": "Christianity",
+          "difficulty": "beginner",
+          "shuffleChoices": false,
+          "question": "True or false: If Jesus did not rise from the dead, then Christianity is false.",
+          "choices": [
+            {
+              "id": "true",
+              "text": "True",
+              "isCorrect": true,
+              "feedback": "Correct. Christianity stands or falls on the resurrection."
+            },
+            {
+              "id": "false",
+              "text": "False",
+              "isCorrect": false,
+              "feedback": "Not quite. The New Testament treats the resurrection as essential, not optional."
+            }
+          ],
+          "explanation": "Christianity stands or falls on the resurrection. Paul says that if Christ has not been raised, Christian faith is futile."
+        },
+        {
+          "id": "q007",
+          "type": "multiple-choice",
+          "category": "Evidence",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "What is the role of evidence in investigating the truth of Christianity?",
+          "choices": [
+            {
+              "id": "test-central-claims",
+              "text": "Evidence helps test whether Christianity's central historical claims are true",
+              "isCorrect": true,
+              "feedback": "Correct. Christianity makes historical claims that can be investigated."
+            },
+            {
+              "id": "irrelevant",
+              "text": "Evidence is irrelevant because Christianity has no historical claims",
+              "isCorrect": false,
+              "feedback": "Not quite. Christianity is deeply connected to historical claims."
+            },
+            {
+              "id": "after-agreement",
+              "text": "Evidence should only be used after someone already agrees with the conclusion",
+              "isCorrect": false,
+              "feedback": "Not quite. Good investigation does not require agreement before looking at evidence."
+            },
+            {
+              "id": "math-certainty",
+              "text": "Evidence can prove every Christian doctrine with mathematical certainty",
+              "isCorrect": false,
+              "feedback": "Not quite. Historical evidence usually gives reasonable confidence, not mathematical certainty."
+            }
+          ],
+          "explanation": "Christianity makes historical claims, especially about Jesus' death and resurrection. Evidence helps us investigate whether those claims are true."
+        },
+        {
+          "id": "q008",
+          "type": "multiple-choice",
+          "category": "Minimal Facts",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "Why is the minimal facts approach effective?",
+          "choices": [
+            {
+              "id": "common-ground",
+              "text": "It argues from facts that are strongly evidenced and often accepted even by critical scholars",
+              "isCorrect": true,
+              "feedback": "Correct. It begins with common ground rather than assuming the listener already agrees."
+            },
+            {
+              "id": "inerrancy-first",
+              "text": "It depends on first proving biblical inerrancy",
+              "isCorrect": false,
+              "feedback": "Not quite. The approach does not begin by requiring belief in inerrancy."
+            },
+            {
+              "id": "avoid-data",
+              "text": "It avoids the need to discuss actual historical data",
+              "isCorrect": false,
+              "feedback": "Not quite. It depends directly on historical data."
+            },
+            {
+              "id": "miracles-first",
+              "text": "It works only if the listener already agrees that miracles happen",
+              "isCorrect": false,
+              "feedback": "Not quite. It can be used with skeptics because it begins with evidence rather than assuming agreement about miracles."
+            }
+          ],
+          "explanation": "The approach is effective because it starts with common ground: facts that have strong historical support and are often accepted even by scholars who do not share Christian beliefs."
+        },
+        {
+          "id": "q009",
+          "type": "multiple-choice",
+          "category": "Historical Method",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "What is the principle of enemy attestation?",
+          "choices": [
+            {
+              "id": "hostile-source",
+              "text": "A claim gains credibility when it is acknowledged by a hostile or unsympathetic source",
+              "isCorrect": true,
+              "feedback": "Correct. A hostile source is unlikely to invent a claim that helps the side it opposes."
+            },
+            {
+              "id": "enemy-always-false",
+              "text": "A claim is false whenever an enemy reports it",
+              "isCorrect": false,
+              "feedback": "Not quite. A hostile source can sometimes strengthen a claim."
+            },
+            {
+              "id": "friends-only",
+              "text": "A claim is true only when it is reported by a friend",
+              "isCorrect": false,
+              "feedback": "Not quite. Friendly sources can matter, but enemy attestation has its own value."
+            },
+            {
+              "id": "all-enemies",
+              "text": "A claim should be ignored unless all enemies agree about it",
+              "isCorrect": false,
+              "feedback": "Not quite. Historical arguments rarely require every hostile source to agree."
+            }
+          ],
+          "explanation": "Enemy attestation matters because hostile sources are unlikely to invent claims that help the side they oppose."
+        },
+        {
+          "id": "q010",
+          "type": "multiple-choice",
+          "category": "Historical Method",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "What is the principle of multiple attestation?",
+          "choices": [
+            {
+              "id": "multiple-independent-sources",
+              "text": "A claim is stronger when it is supported by multiple independent sources or lines of evidence",
+              "isCorrect": true,
+              "feedback": "Correct. Multiple independent sources or lines of evidence can strengthen a historical claim."
+            },
+            {
+              "id": "weaker",
+              "text": "A claim is weaker when more than one source mentions it",
+              "isCorrect": false,
+              "feedback": "Not quite. Multiple independent sources usually strengthen, not weaken, a historical claim."
+            },
+            {
+              "id": "identical-wording",
+              "text": "A claim is historical only if every source uses identical wording",
+              "isCorrect": false,
+              "feedback": "Not quite. Identical wording may suggest copying; independent testimony can be more valuable."
+            },
+            {
+              "id": "one-source-only",
+              "text": "A claim should be accepted only if it appears in one source",
+              "isCorrect": false,
+              "feedback": "Not quite. A single source may matter, but multiple independent sources generally provide stronger support."
+            }
+          ],
+          "explanation": "Multiple attestation means a claim gains strength when it appears in more than one independent source or stream of evidence."
+        }
+      ]
+    },
+    {
+      "id": "lesson-02",
+      "title": "Early Testimony and the Disciples’ Conviction",
+      "category": "Early Testimony",
+      "questions": [
+        {
+          "id": "l2-q001",
+          "type": "multiple-choice",
+          "category": "Early Creed",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "How soon after Jesus' death did Paul likely receive the creedal tradition quoted in 1 Corinthians 15:3-5?",
+          "choices": [
+            {
+              "id": "within-five-years",
+              "text": "Within about five years",
+              "isCorrect": true,
+              "feedback": "Correct. Many scholars date this tradition very early, often within just a few years of Jesus' death."
+            },
+            {
+              "id": "within-fifty-years",
+              "text": "Within about fifty years",
+              "isCorrect": false,
+              "feedback": "Not quite. That is much later than the early dating often argued for this creed."
+            },
+            {
+              "id": "second-century",
+              "text": "Sometime in the second century",
+              "isCorrect": false,
+              "feedback": "Not quite. The creed is usually dated far earlier than the second century."
+            },
+            {
+              "id": "middle-ages",
+              "text": "During the Middle Ages",
+              "isCorrect": false,
+              "feedback": "Not quite. That would be wildly too late for Paul's own letter."
+            }
+          ],
+          "explanation": "The tradition Paul quotes in 1 Corinthians 15:3-5 is widely regarded as very early. Habermas and Licona argue that Paul probably received it within about five years of Jesus' death, making it important evidence against the idea that resurrection belief developed only much later."
+        },
+        {
+          "id": "l2-q002",
+          "type": "multiple-choice",
+          "category": "Disciples' Suffering",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "According to Habermas and Licona, how many sources attest to the original disciples' willingness to suffer and/or die for their beliefs?",
+          "choices": [
+            {
+              "id": "seven-sources",
+              "text": "Seven",
+              "isCorrect": true,
+              "feedback": "Correct. The argument appeals to seven sources for the disciples' willingness to suffer and/or die."
+            },
+            {
+              "id": "two-sources",
+              "text": "Two",
+              "isCorrect": false,
+              "feedback": "Not quite. The case appeals to more than two sources."
+            },
+            {
+              "id": "four-sources",
+              "text": "Four",
+              "isCorrect": false,
+              "feedback": "Not quite. The number given in the argument is higher."
+            },
+            {
+              "id": "twenty-seven-sources",
+              "text": "Twenty-seven",
+              "isCorrect": false,
+              "feedback": "Not quite. That would overstate the number in this specific argument."
+            }
+          ],
+          "explanation": "Habermas and Licona argue that seven sources attest to the original disciples' willingness to suffer and/or die for their beliefs. The point is not that every detail of every apostle's death is known, but that the disciples' public commitment under pressure is historically significant."
+        },
+        {
+          "id": "l2-q003",
+          "type": "true-false",
+          "category": "Disciples' Suffering",
+          "difficulty": "beginner",
+          "shuffleChoices": false,
+          "question": "True or false: The disciples' willingness to suffer or die for their beliefs proves that their beliefs were true.",
+          "choices": [
+            {
+              "id": "true",
+              "text": "True",
+              "isCorrect": false,
+              "feedback": "Not quite. Sincerity does not by itself prove that a belief is true."
+            },
+            {
+              "id": "false",
+              "text": "False",
+              "isCorrect": true,
+              "feedback": "Correct. Their willingness shows sincerity, not automatic truth."
+            }
+          ],
+          "explanation": "People can sincerely die for false beliefs. The important point is that the disciples' willingness to suffer supports the claim that they truly believed they had encountered the risen Jesus. It argues against deliberate fraud, but it does not by itself prove the resurrection."
+        },
+        {
+          "id": "l2-q004",
+          "type": "multiple-choice",
+          "category": "Disciples' Suffering",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "What can we say with historical confidence about the original disciples' willingness to suffer for their resurrection claim?",
+          "choices": [
+            {
+              "id": "preached-under-pressure",
+              "text": "They preached the gospel despite threats, opposition, and violence recorded in early sources",
+              "isCorrect": true,
+              "feedback": "Correct. The key point is their continued proclamation under real pressure."
+            },
+            {
+              "id": "every-death-known",
+              "text": "We know exactly how every original disciple died",
+              "isCorrect": false,
+              "feedback": "Not quite. The details of every disciple's death are not equally well known."
+            },
+            {
+              "id": "no-opposition",
+              "text": "They faced no serious opposition in the first century",
+              "isCorrect": false,
+              "feedback": "Not quite. Early sources describe threats, persecution, and violence."
+            },
+            {
+              "id": "private-belief-only",
+              "text": "They kept their resurrection belief private and avoided public risk",
+              "isCorrect": false,
+              "feedback": "Not quite. The point is that they publicly proclaimed the message despite risk."
+            }
+          ],
+          "explanation": "We do not know with equal certainty that every original disciple willingly died for his belief. But early sources do indicate that the disciples publicly proclaimed the gospel despite threats, opposition, imprisonment, and violence. This supports the claim that they sincerely believed their resurrection testimony."
+        },
+        {
+          "id": "l2-q005",
+          "type": "multiple-choice",
+          "category": "Early Sources",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "What is the earliest written record we have of appearances of the risen Jesus?",
+          "choices": [
+            {
+              "id": "first-corinthians-15",
+              "text": "1 Corinthians 15:3-8",
+              "isCorrect": true,
+              "feedback": "Correct. Paul's summary in 1 Corinthians 15 is our earliest written record of resurrection appearances."
+            },
+            {
+              "id": "gospel-of-john",
+              "text": "The Gospel of John",
+              "isCorrect": false,
+              "feedback": "Not quite. John is important, but 1 Corinthians is earlier."
+            },
+            {
+              "id": "josephus",
+              "text": "Josephus' Antiquities",
+              "isCorrect": false,
+              "feedback": "Not quite. Josephus is not the earliest written record of the appearances."
+            },
+            {
+              "id": "nicene-creed",
+              "text": "The Nicene Creed",
+              "isCorrect": false,
+              "feedback": "Not quite. The Nicene Creed is much later."
+            }
+          ],
+          "explanation": "Paul's statement in 1 Corinthians 15:3-8 is earlier than the written Gospels and preserves a very early tradition about Jesus' death, burial, resurrection, and appearances."
+        },
+        {
+          "id": "l2-q006",
+          "type": "multiple-choice",
+          "category": "Disciples' Claims",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "Why do many scholars hold that the original disciples claimed and believed that Jesus rose from the dead?",
+          "choices": [
+            {
+              "id": "multiple-sources-and-suffering",
+              "text": "Multiple sources report their claims, and some disciples suffered for proclaiming them",
+              "isCorrect": true,
+              "feedback": "Correct. The argument combines multiple attestation with evidence of sincere conviction."
+            },
+            {
+              "id": "no-sources-needed",
+              "text": "Because no historical sources are needed for this conclusion",
+              "isCorrect": false,
+              "feedback": "Not quite. The conclusion is based on historical sources."
+            },
+            {
+              "id": "all-details-equal",
+              "text": "Because every later tradition about every apostle is equally certain",
+              "isCorrect": false,
+              "feedback": "Not quite. The argument does not require treating every later tradition as equally reliable."
+            },
+            {
+              "id": "roman-approval",
+              "text": "Because Roman officials officially endorsed the resurrection message",
+              "isCorrect": false,
+              "feedback": "Not quite. The early Christian message often faced opposition, not official endorsement."
+            }
+          ],
+          "explanation": "Many scholars grant that the original disciples claimed and believed Jesus had risen because multiple early sources attest to their proclamation, and because their willingness to suffer supports the sincerity of their belief."
+        },
+        {
+          "id": "l2-q007",
+          "type": "multiple-choice",
+          "category": "Disciples' Suffering",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "What distinguishes the original disciples' willingness to suffer from later martyrs or extremists who die for beliefs received from others?",
+          "choices": [
+            {
+              "id": "eyewitness-claim",
+              "text": "The disciples suffered for what they claimed to have personally seen, not merely for a tradition handed down to them",
+              "isCorrect": true,
+              "feedback": "Correct. The key distinction is firsthand witness versus inherited belief."
+            },
+            {
+              "id": "suffering-proves-truth",
+              "text": "Anyone who dies for a belief proves that the belief is true",
+              "isCorrect": false,
+              "feedback": "Not quite. Sincerity does not automatically prove truth."
+            },
+            {
+              "id": "disciples-never-afraid",
+              "text": "The disciples were never afraid or confused",
+              "isCorrect": false,
+              "feedback": "Not quite. The New Testament portrays the disciples as fearful and confused at points."
+            },
+            {
+              "id": "all-martyrs-identical",
+              "text": "There is no meaningful difference between firsthand witnesses and people who inherit a belief centuries later",
+              "isCorrect": false,
+              "feedback": "Not quite. Firsthand claims are historically different from inherited beliefs."
+            }
+          ],
+          "explanation": "The argument is not that martyrdom proves a belief true. Rather, the original disciples were in a position to know whether they had experiences they took to be appearances of the risen Jesus. Their willingness to suffer supports sincerity and helps challenge the idea that they knowingly invented the claim."
+        },
+        {
+          "id": "l2-q008",
+          "type": "multiple-choice",
+          "category": "Ancient Sources",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "Nine ancient sources attesting the disciples' claim that they had seen the risen Jesus can be grouped into which three categories?",
+          "choices": [
+            {
+              "id": "nt-oral-written",
+              "text": "New Testament writings, oral tradition, and written tradition",
+              "isCorrect": true,
+              "feedback": "Correct. These are the three categories used to group the sources."
+            },
+            {
+              "id": "roman-greek-egyptian",
+              "text": "Roman, Greek, and Egyptian government records",
+              "isCorrect": false,
+              "feedback": "Not quite. That is not the three-part grouping used here."
+            },
+            {
+              "id": "poetry-law-coins",
+              "text": "Poetry, legal codes, and ancient coins",
+              "isCorrect": false,
+              "feedback": "Not quite. Those are not the categories in this argument."
+            },
+            {
+              "id": "medieval-modern-archeological",
+              "text": "Medieval tradition, modern scholarship, and archaeology",
+              "isCorrect": false,
+              "feedback": "Not quite. The grouping concerns ancient sources connected to early Christian testimony."
+            }
+          ],
+          "explanation": "Habermas and Licona present the nine ancient sources in three categories: New Testament writings, oral tradition, and written tradition. The point is that the disciples' claim is not based on a single isolated source."
+        },
+        {
+          "id": "l2-q009",
+          "type": "multiple-choice",
+          "category": "Apostolic Fathers",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "Which two Apostolic Fathers report that the apostles were dramatically impacted by the resurrection of Jesus?",
+          "choices": [
+            {
+              "id": "polycarp-clement",
+              "text": "Polycarp and Clement of Rome",
+              "isCorrect": true,
+              "feedback": "Correct. Polycarp and Clement are the pair in view."
+            },
+            {
+              "id": "augustine-aquinas",
+              "text": "Augustine and Thomas Aquinas",
+              "isCorrect": false,
+              "feedback": "Not quite. They are major Christian thinkers, but they are not Apostolic Fathers from the earliest period."
+            },
+            {
+              "id": "luther-calvin",
+              "text": "Martin Luther and John Calvin",
+              "isCorrect": false,
+              "feedback": "Not quite. They are Reformation figures, not Apostolic Fathers."
+            },
+            {
+              "id": "origen-jerome",
+              "text": "Origen and Jerome",
+              "isCorrect": false,
+              "feedback": "Not quite. They are important early Christian writers, but not the two intended here."
+            }
+          ],
+          "explanation": "Polycarp and Clement of Rome are cited as early Christian voices reporting that the apostles were dramatically impacted by the resurrection of Jesus."
+        },
+        {
+          "id": "l2-q010",
+          "type": "multiple-choice",
+          "category": "Alternative Theories",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "The disciples' sincere belief that they had seen the risen Jesus helps weaken which two opposing theories?",
+          "choices": [
+            {
+              "id": "conspiracy-legend",
+              "text": "Conspiracy and legend or embellishment",
+              "isCorrect": true,
+              "feedback": "Correct. Sincere belief challenges fraud, and early testimony challenges late legendary development."
+            },
+            {
+              "id": "swoon-hallucination",
+              "text": "Swoon theory and hallucination theory",
+              "isCorrect": false,
+              "feedback": "Not quite. Other arguments address those theories more directly."
+            },
+            {
+              "id": "mythicism-naturalism",
+              "text": "Mythicism and philosophical naturalism",
+              "isCorrect": false,
+              "feedback": "Not quite. Those are different kinds of objections."
+            },
+            {
+              "id": "aliens-time-travel",
+              "text": "Aliens and time travel",
+              "isCorrect": false,
+              "feedback": "Creative, but not the two theories in view here."
+            }
+          ],
+          "explanation": "If the disciples sincerely believed they had seen the risen Jesus, that weakens the conspiracy theory because they were not knowingly lying. The early testimony also weakens the idea that resurrection belief was merely a late legend or embellishment."
+        },
+        {
+          "id": "l2-bonus-001",
+          "type": "multiple-choice",
+          "category": "Bonus: Medical Evidence",
+          "difficulty": "bonus",
+          "isBonus": true,
+          "shuffleChoices": true,
+          "question": "Bonus: A major medical article discussing the physical effects of scourging and crucifixion appeared in which journal?",
+          "choices": [
+            {
+              "id": "jama",
+              "text": "The Journal of the American Medical Association, March 21, 1986",
+              "isCorrect": true,
+              "feedback": "Correct. The article appeared in JAMA in 1986."
+            },
+            {
+              "id": "nejm",
+              "text": "The New England Journal of Medicine",
+              "isCorrect": false,
+              "feedback": "Not quite. The article in view was published in JAMA."
+            },
+            {
+              "id": "lancet",
+              "text": "The Lancet",
+              "isCorrect": false,
+              "feedback": "Not quite. The journal in view is JAMA."
+            },
+            {
+              "id": "popular-mechanics",
+              "text": "Popular Mechanics: Weekend Crucifixion Edition",
+              "isCorrect": false,
+              "feedback": "Not quite. Entertaining title, wrong publication."
+            }
+          ],
+          "explanation": "This bonus question points to the 1986 JAMA article often cited in discussions of the medical effects of scourging and crucifixion. It is marked as a bonus because it fits better under medical evidence for Jesus' death than under the main lesson category of early testimony and the disciples' conviction."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="A static browser quiz demo for learning key resurrection arguments and historical reasoning concepts."
+    >
+    <title>Resurrection Case Quiz Demo</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="game-shell" aria-labelledby="app-title">
+      <div class="app-header">
+        <div class="brand-lockup">
+          <span class="brand-mark" aria-hidden="true">RC</span>
+          <span class="brand-text">Resurrection Case Quiz</span>
+        </div>
+        <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false">
+          <span class="sound-icon" aria-hidden="true">♪</span>
+          <span id="soundToggleText">Sound on</span>
+        </button>
+      </div>
+
+      <section class="screen screen-active start-screen" id="startScreen" aria-labelledby="app-title">
+        <p class="eyebrow">Proof-of-concept web demo</p>
+        <h1 id="app-title">Master the Case for the Resurrection</h1>
+        <p class="start-copy">
+          Practice key facts, historical methods, and argument strategies inspired by
+          <cite>The Case for the Resurrection of Jesus</cite>.
+        </p>
+        <div class="start-actions">
+          <button class="primary-action" id="startButton" type="button">Start Lesson 1</button>
+          <p class="demo-note">
+            Two short lessons with a bonus question. Static HTML, CSS, and JavaScript.
+            No backend required.
+          </p>
+        </div>
+        <div class="load-message" id="loadMessage" role="status" aria-live="polite">
+          Loading question deck...
+        </div>
+      </section>
+
+      <section class="screen quiz-screen" id="quizScreen" aria-labelledby="questionText" hidden>
+        <div class="game-main">
+          <header class="quiz-header">
+            <div class="meter-line">
+              <span id="progressText">Question 1 of 10</span>
+              <span id="scoreText">Score 0</span>
+              <span id="streakText">Streak 0</span>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+          </header>
+
+          <h2 class="question-text" id="questionText">Question text</h2>
+
+          <div class="choice-list" id="choiceList" aria-label="Answer choices"></div>
+        </div>
+
+        <div class="bottom-shelf">
+          <section class="feedback-panel" id="feedbackPanel" aria-live="polite" hidden>
+            <div class="feedback-title" id="feedbackTitle"></div>
+            <p class="choice-feedback" id="choiceFeedback"></p>
+            <p class="correct-solution" id="correctSolution"></p>
+          </section>
+
+          <div class="answer-action-row">
+            <button class="explain-button" id="explainButton" type="button" hidden>
+              Explain
+            </button>
+            <button class="answer-action-button" id="answerActionButton" type="button" disabled>
+              Check
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="explanation-modal"
+          id="explanationModal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="explanationTitle"
+          hidden
+        >
+          <div class="modal-backdrop" id="modalBackdrop"></div>
+          <section class="modal-card" role="document">
+            <div class="modal-heading-row">
+              <h3 id="explanationTitle">Explanation</h3>
+              <button class="modal-close-icon" id="modalCloseIcon" type="button" aria-label="Close explanation">
+                x
+              </button>
+            </div>
+            <div class="modal-content">
+              <p class="modal-feedback" id="modalChoiceFeedback"></p>
+              <p class="modal-correct-answer" id="modalCorrectAnswer"></p>
+              <p class="modal-explanation" id="modalExplanation"></p>
+            </div>
+            <div class="modal-actions">
+              <button class="answer-action-button" id="modalCloseButton" type="button">
+                Got it
+              </button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen end-screen" id="endScreen" aria-labelledby="endTitle" hidden>
+        <p class="eyebrow">Round complete</p>
+        <h2 id="endTitle">Final score</h2>
+        <div class="result-score" id="resultScore">0 / 10</div>
+        <p class="result-message" id="resultMessage"></p>
+
+        <div class="stat-grid" aria-label="Round statistics">
+          <div class="stat-tile">
+            <span class="stat-value" id="correctCount">0</span>
+            <span class="stat-label">Correct</span>
+          </div>
+          <div class="stat-tile">
+            <span class="stat-value" id="totalCount">10</span>
+            <span class="stat-label">Questions</span>
+          </div>
+          <div class="stat-tile">
+            <span class="stat-value" id="bestStreak">0</span>
+            <span class="stat-label">Best streak</span>
+          </div>
+        </div>
+
+        <div class="end-actions">
+          <button class="primary-action" id="continueLessonButton" type="button" hidden>
+            Continue to Lesson 2
+          </button>
+          <button class="primary-action" id="restartButton" type="button">Play again</button>
+          <button class="secondary-action" id="reviewButton" type="button">Review misses</button>
+        </div>
+
+        <section class="review-panel" id="reviewPanel" aria-labelledby="reviewTitle" hidden>
+          <h3 id="reviewTitle">Missed questions</h3>
+          <div id="missedList" class="missed-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="game.js" defer></script>
+  </body>
+</html>
