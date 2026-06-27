@@ -1,5 +1,6 @@
 const QUESTION_URL = "questions.json";
 const SOUND_PREF_KEY = "resurrectionQuizSoundEnabled";
+const LESSON_PROGRESS_KEY = "resurrectionQuizLessonProgress";
 const ANSWER_LABELS = ["A", "B", "C", "D"];
 const DEBUG_AUDIO = true;
 const CORRECT_SOUND_NOTES = [
@@ -18,6 +19,7 @@ const TOGGLE_SOUND_NOTES = [
 
 const state = {
   lessons: [],
+  lessonProgress: {},
   currentLessonIndex: 0,
   questions: [],
   currentIndex: 0,
@@ -30,6 +32,8 @@ const state = {
   checkedResult: null,
   lastFocusedElement: null,
   isQuestionTransitioning: false,
+  questionTransitionId: 0,
+  lessonCompletionSaved: false,
   soundEnabled: true,
   audioContext: null,
   audioUnlocked: false,
@@ -48,7 +52,9 @@ const els = {
   startScreen: document.getElementById("startScreen"),
   quizScreen: document.getElementById("quizScreen"),
   endScreen: document.getElementById("endScreen"),
+  homeButton: document.getElementById("homeButton"),
   startButton: document.getElementById("startButton"),
+  lessonList: document.getElementById("lessonList"),
   continueLessonButton: document.getElementById("continueLessonButton"),
   restartButton: document.getElementById("restartButton"),
   reviewButton: document.getElementById("reviewButton"),
@@ -88,6 +94,7 @@ document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
   restoreSoundPreference();
+  restoreLessonProgress();
   bindEvents();
   setStartReady(false);
 
@@ -108,7 +115,9 @@ async function init() {
 }
 
 function bindEvents() {
+  els.homeButton.addEventListener("click", returnToStartScreen);
   els.startButton.addEventListener("click", withAudioUnlock(startFirstLesson));
+  els.lessonList.addEventListener("click", handleLessonListClick);
   els.continueLessonButton.addEventListener("click", withAudioUnlock(continueToNextLesson));
   els.restartButton.addEventListener("click", withAudioUnlock(replayCurrentLesson));
   els.answerActionButton.addEventListener("click", withAudioUnlock(handleAnswerAction));
@@ -155,6 +164,52 @@ function withAudioUnlock(callback) {
     callback(...args);
     void initAudioFromGesture();
   };
+}
+
+function handleLessonListClick(event) {
+  const button = event.target.closest("[data-lesson-index]");
+
+  if (!button || !els.lessonList.contains(button)) {
+    return;
+  }
+
+  const lessonIndex = Number(button.dataset.lessonIndex);
+  startLesson(lessonIndex);
+  void initAudioFromGesture();
+}
+
+function returnToStartScreen() {
+  stopQuestionTransition();
+  state.currentLessonIndex = 0;
+  state.questions = [];
+  state.currentIndex = 0;
+  state.score = 0;
+  state.streak = 0;
+  state.bestStreak = 0;
+  state.missed = [];
+  state.lessonCompletionSaved = false;
+  resetQuestionState();
+  els.choiceList.innerHTML = "";
+  els.questionText.textContent = "Question text";
+  els.progressText.textContent = "Question 1 of 10";
+  els.progressFill.style.width = "0%";
+  els.scoreText.textContent = "Score 0";
+  els.streakText.textContent = "Streak 0";
+  els.reviewPanel.hidden = true;
+  els.missedList.innerHTML = "";
+  els.reviewButton.textContent = "Review misses";
+  els.continueLessonButton.hidden = true;
+  renderLessonHub();
+  showScreen("start");
+  window.scrollTo({ top: 0, behavior: "auto" });
+  focusFirstLessonButton();
+}
+
+function stopQuestionTransition() {
+  state.questionTransitionId += 1;
+  state.isQuestionTransitioning = false;
+  els.quizScreen.classList.remove("is-transitioning");
+  els.questionPanel.classList.remove("slide-out-left", "slide-in-right");
 }
 
 async function loadQuestions() {
@@ -225,6 +280,100 @@ function validateLessons(lessons) {
 function setStartReady(isReady) {
   els.startButton.disabled = !isReady;
   els.startButton.textContent = isReady ? "Start Lesson 1" : "Loading...";
+  els.startButton.hidden = true;
+
+  if (isReady) {
+    renderLessonHub();
+  } else {
+    els.lessonList.innerHTML = '<p class="lesson-loading">Loading lessons...</p>';
+  }
+}
+
+function renderLessonHub() {
+  if (!state.lessons.length) {
+    els.lessonList.innerHTML = '<p class="lesson-loading">Loading lessons...</p>';
+    return;
+  }
+
+  els.lessonList.innerHTML = state.lessons
+    .map((lesson, index) => renderLessonCard(lesson, index))
+    .join("");
+}
+
+function renderLessonCard(lesson, index) {
+  const progress = state.lessonProgress[lesson.id];
+  const lessonNumber = index + 1;
+  const questionCount = lesson.questions.length;
+  const questionLabel = `${questionCount} ${questionCount === 1 ? "question" : "questions"}`;
+  const categoryLabel = [lesson.category, questionLabel].filter(Boolean).join(" · ");
+
+  return `
+    <article class="lesson-card">
+      <div class="lesson-card-copy">
+        <h3 class="lesson-card-title">Lesson ${lessonNumber}: ${escapeHtml(lesson.title)}</h3>
+        <p class="lesson-card-meta">${escapeHtml(categoryLabel)}</p>
+        ${renderLessonStatus(progress)}
+      </div>
+      <button
+        class="primary-action lesson-card-action"
+        type="button"
+        data-lesson-index="${index}"
+        aria-label="Start Lesson ${lessonNumber}: ${escapeHtml(lesson.title)}"
+      >
+        Start Lesson ${lessonNumber}
+      </button>
+    </article>
+  `;
+}
+
+function renderLessonStatus(progress) {
+  if (!progress) {
+    return `
+      <p class="lesson-card-status">
+        <span class="lesson-score-pill is-empty">Not completed yet</span>
+      </p>
+    `;
+  }
+
+  const completedCount = Number(progress.completedCount) || 1;
+  const completedLabel = `${completedCount} ${completedCount === 1 ? "completion" : "completions"}`;
+  const completedDate = formatCompletionDate(progress.completedAt);
+
+  return `
+    <p class="lesson-card-status">
+      <span class="lesson-score-pill">Last score: ${formatScore(progress.lastScore, progress.totalQuestions)}</span>
+      <span class="lesson-score-pill">Best: ${formatScore(progress.bestScore, progress.totalQuestions)}</span>
+      <span class="lesson-score-pill">${escapeHtml(completedDate || completedLabel)}</span>
+    </p>
+  `;
+}
+
+function formatScore(score, total) {
+  return `${Number(score) || 0}/${Number(total) || 0}`;
+}
+
+function formatCompletionDate(timestamp) {
+  if (!timestamp) {
+    return "";
+  }
+
+  const completedAt = new Date(timestamp);
+
+  if (Number.isNaN(completedAt.getTime())) {
+    return "";
+  }
+
+  return `Completed ${completedAt.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric"
+  })}`;
+}
+
+function focusFirstLessonButton() {
+  requestAnimationFrame(() => {
+    const firstLessonButton = els.lessonList.querySelector("[data-lesson-index]");
+    (firstLessonButton || els.startButton).focus({ preventScroll: true });
+  });
 }
 
 function startFirstLesson() {
@@ -250,6 +399,7 @@ function startLesson(lessonIndex) {
     return;
   }
 
+  stopQuestionTransition();
   state.currentLessonIndex = lessonIndex;
   state.questions = prepareLessonQuestions(lesson);
   state.currentIndex = 0;
@@ -257,7 +407,7 @@ function startLesson(lessonIndex) {
   state.streak = 0;
   state.bestStreak = 0;
   state.missed = [];
-  state.isQuestionTransitioning = false;
+  state.lessonCompletionSaved = false;
   resetQuestionState();
 
   showScreen("quiz");
@@ -646,6 +796,8 @@ function goToNextQuestion() {
 }
 
 async function transitionToQuestion(nextIndex) {
+  const transitionId = state.questionTransitionId + 1;
+  state.questionTransitionId = transitionId;
   state.isQuestionTransitioning = true;
   els.answerActionButton.disabled = true;
   els.quizScreen.classList.add("is-transitioning");
@@ -656,6 +808,10 @@ async function transitionToQuestion(nextIndex) {
     els.questionPanel.classList.add("slide-out-left");
     await waitForQuestionAnimation("slide-out-left", 320);
 
+    if (transitionId !== state.questionTransitionId) {
+      return;
+    }
+
     state.currentIndex = nextIndex;
     renderQuestion({ focusFirstChoice: false });
 
@@ -663,10 +819,12 @@ async function transitionToQuestion(nextIndex) {
     els.questionPanel.classList.add("slide-in-right");
     await waitForQuestionAnimation("slide-in-right", 360);
   } finally {
-    els.questionPanel.classList.remove("slide-out-left", "slide-in-right");
-    els.quizScreen.classList.remove("is-transitioning");
-    state.isQuestionTransitioning = false;
-    focusFirstChoice();
+    if (transitionId === state.questionTransitionId) {
+      els.questionPanel.classList.remove("slide-out-left", "slide-in-right");
+      els.quizScreen.classList.remove("is-transitioning");
+      state.isQuestionTransitioning = false;
+      focusFirstChoice();
+    }
   }
 }
 
@@ -707,6 +865,7 @@ function showEndScreen() {
   const percent = Math.round((state.score / total) * 100);
   const hasNextLesson = state.currentLessonIndex < state.lessons.length - 1;
 
+  saveLessonCompletion(total);
   els.resultScore.textContent = `${state.score} / ${total}`;
   els.correctCount.textContent = String(state.score);
   els.totalCount.textContent = String(total);
@@ -811,6 +970,61 @@ function shuffleArray(items) {
   }
 
   return copy;
+}
+
+function restoreLessonProgress() {
+  try {
+    const storedValue = localStorage.getItem(LESSON_PROGRESS_KEY);
+    const parsedValue = storedValue ? JSON.parse(storedValue) : {};
+    state.lessonProgress = isPlainObject(parsedValue) ? parsedValue : {};
+  } catch (error) {
+    console.warn("Lesson progress could not be loaded.", error);
+    state.lessonProgress = {};
+  }
+}
+
+function saveLessonCompletion(totalQuestions) {
+  if (state.lessonCompletionSaved) {
+    return;
+  }
+
+  const lesson = getCurrentLesson();
+
+  if (!lesson) {
+    return;
+  }
+
+  const previousProgress = state.lessonProgress[lesson.id] || {};
+  const previousBest = Number(previousProgress.bestScore) || 0;
+  const completedCount = (Number(previousProgress.completedCount) || 0) + 1;
+  const lessonProgress = {
+    lessonId: lesson.id,
+    lastScore: state.score,
+    totalQuestions,
+    bestScore: Math.max(previousBest, state.score),
+    completedCount,
+    completedAt: new Date().toISOString()
+  };
+
+  state.lessonProgress = {
+    ...state.lessonProgress,
+    [lesson.id]: lessonProgress
+  };
+  state.lessonCompletionSaved = true;
+  persistLessonProgress();
+  renderLessonHub();
+}
+
+function persistLessonProgress() {
+  try {
+    localStorage.setItem(LESSON_PROGRESS_KEY, JSON.stringify(state.lessonProgress));
+  } catch (error) {
+    console.warn("Lesson progress could not be saved.", error);
+  }
+}
+
+function isPlainObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
 function restoreSoundPreference() {

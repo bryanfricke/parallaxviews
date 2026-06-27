@@ -16,7 +16,9 @@
     <main class="game-shell" aria-labelledby="app-title">
       <div class="app-header">
         <div class="brand-lockup">
-          <span class="brand-mark" aria-hidden="true">RC</span>
+          <button class="brand-mark" id="homeButton" type="button" aria-label="Return to lesson home">
+            RC
+          </button>
           <span class="brand-text">Resurrection Case Quiz</span>
         </div>
         <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false">
@@ -32,11 +34,22 @@
           Practice key facts, historical methods, and argument strategies inspired by
           <cite>The Case for the Resurrection of Jesus</cite>.
         </p>
-        <div class="start-actions">
-          <button class="primary-action" id="startButton" type="button">Start Lesson 1</button>
+        <div class="lesson-hub" aria-labelledby="lessonHubTitle">
+          <div class="lesson-hub-heading">
+            <h2 id="lessonHubTitle">Choose a lesson</h2>
+            <p class="demo-note">
+              Three short lessons with bonus questions. Static HTML, CSS, and JavaScript.
+              No backend required.
+            </p>
+          </div>
+          <div class="lesson-list" id="lessonList" aria-live="polite">
+            <p class="lesson-loading">Loading lessons...</p>
+          </div>
+          <button class="primary-action start-fallback" id="startButton" type="button" hidden>
+            Start Lesson 1
+          </button>
           <p class="demo-note">
-            Three short lessons with bonus questions. Static HTML, CSS, and JavaScript.
-            No backend required.
+            Completed lesson scores are saved in this browser.
           </p>
         </div>
         <div class="load-message" id="loadMessage" role="status" aria-live="polite">
