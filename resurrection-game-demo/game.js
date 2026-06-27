@@ -15,6 +15,7 @@ const state = {
   hasCheckedAnswer: false,
   checkedResult: null,
   lastFocusedElement: null,
+  isQuestionTransitioning: false,
   soundEnabled: true,
   audioContext: null,
   audioUnlocked: false,
@@ -38,6 +39,7 @@ const els = {
   progressFill: document.getElementById("progressFill"),
   scoreText: document.getElementById("scoreText"),
   streakText: document.getElementById("streakText"),
+  questionPanel: document.getElementById("questionPanel"),
   questionText: document.getElementById("questionText"),
   choiceList: document.getElementById("choiceList"),
   feedbackPanel: document.getElementById("feedbackPanel"),
@@ -235,6 +237,7 @@ function startLesson(lessonIndex) {
   state.streak = 0;
   state.bestStreak = 0;
   state.missed = [];
+  state.isQuestionTransitioning = false;
   resetQuestionState();
 
   showScreen("quiz");
@@ -258,12 +261,14 @@ function prepareQuestionForPlay(question) {
   };
 }
 
-function renderQuestion() {
+function renderQuestion(options = {}) {
   const question = getCurrentQuestion();
   const regularTotal = getRegularQuestionTotal();
   const regularQuestionNumber = getRegularQuestionNumber();
+  const shouldFocusFirstChoice = options.focusFirstChoice !== false;
 
   resetQuestionState();
+  els.questionPanel.classList.remove("slide-out-left", "slide-in-right");
   window.scrollTo({ top: 0, behavior: "auto" });
   els.feedbackPanel.hidden = true;
   els.choiceList.innerHTML = "";
@@ -297,10 +302,9 @@ function renderQuestion() {
     els.choiceList.appendChild(button);
   });
 
-  requestAnimationFrame(() => {
-    const firstChoice = els.choiceList.querySelector(".choice-button");
-    firstChoice?.focus({ preventScroll: true });
-  });
+  if (shouldFocusFirstChoice) {
+    focusFirstChoice();
+  }
 }
 
 function resetQuestionState() {
@@ -356,6 +360,10 @@ function updateSelectedChoiceButtons(selectedId) {
 }
 
 function handleAnswerAction() {
+  if (state.isQuestionTransitioning) {
+    return;
+  }
+
   if (state.hasCheckedAnswer) {
     goToNextQuestion();
     return;
@@ -431,48 +439,29 @@ function showFeedback(question, selectedChoice, correctChoice, isCorrect) {
   els.feedbackTitle.classList.toggle("wrong", !isCorrect);
   els.feedbackTitle.textContent = isCorrect ? "Correct" : "Not quite";
   els.choiceFeedback.textContent = getCompactFeedback(question, selectedChoice, isCorrect);
-  els.correctSolution.hidden = isCorrect;
-  els.correctSolution.textContent = isCorrect
-    ? ""
-    : `Correct answer: ${getCorrectAnswerSummary(question, correctChoice)}`;
+  els.correctSolution.hidden = true;
+  els.correctSolution.textContent = "";
   els.explainButton.hidden = false;
-  populateExplanationModal(question, selectedChoice, correctChoice, isCorrect);
+  populateExplanationModal(question);
 }
 
 function getCompactFeedback(question, selectedChoice, isCorrect) {
   const source =
     selectedChoice.shortFeedback ||
-    (isCorrect ? question.shortFeedback : "") ||
     selectedChoice.feedback ||
     (isCorrect ? "That is the best answer." : "That is not the best answer.");
 
   return trimCompactText(stripStatusPrefix(source), 185);
 }
 
-function populateExplanationModal(question, selectedChoice, correctChoice, isCorrect) {
-  const selectedFeedback =
-    selectedChoice.detailExplanation ||
-    selectedChoice.feedback ||
-    getCompactFeedback(question, selectedChoice, isCorrect);
-  const correctFeedback = correctChoice.detailExplanation || correctChoice.feedback || "";
+function populateExplanationModal(question) {
   const fullExplanation =
     question.detailExplanation ||
     question.explanation ||
-    correctFeedback ||
     "No additional explanation is available for this question yet.";
 
-  setOptionalText(
-    els.modalChoiceFeedback,
-    isCorrect
-      ? selectedFeedback
-      : `Your answer: ${selectedChoice.text}. ${selectedFeedback}`
-  );
-  setOptionalText(
-    els.modalCorrectAnswer,
-    isCorrect
-      ? ""
-      : `Correct answer: ${getCorrectAnswerSummary(question, correctChoice)}. ${correctFeedback}`
-  );
+  setOptionalText(els.modalChoiceFeedback, "");
+  setOptionalText(els.modalCorrectAnswer, "");
   setOptionalText(els.modalExplanation, fullExplanation);
 }
 
@@ -482,12 +471,7 @@ function openExplanationModal() {
   }
 
   state.lastFocusedElement = document.activeElement;
-  populateExplanationModal(
-    state.checkedResult.question,
-    state.checkedResult.selectedChoice,
-    state.checkedResult.correctChoice,
-    state.checkedResult.isCorrect
-  );
+  populateExplanationModal(state.checkedResult.question);
   els.explanationModal.hidden = false;
 
   requestAnimationFrame(() => {
@@ -599,6 +583,13 @@ function keepCheckedAnswersVisible(selectedId, correctId) {
   });
 }
 
+function focusFirstChoice() {
+  requestAnimationFrame(() => {
+    const firstChoice = els.choiceList.querySelector(".choice-button");
+    firstChoice?.focus({ preventScroll: true });
+  });
+}
+
 function getScrollBehavior() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
 }
@@ -612,19 +603,86 @@ function cssEscape(value) {
 }
 
 function goToNextQuestion() {
-  closeExplanationModal({ restoreFocus: false });
-  state.currentIndex += 1;
+  if (state.isQuestionTransitioning) {
+    return;
+  }
 
-  if (state.currentIndex >= state.questions.length) {
+  closeExplanationModal({ restoreFocus: false });
+  const nextIndex = state.currentIndex + 1;
+
+  if (nextIndex >= state.questions.length) {
+    state.currentIndex = nextIndex;
     showEndScreen();
     return;
   }
 
-  renderQuestion();
+  if (prefersReducedMotion()) {
+    state.currentIndex = nextIndex;
+    renderQuestion();
+    return;
+  }
+
+  void transitionToQuestion(nextIndex);
+}
+
+async function transitionToQuestion(nextIndex) {
+  state.isQuestionTransitioning = true;
+  els.answerActionButton.disabled = true;
+  els.quizScreen.classList.add("is-transitioning");
+
+  try {
+    els.questionPanel.classList.remove("slide-out-left", "slide-in-right");
+    void els.questionPanel.offsetWidth;
+    els.questionPanel.classList.add("slide-out-left");
+    await waitForQuestionAnimation("slide-out-left", 320);
+
+    state.currentIndex = nextIndex;
+    renderQuestion({ focusFirstChoice: false });
+
+    void els.questionPanel.offsetWidth;
+    els.questionPanel.classList.add("slide-in-right");
+    await waitForQuestionAnimation("slide-in-right", 360);
+  } finally {
+    els.questionPanel.classList.remove("slide-out-left", "slide-in-right");
+    els.quizScreen.classList.remove("is-transitioning");
+    state.isQuestionTransitioning = false;
+    focusFirstChoice();
+  }
+}
+
+function waitForQuestionAnimation(className, fallbackMs) {
+  return new Promise((resolve) => {
+    let isDone = false;
+
+    const finish = () => {
+      if (isDone) {
+        return;
+      }
+
+      isDone = true;
+      window.clearTimeout(timeoutId);
+      els.questionPanel.removeEventListener("animationend", handleAnimationEnd);
+      resolve();
+    };
+
+    const handleAnimationEnd = (event) => {
+      if (event.target === els.questionPanel && els.questionPanel.classList.contains(className)) {
+        finish();
+      }
+    };
+
+    const timeoutId = window.setTimeout(finish, fallbackMs);
+    els.questionPanel.addEventListener("animationend", handleAnimationEnd);
+  });
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
 function showEndScreen() {
   closeExplanationModal({ restoreFocus: false });
+  state.isQuestionTransitioning = false;
   const total = state.questions.length;
   const percent = Math.round((state.score / total) * 100);
   const hasNextLesson = state.currentLessonIndex < state.lessons.length - 1;
