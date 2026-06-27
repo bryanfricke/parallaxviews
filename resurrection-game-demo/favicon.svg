@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Resurrection Case Quiz">
+  <title>Resurrection Case Quiz</title>
+  <rect width="64" height="64" rx="12" fill="#FFD166"/>
+  <rect x="4" y="4" width="56" height="56" rx="10" fill="none" stroke="#17416F" stroke-width="6"/>
+  <text
+    x="32"
+    y="40"
+    fill="#17416F"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="24"
+    font-weight="900"
+    letter-spacing="0"
+    text-anchor="middle"
+  >RC</text>
+</svg>

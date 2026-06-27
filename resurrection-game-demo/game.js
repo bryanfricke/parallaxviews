@@ -1,6 +1,20 @@
 const QUESTION_URL = "questions.json";
 const SOUND_PREF_KEY = "resurrectionQuizSoundEnabled";
 const ANSWER_LABELS = ["A", "B", "C", "D"];
+const DEBUG_AUDIO = true;
+const CORRECT_SOUND_NOTES = [
+  { frequency: 523.25, start: 0, duration: 0.07, gain: 0.07 },
+  { frequency: 659.25, start: 0.08, duration: 0.07, gain: 0.08 },
+  { frequency: 783.99, start: 0.16, duration: 0.09, gain: 0.08 }
+];
+const WRONG_SOUND_NOTES = [
+  { frequency: 220, start: 0, duration: 0.09, gain: 0.055 },
+  { frequency: 185, start: 0.11, duration: 0.12, gain: 0.045 }
+];
+const TOGGLE_SOUND_NOTES = [
+  { frequency: 660, start: 0, duration: 0.06, gain: 0.08 },
+  { frequency: 880, start: 0.07, duration: 0.08, gain: 0.08 }
+];
 
 const state = {
   lessons: [],
@@ -21,7 +35,13 @@ const state = {
   audioUnlocked: false,
   audioPrimed: false,
   audioUnavailable: false,
-  audioUnlockPromise: null
+  audioUnlockPromise: null,
+  webAudioUnavailable: false,
+  fallbackAudioReady: false,
+  fallbackAudioUnavailable: false,
+  correctFallbackAudio: null,
+  wrongFallbackAudio: null,
+  fallbackSoundUrls: null
 };
 
 const els = {
@@ -115,7 +135,7 @@ function bindEvents() {
 
     const keyNumber = Number(event.key);
     if (keyNumber >= 1 && keyNumber <= 4) {
-      void unlockAudio();
+      void initAudioFromGesture();
       const button = els.choiceList.querySelector(`[data-choice-position="${keyNumber - 1}"]`);
       button?.click();
       return;
@@ -123,7 +143,7 @@ function bindEvents() {
 
     const letterIndex = ANSWER_LABELS.indexOf(event.key.toUpperCase());
     if (letterIndex >= 0) {
-      void unlockAudio();
+      void initAudioFromGesture();
       const button = els.choiceList.querySelector(`[data-choice-position="${letterIndex}"]`);
       button?.click();
     }
@@ -132,8 +152,8 @@ function bindEvents() {
 
 function withAudioUnlock(callback) {
   return (...args) => {
-    void unlockAudio();
     callback(...args);
+    void initAudioFromGesture();
   };
 }
 
@@ -296,7 +316,7 @@ function renderQuestion(options = {}) {
       <span class="choice-status" aria-hidden="true"></span>
     `;
     button.addEventListener("click", () => {
-      void unlockAudio();
+      void initAudioFromGesture();
       selectChoice(choice.id);
     });
     els.choiceList.appendChild(button);
@@ -805,10 +825,7 @@ function toggleSound() {
   updateSoundToggle();
 
   if (state.soundEnabled) {
-    void playToneSequence([
-      { frequency: 660, start: 0, duration: 0.06, gain: 0.08 },
-      { frequency: 880, start: 0.07, duration: 0.08, gain: 0.08 }
-    ]);
+    void playToneSequence(TOGGLE_SOUND_NOTES, "correct");
   }
 }
 
@@ -822,65 +839,196 @@ function updateSoundToggle() {
 }
 
 function playFeedbackSound(isCorrect) {
-  if (isCorrect) {
-    void playToneSequence([
-      { frequency: 523.25, start: 0, duration: 0.07, gain: 0.07 },
-      { frequency: 659.25, start: 0.08, duration: 0.07, gain: 0.08 },
-      { frequency: 783.99, start: 0.16, duration: 0.09, gain: 0.08 }
-    ]);
-  } else {
-    void playToneSequence([
-      { frequency: 220, start: 0, duration: 0.09, gain: 0.055 },
-      { frequency: 185, start: 0.11, duration: 0.12, gain: 0.045 }
-    ]);
-  }
+  const notes = isCorrect ? CORRECT_SOUND_NOTES : WRONG_SOUND_NOTES;
+  const fallbackName = isCorrect ? "correct" : "wrong";
+  void playToneSequence(notes, fallbackName);
 }
 
-async function unlockAudio() {
-  if (state.audioUnavailable || state.audioUnlocked) {
-    return state.audioUnlocked;
-  }
+async function initAudioFromGesture() {
+  audioDebug("initAudioFromGesture called", {
+    soundEnabled: state.soundEnabled,
+    webAudioState: state.audioContext?.state || "none",
+    fallbackAudioReady: state.fallbackAudioReady
+  });
 
   if (state.audioUnlockPromise) {
     return state.audioUnlockPromise;
   }
 
   state.audioUnlockPromise = (async () => {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-
-    if (!AudioContextClass) {
-      state.audioUnavailable = true;
-      updateSoundToggle();
-      return false;
-    }
-
     try {
-      if (!state.audioContext || state.audioContext.state === "closed") {
-        state.audioContext = new AudioContextClass();
-      }
+      const fallbackPromise = initFallbackAudioFromGesture();
+      const webAudioPromise = initWebAudioFromGesture();
+      const [fallbackReady, webAudioReady] = await Promise.all([
+        fallbackPromise,
+        webAudioPromise
+      ]);
 
-      if (state.audioContext.state !== "running" && typeof state.audioContext.resume === "function") {
-        await Promise.race([
-          state.audioContext.resume(),
-          waitForAudioUnlockTimeout()
-        ]);
-      }
-
-      if (state.audioContext.state === "running") {
-        primeAudioContext();
-        state.audioUnlocked = true;
-      }
+      state.audioUnlocked = webAudioReady || fallbackReady;
+      updateAudioAvailability();
+      audioDebug("Audio init complete", {
+        audioUnlocked: state.audioUnlocked,
+        webAudioReady,
+        fallbackReady,
+        webAudioState: state.audioContext?.state || "none",
+        audioUnavailable: state.audioUnavailable
+      });
 
       return state.audioUnlocked;
-    } catch (error) {
-      console.warn("Audio could not be initialized.", error);
-      return false;
     } finally {
       state.audioUnlockPromise = null;
     }
   })();
 
   return state.audioUnlockPromise;
+}
+
+function unlockAudio() {
+  return initAudioFromGesture();
+}
+
+async function initWebAudioFromGesture() {
+  if (state.webAudioUnavailable) {
+    audioDebug("Web Audio previously marked unavailable");
+    return false;
+  }
+
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+
+  if (!AudioContextClass) {
+    state.webAudioUnavailable = true;
+    audioDebug("Web Audio unsupported");
+    updateAudioAvailability();
+    return false;
+  }
+
+  try {
+    if (!state.audioContext || state.audioContext.state === "closed") {
+      state.audioContext = new AudioContextClass();
+      audioDebug("AudioContext created", { state: state.audioContext.state });
+    }
+
+    audioDebug("AudioContext before resume", { state: state.audioContext.state });
+
+    if (state.audioContext.state !== "running" && typeof state.audioContext.resume === "function") {
+      await Promise.race([
+        state.audioContext.resume(),
+        waitForAudioUnlockTimeout()
+      ]);
+    }
+
+    audioDebug("AudioContext after resume", { state: state.audioContext.state });
+
+    if (state.audioContext.state === "running") {
+      primeAudioContext();
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    audioWarn("Web Audio could not be initialized.", error);
+    return false;
+  }
+}
+
+async function initFallbackAudioFromGesture() {
+  if (!initFallbackAudioElements()) {
+    updateAudioAvailability();
+    return false;
+  }
+
+  if (state.fallbackAudioReady) {
+    audioDebug("Fallback audio already primed");
+    return true;
+  }
+
+  const fallbackAudios = [
+    state.correctFallbackAudio,
+    state.wrongFallbackAudio
+  ].filter(Boolean);
+
+  const results = await Promise.allSettled(fallbackAudios.map(primeFallbackAudio));
+  const wasPrimed = results.some((result) => result.status === "fulfilled" && result.value === true);
+
+  state.fallbackAudioReady = state.fallbackAudioReady || wasPrimed;
+  audioDebug("Fallback audio init complete", {
+    fallbackAudioReady: state.fallbackAudioReady,
+    primedThisGesture: wasPrimed
+  });
+
+  return state.fallbackAudioReady;
+}
+
+function initFallbackAudioElements() {
+  if (state.correctFallbackAudio && state.wrongFallbackAudio) {
+    return true;
+  }
+
+  if (typeof Audio === "undefined") {
+    state.fallbackAudioUnavailable = true;
+    audioDebug("HTMLAudioElement fallback unsupported");
+    return false;
+  }
+
+  try {
+    const soundUrls = getFallbackSoundUrls();
+    state.correctFallbackAudio = createFallbackAudioElement("correct", soundUrls.correct);
+    state.wrongFallbackAudio = createFallbackAudioElement("wrong", soundUrls.wrong);
+    state.fallbackAudioUnavailable = false;
+    audioDebug("Fallback audio elements created");
+    return true;
+  } catch (error) {
+    state.fallbackAudioUnavailable = true;
+    audioWarn("Fallback audio elements could not be created.", error);
+    return false;
+  }
+}
+
+function createFallbackAudioElement(kind, sourceUrl) {
+  const audio = new Audio(sourceUrl);
+  audio.preload = "auto";
+  audio.dataset.soundKind = kind;
+  audio.setAttribute("preload", "auto");
+  audio.setAttribute("playsinline", "");
+  audio.setAttribute("webkit-playsinline", "");
+  return audio;
+}
+
+async function primeFallbackAudio(audio) {
+  const originalMuted = audio.muted;
+  const originalVolume = audio.volume;
+
+  try {
+    audio.load();
+    audio.muted = !state.soundEnabled;
+    audio.volume = state.soundEnabled ? 0.001 : 0;
+    audio.currentTime = 0;
+
+    const playPromise = audio.play();
+
+    if (playPromise && typeof playPromise.then === "function") {
+      await Promise.race([
+        playPromise,
+        waitForAudioUnlockTimeout()
+      ]);
+    }
+
+    audio.pause();
+    audio.currentTime = 0;
+    audioDebug("Fallback audio primed", { kind: audio.dataset.soundKind });
+    return true;
+  } catch (error) {
+    audioWarn("Fallback audio priming failed.", error);
+    return false;
+  } finally {
+    audio.muted = originalMuted;
+    audio.volume = originalVolume;
+  }
+}
+
+function updateAudioAvailability() {
+  state.audioUnavailable = state.webAudioUnavailable && state.fallbackAudioUnavailable;
+  updateSoundToggle();
 }
 
 function waitForAudioUnlockTimeout() {
@@ -902,35 +1050,208 @@ function primeAudioContext() {
     source.connect(gain).connect(state.audioContext.destination);
     source.start(0);
     state.audioPrimed = true;
+    audioDebug("Web Audio primed");
   } catch (error) {
-    console.warn("Audio priming was skipped.", error);
+    audioWarn("Audio priming was skipped.", error);
   }
 }
 
-async function playToneSequence(notes) {
+async function playToneSequence(notes, fallbackName) {
   if (!state.soundEnabled) {
+    audioDebug("Sound muted; play skipped", { fallbackName });
     return;
   }
 
-  const isAudioReady = await unlockAudio();
-  if (!isAudioReady || !state.audioContext || state.audioContext.state !== "running") {
+  const shouldPreferFallback = isIOSDevice();
+
+  if (shouldPreferFallback) {
+    initFallbackAudioElements();
+    const immediateFallbackPlayed = await playFallbackSound(fallbackName);
+
+    if (immediateFallbackPlayed) {
+      void initAudioFromGesture();
+      return;
+    }
+  }
+
+  await initAudioFromGesture();
+
+  if (shouldPreferFallback) {
+    const fallbackPlayed = await playFallbackSound(fallbackName);
+
+    if (fallbackPlayed) {
+      return;
+    }
+  }
+
+  const webAudioPlayed = playWebAudioSequence(notes);
+
+  if (!webAudioPlayed) {
+    await playFallbackSound(fallbackName);
+  }
+}
+
+function playWebAudioSequence(notes) {
+  if (!state.audioContext || state.audioContext.state !== "running") {
+    audioDebug("Web Audio play skipped", {
+      state: state.audioContext?.state || "none"
+    });
+    return false;
+  }
+
+  try {
+    const now = state.audioContext.currentTime;
+
+    notes.forEach((note) => {
+      const oscillator = state.audioContext.createOscillator();
+      const gain = state.audioContext.createGain();
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(note.frequency, now + note.start);
+      gain.gain.setValueAtTime(0.0001, now + note.start);
+      gain.gain.exponentialRampToValueAtTime(note.gain, now + note.start + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + note.start + note.duration);
+      oscillator.connect(gain).connect(state.audioContext.destination);
+      oscillator.start(now + note.start);
+      oscillator.stop(now + note.start + note.duration + 0.02);
+    });
+
+    audioDebug("Web Audio play attempted", { noteCount: notes.length });
+    return true;
+  } catch (error) {
+    audioWarn("Web Audio play failed.", error);
+    return false;
+  }
+}
+
+async function playFallbackSound(fallbackName) {
+  const audio = getFallbackAudio(fallbackName);
+
+  if (!audio) {
+    audioDebug("Fallback audio play skipped; no audio element", { fallbackName });
+    return false;
+  }
+
+  try {
+    audio.pause();
+    audio.currentTime = 0;
+    audio.muted = false;
+    audio.volume = 1;
+    audioDebug("Fallback audio play attempted", { fallbackName });
+
+    const playPromise = audio.play();
+
+    if (playPromise && typeof playPromise.then === "function") {
+      await playPromise;
+    }
+
+    return true;
+  } catch (error) {
+    audioWarn("Fallback audio play failed.", error);
+    return false;
+  }
+}
+
+function getFallbackAudio(fallbackName) {
+  if (fallbackName === "wrong") {
+    return state.wrongFallbackAudio;
+  }
+
+  return state.correctFallbackAudio;
+}
+
+function getFallbackSoundUrls() {
+  if (!state.fallbackSoundUrls) {
+    state.fallbackSoundUrls = {
+      correct: createWavDataUrl(CORRECT_SOUND_NOTES),
+      wrong: createWavDataUrl(WRONG_SOUND_NOTES)
+    };
+  }
+
+  return state.fallbackSoundUrls;
+}
+
+function createWavDataUrl(notes) {
+  const sampleRate = 22050;
+  const endTime = Math.max(...notes.map((note) => note.start + note.duration)) + 0.05;
+  const sampleCount = Math.ceil(endTime * sampleRate);
+  const bytes = new Uint8Array(44 + sampleCount * 2);
+  const view = new DataView(bytes.buffer);
+
+  writeAscii(view, 0, "RIFF");
+  view.setUint32(4, 36 + sampleCount * 2, true);
+  writeAscii(view, 8, "WAVE");
+  writeAscii(view, 12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  writeAscii(view, 36, "data");
+  view.setUint32(40, sampleCount * 2, true);
+
+  for (let sampleIndex = 0; sampleIndex < sampleCount; sampleIndex += 1) {
+    const time = sampleIndex / sampleRate;
+    const sample = notes.reduce((total, note) => {
+      const localTime = time - note.start;
+
+      if (localTime < 0 || localTime > note.duration) {
+        return total;
+      }
+
+      const fadeIn = Math.min(1, localTime / 0.012);
+      const fadeOut = Math.min(1, (note.duration - localTime) / 0.03);
+      const envelope = Math.max(0, Math.min(fadeIn, fadeOut));
+      return total + Math.sin(2 * Math.PI * note.frequency * localTime) * note.gain * envelope;
+    }, 0);
+    const clampedSample = Math.max(-0.9, Math.min(0.9, sample));
+    view.setInt16(44 + sampleIndex * 2, clampedSample * 0x7fff, true);
+  }
+
+  let binary = "";
+  const chunkSize = 0x8000;
+
+  for (let index = 0; index < bytes.length; index += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(index, index + chunkSize));
+  }
+
+  return `data:audio/wav;base64,${window.btoa(binary)}`;
+}
+
+function writeAscii(view, offset, value) {
+  for (let index = 0; index < value.length; index += 1) {
+    view.setUint8(offset + index, value.charCodeAt(index));
+  }
+}
+
+function isIOSDevice() {
+  if (typeof navigator === "undefined") {
+    return false;
+  }
+
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+}
+
+function audioDebug(message, details) {
+  if (!DEBUG_AUDIO) {
     return;
   }
 
-  const now = state.audioContext.currentTime;
+  if (details === undefined) {
+    console.info(`[quiz audio] ${message}`);
+  } else {
+    console.info(`[quiz audio] ${message}`, details);
+  }
+}
 
-  notes.forEach((note) => {
-    const oscillator = state.audioContext.createOscillator();
-    const gain = state.audioContext.createGain();
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(note.frequency, now + note.start);
-    gain.gain.setValueAtTime(0.0001, now + note.start);
-    gain.gain.exponentialRampToValueAtTime(note.gain, now + note.start + 0.015);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + note.start + note.duration);
-    oscillator.connect(gain).connect(state.audioContext.destination);
-    oscillator.start(now + note.start);
-    oscillator.stop(now + note.start + note.duration + 0.02);
-  });
+function audioWarn(message, error) {
+  if (!DEBUG_AUDIO) {
+    return;
+  }
+
+  console.warn(`[quiz audio] ${message}`, error);
 }
 
 function animateShell(isCorrect) {

@@ -2,7 +2,7 @@
 
 This is a static proof-of-concept browser quiz game for helping users practice key facts, arguments, and historical reasoning concepts related to *The Case for the Resurrection of Jesus* by Gary Habermas and Michael Licona.
 
-The demo is intentionally self-contained. It uses vanilla HTML, CSS, and JavaScript, loads its lesson and question data from `questions.json`, and does not require a backend, package manager, build step, framework, or external asset.
+The demo is intentionally self-contained. It includes three short lessons, uses vanilla HTML, CSS, and JavaScript, loads its lesson and question data from `questions.json`, and does not require a backend, package manager, build step, framework, or external asset.
 
 ## Run locally
 
