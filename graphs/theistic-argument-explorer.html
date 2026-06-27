@@ -597,6 +597,7 @@
       stroke-linejoin:round;
     }
 
+    #referencesBtn,
     #controlsToggle {
       display:inline-flex;
       align-items: center;
@@ -703,6 +704,133 @@
       line-height: 1.5;
     }
 
+    .references-modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:clamp(16px, 4vw, 28px);
+      background:rgba(9,19,27,0.56);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      z-index:9800;
+    }
+    .references-modal.open{
+      display:flex;
+    }
+    .references-panel{
+      position:relative;
+      width:min(760px, 100%);
+      max-height:calc(100dvh - 32px);
+      overflow:auto;
+      padding:24px 20px 18px;
+      border:1px solid var(--panelStroke);
+      border-radius:24px;
+      background:var(--surfaceStrong);
+      color:var(--text);
+      box-shadow:var(--tipShadow);
+      -webkit-overflow-scrolling:touch;
+    }
+    .references-panel:focus{
+      outline:none;
+    }
+    .references-panel h2{
+      margin:0;
+      padding-right:52px;
+      font:600 clamp(1.08rem, 1rem + 0.52vw, 1.36rem)/1.16 "Iowan Old Style","Palatino Linotype","Book Antiqua",Palatino,serif;
+      letter-spacing:0.01em;
+    }
+    .references-intro{
+      margin:12px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.58;
+    }
+    .references-list{
+      list-style:none;
+      margin:16px 0 0;
+      padding:0;
+      display:grid;
+      gap:10px;
+    }
+    .references-item{
+      padding:14px 16px;
+      border:1px solid var(--panelStroke);
+      border-radius:18px;
+      background:color-mix(in srgb, var(--surfaceMuted) 84%, transparent);
+      box-shadow:inset 0 1px 0 var(--haloShine);
+    }
+    .references-item.current{
+      border-color:color-mix(in srgb, var(--support) 42%, var(--panelStroke));
+      box-shadow:inset 0 1px 0 var(--haloShine), 0 0 0 1px color-mix(in srgb, var(--support) 12%, transparent);
+    }
+    .references-item-head{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .references-item-title{
+      font-size:14px;
+      font-weight:700;
+      line-height:1.4;
+    }
+    .references-current-pill{
+      display:inline-flex;
+      align-items:center;
+      padding:3px 8px;
+      border-radius:999px;
+      background:color-mix(in srgb, var(--support) 18%, transparent);
+      color:var(--support);
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+    }
+    .references-item-note{
+      margin:8px 0 0;
+      color:var(--mutedSoft);
+      font-size:13px;
+      line-height:1.55;
+    }
+    .references-link{
+      display:inline-block;
+      margin-top:8px;
+      color:var(--support);
+      font-size:13px;
+      font-weight:700;
+      line-height:1.45;
+      text-decoration:underline;
+      text-decoration-thickness:from-font;
+      text-underline-offset:0.16em;
+      word-break:break-word;
+    }
+    .references-link:hover,
+    .references-link:focus-visible{
+      color:var(--claim);
+    }
+    .references-link:focus-visible{
+      outline:2px solid color-mix(in srgb, var(--support) 44%, transparent);
+      outline-offset:3px;
+      border-radius:6px;
+    }
+    .references-close{
+      position:absolute;
+      top:12px;
+      right:12px;
+      width:36px;
+      min-width:36px;
+      min-height:36px;
+      padding:0;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      line-height:1;
+    }
+
     @media (max-width: 640px) {
       header{
         gap:6px 8px;
@@ -733,10 +861,23 @@
         width:0.74rem;
         height:0.46rem;
       }
+      #referencesBtn,
       #controlsToggle{
         padding:7px 11px;
         font-size:11px;
         min-height:34px;
+      }
+      .references-panel{
+        width:100%;
+        max-height:calc(100dvh - 20px);
+        padding:22px 16px 16px;
+        border-radius:20px;
+      }
+      .references-panel h2{
+        padding-right:44px;
+      }
+      .references-item{
+        padding:12px 14px;
       }
     }
 
@@ -754,6 +895,7 @@
         font-size:0.52rem;
         letter-spacing:0.14em;
       }
+      html.embed-mode #referencesBtn,
       html.embed-mode #controlsToggle{
         padding:6px 9px;
         font-size:10px;
@@ -781,6 +923,7 @@
         <path d="M10 20v-5.25h4V20"></path>
       </svg>
     </button>
+    <button id="referencesBtn" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="referencesModal">References</button>
     <button id="controlsToggle" type="button" aria-expanded="false" aria-controls="controls">Controls <span class="controls-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span></button>
   </div>
   <div id="controls">
@@ -811,6 +954,15 @@
   <div class="bottom-sheet-inner"></div>
 </div>
 
+<div id="referencesModal" class="references-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="referencesTitle" aria-describedby="referencesIntro">
+  <div class="references-panel" tabindex="-1">
+    <button class="references-close" type="button" aria-label="Close references">×</button>
+    <h2 id="referencesTitle">References</h2>
+    <p id="referencesIntro" class="references-intro"></p>
+    <ul id="referencesList" class="references-list"></ul>
+  </div>
+</div>
+
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
 const params = new URLSearchParams(window.location.search);
@@ -824,9 +976,44 @@ const legacyThemeKey = "pv_theme";
 const argumentSelectEl = document.getElementById("argumentSelect");
 const interactionHintEl = document.getElementById("interactionHint");
 const embedReturnBtn = document.getElementById("embedReturnBtn");
+const referencesBtn = document.getElementById("referencesBtn");
+const referencesModal = document.getElementById("referencesModal");
+const referencesPanel = referencesModal ? referencesModal.querySelector(".references-panel") : null;
+const referencesCloseBtn = referencesModal ? referencesModal.querySelector(".references-close") : null;
+const referencesIntroEl = document.getElementById("referencesIntro");
+const referencesListEl = document.getElementById("referencesList");
 const overviewHref = "../index.html#theistic-explorer";
 let isEmbedExpanded = false;
 let embedInteractionActive = !isEmbedMode;
+let lastFocusedBeforeReferences = null;
+
+const ARGUMENT_REFERENCES = new Map([
+  ["data/argument-kalam.json", {
+    label: "The Kalam Cosmological Argument",
+    href: "https://www.reasonablefaith.org/kalam",
+    note: "A fuller prose treatment of the kalam argument, its premises, and common objections."
+  }],
+  ["data/argument-leibniz.json", {
+    label: "Leibniz’s Cosmological Argument",
+    href: "https://www.reasonablefaith.org/Leibniz-Contingency-Argument",
+    note: "Background on contingency, sufficient reason, and the move from dependent reality to a necessary being."
+  }],
+  ["data/argument-design.json", {
+    label: "Teleological / Fine-Tuning Argument",
+    href: "https://www.reasonablefaith.org/finetuning",
+    note: "A longer discussion of fine-tuning, chance, necessity, design, and multiverse responses."
+  }],
+  ["data/argument-moral.json", {
+    label: "The Moral Argument",
+    href: "https://www.reasonablefaith.org/moral",
+    note: "Overview material on objective moral values, duties, and the structure of the moral argument."
+  }],
+  ["data/argument-ontological.json", {
+    label: "The Ontological Argument",
+    href: "https://www.reasonablefaith.org/ontological",
+    note: "A fuller explanation of modal ontological reasoning and the main philosophical disputes around it."
+  }]
+]);
 
 if (isEmbedMode) {
   document.documentElement.classList.add("embed-mode");
@@ -905,6 +1092,83 @@ function syncArgumentContext() {
   const selectedOption = argumentSelectEl.options[argumentSelectEl.selectedIndex];
   const selectedLabel = selectedOption ? selectedOption.textContent.trim() : "Interactive Argument Map";
   document.title = selectedLabel + " | Interactive Argument Map";
+  renderReferencesModal();
+}
+
+function renderReferencesModal() {
+  if (!referencesIntroEl || !referencesListEl || !argumentSelectEl) return;
+  const currentFile = argumentSelectEl.value;
+  const currentRef = ARGUMENT_REFERENCES.get(currentFile);
+  referencesIntroEl.textContent = currentRef
+    ? `These links point to the longer-form Reasonable Faith articles behind the argument maps in this explorer. The current map corresponds most directly to ${currentRef.label}.`
+    : "These links point to the longer-form Reasonable Faith articles behind the argument maps in this explorer.";
+  referencesListEl.innerHTML = Array.from(ARGUMENT_REFERENCES.entries()).map(([file, entry]) => {
+    const isCurrent = file === currentFile;
+    return `<li class="references-item${isCurrent ? " current" : ""}">`
+      + `<div class="references-item-head">`
+      + `<span class="references-item-title">${escapeHtml(entry.label)}</span>`
+      + (isCurrent ? `<span class="references-current-pill">Current map</span>` : "")
+      + `</div>`
+      + `<p class="references-item-note">${escapeHtml(entry.note)}</p>`
+      + `<a class="references-link" href="${entry.href}" target="_blank" rel="noopener noreferrer">${escapeHtml(entry.href)}</a>`
+      + `</li>`;
+  }).join("");
+}
+
+function closeReferencesModal() {
+  if (!referencesModal) return;
+  referencesModal.classList.remove("open");
+  referencesModal.setAttribute("aria-hidden", "true");
+  if (referencesBtn) referencesBtn.setAttribute("aria-expanded", "false");
+  document.body.style.overflow = "";
+  document.removeEventListener("keydown", handleReferencesKeydown);
+  if (lastFocusedBeforeReferences && typeof lastFocusedBeforeReferences.focus === "function") {
+    lastFocusedBeforeReferences.focus({ preventScroll: true });
+  }
+}
+
+function openReferencesModal() {
+  if (!referencesModal || !referencesPanel) return;
+  lastFocusedBeforeReferences = document.activeElement;
+  renderReferencesModal();
+  hideTip();
+  closeBottomSheet();
+  referencesModal.classList.add("open");
+  referencesModal.setAttribute("aria-hidden", "false");
+  if (referencesBtn) referencesBtn.setAttribute("aria-expanded", "true");
+  document.body.style.overflow = "hidden";
+  document.addEventListener("keydown", handleReferencesKeydown);
+  referencesPanel.scrollTop = 0;
+  try {
+    referencesPanel.focus({ preventScroll: true });
+  } catch (_) {
+    if (referencesCloseBtn) referencesCloseBtn.focus({ preventScroll: true });
+  }
+}
+
+function handleReferencesKeydown(event) {
+  if (!referencesModal || !referencesModal.classList.contains("open")) return;
+  if (event.key === "Escape") {
+    event.preventDefault();
+    event.stopPropagation();
+    closeReferencesModal();
+    return;
+  }
+  if (event.key !== "Tab") return;
+  const focusables = referencesModal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+  if (!focusables.length) {
+    event.preventDefault();
+    return;
+  }
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
 }
 
 /**
@@ -1678,6 +1942,18 @@ async function loadArgument(file){
 
 syncArgumentContext();
 loadArgument(argumentSelectEl.value);
+
+if (referencesBtn) {
+  referencesBtn.addEventListener("click", openReferencesModal);
+}
+if (referencesCloseBtn) {
+  referencesCloseBtn.addEventListener("click", closeReferencesModal);
+}
+if (referencesModal) {
+  referencesModal.addEventListener("click", (event) => {
+    if (event.target === referencesModal) closeReferencesModal();
+  });
+}
 
 function update(){
   const { nodes, links, minLane, maxLane, laneStart } = computeLayout();
