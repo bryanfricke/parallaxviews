@@ -1106,6 +1106,339 @@
           "explanation": "A survival or swoon-style theory must account for the severity of Roman scourging and crucifixion, Jesus' burial, the empty tomb claim, the disciples' belief that he appeared risen and glorified, and the conversions of Paul and James. As an inference to the best explanation, it is generally much weaker than the resurrection hypothesis."
         }
       ]
+    },
+    {
+      "id": "lesson-04",
+      "title": "The Empty Tomb: Evidence and Objections",
+      "category": "The Empty Tomb",
+      "questions": [
+        {
+          "id": "l4-q001",
+          "type": "multiple-choice",
+          "category": "Enemy Attestation",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "How does the Jewish leaders' claim that the disciples stole Jesus' body support the empty tomb?",
+          "choices": [
+            {
+              "id": "stolen-body-implies-empty",
+              "text": "No one would need to explain the missing body unless the tomb was empty",
+              "isCorrect": true,
+              "feedback": "Correct. The stolen-body claim attempts to explain why the tomb was empty."
+            },
+            {
+              "id": "proves-disciples-stole",
+              "text": "It proves the disciples actually stole the body",
+              "isCorrect": false,
+              "feedback": "Not quite. The point is not that the accusation was true, but that it implies the body was missing."
+            },
+            {
+              "id": "denies-empty-tomb",
+              "text": "It shows the Jewish leaders denied that the tomb was empty",
+              "isCorrect": false,
+              "feedback": "Not quite. The accusation actually assumes the body was no longer in the tomb."
+            },
+            {
+              "id": "no-relevance",
+              "text": "It has no relevance to the empty tomb",
+              "isCorrect": false,
+              "feedback": "Not quite. A hostile explanation for the missing body is historically relevant."
+            }
+          ],
+          "explanation": "The stolen-body explanation is important because it does not simply deny the empty tomb. It tries to explain it. If Jesus' body were still in the tomb, there would have been no need to claim that the disciples stole it."
+        },
+        {
+          "id": "l4-q002",
+          "type": "multiple-choice",
+          "category": "Ancient Sources",
+          "difficulty": "intermediate",
+          "shuffleChoices": false,
+          "question": "Which ancient sources report or preserve the claim that the disciples stole Jesus' body?",
+          "choices": [
+            {
+              "id": "matthew",
+              "text": "Matthew 28:12-13",
+              "isCorrect": false,
+              "feedback": "True, but incomplete. Matthew records the stolen-body explanation, but it is not the only source listed."
+            },
+            {
+              "id": "justin",
+              "text": "Justin Martyr, Dialogue with Trypho 108",
+              "isCorrect": false,
+              "feedback": "True, but incomplete. Justin Martyr refers to this accusation, but he is not the only source listed."
+            },
+            {
+              "id": "tertullian",
+              "text": "Tertullian, De Spectaculis 30",
+              "isCorrect": false,
+              "feedback": "True, but incomplete. Tertullian also refers to the charge, but the best answer includes all three."
+            },
+            {
+              "id": "all-of-the-above",
+              "text": "A, B, and C",
+              "isCorrect": true,
+              "feedback": "Correct. All three sources are relevant to the stolen-body accusation."
+            }
+          ],
+          "explanation": "Matthew reports the original accusation, and later Christian writers such as Justin Martyr and Tertullian preserve knowledge of the charge that the disciples stole Jesus' body. Since the correct option refers to A, B, and C, this question should not shuffle its answers."
+        },
+        {
+          "id": "l4-q003",
+          "type": "multiple-choice",
+          "category": "Recognizability",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "If Jesus' body had been exhumed soon after burial, would it likely have been recognizable enough to refute the resurrection claim?",
+          "choices": [
+            {
+              "id": "yes-recognizable",
+              "text": "Yes. His body would likely have been recognizable, and opponents could have used it to challenge the resurrection claim",
+              "isCorrect": true,
+              "feedback": "Correct. Producing the body would have been a powerful way to answer the resurrection proclamation."
+            },
+            {
+              "id": "no-instant-decay",
+              "text": "No. A body became completely unrecognizable immediately after burial",
+              "isCorrect": false,
+              "feedback": "Not quite. That overstates the effects of decomposition in the relevant time frame."
+            },
+            {
+              "id": "irrelevant-body",
+              "text": "No. The body would have been irrelevant to a bodily resurrection claim",
+              "isCorrect": false,
+              "feedback": "Not quite. A bodily resurrection claim is directly challenged if the body can be produced."
+            },
+            {
+              "id": "no-one-cared",
+              "text": "No. Nobody in Jerusalem would have cared whether the body was still there",
+              "isCorrect": false,
+              "feedback": "Not quite. The resurrection proclamation began in a context where the claim could be contested."
+            }
+          ],
+          "explanation": "If Jesus' corpse had been available, opponents of the resurrection message would have had a strong reason to produce it. The recognizability of the body, especially with crucifixion wounds, matters because it would have provided a direct challenge to the claim that Jesus had been raised."
+        },
+        {
+          "id": "l4-q004",
+          "type": "multiple-choice",
+          "category": "Women Witnesses",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "The women are reported as witnesses to the empty tomb in all four Gospels. How many Gospels also report men as witnesses to the empty tomb?",
+          "choices": [
+            {
+              "id": "two",
+              "text": "Two",
+              "isCorrect": true,
+              "feedback": "Correct. Two Gospels report male witnesses connected to the empty tomb."
+            },
+            {
+              "id": "one",
+              "text": "One",
+              "isCorrect": false,
+              "feedback": "Not quite. The number is higher than one."
+            },
+            {
+              "id": "three",
+              "text": "Three",
+              "isCorrect": false,
+              "feedback": "Not quite. The intended answer is two."
+            },
+            {
+              "id": "four",
+              "text": "Four",
+              "isCorrect": false,
+              "feedback": "Not quite. All four report women, but not all four report men as witnesses to the empty tomb."
+            }
+          ],
+          "explanation": "All four Gospels report women as witnesses to the empty tomb. The presence of women in all four accounts is significant for the principle of embarrassment, while the male-witness detail is not reported in all four."
+        },
+        {
+          "id": "l4-q005",
+          "type": "multiple-choice",
+          "category": "Historical Reasoning",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "The empty tomb is best described as:",
+          "choices": [
+            {
+              "id": "proves-by-itself",
+              "text": "The one fact that by itself proves the resurrection",
+              "isCorrect": false,
+              "feedback": "Not quite. The empty tomb is important, but the case for the resurrection is cumulative."
+            },
+            {
+              "id": "bedrock-fact",
+              "text": "A historical bedrock fact on the same level as Jesus' death and the disciples' experiences",
+              "isCorrect": false,
+              "feedback": "Not quite. The empty tomb is significant, but it is usually treated differently from the core minimal facts."
+            },
+            {
+              "id": "second-order-support",
+              "text": "A second-order fact that supports the resurrection hypothesis",
+              "isCorrect": true,
+              "feedback": "Correct. The empty tomb supports the resurrection hypothesis without carrying the whole case by itself."
+            },
+            {
+              "id": "late-legend",
+              "text": "A late legend with no historical value",
+              "isCorrect": false,
+              "feedback": "Not quite. The empty tomb is argued from several historical considerations, including enemy attestation and the women witnesses."
+            }
+          ],
+          "explanation": "The empty tomb is best treated as an important supporting fact in the overall case for the resurrection. It does not by itself carry the whole argument, but it strengthens the resurrection hypothesis when considered alongside Jesus' death, the disciples' experiences, early proclamation, and the conversions of Paul and James."
+        },
+        {
+          "id": "l4-q006",
+          "type": "true-false",
+          "category": "Bodily Resurrection",
+          "difficulty": "beginner",
+          "shuffleChoices": false,
+          "question": "True or false: The bodily resurrection could only have been proclaimed in Jerusalem if the tomb was in fact empty.",
+          "choices": [
+            {
+              "id": "true",
+              "text": "True",
+              "isCorrect": true,
+              "feedback": "Correct. A public bodily resurrection claim would have been vulnerable if the body were still in the tomb."
+            },
+            {
+              "id": "false",
+              "text": "False",
+              "isCorrect": false,
+              "feedback": "Not quite. A bodily resurrection claim is difficult to sustain publicly if the body can be produced."
+            }
+          ],
+          "explanation": "A bodily resurrection proclamation in Jerusalem would have faced an obvious challenge if Jesus' body remained in the tomb. The empty tomb is therefore an important part of the historical case."
+        },
+        {
+          "id": "l4-q007",
+          "type": "multiple-choice",
+          "category": "Principle of Embarrassment",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "How is the principle of embarrassment used to support the empty tomb?",
+          "choices": [
+            {
+              "id": "women-discoverers",
+              "text": "A fictional account would be less likely to make women the first discoverers of the empty tomb in that cultural setting",
+              "isCorrect": true,
+              "feedback": "Correct. The women witnesses are often used as an example of the principle of embarrassment."
+            },
+            {
+              "id": "leaders-look-good",
+              "text": "The story makes the religious leaders look especially heroic",
+              "isCorrect": false,
+              "feedback": "Not quite. The principle concerns details that would be awkward or less convenient for the source."
+            },
+            {
+              "id": "tomb-unknown",
+              "text": "The story avoids naming anyone connected to the empty tomb",
+              "isCorrect": false,
+              "feedback": "Not quite. The issue here is the reported role of women as witnesses."
+            },
+            {
+              "id": "invent-best-witnesses",
+              "text": "The accounts use the most socially powerful witnesses possible",
+              "isCorrect": false,
+              "feedback": "Not quite. The argument is that women were not the witnesses one would invent if trying to make the story maximally persuasive in that setting."
+            }
+          ],
+          "explanation": "In the cultural context of the time, women were not typically viewed as the strongest public witnesses. The fact that all four Gospels report women as the first witnesses to the empty tomb is therefore argued to be less likely as an invention."
+        },
+        {
+          "id": "l4-q008",
+          "type": "multiple-choice",
+          "category": "Enemy Attestation",
+          "difficulty": "beginner",
+          "shuffleChoices": true,
+          "question": "How is the principle of enemy attestation used to support the empty tomb?",
+          "choices": [
+            {
+              "id": "hostile-explanation",
+              "text": "The Jewish leadership indirectly attested to the empty tomb by accusing the disciples of stealing the body",
+              "isCorrect": true,
+              "feedback": "Correct. A hostile explanation for the missing body implies that the body was missing."
+            },
+            {
+              "id": "hostile-denial",
+              "text": "The Jewish leadership proved the tomb was occupied by producing Jesus' body",
+              "isCorrect": false,
+              "feedback": "Not quite. Producing the body would have challenged the empty tomb, but that is not what the stolen-body claim does."
+            },
+            {
+              "id": "friendly-only",
+              "text": "Only friendly Christian sources matter for this argument",
+              "isCorrect": false,
+              "feedback": "Not quite. Enemy attestation is significant precisely because it comes from hostile or unsympathetic sources."
+            },
+            {
+              "id": "no-hostile-sources",
+              "text": "Enemy attestation means there were no hostile responses to the resurrection claim",
+              "isCorrect": false,
+              "feedback": "Not quite. The stolen-body claim is itself a hostile response."
+            }
+          ],
+          "explanation": "Enemy attestation is used here because the stolen-body accusation comes from opponents of the Christian movement. Their accusation attempts to explain why the tomb was empty, thereby indirectly supporting the empty tomb itself."
+        },
+        {
+          "id": "l4-q009",
+          "type": "multiple-choice",
+          "category": "Recognizability",
+          "difficulty": "intermediate",
+          "shuffleChoices": true,
+          "question": "What is the strongest reason to think Jesus' corpse would still have been identifiable even as late as fifty days after burial?",
+          "choices": [
+            {
+              "id": "crucifixion-wounds",
+              "text": "His body would likely be identifiable by crucifixion wounds and the effects of the manner of death",
+              "isCorrect": true,
+              "feedback": "Correct. The distinctive wounds and manner of death would matter for identification."
+            },
+            {
+              "id": "name-tag",
+              "text": "Roman victims were buried with official name tags",
+              "isCorrect": false,
+              "feedback": "Not quite. The argument does not depend on an official name tag."
+            },
+            {
+              "id": "unchanged-body",
+              "text": "A corpse would show no decomposition after fifty days",
+              "isCorrect": false,
+              "feedback": "Not quite. The point is not that decomposition would be absent, but that identifying features could remain."
+            },
+            {
+              "id": "burial-cloths-only",
+              "text": "Only the burial cloths would have been needed to identify him",
+              "isCorrect": false,
+              "feedback": "Not quite. Burial context may matter, but the argument focuses on identifiable wounds and the manner of death."
+            }
+          ],
+          "explanation": "The argument is that Jesus' body would likely have had distinctive signs of scourging and crucifixion. Those marks would be relevant to identification, even if the body had begun to decompose."
+        },
+        {
+          "id": "l4-q010",
+          "type": "true-false",
+          "category": "Historical Reasoning",
+          "difficulty": "beginner",
+          "shuffleChoices": false,
+          "question": "True or false: If something cannot be made 100% certain, we should not accept it as true.",
+          "choices": [
+            {
+              "id": "true",
+              "text": "True",
+              "isCorrect": false,
+              "feedback": "Not quite. Historical reasoning rarely gives mathematical certainty, but it can still justify belief."
+            },
+            {
+              "id": "false",
+              "text": "False",
+              "isCorrect": true,
+              "feedback": "Correct. We often accept conclusions on strong evidence without requiring 100% certainty."
+            }
+          ],
+          "explanation": "Historical claims are usually evaluated by evidence, probability, explanatory power, and comparison with rival explanations. Requiring 100% certainty would rule out many things we reasonably accept as true."
+        }
+      ]
     }
   ]
 }
