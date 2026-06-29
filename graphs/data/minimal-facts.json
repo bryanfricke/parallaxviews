@@ -1807,29 +1807,6 @@
                             "subtitle": "Sources and traditions showing that these appearances produced settled conviction and endurance, despite the message’s countercultural character",
                             "children": [
                                 {
-                                    "name": "Paul's Letters",
-                                    "subtitle": "Paul admits the message was culturally difficult, which makes the origin of resurrection belief historically significant",
-                                    "children": [
-                                        {
-                                            "name": "1 Corinthians 1:23–24",
-                                            "subtitle": "Paul says the core proclamation was a stumbling block to Jews and folly to Gentiles",
-                                            "date": "c. AD 53–55",
-                                            "details": "Paul openly acknowledges that the apostolic message was not tailored for applause: \u201cwe preach Christ crucified,\u201d a message that was \u201ca stumbling block to Jews and folly to Gentiles.\u201d That admission matters historically. A movement centered on a crucified and risen Messiah was not the path of least resistance in either audience. The specific resurrection belief therefore calls for an originating cause, and the earliest tradition locates that cause in appearances the disciples took to be encounters with the risen Jesus.",
-                                            "whyItMatters": [
-                                                "Counterintuitive message: Paul admits the proclamation cut against the grain for both major audiences of the early movement.",
-                                                "Belief in need of explanation: This was not simply a slogan designed to win easy assent or social advantage.",
-                                                "Fits the larger resurrection tradition: The appearances function in the sources as the reason the disciples began proclaiming the risen Jesus."
-                                            ],
-                                            "source": {
-                                                "title": "1 Corinthians 1:23–24",
-                                                "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+1%3A23-24&version=ESV"
-                                            },
-                                            "kind": "evidence"
-                                        }
-                                    ],
-                                    "kind": "collection"
-                                },
-                                {
                                     "name": "Luke",
                                     "subtitle": "Physician, companion of Paul, and author of Luke-Acts; documents apostolic suffering and resurrection faith",
                                     "children": [
@@ -1965,7 +1942,7 @@
                                     "kind": "collection"
                                 },
                                 {
-                                    "name": "Polycarp",
+                                    "name": "Polycarp of Smyrna",
                                     "subtitle": "Bishop of Smyrna (c. AD 110–140), traditionally associated with the Apostle John; early witness to apostolic endurance and resurrection faith",
                                     "children": [
                                         {
@@ -2666,7 +2643,7 @@
                                     "kind": "collection"
                                 },
                                 {
-                                    "name": "Polycarp",
+                                    "name": "Polycarp of Smyrna",
                                     "subtitle": "Polycarp’s testimony to apostolic suffering and endurance",
                                     "children": [
                                         {
