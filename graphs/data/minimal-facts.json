@@ -2085,7 +2085,7 @@
                             "subtitle": "Accounts of James’s initial skepticism and later conversion after the resurrection",
                             "children": [
                                 {
-                                    "name": "Gospels",
+                                    "name": "(Before) Gospels",
                                     "subtitle": "Gospels note Jesus’ brothers were skeptics before the resurrection, implying a later change in belief",
                                     "children": [
                                         {
@@ -2171,7 +2171,7 @@
                                     "kind": "collection"
                                 },
                                 {
-                                    "name": "Paul & Acts",
+                                    "name": "(After) Paul & Acts",
                                     "subtitle": "Acts and Paul highlight James’ leadership in the early church after the resurrection",
                                     "children": [
                                         {
@@ -2358,7 +2358,7 @@
                                     "kind": "collection"
                                 },
                                 {
-                                    "name": "Luke",
+                                    "name": "Luke (Acts)",
                                     "subtitle": "Traditionally attributed to Luke — a physician and companion of Paul — Acts narrates Paul’s conversion, defenses, and public testimony",
                                     "children": [
                                         {
@@ -2500,7 +2500,7 @@
                                     "kind": "collection"
                                 },
                                 {
-                                    "name": "Luke",
+                                    "name": "Luke (Acts)",
                                     "subtitle": "Acts’ narrative of Paul’s suffering and trials for the resurrection message",
                                     "children": [
                                         {
