@@ -87,6 +87,8 @@
             --node-hover-fill-dark: #1e3d44;
             --node-hover-stroke-dark: #8cded6;
             --link-dark: rgba(237, 245, 243, 0.16);
+            --label-halo-strong: rgba(255, 253, 248, 0.92);
+            --label-halo-soft: rgba(255, 253, 248, 0.70);
             --text-dark: #edf5f3;
             --text-secondary-dark: #b6c7c8;
             --accent-dark: #4dd3c6;
@@ -476,6 +478,8 @@
                 radial-gradient(circle at 85% 15%, var(--page-glow-dark-2), transparent 24rem),
                 linear-gradient(180deg, var(--bg-dark), var(--bg-dark-base));
             color: var(--text-dark);
+            --label-halo-strong: rgba(9, 19, 27, 0.95);
+            --label-halo-soft: rgba(9, 19, 27, 0.80);
             --link-accent: #4dd3c6;
             --panel-dark-translucent: rgba(20, 40, 50, 0.86);
         }
@@ -1160,6 +1164,10 @@
             filter: drop-shadow(0 0 3px rgba(255, 253, 248, 0.92)) drop-shadow(0 0 2px rgba(255, 253, 248, 0.7));
         }
 
+        body.svg-text-halo-fallback .node text {
+            filter: url(#nodeLabelHalo);
+        }
+
         .node text .label {
             fill: #222;
         }
@@ -1167,6 +1175,10 @@
         body.dark-mode .node text {
             fill: var(--text-dark) !important;
             filter: drop-shadow(0 0 3px rgba(9, 19, 27, 0.95)) drop-shadow(0 0 2px rgba(9, 19, 27, 0.8)) !important;
+        }
+
+        body.dark-mode.svg-text-halo-fallback .node text {
+            filter: url(#nodeLabelHalo) !important;
         }
 
         .tooltip {
@@ -1427,9 +1439,19 @@
         let hasSeenEmbedState = false;
         let resetEmbedInteractionUI = null;
         let syncEmbedViewport = null;
+        let syncLabelHaloTheme = null;
 
         if (isEmbedMode) {
             document.documentElement.classList.add('embed-mode');
+        }
+
+        function needsSvgTextHaloFallback() {
+            const ua = navigator.userAgent || '';
+            const vendor = navigator.vendor || '';
+            const platform = navigator.platform || '';
+            const isIOS = /iPad|iPhone|iPod/.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            const isSafariDesktop = /Safari\//.test(ua) && !/Chrome\//.test(ua) && !/Chromium\//.test(ua) && !/Edg\//.test(ua) && !/OPR\//.test(ua) && /Apple/i.test(vendor);
+            return isIOS || isSafariDesktop;
         }
 
         function usesInteractionGate() {
@@ -1497,6 +1519,7 @@
                 themeMeta.setAttribute('content', theme === 'dark' ? '#09131b' : '#fffaf2');
             }
             try { syncControlsPanelTheme(); } catch (error) { /* non-fatal */ }
+            try { if (typeof syncLabelHaloTheme === 'function') syncLabelHaloTheme(); } catch (error) { /* non-fatal */ }
         }
 
         function syncEmbedReturnButton() {
@@ -1525,6 +1548,8 @@
             // Apply optional meta configuration from the JSON root
             const meta = data.meta || {};
             applyTheme(getInitialTheme());
+            const useSvgTextHaloFallback = needsSvgTextHaloFallback();
+            document.body.classList.toggle('svg-text-halo-fallback', useSvgTextHaloFallback);
             if (meta.pageTitle) document.title = meta.pageTitle;
             const topbarTitleEl = document.getElementById('topbarTitle');
             if (topbarTitleEl) topbarTitleEl.textContent = meta.topbarTitle || '';
@@ -1899,6 +1924,71 @@
             svg = d3.select("#chart").append("svg")
                 .attr("width", width).attr("height", height)
                 .attr('role', 'none');
+
+            if (useSvgTextHaloFallback) {
+                const defs = svg.append("defs");
+                const nodeLabelHaloFilter = defs.append("filter")
+                    .attr("id", "nodeLabelHalo")
+                    .attr("x", "-40%")
+                    .attr("y", "-40%")
+                    .attr("width", "180%")
+                    .attr("height", "180%")
+                    .attr("color-interpolation-filters", "sRGB");
+
+                nodeLabelHaloFilter.append("feMorphology")
+                    .attr("in", "SourceAlpha")
+                    .attr("operator", "dilate")
+                    .attr("radius", "1.15")
+                    .attr("result", "labelDilated");
+
+                nodeLabelHaloFilter.append("feGaussianBlur")
+                    .attr("in", "labelDilated")
+                    .attr("stdDeviation", "1.15")
+                    .attr("result", "labelBlurStrong");
+
+                nodeLabelHaloFilter.append("feGaussianBlur")
+                    .attr("in", "labelDilated")
+                    .attr("stdDeviation", "2")
+                    .attr("result", "labelBlurSoft");
+
+                nodeLabelHaloFilter.append("feFlood")
+                    .attr("id", "nodeLabelHaloStrongFlood")
+                    .attr("result", "labelHaloStrongColor");
+
+                nodeLabelHaloFilter.append("feComposite")
+                    .attr("in", "labelHaloStrongColor")
+                    .attr("in2", "labelBlurStrong")
+                    .attr("operator", "in")
+                    .attr("result", "labelHaloStrongGlow");
+
+                nodeLabelHaloFilter.append("feFlood")
+                    .attr("id", "nodeLabelHaloSoftFlood")
+                    .attr("result", "labelHaloSoftColor");
+
+                nodeLabelHaloFilter.append("feComposite")
+                    .attr("in", "labelHaloSoftColor")
+                    .attr("in2", "labelBlurSoft")
+                    .attr("operator", "in")
+                    .attr("result", "labelHaloSoftGlow");
+
+                const nodeLabelHaloMerge = nodeLabelHaloFilter.append("feMerge");
+                nodeLabelHaloMerge.append("feMergeNode").attr("in", "labelHaloSoftGlow");
+                nodeLabelHaloMerge.append("feMergeNode").attr("in", "labelHaloStrongGlow");
+                nodeLabelHaloMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
+                syncLabelHaloTheme = function () {
+                    const styles = getComputedStyle(document.body);
+                    defs.select("#nodeLabelHaloStrongFlood")
+                        .attr("flood-color", styles.getPropertyValue("--label-halo-strong").trim())
+                        .attr("flood-opacity", 0.98);
+                    defs.select("#nodeLabelHaloSoftFlood")
+                        .attr("flood-color", styles.getPropertyValue("--label-halo-soft").trim())
+                        .attr("flood-opacity", 1);
+                };
+                syncLabelHaloTheme();
+            } else {
+                syncLabelHaloTheme = null;
+            }
 
             // Create a main group for zoom/pan
             const g = svg.append("g").attr("role", "none");
