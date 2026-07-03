@@ -2,10 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Parallax Views | Guided Argument Maps</title>
   <meta name="description" content="A guided landing page for exploring the case for God's existence, the minimal facts case for the resurrection, and the assessment of competing hypotheses.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f5efe4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#09131b" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#f5efe4" id="theme-color-meta">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <link rel="icon" href="assets/icons/favicon.svg?v=20260430d" type="image/svg+xml">
   <link rel="icon" href="assets/icons/minimal-facts-icon-32.png?v=20260430c" sizes="32x32" type="image/png">
   <link rel="icon" href="assets/icons/minimal-facts-icon-16.png?v=20260430c" sizes="16x16" type="image/png">
@@ -14,13 +19,16 @@
   <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg?v=20260430d" color="#00796B">
   <script>
     (function () {
+      var systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      var storedTheme = null;
       try {
-        var storedTheme = localStorage.getItem("parallax-theme") || localStorage.getItem("pv_theme");
-        var systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-        document.documentElement.dataset.theme = storedTheme || systemTheme;
+        storedTheme = localStorage.getItem("parallax-theme") || localStorage.getItem("pv_theme");
       } catch (error) {
-        document.documentElement.dataset.theme = "light";
       }
+      var initialTheme = storedTheme || systemTheme;
+      document.documentElement.dataset.theme = initialTheme;
+      document.documentElement.style.backgroundColor = initialTheme === "dark" ? "#09131b" : "#f5efe4";
+      document.documentElement.style.colorScheme = initialTheme;
     }());
   </script>
   <style>
@@ -85,12 +93,16 @@
     }
 
     html {
+      min-height: 100%;
       scroll-behavior: smooth;
+      background-color: var(--bg);
     }
 
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100dvh;
+      background-color: var(--bg);
       background:
         radial-gradient(circle at top left, var(--page-glow-1), transparent 32rem),
         radial-gradient(circle at 85% 15%, var(--page-glow-2), transparent 24rem),
@@ -1163,7 +1175,14 @@
         var nextActionLabel = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
         var nextTheme = theme === "dark" ? "light" : "dark";
         root.dataset.theme = theme;
-        themeMeta.setAttribute("content", palette[theme]);
+        root.style.backgroundColor = palette[theme];
+        root.style.colorScheme = theme;
+        if (document.body) {
+          document.body.style.backgroundColor = palette[theme];
+        }
+        Array.prototype.forEach.call(document.querySelectorAll('meta[name="theme-color"]'), function (metaTag) {
+          metaTag.setAttribute("content", palette[theme]);
+        });
         toggle.setAttribute("aria-pressed", String(theme === "dark"));
         toggle.setAttribute("aria-label", nextActionLabel);
         toggle.setAttribute("title", nextActionLabel);

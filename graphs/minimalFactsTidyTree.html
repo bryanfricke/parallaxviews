@@ -12,9 +12,34 @@
     <link rel="apple-touch-icon" href="../assets/icons/minimal-facts-icon-180.png?v=20260430c" sizes="180x180">
     <link rel="manifest" href="../minimal-facts.webmanifest?v=20260430c">
     <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg?v=20260430d" color="#00796B">
-    <meta name="theme-color" content="#09131b">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#f5efe4" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#09131b" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#09131b" id="theme-color-meta">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="viewport"
-        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <script>
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var requestedTheme = params.get('theme');
+            var isEmbedMode = params.get('embed') === '1' || window.parent !== window;
+            var systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            var storedTheme = null;
+            try {
+                storedTheme = localStorage.getItem('parallax-theme') || localStorage.getItem('pv_theme');
+            } catch (error) {
+            }
+            var initialTheme = requestedTheme === 'light' || requestedTheme === 'dark'
+                ? requestedTheme
+                : (storedTheme || systemTheme);
+            document.documentElement.style.backgroundColor = isEmbedMode
+                ? 'transparent'
+                : (initialTheme === 'dark' ? '#09131b' : '#f5efe4');
+            document.documentElement.style.colorScheme = initialTheme;
+        }());
+    </script>
     <style>
         /* Semantic HTML landmarks */
         header {
@@ -108,7 +133,10 @@
             align-items: flex-start;
             gap: 12px 14px;
             padding: 16px 24px 14px;
-            background: var(--header-tint-light);
+            background:
+                radial-gradient(circle at 12% 0%, rgba(13, 143, 134, 0.16), transparent 18rem),
+                radial-gradient(circle at 88% 0%, rgba(194, 144, 44, 0.10), transparent 16rem),
+                var(--header-tint-light);
             border-bottom: 1px solid var(--panel-stroke-light);
             box-shadow: var(--soft-shadow-light);
             min-height: 48px;
@@ -120,7 +148,10 @@
         }
 
         body.dark-mode #topbar {
-            background: var(--header-tint-dark);
+            background:
+                radial-gradient(circle at 12% 0%, rgba(77, 211, 198, 0.18), transparent 18rem),
+                radial-gradient(circle at 88% 0%, rgba(235, 191, 104, 0.10), transparent 16rem),
+                var(--header-tint-dark);
             border-bottom: 1px solid var(--panel-stroke-dark);
             box-shadow: var(--soft-shadow-dark);
         }
@@ -445,10 +476,22 @@
             border: 2px solid #00E6B2;
         }
 
+        html {
+            height: 100%;
+            background-color: var(--bg-light-base);
+        }
+
+        html.embed-mode {
+            background: transparent;
+        }
+
         body {
             margin: 0;
+            min-height: 100%;
+            min-height: 100dvh;
             font: 400 16px/1.6 var(--ui-font);
             overflow: hidden;
+            background-color: var(--bg-light-base);
             background:
                 radial-gradient(circle at top left, var(--page-glow-light-1), transparent 32rem),
                 radial-gradient(circle at 85% 15%, var(--page-glow-light-2), transparent 24rem),
@@ -473,6 +516,7 @@
         }
 
         body.dark-mode {
+            background-color: var(--bg-dark);
             background:
                 radial-gradient(circle at top left, var(--page-glow-dark-1), transparent 32rem),
                 radial-gradient(circle at 85% 15%, var(--page-glow-dark-2), transparent 24rem),
@@ -1510,14 +1554,17 @@
         function applyTheme(theme) {
             if (theme !== 'light' && theme !== 'dark') return;
             const darkModeToggle = document.getElementById('darkModeToggle');
+            const themeColor = theme === 'dark' ? '#09131b' : '#f5efe4';
             document.body.classList.toggle('dark-mode', theme === 'dark');
+            document.documentElement.style.backgroundColor = isEmbedMode ? 'transparent' : themeColor;
+            document.documentElement.style.colorScheme = theme;
+            document.body.style.backgroundColor = isEmbedMode ? 'transparent' : themeColor;
             if (darkModeToggle) {
                 darkModeToggle.checked = theme === 'dark';
             }
-            const themeMeta = document.querySelector('meta[name="theme-color"]');
-            if (themeMeta) {
-                themeMeta.setAttribute('content', theme === 'dark' ? '#09131b' : '#fffaf2');
-            }
+            Array.prototype.forEach.call(document.querySelectorAll('meta[name="theme-color"]'), function (metaTag) {
+                metaTag.setAttribute('content', themeColor);
+            });
             try { syncControlsPanelTheme(); } catch (error) { /* non-fatal */ }
             try { if (typeof syncLabelHaloTheme === 'function') syncLabelHaloTheme(); } catch (error) { /* non-fatal */ }
         }

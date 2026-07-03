@@ -4,7 +4,29 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Interactive Argument Map (D3) — Pro/Con with Disclosure</title>
-  <meta name="theme-color" content="#09131b" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f5efe4" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#09131b" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#09131b" id="theme-color-meta" />
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var requestedTheme = params.get("theme");
+      var systemTheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      var storedTheme = null;
+      try {
+        storedTheme = localStorage.getItem("parallax-theme") || localStorage.getItem("pv_theme");
+      } catch (error) {
+      }
+      var initialTheme = requestedTheme === "light" || requestedTheme === "dark"
+        ? requestedTheme
+        : (storedTheme || systemTheme);
+      if (initialTheme === "light") document.documentElement.setAttribute("data-theme", "light");
+      else document.documentElement.removeAttribute("data-theme");
+      document.documentElement.style.backgroundColor = initialTheme === "light" ? "#f5efe4" : "#09131b";
+      document.documentElement.style.colorScheme = initialTheme;
+    }());
+  </script>
   <style>
     :root{
       color-scheme: dark;
@@ -154,9 +176,15 @@
       height:100%;
       margin:0;
     }
+    html{
+      background-color:var(--bg0);
+    }
     body{
       position:relative;
+      min-height:100%;
+      min-height:100dvh;
       overflow-x:hidden;
+      background-color:var(--bg0);
       background:
         radial-gradient(circle at top left, var(--pageGlow1), transparent 32rem),
         radial-gradient(circle at 85% 15%, var(--pageGlow2), transparent 24rem),
@@ -1082,8 +1110,11 @@ function getInitialTheme() {
 function applyTheme(theme) {
   if (theme !== "light" && theme !== "dark") return;
   document.documentElement.setAttribute("data-theme", theme);
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute("content", theme === "light" ? "#f5efe4" : "#09131b");
+  const themeColor = theme === "light" ? "#f5efe4" : "#09131b";
+  document.documentElement.style.backgroundColor = themeColor;
+  document.documentElement.style.colorScheme = theme;
+  if (document.body) document.body.style.backgroundColor = themeColor;
+  document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => meta.setAttribute("content", themeColor));
   if (typeof updateThemeVisuals === "function") updateThemeVisuals();
 }
 
