@@ -1758,6 +1758,7 @@
             // Increase this to move the tree slightly to the right so left-most labels
             // remain visible on small/tall viewports (tuned empirically).
             const MOBILE_BIAS_FRAC = 0.18;
+            const FINAL_POSITION_DURATION_MS = 780;
             function openBottomSheet(html, node) {
                 // Prevent subtitle-only hover opens from overwriting a full "sheet-title" view.
                 // If the sheet is already open and currently showing a .sheet-title, and the
@@ -2773,7 +2774,7 @@
                                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                                         svg.interrupt();
                                         hideTransientUI();
-                                        svg.transition().duration(360).call(zoom.transform, newTransform)
+                                        svg.transition().duration(FINAL_POSITION_DURATION_MS).call(zoom.transform, newTransform)
                                             .on('end interrupt', () => { suppressAutoEnsure = false; suppressHoverTooltips = false; try { revealHoverAtPointer(); } catch (e) { } });
                                     } else {
                                         const avgX = d.x;
@@ -2790,13 +2791,13 @@
                                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                                         svg.interrupt();
                                         hideTransientUI();
-                                        svg.transition().duration(360).call(zoom.transform, newTransform)
+                                        svg.transition().duration(FINAL_POSITION_DURATION_MS).call(zoom.transform, newTransform)
                                             .on('end interrupt', () => { suppressAutoEnsure = false; suppressHoverTooltips = false; try { revealHoverAtPointer(); } catch (e) { } });
                                     }
                                 } else {
                                     // Desktop/large-screen behavior: apply a fraction of the computed delta
                                     // and clamp to reasonable maximums so motion is subtle.
-                                    const duration = 780;
+                                    const duration = FINAL_POSITION_DURATION_MS;
                                     const fraction = 1.0; // apply full computed shift on desktop (match mobile)
                                     if (willExpand) {
                                         const desc = d.descendants();
@@ -3443,13 +3444,13 @@
                         suppressAutoEnsure = true;
                         svg.interrupt();
                         hideTransientUI();
-                        svg.transition().duration(360).call(zoom.transform, newTransform)
+                        svg.transition().duration(FINAL_POSITION_DURATION_MS).call(zoom.transform, newTransform)
                             .on('end interrupt', () => { try { revealHoverAtPointer(); } catch (e) { } finally { suppressAutoEnsure = false; } });
                     } else {
                         // gentle, clamped nudge on larger screens
                         if (debugCentering) console.log('centerAfterUpdate desktop avg', { avgX, avgY });
                         const fraction = (opts.fraction != null) ? opts.fraction : 0.45;
-                        const duration = (opts.duration != null) ? opts.duration : 260;
+                        const duration = (opts.duration != null) ? opts.duration : FINAL_POSITION_DURATION_MS;
                         const screen = transform.apply([avgY, avgX]);
                         // use chart width for horizontal centering
                         let dx = ((width / 2) - screen[0]) * fraction;
@@ -3515,7 +3516,7 @@
 
             // Smooth centering (animated) used for desktop programmatic actions
             function centerSmooth(target, opts = {}) {
-                const duration = (opts && opts.duration) ? opts.duration : 420;
+                const duration = (opts && opts.duration) ? opts.duration : FINAL_POSITION_DURATION_MS;
                 try {
                     const transform = d3.zoomTransform(svg.node());
                     // select nodes to center on (reuse logic from centerAfterUpdate)
@@ -3701,14 +3702,14 @@
                         // to finish and then apply an immediate recenter on desktop to avoid
                         // requiring multiple clicks; on small screens keep the animated centering.
                         if (smallScreen) {
-                            try { centerAfterUpdate(deepest, { fraction: 1.0, duration: 360 }); } catch (e) { /* ignore */ }
+                            try { centerAfterUpdate(deepest, { fraction: 1.0, duration: FINAL_POSITION_DURATION_MS }); } catch (e) { /* ignore */ }
                         } else {
                             setTimeout(() => { try { centerSmooth(deepest); } catch (e) { /* ignore */ } }, 380);
                         }
                     }
                 } catch (e) { /* non-fatal */ }
                 // Defensive: ensure the suppression is cleared if centering didn't run for some reason
-                setTimeout(() => { suppressAutoEnsure = false; }, 700);
+                setTimeout(() => { suppressAutoEnsure = false; }, FINAL_POSITION_DURATION_MS + 220);
             }
 
             // Build expansion states from the original raw data
