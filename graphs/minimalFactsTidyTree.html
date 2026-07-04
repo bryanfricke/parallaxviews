@@ -131,7 +131,8 @@
                 "title actions"
                 "controls controls";
             align-items: flex-start;
-            gap: 12px 14px;
+            row-gap: 0;
+            column-gap: 14px;
             padding: 16px 24px 14px;
             background:
                 radial-gradient(circle at 12% 0%, rgba(13, 143, 134, 0.16), transparent 18rem),
@@ -171,6 +172,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
+            align-self: center;
             gap: 10px;
             flex-wrap: wrap;
             min-width: 0;
@@ -302,6 +304,7 @@
 
         #controls.open {
             display: flex;
+            margin-top: 12px;
         }
 
         body.dark-mode #controls {
@@ -629,7 +632,8 @@
                 grid-template-areas:
                     "title actions"
                     "controls controls";
-                gap: 10px 8px;
+                row-gap: 0;
+                column-gap: 8px;
                 padding: 10px 12px;
                 padding-left: calc(12px + env(safe-area-inset-left, 0px));
                 padding-right: calc(12px + env(safe-area-inset-right, 0px));
@@ -699,6 +703,7 @@
                 display: flex;
                 flex-wrap: wrap;
                 gap: 8px;
+                margin-top: 10px;
                 z-index: 6000; /* above #topbar (5000) so it isn't visually clipped */
             }
 
@@ -766,11 +771,16 @@
 
         @media (max-width: 600px) {
             html.embed-mode #topbar {
-                gap: 8px 6px;
+                row-gap: 0;
+                column-gap: 6px;
                 padding: 8px 8px 9px;
                 padding-left: calc(8px + env(safe-area-inset-left, 0px));
                 padding-right: calc(8px + env(safe-area-inset-right, 0px));
                 padding-top: calc(8px + env(safe-area-inset-top, 0px));
+            }
+
+            html.embed-mode #controls.open {
+                margin-top: 8px;
             }
 
             html.embed-mode #topbarActions {

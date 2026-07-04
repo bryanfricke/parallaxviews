@@ -1095,6 +1095,8 @@
       var compactLayoutQuery = window.matchMedia("(max-width: 720px)");
       var frameOrigin = window.location.origin === "null" ? "*" : window.location.origin;
       var embedStateMessageType = "pv-embed-state";
+      var embedVisibilityMessageType = "pv-embed-visibility";
+      var embedVisibilityRefreshQueued = false;
       var palette = {
         light: "#f5efe4",
         dark: "#09131b"
@@ -1142,6 +1144,78 @@
         });
       }
 
+      function isFrameNearViewport(frame) {
+        if (!frame || typeof frame.getBoundingClientRect !== "function") {
+          return false;
+        }
+        var rect = frame.getBoundingClientRect();
+        var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        var viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+        var verticalMargin = Math.max(160, viewportHeight * 0.25);
+        return rect.bottom >= -verticalMargin &&
+          rect.top <= viewportHeight + verticalMargin &&
+          rect.right >= 0 &&
+          rect.left <= viewportWidth;
+      }
+
+      function requestEmbeddedFrameRefresh(frame, reason) {
+        if (!shouldLoadEmbeddedFrames() || !frame || frame.dataset.ready !== "true" || !frame.contentWindow) {
+          return;
+        }
+        if (!isFrameNearViewport(frame)) {
+          return;
+        }
+        frame.contentWindow.postMessage({
+          type: embedVisibilityMessageType,
+          visible: true,
+          reason: reason || "viewport"
+        }, frameOrigin);
+      }
+
+      function refreshVisibleEmbeddedFrames(reason) {
+        embeddedFrames.forEach(function (frame) {
+          requestEmbeddedFrameRefresh(frame, reason);
+        });
+      }
+
+      function scheduleVisibleEmbeddedFrameRefresh(reason) {
+        if (embedVisibilityRefreshQueued) {
+          return;
+        }
+        embedVisibilityRefreshQueued = true;
+        window.requestAnimationFrame(function () {
+          embedVisibilityRefreshQueued = false;
+          refreshVisibleEmbeddedFrames(reason);
+        });
+      }
+
+      function setupEmbeddedFrameVisibilityRefresh() {
+        if ("IntersectionObserver" in window) {
+          var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                requestEmbeddedFrameRefresh(entry.target, "intersection");
+              }
+            });
+          }, {
+            root: null,
+            rootMargin: "25% 0px 25% 0px",
+            threshold: 0
+          });
+          embeddedFrames.forEach(function (frame) {
+            observer.observe(frame);
+          });
+          return;
+        }
+
+        window.addEventListener("scroll", function () {
+          scheduleVisibleEmbeddedFrameRefresh("scroll");
+        }, { passive: true });
+        window.addEventListener("resize", function () {
+          scheduleVisibleEmbeddedFrameRefresh("resize");
+        }, { passive: true });
+      }
+
       function shouldLoadEmbeddedFrames() {
         return !compactLayoutQuery.matches;
       }
@@ -1157,6 +1231,7 @@
           frame.addEventListener("load", function () {
             syncEmbeddedTheme(getActiveTheme());
             syncEmbeddedState();
+            requestEmbeddedFrameRefresh(frame, "load");
           }, { once: true });
           frame.src = frame.dataset.embedSrc + "?embed=1&theme=" + encodeURIComponent(theme);
           frame.dataset.ready = "true";
@@ -1169,6 +1244,7 @@
         }
         ensureEmbeddedFrames(getActiveTheme());
         syncEmbeddedState();
+        scheduleVisibleEmbeddedFrameRefresh("responsive");
       }
 
       function applyTheme(theme) {
@@ -1220,6 +1296,15 @@
       }
 
       applyTheme(getActiveTheme());
+      setupEmbeddedFrameVisibilityRefresh();
+      window.addEventListener("pageshow", function () {
+        scheduleVisibleEmbeddedFrameRefresh("pageshow");
+      });
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") {
+          scheduleVisibleEmbeddedFrameRefresh("visibilitychange");
+        }
+      });
       syncResponsiveEmbeds();
     }());
   </script>
