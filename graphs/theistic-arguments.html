@@ -330,6 +330,9 @@
     box-sizing: border-box;
   }
   .page-header{
+    position: sticky;
+    top: 0;
+    z-index: 20;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -342,6 +345,7 @@
     background: linear-gradient(135deg, var(--surface), var(--surface-muted));
     box-shadow: var(--shadow-soft);
     backdrop-filter: blur(16px);
+    overflow: visible;
   }
     h1 {
       font-size: clamp(1.2rem, 2.2vw, 1.55rem);
@@ -364,6 +368,8 @@
 
     .chart-shell {
       position: relative;
+      z-index: 0;
+      isolation: isolate;
     }
 
     .interaction-hint {
@@ -414,6 +420,8 @@
 
     /* Desktop baseline height (will be overridden by a dynamic var if available). */
     svg#chart {
+      position: relative;
+      z-index: 0;
       width:100%;
       height: calc(100vh - 80px);
       display:block;
@@ -604,7 +612,7 @@
   <!-- Live region for screen reader announcements (tooltip / focus updates) -->
   <div id="a11y-live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
   <div class="wrap">
-  <div class="page-header">
+  <header class="page-header">
     <h1>Theistic Arguments and Divine Attributes</h1>
     <div id="pageHeaderActions" style="display:inline-flex; gap:8px; align-items:center">
       <button id="embedReturnBtn" class="theme-btn embed-return-btn" type="button" hidden aria-label="Back to overview" title="Back to overview">
@@ -628,7 +636,7 @@
       <span id="icon-sun" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></span>
     </button>
     </div>
-  </div>
+  </header>
 
     <div id="chart-title" class="sr-only">Theistic arguments mapped to divine attributes</div>
     <div id="chart-desc" class="sr-only">Interactive sankey-style mapping where arguments (left) connect to attributes (right). Use Tab to move between items and press Enter or Space to activate a node. Use the About button for more details.</div>
