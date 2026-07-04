@@ -667,11 +667,15 @@
         const requestedTheme = params.get('theme');
         const themeMessageType = 'pv-theme';
         const embedStateMessageType = 'pv-embed-state';
+        const embedVisibilityMessageType = 'pv-embed-visibility';
         const interactionHintEl = document.getElementById('interactionHint');
         const embedReturnBtn = document.getElementById('embedReturnBtn');
         const overviewHref = '../index.html#theistic-overview';
         let isEmbedExpanded = false;
         let embedInteractionActive = !isEmbedMode;
+        let chartLayoutReady = false;
+        let embedViewportRefreshQueued = false;
+        let pendingEmbedViewportRefresh = false;
 
         if (isEmbedMode) {
           document.documentElement.classList.add('embed-mode');
@@ -717,6 +721,35 @@
 
         function navigateToOverview() {
           window.location.href = overviewHref;
+        }
+
+        function forceChartRepaint() {
+          try {
+            const chartNode = document.getElementById('chart');
+            if (!chartNode) return;
+            chartNode.style.transform = 'translateZ(0)';
+            chartNode.getBoundingClientRect();
+            requestAnimationFrame(() => {
+              chartNode.style.transform = '';
+            });
+          } catch (error) {
+          }
+        }
+
+        function requestEmbedViewportRefresh({ animateCenter = false } = {}) {
+          if (!chartLayoutReady) {
+            pendingEmbedViewportRefresh = true;
+            return;
+          }
+          if (embedViewportRefreshQueued) {
+            return;
+          }
+          embedViewportRefreshQueued = true;
+          requestAnimationFrame(() => {
+            embedViewportRefreshQueued = false;
+            refreshChartLayout({ animateCenter });
+            forceChartRepaint();
+          });
         }
 
         syncInteractionMode();
@@ -829,11 +862,16 @@
             isEmbedExpanded = event.data.expanded === true;
             syncEmbedReturnButton();
             embedInteractionActive = !usesInteractionGate();
-            if (usesInteractionGate()) {
+            if (usesInteractionGate() && chartLayoutReady) {
               hideTooltipImmediate(true);
             }
             syncInteractionMode();
-            requestAnimationFrame(() => refreshChartLayout({ animateCenter: true }));
+            requestEmbedViewportRefresh({ animateCenter: true });
+            return;
+          }
+          if (event.data.type === embedVisibilityMessageType) {
+            if (event.data.visible === false) return;
+            requestEmbedViewportRefresh({ animateCenter: false });
           }
         });
       // Load argument metadata (premises/steps) so we can show them on node hover
@@ -2039,7 +2077,12 @@
 
   window.addEventListener('keydown', e => { if (e.key === 'Escape') { deactivateEmbeddedInteraction(); node.classed('faint', false); link.classed('faint', false); hideTooltipImmediate(true); d3.selectAll('.node').classed('hover', false).classed('active', false).classed('focused', false); d3.selectAll('.link').classed('active-link', false).classed('kb-focus', false); updateNodeColors(); }});
 
+    chartLayoutReady = true;
     requestAnimationFrame(() => refreshChartLayout({ animateCenter: false }));
+    if (pendingEmbedViewportRefresh) {
+      pendingEmbedViewportRefresh = false;
+      requestEmbedViewportRefresh({ animateCenter: false });
+    }
     let resizeLayoutTimeout = null;
     function scheduleChartRefresh() {
       if (resizeLayoutTimeout) clearTimeout(resizeLayoutTimeout);
@@ -2049,6 +2092,14 @@
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', scheduleChartRefresh, { passive: true });
     }
+    window.addEventListener('pageshow', () => {
+      requestEmbedViewportRefresh({ animateCenter: false });
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        requestEmbedViewportRefresh({ animateCenter: false });
+      }
+    });
 
       })();
     </script>
