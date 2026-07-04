@@ -843,6 +843,17 @@
       outline-offset:3px;
       border-radius:6px;
     }
+    .references-attribution{
+      margin:16px 0 0;
+      padding-top:12px;
+      border-top:1px solid var(--panelStroke);
+      color:var(--mutedSoft);
+      font-size:12px;
+      line-height:1.55;
+    }
+    .references-attribution cite{
+      font-style:italic;
+    }
     .references-close{
       position:absolute;
       top:12px;
@@ -988,6 +999,7 @@
     <h2 id="referencesTitle">References</h2>
     <p id="referencesIntro" class="references-intro"></p>
     <ul id="referencesList" class="references-list"></ul>
+    <p id="referencesAttribution" class="references-attribution">Argument structures are adapted in part from William Lane Craig’s <cite>On Guard: Defending Your Faith with Reason and Precision</cite>. With gratitude for Dr. Craig’s faithful and influential defense of the Christian faith.</p>
   </div>
 </div>
 
@@ -1019,27 +1031,27 @@ const ARGUMENT_REFERENCES = new Map([
   ["data/argument-kalam.json", {
     label: "The Kalam Cosmological Argument",
     href: "https://www.reasonablefaith.org/kalam",
-    note: "A fuller prose treatment of the kalam argument, its premises, and common objections."
+    note: "Resource page with a featured video and related material on the kalam argument, its premises, and common objections."
   }],
   ["data/argument-leibniz.json", {
     label: "Leibniz’s Cosmological Argument",
     href: "https://www.reasonablefaith.org/Leibniz-Contingency-Argument",
-    note: "Background on contingency, sufficient reason, and the move from dependent reality to a necessary being."
+    note: "Resource page covering contingency, sufficient reason, and the move from dependent reality to a necessary being."
   }],
   ["data/argument-design.json", {
     label: "Teleological / Fine-Tuning Argument",
     href: "https://www.reasonablefaith.org/finetuning",
-    note: "A longer discussion of fine-tuning, chance, necessity, design, and multiverse responses."
+    note: "Resource page on fine-tuning, chance, necessity, design, and multiverse responses."
   }],
   ["data/argument-moral.json", {
     label: "The Moral Argument",
     href: "https://www.reasonablefaith.org/moral",
-    note: "Overview material on objective moral values, duties, and the structure of the moral argument."
+    note: "Resource page on objective moral values, duties, and the structure of the moral argument."
   }],
   ["data/argument-ontological.json", {
     label: "The Ontological Argument",
     href: "https://www.reasonablefaith.org/ontological",
-    note: "A fuller explanation of modal ontological reasoning and the main philosophical disputes around it."
+    note: "Resource page explaining modal ontological reasoning and the main philosophical disputes around it."
   }]
 ]);
 
@@ -1131,8 +1143,8 @@ function renderReferencesModal() {
   const currentFile = argumentSelectEl.value;
   const currentRef = ARGUMENT_REFERENCES.get(currentFile);
   referencesIntroEl.textContent = currentRef
-    ? `These links point to the longer-form Reasonable Faith articles behind the argument maps in this explorer. The current map corresponds most directly to ${currentRef.label}.`
-    : "These links point to the longer-form Reasonable Faith articles behind the argument maps in this explorer.";
+    ? `Each link opens a dedicated Reasonable Faith resource page for that argument, with a featured explanatory video and associated videos plus resources such as podcasts, Q&A, articles, and books. The current map corresponds to ${currentRef.label}.`
+    : "Each link opens a dedicated Reasonable Faith resource page for that argument, with a featured explanatory video and associated videos plus resources such as podcasts, Q&A, articles, and books.";
   referencesListEl.innerHTML = Array.from(ARGUMENT_REFERENCES.entries()).map(([file, entry]) => {
     const isCurrent = file === currentFile;
     return `<li class="references-item${isCurrent ? " current" : ""}">`
