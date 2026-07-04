@@ -1697,27 +1697,32 @@
                 const visibleTop = Math.max(chartRect.top, vp.top);
                 // If the bottom sheet is open, reduce the visible bottom by its height so
                 // centering keeps nodes above the sheet. Also keep a small margin.
-                const sheetHeight = (typeof bottomSheet !== 'undefined' && bottomSheet && bottomSheet.classList.contains('open')) ? (bottomSheet.getBoundingClientRect().height || 0) : 0;
-                const margin = 12;
+                const sheetOpen = (typeof bottomSheet !== 'undefined' && bottomSheet && bottomSheet.classList.contains('open'));
+                const sheetHeight = sheetOpen ? (bottomSheet.getBoundingClientRect().height || 0) : 0;
+                const margin = sheetOpen ? 12 : 0;
                 const visibleBottom = Math.min(chartRect.bottom, vp.top + vp.height - sheetHeight - margin);
                 let visibleHeight = visibleBottom - visibleTop;
                 if (visibleHeight <= 0) {
                     // fallback to visual viewport center if there's no overlap
                     return { centerX, centerY: vp.top + (vp.height / 2) };
                 }
-                // Apply an upward bias on small screens only when browser chrome reduces
-                // the visual viewport height (so we don't over-bias when chrome is hidden).
-                const isSmall = isMobileLike();
-                // const chromeDelta = Math.max(0, (window.innerHeight || vp.height) - (vp.height || 0));
-                // const upwardBias = (isSmall && chromeDelta > 16) ? 24 : 0; // px
-                const upwardBias = 40; // px
-
-                let centerY = visibleTop + (visibleHeight / 2) - upwardBias;
+                let centerY = visibleTop + (visibleHeight / 2);
                 // Clamp into the visible area
                 const minY = vp.top + 8;
                 const maxY = vp.top + vp.height - 8;
                 centerY = Math.min(Math.max(centerY, minY), maxY);
                 return { centerX, centerY };
+            }
+
+            function getDesiredChartCenter() {
+                const screenCenter = getDesiredScreenCenter();
+                const chartRect = container.getBoundingClientRect();
+                // D3 zoom transforms use the SVG/chart viewport as their origin,
+                // while getDesiredScreenCenter() includes the chart's page offset.
+                return {
+                    centerX: screenCenter.centerX - chartRect.left,
+                    centerY: screenCenter.centerY - chartRect.top
+                };
             }
 
             // Improved mobile detection helper:
@@ -2136,7 +2141,7 @@
                 if (currentTransform.k === 1 && Math.abs(currentTransform.x) < 1 && Math.abs(currentTransform.y) < 1) {
                     // use visual viewport center vertically so resize-triggered recentering
                     // doesn't place content underneath mobile browser chrome
-                    const _c = getDesiredScreenCenter();
+                    const _c = getDesiredChartCenter();
                     svg.call(zoom.transform, d3.zoomIdentity.translate(Math.min(220, width * 0.25), _c.centerY).scale(1));
                 }
                 // Always schedule a gentle vertical recenter after resize/orientation flips
@@ -2181,9 +2186,9 @@
                     } catch (e) { anchor = (typeof root !== 'undefined' ? root : null); }
                     if (!anchor) return;
 
-                    // Current screen coords of the anchor
+                    // Current chart-local coords of the anchor
                     const screen = t.apply([anchor.y, anchor.x]);
-                    const desired = getDesiredScreenCenter();
+                    const desired = getDesiredChartCenter();
 
                     // Adjust only Y; horizontal clamping is handled by ensureTreeVisible
                     const newT = d3.zoomIdentity.translate(t.x, t.y + (desired.centerY - screen[1])).scale(t.k);
@@ -2746,7 +2751,7 @@
                                         const avgY = d3.mean(deepest, n => n.y);
                                         const screen = transform.apply([avgY, avgX]);
                                         // use chart width for horizontal centering
-                                        const center = getDesiredScreenCenter();
+                                        const center = getDesiredChartCenter();
                                         // Bias horizontally on portrait mobile so labels that extend
                                         // left of the node remain visible after centering.
                                         const vp = getViewportRect();
@@ -2765,7 +2770,7 @@
                                         const avgY = d.y;
                                         const screen = transform.apply([avgY, avgX]);
                                         // use chart width for horizontal centering
-                                        const center = getDesiredScreenCenter();
+                                        const center = getDesiredChartCenter();
                                         const vp = getViewportRect();
                                         const isPortrait = (vp.height || window.innerHeight) > (vp.width || window.innerWidth);
                                         const biasFrac = (isPortrait && isMobileLike()) ? MOBILE_BIAS_FRAC : 0;
@@ -2795,7 +2800,7 @@
                                         const screen = transform.apply([avgY, avgX]);
                                         // use the computed chart `width` (container) rather than the full window
                                         let dx = ((width / 2) - screen[0]) * fraction;
-                                        let dy = (getDesiredScreenCenter().centerY - screen[1]) * fraction;
+                                        let dy = (getDesiredChartCenter().centerY - screen[1]) * fraction;
                                         const maxMoveX = width * 0.35;
                                         const maxMoveY = height * 0.35;
                                         dx = Math.max(-maxMoveX, Math.min(maxMoveX, dx));
@@ -2811,7 +2816,7 @@
                                         const screen = transform.apply([avgY, avgX]);
                                         // use chart `width` for horizontal centering
                                         let dx = ((width / 2) - screen[0]) * fraction;
-                                        let dy = (getDesiredScreenCenter().centerY - screen[1]) * fraction;
+                                        let dy = (getDesiredChartCenter().centerY - screen[1]) * fraction;
                                         const maxMoveX = width * 0.35;
                                         const maxMoveY = height * 0.35;
                                         dx = Math.max(-maxMoveX, Math.min(maxMoveX, dx));
@@ -3032,7 +3037,7 @@
                                     try {
                                         const transform = d3.zoomTransform(svg.node());
                                         const screen = transform.apply([targetNode.y, targetNode.x]);
-                                        const center = getDesiredScreenCenter();
+                                        const center = getDesiredChartCenter();
                                         const dx = (width / 2) - screen[0];
                                         const dy = center.centerY - screen[1];
                                         // Only move if the node is significantly off-center
@@ -3352,7 +3357,7 @@
             const initialTranslateX = smallScreen ? Math.min(140, Math.max(48, width * MOBILE_BIAS_FRAC)) : 220;
             // Apply a sensible starting transform, then run the smoother centering
             // Use visual viewport vertical center so initial centering accounts for mobile browser chrome
-            const _initialCenter = getDesiredScreenCenter();
+            const _initialCenter = getDesiredChartCenter();
             svg.call(zoom.transform, d3.zoomIdentity.translate(initialTranslateX, _initialCenter.centerY).scale(1));
             // After layout settles, run centering that focuses on the deepest visible nodes
             setTimeout(() => {
@@ -3423,7 +3428,7 @@
                         const biasFrac = (isPortrait && isMobileLike()) ? MOBILE_BIAS_FRAC : 0;
                         const desiredScreenX = width * (0.5 + biasFrac);
                         const dx = desiredScreenX - screen[0];
-                        const dy = getDesiredScreenCenter().centerY - screen[1];
+                        const dy = getDesiredChartCenter().centerY - screen[1];
                         const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                         suppressAutoEnsure = true;
                         svg.interrupt();
@@ -3438,7 +3443,7 @@
                         const screen = transform.apply([avgY, avgX]);
                         // use chart width for horizontal centering
                         let dx = ((width / 2) - screen[0]) * fraction;
-                        let dy = (getDesiredScreenCenter().centerY - screen[1]) * fraction;
+                        let dy = (getDesiredChartCenter().centerY - screen[1]) * fraction;
                         const maxMoveX = width * 0.35;
                         const maxMoveY = height * 0.35;
                         dx = Math.max(-maxMoveX, Math.min(maxMoveX, dx));
@@ -3486,7 +3491,7 @@
                     const biasFrac = (isPortrait && isMobileLike()) ? MOBILE_BIAS_FRAC : 0;
                     const desiredScreenX = width * (0.5 + biasFrac);
                     const dx = desiredScreenX - screen[0];
-                    const dy = getDesiredScreenCenter().centerY - screen[1];
+                    const dy = getDesiredChartCenter().centerY - screen[1];
                     const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                     // apply immediately
                     suppressAutoEnsure = true;
@@ -3523,7 +3528,7 @@
                     const screen = transform.apply([avgY, avgX]);
                     // use chart width for horizontal centering and visual viewport for vertical
                     const dx = (width / 2) - screen[0];
-                    const dy = getDesiredScreenCenter().centerY - screen[1];
+                    const dy = getDesiredChartCenter().centerY - screen[1];
                     const newTransform = d3.zoomIdentity.translate(transform.x + dx, transform.y + dy).scale(transform.k);
                     suppressAutoEnsure = true;
                     svg.interrupt();
