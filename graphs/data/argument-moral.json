@@ -2,36 +2,87 @@
   "id": "MA",
   "kind": "root",
   "label": "The Moral Argument",
-  "text": "The Moral Argument for the existence of God",
+  "text": "The Moral Argument for the existence of God argues that objective moral values and duties are real, and that God is the best explanation for their objective reality and binding force.",
   "relToParent": null,
   "children": [
     {
       "id": "M_P1",
       "kind": "premise",
-      "label": "P1 — If God does not exist, objective moral values do not exist",
-      "text": "P1 — Without God, moral values and duties are merely the products of socio-biological evolution or cultural conditioning — they would be subjective, relative, or illusory rather than genuinely binding and objective.",
+      "label": "P1 — If God does not exist, objective moral values and duties do not exist",
+      "text": "The first premise is not about whether atheists can behave morally. Belief in God is not required to act kindly, courageously, justly, or lovingly. The issue is whether atheism can ground objective moral values and duties. The argument claims that God's existence is required for moral values and duties to be objectively real and binding.",
       "relToParent": "supports",
       "children": [
         {
           "id": "M_P1S1",
           "kind": "support",
-          "label": "Naturalism reduces morality to evolved preferences",
-          "text": "On a purely naturalistic view, moral intuitions are adaptations that promoted reproductive fitness. They carry no more objective authority than a preference for sweet foods — useful but not genuinely obligatory.",
+          "label": "The issue is grounding, not moral behavior",
+          "text": "People of many worldviews can recognize and practice moral behavior. The deeper question is whether, on atheism or naturalism, moral values and duties are anything more than evolved preferences, social conventions, or subjective attitudes.",
           "relToParent": "supports",
           "children": []
         },
         {
+          "id": "M_O4",
+          "kind": "objection",
+          "label": "Atheists can be moral people",
+          "text": "Many atheists are kind, courageous, just, generous, and loving. Their moral lives can be admirable, so morality does not seem to require belief in God.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "M_R4",
+              "kind": "rebuttal",
+              "label": "Moral behavior and moral ontology are different questions",
+              "text": "This misunderstands the argument. The claim is not that atheists cannot be moral people. The claim is that if God does not exist, there is no adequate foundation for objective moral values and duties. How people behave and what makes moral values objectively real are different questions.",
+              "relToParent": "rebuts",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "M_O3",
+          "kind": "objection",
+          "label": "Euthyphro: is something good because God commands it, or does God command it because it is good?",
+          "text": "If something is good only because God commands it, morality seems arbitrary. If God commands something because it is already good, then goodness seems independent of God.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "M_R3",
+              "kind": "rebuttal",
+              "label": "Goodness is grounded in God's nature",
+              "text": "The dilemma overlooks a third option: goodness is grounded in God's own nature. God does not arbitrarily invent morality, nor does He conform to a standard outside Himself. His commands express His essentially good nature.",
+              "relToParent": "rebuts",
+              "children": []
+            }
+          ]
+        },
+        {
           "id": "M_O1",
           "kind": "objection",
-          "label": "Objective morality can be grounded without God (non-theistic realism)",
-          "text": "Moral realists argue that moral facts are necessary truths, like mathematical facts, that exist independently of any mind — divine or human.",
+          "label": "Objective morality can be grounded without God through atheistic moral Platonism",
+          "text": "Atheistic moral Platonism holds that moral facts are abstract, necessary truths that exist independently of God, human opinion, and social convention.",
           "relToParent": "attacks",
           "children": [
             {
               "id": "M_R1",
               "kind": "rebuttal",
-              "label": "Abstract moral facts can’t ground moral obligations",
-              "text": "Even if abstract moral truths exist, they cannot by themselves explain why anyone is obligated to act on them. Moral obligation requires a personal authority — a law-giver. Abstract platonic objects make no demands.",
+              "label": "Abstract moral facts do not explain personal obligation",
+              "text": "Abstract moral facts do not seem able to impose personal obligations, generate moral responsibility, or explain why we are duty-bound to obey them. It would also be surprising, on atheism, if blind evolutionary processes produced creatures whose moral intuitions reliably track abstract moral truths.",
+              "relToParent": "rebuts",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "M_O5",
+          "kind": "objection",
+          "label": "Human flourishing can ground morality",
+          "text": "Morality can be grounded in what promotes human flourishing. Actions are good when they help human beings thrive and wrong when they needlessly damage human life, cooperation, or well-being.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "M_R5",
+              "kind": "rebuttal",
+              "label": "Flourishing still needs a moral foundation",
+              "text": "Human flourishing may describe what humans naturally value, but it does not by itself explain why human flourishing is objectively good or morally obligatory. What grounds the special moral value of human beings if atheism is true? Privileging human flourishing over the flourishing of other species can appear arbitrary unless there is a deeper grounding for human dignity and moral worth.",
               "relToParent": "rebuts",
               "children": []
             }
@@ -43,29 +94,54 @@
       "id": "M_P2",
       "kind": "premise",
       "label": "P2 — Objective moral values and duties do exist",
-      "text": "P2 — We know with confidence that certain things are objectively morally wrong (torturing children for fun, genocide, rape) and others objectively good (love, justice, mercy) — independent of personal or cultural opinion.",
+      "text": "Our moral experience gives us reason to believe that some things are truly evil, not merely personally disliked or socially disapproved. Torturing children for fun, genocide, betrayal, cruelty, and injustice seem objectively wrong. Likewise, love, justice, mercy, courage, and compassion seem genuinely good.",
       "relToParent": "supports",
       "children": [
         {
           "id": "M_P2S1",
           "kind": "support",
-          "label": "Moral intuitions are strong evidence for objective moral facts",
-          "text": "The near-universal human intuition that gratuitous cruelty is wrong is powerful evidence for objective moral facts. Denying this requires a deeper skepticism that undermines all knowledge, including scientific knowledge.",
+          "label": "Moral experience supports objective moral reality",
+          "text": "Our basic moral experience gives us prima facie reason to believe that some actions are objectively right or wrong. We should not reject this unless we have a strong defeater.",
           "relToParent": "supports",
           "children": []
         },
         {
           "id": "M_O2",
           "kind": "objection",
-          "label": "Moral beliefs vary across cultures — there are no universal facts",
-          "text": "Anthropology shows significant cross-cultural moral disagreement. This suggests moral ‘facts’ are social constructs rather than objective truths.",
+          "label": "Moral beliefs vary across cultures",
+          "text": "Cultures often disagree about moral rules, priorities, and practices. This variation may suggest that moral beliefs are social constructions rather than perceptions of objective moral facts.",
           "relToParent": "attacks",
           "children": [
             {
               "id": "M_R2",
               "kind": "rebuttal",
-              "label": "Disagreement proves opinion, not the absence of fact",
-              "text": "Historical disagreement about scientific facts did not make science subjective. Moral disagreement is consistent with there being objective moral facts that cultures approximate imperfectly. Moreover, there is broad cross-cultural agreement on core moral norms.",
+              "label": "Disagreement does not disprove moral facts",
+              "text": "Moral disagreement does not prove there are no moral facts, just as scientific disagreement does not prove there are no scientific facts. Cultures may perceive moral truths imperfectly. There is also significant cross-cultural agreement on many core moral norms.",
+              "relToParent": "rebuts",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "M_O6",
+          "kind": "objection",
+          "label": "Sociobiology explains our moral intuitions",
+          "text": "Our sense of right and wrong may have developed because it helped our ancestors survive, cooperate, and pass on their genes. Moral intuition may therefore be a product of evolution rather than awareness of objective moral truth.",
+          "relToParent": "attacks",
+          "children": [
+            {
+              "id": "M_R6A",
+              "kind": "rebuttal",
+              "label": "Sociobiology does not address the truth of moral values and duties",
+              "text": "Sociobiology may explain how human beings came to have moral beliefs, but it does not show whether those beliefs are true or false. The origin of a belief is not the same thing as its truth. If God exists, He could use evolutionary processes as part of the means by which human beings become aware of real moral values and duties. Therefore, sociobiology does not, by itself, show that moral values and duties are illusory.",
+              "relToParent": "rebuts",
+              "children": []
+            },
+            {
+              "id": "M_R6B",
+              "kind": "rebuttal",
+              "label": "Sociobiology does not defeat moral justification without assuming atheism",
+              "text": "The sociobiological objection often tries to remove our justification for believing in objective moral values and duties. But to do that, it must assume atheism or naturalism is already true, so that moral beliefs are merely survival-oriented byproducts rather than awareness of real moral truths. That assumption is being smuggled in rather than argued for. If our cognitive faculties are aimed only at survival and not truth, this concern can spread beyond morality and undermine confidence in all our beliefs, including atheism, naturalism, and the sociobiological explanation itself. Survival value does not guarantee true belief.",
               "relToParent": "rebuts",
               "children": []
             }
@@ -77,33 +153,16 @@
       "id": "M_C",
       "kind": "conclusion",
       "label": "∴ God exists as the ground of objective moral reality",
-      "text": "∴ Since objective moral values and duties exist, and they require a personal ground to be genuinely binding, the best explanation is a morally perfect, personal being — God — whose nature is the standard of goodness and whose commands constitute moral duty.",
+      "text": "If objective moral values and duties exist, and if they require a personal, morally perfect ground, then the best explanation is God. God's nature is the standard of goodness, and God's commands express moral duties.",
       "relToParent": "supports",
       "children": [
         {
           "id": "M_CS1",
           "kind": "support",
-          "label": "God’s nature — not arbitrary will — is the moral standard",
-          "text": "The moral argument does not imply God arbitrarily invents morality (the Euthyphro dilemma). Rather, God’s perfectly good nature is the standard; his commands flow necessarily from that nature.",
+          "label": "God's nature is the moral standard",
+          "text": "The conclusion does not depend on morality being created by arbitrary divine will. It appeals to God's essentially good nature as the standard of goodness, with divine commands expressing the duties that flow from that nature.",
           "relToParent": "supports",
           "children": []
-        },
-        {
-          "id": "M_O3",
-          "kind": "objection",
-          "label": "Euthyphro: is something good because God wills it, or does God will it because it’s good?",
-          "text": "Plato’s dilemma: if God wills good because it is good, goodness is independent of God. If something is good because God wills it, morality is arbitrary — God could make torture good by decree.",
-          "relToParent": "attacks",
-          "children": [
-            {
-              "id": "M_R3",
-              "kind": "rebuttal",
-              "label": "Third option: God’s nature is the standard; commands express that nature",
-              "text": "The dilemma presents a false dichotomy. God neither conforms to an external standard nor arbitrarily invents one — his essentially good nature is the ultimate standard, and his commands necessarily express it.",
-              "relToParent": "rebuts",
-              "children": []
-            }
-          ]
         }
       ]
     }
