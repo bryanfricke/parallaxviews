@@ -1192,6 +1192,14 @@
             pointer-events: all;
         }
 
+        .node .node-badge-hit {
+            fill: #fff;
+            fill-opacity: 0;
+            stroke: none;
+            pointer-events: all;
+            cursor: pointer;
+        }
+
         .node circle.visible {
             fill: #e0f7fa;
             stroke: #00796b;
@@ -1334,9 +1342,116 @@
             text-decoration: none;
         }
 
+        .node .node-label-text {
+            fill: #222;
+        }
+
+        .node .node-badge-outline {
+            fill: #e0f7fa;
+            stroke: #00796b;
+            stroke-width: 1px;
+            pointer-events: none;
+            transition: fill 0.2s, stroke 0.2s, stroke-width 0.18s;
+        }
+
+        .node .node-badge-text {
+            fill: #00695c !important;
+            font: 700 8px/1 var(--ui-font);
+            letter-spacing: 0.04em;
+            dominant-baseline: central;
+            text-decoration: none;
+            filter: none !important;
+            pointer-events: none;
+        }
+
+        .node.clickable .node-badge-text,
+        .node.clickable:hover .node-badge-text {
+            fill: #00695c;
+            text-decoration: none;
+        }
+
+        .node:hover .node-badge-outline {
+            fill: #b2ebf2;
+            stroke: #004d40;
+        }
+
+        body.svg-text-halo-fallback .node .node-badge-text {
+            filter: none !important;
+        }
+
+        body.dark-mode .node .node-badge-outline {
+            fill: var(--node-fill-dark);
+            stroke: var(--node-stroke-dark);
+        }
+
+        body.dark-mode .node .node-badge-text,
+        body.dark-mode .node.clickable .node-badge-text,
+        body.dark-mode .node.clickable:hover .node-badge-text {
+            fill: var(--node-stroke-dark) !important;
+            filter: none !important;
+        }
+
+        body.dark-mode .node:hover .node-badge-outline {
+            fill: var(--node-hover-fill-dark);
+            stroke: var(--node-hover-stroke-dark);
+        }
+
+        .badge-note {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(24, 33, 39, 0.10);
+            color: rgba(24, 33, 39, 0.72);
+            font: 600 11px/1.35 var(--ui-font);
+        }
+
+        .badge-note-pill {
+            display: inline-grid;
+            place-items: center;
+            box-sizing: border-box;
+            min-width: 18px;
+            height: 13px;
+            padding: 0 4px;
+            border: 1px solid rgba(0, 121, 107, 0.58);
+            border-radius: 999px;
+            color: #00695c;
+            background: rgba(0, 121, 107, 0.05);
+            font: 700 8px/1 var(--ui-font);
+            letter-spacing: 0.04em;
+        }
+
+        .badge-note-pill-text {
+            display: block;
+            line-height: 1;
+            transform: translateY(0.04em);
+        }
+
+        body.dark-mode .badge-note {
+            border-top-color: rgba(237, 245, 243, 0.11);
+            color: rgba(237, 245, 243, 0.70);
+        }
+
+        body.dark-mode .badge-note-pill {
+            border-color: rgba(77, 211, 198, 0.64);
+            color: var(--node-stroke-dark);
+            background: rgba(77, 211, 198, 0.07);
+        }
+
+        .bottom-sheet .bottom-content .badge-note {
+            font-size: 12px;
+        }
+
         /* stronger visual ring for selected node (set via data-selected attribute) */
         g.node[data-selected="true"] circle {
             /* default (dark-mode friendly) selection ring */
+            stroke: #00E6B2 !important;
+            stroke-width: 2.6px !important;
+            transition: stroke 180ms, stroke-width 180ms;
+        }
+
+        g.node[data-selected="true"] .node-badge-outline {
             stroke: #00E6B2 !important;
             stroke-width: 2.6px !important;
             transition: stroke 180ms, stroke-width 180ms;
@@ -1356,6 +1471,12 @@
             transition: stroke 180ms, stroke-width 180ms;
         }
 
+        body:not(.dark-mode) g.node[data-selected="true"] .node-badge-outline {
+            stroke: #0074d9 !important;
+            stroke-width: 2.6px !important;
+            transition: stroke 180ms, stroke-width 180ms;
+        }
+
         body:not(.dark-mode) g.node[data-selected="true"] {
             filter: drop-shadow(0 6px 10px rgba(0, 116, 217, 0.06));
         }
@@ -1371,7 +1492,19 @@
             filter: drop-shadow(0 0 8px rgba(0, 116, 217, 0.5));
         }
 
+        g.node:focus .node-badge-outline {
+            stroke: #0074d9 !important;
+            stroke-width: 3px !important;
+            filter: drop-shadow(0 0 8px rgba(0, 116, 217, 0.5));
+        }
+
         body.dark-mode g.node:focus circle.visible {
+            stroke: #00E6B2 !important;
+            stroke-width: 3px !important;
+            filter: drop-shadow(0 0 8px rgba(0, 230, 178, 0.5));
+        }
+
+        body.dark-mode g.node:focus .node-badge-outline {
             stroke: #00E6B2 !important;
             stroke-width: 3px !important;
             filter: drop-shadow(0 0 8px rgba(0, 230, 178, 0.5));
@@ -2324,6 +2457,61 @@
                 } catch (e) { /* non-fatal */ }
             }
 
+            function escapeHtml(value) {
+                return String(value == null ? '' : value)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function getBadgeValue(d) {
+                const badge = d && d.data && d.data.badge;
+                return typeof badge === 'string' ? badge.trim() : '';
+            }
+
+            function getBadgeExplanation(badge) {
+                switch ((badge || '').trim().toUpperCase()) {
+                    case 'F':
+                    case 'MF':
+                        return 'Minimal fact strongly evidenced and granted by the vast majority of critical scholars.';
+                    case '+1':
+                        return 'Additional fact strongly evidenced and accepted by a significant majority of scholars, though not as nearly unanimous as the minimal facts.';
+                    default:
+                        return '';
+                }
+            }
+
+            function getBadgeNoteHtml(d) {
+                const badge = getBadgeValue(d);
+                const explanation = getBadgeExplanation(badge);
+                if (!badge || !explanation) return '';
+                return `<div class="badge-note"><span class="badge-note-pill"><span class="badge-note-pill-text">${escapeHtml(badge)}</span></span><span>${escapeHtml(explanation)}</span></div>`;
+            }
+
+            function getNodeHelpHtml(d, options = {}) {
+                const includeTitle = !!options.includeTitle;
+                const body = d && d.data ? (d.data.subtitle || (options.preferDetails ? d.data.details : '') || '') : '';
+                const badgeNote = getBadgeNoteHtml(d);
+                let html = '';
+                if (includeTitle && d && d.data) {
+                    html += `<div class="sheet-title">${escapeHtml(d.data.name || '')}</div>`;
+                }
+                if (body) {
+                    html += `<div class="node-help-body"${includeTitle ? ' style="margin-top:6px;"' : ''}>${body}</div>`;
+                }
+                return html + badgeNote;
+            }
+
+            function getNodeAccessibleName(d) {
+                const name = d && d.data ? (d.data.name || '') : '';
+                const badge = getBadgeValue(d);
+                const explanation = getBadgeExplanation(badge);
+                const ariaExplanation = explanation.replace(/\.$/, '');
+                return badge && explanation ? `${name}. ${badge} badge: ${ariaExplanation}` : name;
+            }
+
             // After a programmatic pan/zoom, re-evaluate what's under the pointer and show
             // the appropriate tooltip/popup as if the pointer moved there. This keeps the
             // UI consistent when the chart recenters under a stationary mouse.
@@ -2345,17 +2533,17 @@
                     // If the bottom sheet is already open on mobile, keep it as-is so
                     // the selected node's details remain visible after recentering.
                     if (isSmall && bottomSheet && bottomSheet.classList.contains('open')) return;
-                    // If there's a subtitle, surface it; otherwise hide transient UI
-                    const txt = d.data && (d.data.subtitle || '');
-                    if (!txt) {
+                    // If there's help content, surface it; otherwise hide transient UI
+                    const helpHtml = getNodeHelpHtml(d);
+                    if (!helpHtml) {
                         // do not show empty tooltips; keep popup closed
                         hideTransientUI();
                         return;
                     }
                     if (isSmall) {
-                        openBottomSheet(`<div style="padding:4px 2px;">${txt}</div>`, d);
+                        openBottomSheet(helpHtml, d);
                     } else {
-                        tooltip.html(txt).style('opacity', 1).style('pointer-events', 'none');
+                        tooltip.html(helpHtml).style('opacity', 1).style('pointer-events', 'none');
                         clampToViewport(tooltip, lastPointer.x + 24, lastPointer.y + 24);
                     }
                 } catch (e) { /* non-fatal */ }
@@ -2501,7 +2689,7 @@
             let suppressHoverTooltips = false;
             root.x0 = height / 2;
             root.y0 = 0;
-            // Collapse the 'Death', 'Burial', and 'Resurrection' nodes themselves so only those are visible under the root
+            // Collapse the main child nodes themselves so only those are visible under the root
             if (root.children) {
                 root.children.forEach(child => {
                     if (["Death", "Burial", "Resurrection"].includes(child.data.name)) {
@@ -2623,6 +2811,105 @@
                 });
             }
 
+            function renderNodeLabelText(text, d) {
+                text.selectAll("*").remove();
+                text.text(null);
+                if (d.data && d.data.link) {
+                    text.append("a")
+                        .attr("href", d.data.link)
+                        .attr("target", "_blank")
+                        .attr("rel", "noopener noreferrer")
+                        .style("fill", "var(--link-accent)")
+                        .style("text-decoration", "underline")
+                        .text(d.data.name || "");
+                } else {
+                    text.text(d.data && d.data.name ? d.data.name : "");
+                }
+            }
+
+            function getSvgTextWidth(textSelection) {
+                const textNode = textSelection.node();
+                if (!textNode) return 0;
+                try {
+                    return textNode.getBBox().width || 0;
+                } catch (e) {
+                    try {
+                        return textNode.getComputedTextLength() || 0;
+                    } catch (inner) {
+                        return 0;
+                    }
+                }
+            }
+
+            function renderNodeLabels(selection, labelOffset, nodeRadius) {
+                const badgePadX = isMobileLike() ? 5 : 4;
+                const badgeHeight = isMobileLike() ? 14 : 13;
+                const markerEdgeGap = Math.max(4, labelOffset - nodeRadius);
+                selection.select("g.node-label").each(function (d) {
+                    const labelGroup = d3.select(this);
+                    const labelText = labelGroup.select(".node-label-text");
+                    const badgeHit = labelGroup.select(".node-badge-hit");
+                    const badgeRect = labelGroup.select(".node-badge-outline");
+                    const badgeText = labelGroup.select(".node-badge-text");
+                    const labelBeforeNode = !!(d.children || d._children);
+                    const badge = getBadgeValue(d);
+
+                    renderNodeLabelText(labelText, d);
+                    let markerHalfWidth = 0;
+                    let labelX = labelBeforeNode ? -labelOffset : labelOffset;
+
+                    if (badge) {
+                        const hitPadX = isMobileLike() ? 13 : 11;
+                        const hitHeight = isMobileLike() ? 30 : 24;
+
+                        badgeText
+                            .text(badge)
+                            .attr("x", 0)
+                            .attr("y", 0)
+                            .attr("dy", "0.04em")
+                            .attr("text-anchor", "middle")
+                            .style("display", null);
+
+                        const badgeTextWidth = Math.ceil(getSvgTextWidth(badgeText));
+                        const badgeWidth = Math.max(18, badgeTextWidth + (badgePadX * 2));
+                        markerHalfWidth = badgeWidth / 2;
+                        labelX = labelBeforeNode ? -(markerHalfWidth + markerEdgeGap) : markerHalfWidth + markerEdgeGap;
+
+                        badgeRect
+                            .attr("x", -(badgeWidth / 2))
+                            .attr("y", -(badgeHeight / 2))
+                            .attr("width", badgeWidth)
+                            .attr("height", badgeHeight)
+                            .attr("rx", badgeHeight / 2)
+                            .attr("ry", badgeHeight / 2)
+                            .style("display", null);
+                        badgeHit
+                            .attr("x", -(badgeWidth / 2) - hitPadX)
+                            .attr("y", -(hitHeight / 2))
+                            .attr("width", badgeWidth + (hitPadX * 2))
+                            .attr("height", hitHeight)
+                            .attr("rx", hitHeight / 2)
+                            .attr("ry", hitHeight / 2)
+                            .style("display", null);
+                    } else {
+                        badgeHit.style("display", "none");
+                        badgeRect.style("display", "none");
+                        badgeText.style("display", "none");
+                    }
+
+                    labelText
+                        .attr("x", labelX)
+                        .attr("y", 0)
+                        .attr("dy", "0em")
+                        .attr("text-anchor", labelBeforeNode ? "end" : "start");
+
+                    if (wrapToggle && wrapToggle.checked) {
+                        wrapText(labelText, 160);
+                    }
+                    labelGroup.attr("transform", "translate(0,0)");
+                });
+            }
+
             // Color per node (inherit from ancestors if not set)
             function nodeColor(d) {
                 let x = d;
@@ -2687,12 +2974,13 @@
                         const href = d.data.source.highlightedUrl || d.data.source.url;
                         // Build a leaf-specific content block so we can style date/details/link
                         // separately without affecting non-leaf popup-help UI.
-                        let html = `<div class="sheet-title">${d.data.name}</div>`;
+                        let html = `<div class="sheet-title">${escapeHtml(d.data.name)}</div>`;
                         html += `<div class="leaf-content">`;
                         if (d.data.date) html += `<div class="leaf-date">${d.data.date}</div>`;
                         if (d.data.details) html += `<div class="leaf-details">${d.data.details}</div>`;
                         html += `<div class="leaf-link"><a href='${href}' target='_blank'>${d.data.source.title || "View Source"}</a></div>`;
                         html += `</div>`;
+                        html += getBadgeNoteHtml(d);
                         if (isSmall) {
                             openBottomSheet(html, d);
                         } else {
@@ -2852,8 +3140,7 @@
                         // Desktop/large-screen toggles should not open additional popups to avoid
                         // stacking multiple tooltip boxes.
                         try {
-                            const infoHtml = `<div class="sheet-title">${d.data.name}</div>` +
-                                (d.data.subtitle ? `<div style="margin-top:6px;">${d.data.subtitle}</div>` : (d.data.details ? `<div style="margin-top:6px;">${d.data.details}</div>` : ``));
+                            const infoHtml = getNodeHelpHtml(d, { includeTitle: true, preferDetails: true });
                             if (isSmall) {
                                 openBottomSheet(infoHtml, d);
                             }
@@ -2873,10 +3160,11 @@
                         const hasChildren = d.children || d._children;
                         const isExpanded = !!d.children;
                         const isLeaf = !d.children && !d._children;
+                        const accessibleName = getNodeAccessibleName(d);
                         if (isLeaf) {
-                            return `${d.data.name}. Leaf node. Press Enter to view details.`;
+                            return `${accessibleName}. Leaf node. Press Enter to view details.`;
                         } else {
-                            return `${d.data.name}. ${isExpanded ? 'Expanded' : 'Collapsed'}. Press Enter to ${isExpanded ? 'collapse' : 'expand'}.`;
+                            return `${accessibleName}. ${isExpanded ? 'Expanded' : 'Collapsed'}. Press Enter to ${isExpanded ? 'collapse' : 'expand'}.`;
                         }
                     })
                     .on('pointerdown', (event, d) => {
@@ -3064,21 +3352,21 @@
                             }
                         }
                     })
-                    .on("pointerenter", (event, d) => {
+                    .on("pointerover", (event, d) => {
+                        if (event.relatedTarget && event.currentTarget.contains(event.relatedTarget)) return;
                         // Suppress tooltips during expand/collapse transitions
                         if (suppressHoverTooltips) return;
                         // show subtitle on hover/enter (pointer-aware)
-                        const txt = d.data.subtitle || "";
-                        if (!txt) return;
+                        const helpHtml = getNodeHelpHtml(d);
+                        if (!helpHtml) return;
                         const isSmall = isMobileLike();
                         if (isSmall) {
                             // On small/touch devices the tooltip often appears under the finger.
                             // Use the bottom sheet to surface subtitle info instead.
-                            const html = `<div style="padding:4px 2px;">${txt}</div>`;
-                            openBottomSheet(html, d);
+                            openBottomSheet(helpHtml, d);
                             return;
                         }
-                        tooltip.html(txt)
+                        tooltip.html(helpHtml)
                             .style("opacity", 1)
                             .style("pointer-events", "none");
                         clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
@@ -3089,11 +3377,11 @@
                         if (suppressHoverTooltips) {
                             suppressHoverTooltips = false;
                             // Trigger a synthetic pointerenter to show tooltip for current node
-                            const txt = d.data.subtitle || "";
-                            if (txt) {
+                            const helpHtml = getNodeHelpHtml(d);
+                            if (helpHtml) {
                                 const isSmall = isMobileLike();
                                 if (!isSmall) {
-                                    tooltip.html(txt)
+                                    tooltip.html(helpHtml)
                                         .style("opacity", 1)
                                         .style("pointer-events", "none");
                                     clampToViewport(tooltip, event.clientX + 24, event.clientY + 24);
@@ -3111,8 +3399,8 @@
                         // Suppress tooltips during expand/collapse transitions
                         if (suppressHoverTooltips) return;
                         // Show tooltip when node receives keyboard focus
-                        const txt = d.data.subtitle || "";
-                        if (!txt) return;
+                        const helpHtml = getNodeHelpHtml(d);
+                        if (!helpHtml) return;
                         
                         // Don't show tooltip if popup is open for this node
                         const isPopupOpen = popupHelp.style("opacity") === "1" && popupHelpNode === d;
@@ -3140,7 +3428,7 @@
                                 if (isPopupOpenNow) return;
                                 
                                 const rect = nodeEl.getBoundingClientRect();
-                                tooltip.html(txt)
+                                tooltip.html(helpHtml)
                                     .style("opacity", 1)
                                     .style("pointer-events", "none");
                                 // Position to the right of the node
@@ -3299,35 +3587,48 @@
                     .attr('focusable', 'false')
                     .style('pointer-events', 'all');
 
-                const labels = nodeEnter.append("text")
-                    .attr("dy", "0em")
-                    .attr("x", d => (d.children || d._children) ? -labelOffset : labelOffset)
-                    .attr("text-anchor", d => (d.children || d._children) ? "end" : "start")
-                    .html(d => d.data.link
-                        ? `<a href="${d.data.link}" target="_blank" style="fill:var(--link-accent);text-decoration:underline">${d.data.name}</a>`
-                        : d.data.name);
+                const labelGroups = nodeEnter.append("g")
+                    .attr("class", "node-label")
+                    .attr("aria-hidden", "true");
+
+                labelGroups.append("text")
+                    .attr("class", "node-label-text")
+                    .attr("dy", "0em");
+
+                labelGroups.append("rect")
+                    .attr("class", "node-badge-hit")
+                    .attr("rx", 8)
+                    .attr("ry", 8)
+                    .style("display", "none");
+
+                labelGroups.append("rect")
+                    .attr("class", "node-badge-outline")
+                    .attr("rx", 5)
+                    .attr("ry", 5)
+                    .style("display", "none");
+
+                labelGroups.append("text")
+                    .attr("class", "node-badge-text")
+                    .style("display", "none");
 
                 function applyLabelWrapping() {
-                    g.selectAll("g.node text").each(function (d) {
-                        const text = d3.select(this);
-                        text.text(d.data.name);
-                        if (wrapToggle.checked) wrapText(text, 160);
-                    });
+                    renderNodeLabels(g.selectAll("g.node"), labelOffset, targetRadius);
                 }
-                applyLabelWrapping();
                 wrapToggle.onchange = applyLabelWrapping;
 
                 // UPDATE + TRANSITIONS
                 const nodeUpdate = nodeEnter.merge(node);
+                nodeUpdate.classed("has-node-badge", d => !!getBadgeValue(d));
                 // Update aria-label for existing nodes
                 nodeUpdate.attr("aria-label", d => {
                     const hasChildren = d.children || d._children;
                     const isExpanded = !!d.children;
                     const isLeaf = !d.children && !d._children;
+                    const accessibleName = getNodeAccessibleName(d);
                     if (isLeaf) {
-                        return `${d.data.name}. Leaf node. Press Enter to view details.`;
+                        return `${accessibleName}. Leaf node. Press Enter to view details.`;
                     } else {
-                        return `${d.data.name}. ${isExpanded ? 'Expanded' : 'Collapsed'}. Press Enter to ${isExpanded ? 'collapse' : 'expand'}.`;
+                        return `${accessibleName}. ${isExpanded ? 'Expanded' : 'Collapsed'}. Press Enter to ${isExpanded ? 'collapse' : 'expand'}.`;
                     }
                 });
                 nodeUpdate.transition().duration(350)
@@ -3335,17 +3636,18 @@
                     .on("end", () => { updatePopupHelpPosition(); });
                 // Update visible circle radius + styles
                 nodeUpdate.select("circle.visible").transition().duration(350)
-                    .attr("r", targetRadius)
+                    .attr("r", d => getBadgeValue(d) ? 1e-6 : targetRadius)
+                    .style("opacity", d => getBadgeValue(d) ? 0 : 1)
                     .attr("fill", d => (d._children ? nodeColor(d) : "#fff"))
                     .attr("stroke", d => nodeColor(d));
 
                 // Update hit circle to be comfortably tappable on small screens
-                const hitRadius = isSmall ? Math.max(20, targetRadius * 2.5) : Math.max(10, targetRadius * 1.6);
+                const hitRadius = isSmall ? Math.max(20, targetRadius * 2.5) : Math.max(14, targetRadius * 1.6);
+                nodeUpdate.select("circle.hit")
+                    .style("pointer-events", d => getBadgeValue(d) ? "none" : "all");
                 nodeUpdate.select("circle.hit").transition().duration(350)
-                    .attr("r", hitRadius);
-                nodeUpdate.select("text").transition().duration(350)
-                    .attr("x", d => (d.children || d._children) ? -labelOffset : labelOffset)
-                    .attr("text-anchor", d => (d.children || d._children) ? "end" : "start");
+                    .attr("r", d => getBadgeValue(d) ? 1e-6 : hitRadius);
+                renderNodeLabels(nodeUpdate, labelOffset, targetRadius);
 
                 const nodeExit = node.exit().transition().duration(250)
                     .attr("transform", d => `translate(${source.y},${source.x})`)

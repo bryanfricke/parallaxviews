@@ -1,20 +1,21 @@
 {
     "meta": {
-        "pageTitle": "Minimal Facts Tree",
-        "topbarTitle": "Minimal Facts",
-        "ariaLabel": "Minimal facts tree visualization",
+        "pageTitle": "Core Claims to Minimal Facts Tree",
+        "topbarTitle": "Core Claims to Minimal Facts",
+        "ariaLabel": "Core Claims to Minimal Facts tree visualization",
         "aboutModal": {
             "buttonLabel": "4+1 Facts",
             "title": "The \u201cMinimal Facts\u201d (4 + 1)",
             "bodyHtml": "<p>The \u201cMinimal Facts\u201d approach, developed by Gary Habermas and expanded with Michael Licona in <em>The Case for the Resurrection of Jesus</em>, identifies a handful of historical claims about Jesus that meet two criteria:</p><ul><li>They are supported by strong historical evidence.</li><li>They are accepted by the majority of scholars writing on the subject, including many who are not Christians.</li></ul><p>The standard list is:</p><ol><li><strong>Jesus died by crucifixion.</strong><br>Jesus of Nazareth was executed under the Roman governor Pontius Pilate.</li><li><strong>Jesus\u2019 disciples had experiences they took to be appearances of the risen Jesus.</strong><br>Those experiences appear to have generated their belief that God had raised Jesus, not merely that his cause lived on.</li><li><strong>The church persecutor Paul was suddenly changed.</strong><br>Saul of Tarsus, once an enemy of the early Christian movement, became its leading missionary after what he described as a resurrection appearance.</li><li><strong>The skeptic James, the brother of Jesus, was suddenly changed.</strong><br>Initially an unbeliever, James became the leader of the Jerusalem church following what he took to be an encounter with the risen Jesus.</li><li><strong>The empty tomb (the \u201c+1\u201d).</strong><br>Many scholars accept that Jesus\u2019 tomb was found empty by women followers, though this point is debated more than the four above.</li></ol><p><em>There is broad scholarly agreement on these core facts. The resurrection of Jesus best explains them, as competing theories such as hallucination or conspiracy quickly collapse under scrutiny. Objections usually arise not from the evidence itself but from worldview assumptions that rule out the possibility of God and miracles in advance.</em></p><p class=\"callout\" style=\"margin:12px 0; padding:10px; background:rgba(0,0,0,0.04); border-left:4px solid #666; font-size:14px;\"><strong>How this site helps:</strong> This website lets readers explore the supporting evidence directly. By clicking through an interactive tree structure, users can locate early sources that testify to the death, burial, and resurrection of Jesus. The layout reflects the approach in <em>The Case for the Resurrection of Jesus</em>, with some additions \u2014 for example, sources cited for the burial connect naturally to the resurrection claims, which themselves imply the discovery of the empty tomb.</p><hr style=\"margin-top:12px; margin-bottom:12px; border:none; border-top:1px solid rgba(0,0,0,0.06);\"><div class=\"modal-credit\" style=\"font-size:13px; color:inherit;\"><div>Scripture quotations are from the ESV\u00ae Bible (The Holy Bible, English Standard Version\u00ae), copyright \u00a9 2001, 2007, 2011, 2016 by Crossway. Used by permission. All rights reserved.</div><div style=\"margin-top:6px;\">The \u201cMinimal Facts\u201d approach is adapted from: Gary R. Habermas and Michael R. Licona, <em><a href=\"https://search.worldcat.org/search?q=The%20Case%20for%20the%20Resurrection%20of%20Jesus%20Gary%20Habermas%20Michael%20Licona\" target=\"_blank\" rel=\"noopener\">The Case for the Resurrection of Jesus</a></em> (Grand Rapids, MI: Kregel Publications, 2004).</div><div style=\"margin-top:6px;\">Development note: Large Language Models (principally ChatGPT) and GitHub Copilot were used to assist in the development of text and code for this site.</div></div>"
         }
     },
-    "name": "Minimal Facts",
-    "subtitle": "Overview of key events and testimonies related to the resurrection of Jesus",
+    "name": "Core Claims",
+    "subtitle": "The core claims behind the minimal facts case: Jesus’ death, burial, resurrection, and appearances",
     "children": [
         {
             "name": "Death",
-            "subtitle": "Accounts and sources regarding the death of Jesus",
+            "badge": "F",
+            "subtitle": "Accounts and sources regarding Jesus’ death by crucifixion",
             "children": [
                 {
                     "name": "Paul's Letters",
@@ -744,10 +745,11 @@
                 },
                 {
                     "name": "Empty Tomb",
+                    "badge": "+1",
                     "subtitle": "Early Christians used ‘resurrection’ in the bodily sense recognized in Judaism and Greco-Roman contexts. As N. T. Wright puts it: “when the early Christians said ‘resurrection’ … ‘resurrection’ meant bodily resurrection; and that is what the early Christians affirmed.” (Christian Origins, 3:209)",
                     "children": [
                         {
-                            "name": "Gospel Empty-Tomb Narratives",
+                            "name": "Gospel Narratives",
                             "subtitle": "Earliest narrative accounts of the women discovering Jesus’s tomb empty",
                             "children": [
                                 {
@@ -1204,6 +1206,7 @@
             "children": [
                 {
                     "name": "Disciples",
+                    "badge": "F",
                     "subtitle": "Eyewitnesses and early followers whose claimed encounters with Jesus appear to have originated resurrection belief",
                     "children": [
                         {
@@ -2078,7 +2081,8 @@
                 },
                 {
                     "name": "James",
-                    "subtitle": "Jesus’ brother, whose transformation and martyrdom are linked to resurrection belief",
+                    "badge": "F",
+                    "subtitle": "Jesus’ brother, whose reported resurrection appearance helps explain his conversion; his later death supports the sincerity of his faith.",
                     "children": [
                         {
                             "name": "Converted",
@@ -2360,6 +2364,7 @@
                 },
                 {
                     "name": "Paul",
+                    "badge": "F",
                     "subtitle": "Paul’s conversion, testimony, and suffering as evidence for the resurrection",
                     "children": [
                         {
