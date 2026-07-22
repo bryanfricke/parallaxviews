@@ -61,6 +61,9 @@
       --attr-fill: #90a1a6;
       --page-glow-1: rgba(13, 143, 134, 0.14);
       --page-glow-2: rgba(194, 144, 44, 0.12);
+      --header-glow-1: rgba(13, 143, 134, 0.16);
+      --header-glow-2: rgba(194, 144, 44, 0.10);
+      --header-tint: linear-gradient(180deg, rgba(255, 252, 247, 0.86), rgba(255, 252, 247, 0.56));
       --chart-surface:
         radial-gradient(circle at 18% 24%, rgba(13, 143, 134, 0.12), transparent 26rem),
         radial-gradient(circle at 82% 34%, rgba(194, 144, 44, 0.12), transparent 24rem),
@@ -114,6 +117,9 @@
         --attr-fill: #748991;
         --page-glow-1: rgba(77, 211, 198, 0.14);
         --page-glow-2: rgba(235, 191, 104, 0.10);
+        --header-glow-1: rgba(77, 211, 198, 0.18);
+        --header-glow-2: rgba(235, 191, 104, 0.10);
+        --header-tint: linear-gradient(180deg, rgba(9, 19, 27, 0.48), rgba(9, 19, 27, 0.18));
         --chart-surface:
           radial-gradient(circle at 18% 24%, rgba(77, 211, 198, 0.12), transparent 28rem),
           radial-gradient(circle at 82% 34%, rgba(235, 191, 104, 0.10), transparent 24rem),
@@ -164,6 +170,9 @@
       --attr-fill: #748991;
       --page-glow-1: rgba(77, 211, 198, 0.14);
       --page-glow-2: rgba(235, 191, 104, 0.10);
+      --header-glow-1: rgba(77, 211, 198, 0.18);
+      --header-glow-2: rgba(235, 191, 104, 0.10);
+      --header-tint: linear-gradient(180deg, rgba(9, 19, 27, 0.48), rgba(9, 19, 27, 0.18));
       --chart-surface:
         radial-gradient(circle at 18% 24%, rgba(77, 211, 198, 0.12), transparent 28rem),
         radial-gradient(circle at 82% 34%, rgba(235, 191, 104, 0.10), transparent 24rem),
@@ -213,6 +222,9 @@
       --attr-fill: #90a1a6;
       --page-glow-1: rgba(13, 143, 134, 0.14);
       --page-glow-2: rgba(194, 144, 44, 0.12);
+      --header-glow-1: rgba(13, 143, 134, 0.16);
+      --header-glow-2: rgba(194, 144, 44, 0.10);
+      --header-tint: linear-gradient(180deg, rgba(255, 252, 247, 0.86), rgba(255, 252, 247, 0.56));
       --chart-surface:
         radial-gradient(circle at 18% 24%, rgba(13, 143, 134, 0.22), transparent 26rem),
         radial-gradient(circle at 82% 34%, rgba(194, 144, 44, 0.20), transparent 24rem),
@@ -281,9 +293,7 @@
     border-radius: 0;
     border: 0;
     border-bottom: 1px solid var(--panel-stroke);
-    background: linear-gradient(135deg, var(--surface), var(--surface-muted));
-    box-shadow: none;
-    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-soft);
   }
   html.full-page-chart svg#chart {
     border-radius: 0;
@@ -299,9 +309,7 @@
     border-radius: 0;
     border: 0;
     border-bottom: 1px solid var(--panel-stroke);
-    background: linear-gradient(135deg, var(--surface), var(--surface-muted));
-    box-shadow: none;
-    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow-soft);
   }
   html.embed-mode .page-header h1 { font-size: 1.05rem; }
   html.embed-mode #themeToggle { display: none; }
@@ -342,9 +350,13 @@
     padding: 14px 16px;
     border-radius: 1.45rem;
     border: 1px solid var(--panel-stroke);
-    background: linear-gradient(135deg, var(--surface), var(--surface-muted));
+    background:
+      radial-gradient(circle at 12% 0%, var(--header-glow-1), transparent 18rem),
+      radial-gradient(circle at 88% 0%, var(--header-glow-2), transparent 16rem),
+      var(--header-tint);
     box-shadow: var(--shadow-soft);
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     overflow: visible;
   }
     h1 {
