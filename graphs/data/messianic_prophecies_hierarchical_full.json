@@ -1,7 +1,7 @@
 {
   "metadata": {
     "authoringNotes": {
-      "nodeNames": "The name field is rendered directly in the graph. Keep branch names concise—prefer 22 characters or fewer—and move qualifications or explanation into subtitle or details. Source citation names may be longer when necessary."
+      "nodeNames": "The name field is rendered directly in the graph. Keep branch names concise\u2014prefer 22 characters or fewer\u2014and move qualifications or explanation into subtitle or details. Source citation names may be longer when necessary."
     },
     "labels": {
       "rootName": "Minimal Prophecy Facts",
@@ -28,14 +28,14 @@
   "children": [
     {
       "name": "Forerunner in Wilderness",
-      "subtitle": "John appears before Jesus as a wilderness herald in an already intelligible prophetic pattern",
+      "subtitle": "An independently attested wilderness herald appears before Jesus within a preparation pattern older than Christianity",
       "data": {
         "id": 100,
         "cluster": "Minimal Prophecy Facts",
         "stageable": false,
         "labelTiny": "Forerunner",
         "labelShort": "Forerunner in Wilderness",
-        "claim": "A wilderness herald appears before Jesus and is read through Isaiah/Malachi preparation texts",
+        "claim": "John's wilderness ministry and execution are independently attested, and the Isaiah 40 / Malachi preparation pattern applied to him demonstrably predates him",
         "ot_ref": "Isaiah 40:3; Malachi 3:1",
         "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+40%3A3%3BMalachi+3%3A1&version=ESV"
       },
@@ -108,13 +108,13 @@
               }
             },
             {
-              "name": "Malachi 4:5–6",
+              "name": "Malachi 4:5\u20136",
               "subtitle": "Elijah is promised before the day of the Lord to turn hearts toward reconciliation",
               "link": "https://www.biblegateway.com/passage/?search=Malachi+4%3A5-6&version=ESV",
               "details": "Malachi promises the return of Elijah before the great day of the Lord, with a ministry that turns the hearts of parents and children toward one another. This expectation provides the clearest scriptural basis for understanding John's mission in Elijah-like terms.",
               "date": "c. 5th century BCE",
               "source": {
-                "title": "Malachi 4:5–6 (ESV)",
+                "title": "Malachi 4:5\u20136 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Malachi+4%3A5-6&version=ESV"
               },
               "data": {
@@ -126,11 +126,26 @@
         },
         {
           "name": "Second Temple Context",
-          "subtitle": "Isaiah 40 already used for wilderness preparation",
+          "subtitle": "Both halves of the pattern\u2014Isaiah 40 wilderness preparation and a returning Elijah\u2014are documented before John",
           "data": {
             "kind": "pre"
           },
           "children": [
+            {
+              "name": "1QIsa\u1d43 (Great Isaiah Scroll)",
+              "subtitle": "A physical manuscript of Isaiah 40:3 copied more than a century before John",
+              "link": "http://dss.collections.imj.org.il/isaiah",
+              "details": "The Great Isaiah Scroll from Qumran Cave 1, dated on paleographic and radiocarbon grounds to roughly the late 2nd\u20131st century BCE, contains Isaiah 40:3 in full. It removes any doubt about the direction of dependence: the preparation text physically predates John's ministry and cannot have been written after the fact.",
+              "date": "c. 125\u2013100 BCE (copy)",
+              "source": {
+                "title": "Digital Dead Sea Scrolls, Israel Museum \u2013 Great Isaiah Scroll",
+                "url": "http://dss.collections.imj.org.il/isaiah"
+              },
+              "data": {
+                "kind": "pre-example",
+                "example": "1QIsa\u1d43"
+              }
+            },
             {
               "name": "Sirach 48:10",
               "subtitle": "Elijah is expected to return, reconcile families, and restore Israel",
@@ -147,37 +162,52 @@
               }
             },
             {
-              "name": "1QS 8.12–16",
+              "name": "1QS 8.12\u201316",
               "subtitle": "Qumran applies Isaiah 40 to a wilderness community",
               "link": "https://intertextual.bible/book/1qs/chapter/8",
-              "details": "The Community Rule applies Isaiah 40:3 to a group withdrawing to the wilderness to prepare God's way. This shows that, before Christianity, Isaiah's preparation language could already organize a wilderness movement.",
-              "date": "c. 2nd–1st century BCE",
+              "details": "The Community Rule applies Isaiah 40:3 to a group withdrawing to the wilderness to prepare God's way, and repeats the citation at 1QS 9.19\u201320. This shows that, before Christianity, Isaiah's preparation language could already organize an actual wilderness movement\u2014the same use of the text the Gospels make for John.",
+              "date": "c. 2nd\u20131st century BCE",
               "source": {
                 "title": "1QS 8 (Community Rule)",
                 "url": "https://intertextual.bible/book/1qs/chapter/8"
               },
               "data": {
                 "kind": "pre-example",
-                "example": "1QS 8.12–16"
+                "example": "1QS 8.12\u201316"
+              }
+            },
+            {
+              "name": "4Q558; 4Q521 2 iii",
+              "subtitle": "Fragmentary Qumran texts expecting Elijah's sending before the end",
+              "link": "https://scholarsarchive.byu.edu/cgi/viewcontent.cgi?article=1016&context=mi&filename=21&type=additional",
+              "details": "The Aramaic fragment 4Q558 reads \u201ctherefore I will send Elijah be[fore\u2026]\u201d, presupposing Malachi 4:5, and 4Q521 fragment 2 iii echoes Malachi's \u201cfathers will return to the sons.\u201d Both are fragmentary and should be cited cautiously, but they indicate that an eschatological Elijah-forerunner expectation existed in at least some Jewish circles before the New Testament period.",
+              "date": "c. 1st century BCE",
+              "source": {
+                "title": "Strathearn, \u201c4Q521 and What It Might Mean for Q 3\u20137\u201d (discussion of 4Q558)",
+                "url": "https://scholarsarchive.byu.edu/cgi/viewcontent.cgi?article=1016&context=mi&filename=21&type=additional"
+              },
+              "data": {
+                "kind": "pre-example",
+                "example": "4Q558"
               }
             }
           ]
         },
         {
           "name": "New Testament",
-          "subtitle": "John is presented as the herald before Jesus",
+          "subtitle": "Multiple independent streams present John as the herald before Jesus",
           "data": {
             "kind": "nt"
           },
           "children": [
             {
-              "name": "Luke 1:16–17, 76–79",
+              "name": "Luke 1:16\u201317, 76\u201379",
               "subtitle": "John will go before the Lord in Elijah's spirit and prepare his ways",
               "link": "https://www.biblegateway.com/passage/?search=Luke+1%3A16-17%2C76-79&version=ESV",
-              "details": "Before John's birth, Luke describes his mission in the language of Malachi: he will go before the Lord in the spirit and power of Elijah, turn hearts, prepare a people, and guide them into the way of peace.",
-              "date": "c. AD 60–62",
+              "details": "Before John's birth, Luke describes his mission in the language of Malachi: he will go before the Lord in the spirit and power of Elijah, turn hearts, and prepare a people. As hymnic infancy material this is the most literary layer of the tradition\u2014weakest as direct history, but evidence that the Malachi reading of John belongs to early Christian tradition rather than later reflection.",
+              "date": "c. AD 60\u201362",
               "source": {
-                "title": "Luke 1:16–17, 76–79 (ESV)",
+                "title": "Luke 1:16\u201317, 76\u201379 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Luke+1%3A16-17%2C76-79&version=ESV"
               },
               "data": {
@@ -186,13 +216,13 @@
               }
             },
             {
-              "name": "Matthew 3:1–4",
+              "name": "Matthew 3:1\u20134",
               "subtitle": "John appears in the wilderness with Isaiah's message and Elijah-like clothing",
               "link": "https://www.biblegateway.com/passage/?search=Matthew+3%3A1-4&version=ESV",
               "details": "Matthew introduces John preaching in the wilderness, identifies him with Isaiah's preparing voice, and describes clothing that recalls Elijah in 2 Kings 1:8. The passage brings the wilderness, messenger, and Elijah patterns together.",
               "date": "1st century AD",
               "source": {
-                "title": "Matthew 3:1–4 (ESV)",
+                "title": "Matthew 3:1\u20134 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Matthew+3%3A1-4&version=ESV"
               },
               "data": {
@@ -201,13 +231,13 @@
               }
             },
             {
-              "name": "Mark 1:2–4",
+              "name": "Mark 1:2\u20134",
               "subtitle": "Earliest Gospel introduces John through Isaiah/Malachi",
               "link": "https://www.biblegateway.com/passage/?search=Mark+1%3A2-4&version=ESV",
-              "details": "Mark opens by combining messenger and way-preparation texts with John's wilderness ministry. The connection is explicit and stands at the head of the earliest surviving Gospel narrative.",
-              "date": "c. AD 55–59",
+              "details": "Mark opens by combining messenger and way-preparation texts (a conflation of Exodus 23:20 / Malachi 3:1 with Isaiah 40:3) with John's wilderness ministry. The connection stands at the head of the earliest surviving Gospel narrative, showing the forerunner reading was not a late development.",
+              "date": "c. AD 55\u201375 (dating debated)",
               "source": {
-                "title": "Mark 1:2–4 (ESV)",
+                "title": "Mark 1:2\u20134 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Mark+1%3A2-4&version=ESV"
               },
               "data": {
@@ -216,13 +246,13 @@
               }
             },
             {
-              "name": "Luke 3:2–6",
+              "name": "Luke 3:2\u20136",
               "subtitle": "Luke anchors John historically and quotes Isaiah 40 at length",
               "link": "https://www.biblegateway.com/passage/?search=Luke+3%3A2-6&version=ESV",
-              "details": "Luke situates John in named first-century political settings and then expands the Isaiah 40 citation. The passage connects wilderness preparation language to a datable public ministry.",
-              "date": "c. AD 60–62",
+              "details": "Luke dates John's ministry to the fifteenth year of Tiberius (c. AD 28/29) and names Pontius Pilate, Herod Antipas, Philip, Annas, and Caiaphas\u2014rulers and officeholders independently attested in Roman and Jewish sources\u2014before expanding the Isaiah 40 citation. The passage ties the preparation language to a publicly datable ministry.",
+              "date": "c. AD 60\u201390 (dating debated)",
               "source": {
-                "title": "Luke 3:2–6 (ESV)",
+                "title": "Luke 3:2\u20136 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Luke+3%3A2-6&version=ESV"
               },
               "data": {
@@ -231,13 +261,13 @@
               }
             },
             {
-              "name": "John 1:19–23",
+              "name": "John 1:19\u201323",
               "subtitle": "John identifies his role as Isaiah's voice preparing the Lord's way",
               "link": "https://www.biblegateway.com/passage/?search=John+1%3A19-23&version=ESV",
               "details": "When questioned about his identity, John refuses messianic titles and defines his role with Isaiah 40:3: he is the voice crying in the wilderness to make straight the Lord's way. The passage presents his own mission as preparatory.",
               "date": "1st century AD",
               "source": {
-                "title": "John 1:19–23 (ESV)",
+                "title": "John 1:19\u201323 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=John+1%3A19-23&version=ESV"
               },
               "data": {
@@ -246,18 +276,48 @@
               }
             },
             {
-              "name": "Matthew 11:10–14 / Luke 7:27",
+              "name": "Matthew 11:10\u201314 / Luke 7:27",
               "subtitle": "Jesus identifies John as the promised messenger; Matthew also connects him with Elijah",
               "link": "https://www.biblegateway.com/passage/?search=Matthew+11%3A10-14%3BLuke+7%3A27&version=ESV",
-              "details": "Jesus identifies John with Malachi's messenger sent ahead to prepare the way. Matthew's fuller parallel also presents John as the Elijah who was to come, tying the messenger promise and Elijah expectation together.",
+              "details": "Jesus identifies John with Malachi's messenger, and Matthew's fuller parallel presents John as the Elijah who was to come. Because this saying comes from the double tradition shared by Matthew and Luke\u2014a stream independent of Mark\u2014the John-as-forerunner link is multiply attested across independent early sources.",
               "date": "1st century AD",
               "source": {
-                "title": "Matthew 11:10–14 / Luke 7:27 (ESV)",
+                "title": "Matthew 11:10\u201314 / Luke 7:27 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Matthew+11%3A10-14%3BLuke+7%3A27&version=ESV"
               },
               "data": {
                 "kind": "nt-link",
                 "url": "https://www.biblegateway.com/passage/?search=Matthew+11%3A10-14%3BLuke+7%3A27&version=ESV"
+              }
+            },
+            {
+              "name": "Mark 1:9; Matthew 3:13\u201315",
+              "subtitle": "Jesus is baptized by John\u2014a fact the tradition preserves despite its awkwardness",
+              "link": "https://www.biblegateway.com/passage/?search=Mark+1%3A9%3BMatthew+3%3A13-15&version=ESV",
+              "details": "Jesus submits to John's baptism of repentance, and Matthew's added dialogue shows the early church's discomfort with the scene. By the criterion of embarrassment, this is among the most widely accepted historical facts about Jesus in critical scholarship\u2014and it entails the core historical sequence of the claim: John publicly preceded Jesus.",
+              "date": "1st century AD",
+              "source": {
+                "title": "Mark 1:9; Matthew 3:13\u201315 (ESV)",
+                "url": "https://www.biblegateway.com/passage/?search=Mark+1%3A9%3BMatthew+3%3A13-15&version=ESV"
+              },
+              "data": {
+                "kind": "nt-link",
+                "url": "https://www.biblegateway.com/passage/?search=Mark+1%3A9%3BMatthew+3%3A13-15&version=ESV"
+              }
+            },
+            {
+              "name": "Acts 18:24\u201319:7",
+              "subtitle": "Disciples knowing only John's baptism persist decades later in Ephesus",
+              "link": "https://www.biblegateway.com/passage/?search=Acts+18%3A24-19%3A7&version=ESV",
+              "details": "Apollos and a group in Ephesus know only the baptism of John years after his death, far from Judea. A John-only movement that Christian writers had to account for is not the kind of detail an invented forerunner story produces; it corroborates John's independent public standing, which Josephus also reflects.",
+              "date": "c. AD 62\u201390 (events c. AD 52\u201355)",
+              "source": {
+                "title": "Acts 18:24\u201319:7 (ESV)",
+                "url": "https://www.biblegateway.com/passage/?search=Acts+18%3A24-19%3A7&version=ESV"
+              },
+              "data": {
+                "kind": "nt-link",
+                "url": "https://www.biblegateway.com/passage/?search=Acts+18%3A24-19%3A7&version=ESV"
               }
             }
           ]
@@ -270,18 +330,33 @@
           },
           "children": [
             {
-              "name": "Josephus, Antiquities 18.116–119",
+              "name": "Josephus, Antiquities 18.116\u2013119",
               "subtitle": "Independent notice of John's ministry and execution",
               "link": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0146%3Abook%3D18%3Asection%3D116",
-              "details": "Josephus describes John as a popular moral teacher whose baptizing movement drew crowds and whose execution was ordered by Herod Antipas. He does not identify John as Jesus' forerunner, but he independently confirms John's public importance.",
-              "date": "c. AD 93–94",
+              "details": "Josephus describes John as a popular moral teacher whose baptizing movement drew crowds and whose execution Herod Antipas ordered at the fortress of Machaerus, fearing sedition. His account differs from the Gospels in motive and setting and never mentions Jesus in connection with John\u2014marks of independence, not derivation. He confirms the historically load-bearing points: John existed, baptized publicly, drew a following, and was executed by Antipas.",
+              "date": "c. AD 93\u201394",
               "source": {
-                "title": "Josephus, Antiquities 18.116–119",
+                "title": "Josephus, Antiquities 18.116\u2013119",
                 "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0146%3Abook%3D18%3Asection%3D116"
               },
               "data": {
                 "kind": "hist-source",
-                "source": "Josephus, Antiquities 18.116–119"
+                "source": "Josephus, Antiquities 18.116\u2013119"
+              }
+            },
+            {
+              "name": "Machaerus Excavations",
+              "subtitle": "The fortress Josephus names as the site of John's execution is an excavated site",
+              "link": "https://en.wikipedia.org/wiki/Machaerus",
+              "details": "Machaerus, east of the Dead Sea in modern Jordan, has been excavated over several decades, including the Herodian palace-fortress complex of Antipas's era. The archaeology does not prove John's execution there, but it grounds Josephus's account in a real, datable, physically recoverable setting.",
+              "date": "1st century BCE\u2013AD 71 (site); excavations 1968\u2013present",
+              "source": {
+                "title": "Machaerus (overview of site and excavations)",
+                "url": "https://en.wikipedia.org/wiki/Machaerus"
+              },
+              "data": {
+                "kind": "hist-source",
+                "source": "Machaerus excavations"
               }
             }
           ]
@@ -298,7 +373,7 @@
         "labelTiny": "Servant",
         "labelShort": "Suffering Servant",
         "claim": "The servant passage predates Christianity, and Jesus' followers interpret his mission through its suffering-and-vindication pattern",
-        "ot_ref": "Isaiah 52:13–53:12",
+        "ot_ref": "Isaiah 52:13\u201353:12",
         "ot_url_esv": "https://www.biblegateway.com/passage/?search=Isaiah+52%3A13-53%3A12&version=ESV"
       },
       "children": [
@@ -317,13 +392,13 @@
               },
               "children": [
                 {
-                  "name": "Isaiah 42:1–9",
+                  "name": "Isaiah 42:1\u20139",
                   "subtitle": "The chosen servant brings justice faithfully and gently",
                   "link": "https://www.biblegateway.com/passage/?search=Isaiah+42%3A1-9&version=ESV",
                   "details": "The first major Servant Song presents God's chosen, Spirit-endowed servant bringing justice to the nations without violence or self-promotion. It introduces the servant's worldwide mission and faithful character before the later songs develop rejection and suffering.",
                   "date": "c. 6th century BCE",
                   "source": {
-                    "title": "Isaiah 42:1–9 (ESV)",
+                    "title": "Isaiah 42:1\u20139 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Isaiah+42%3A1-9&version=ESV"
                   },
                   "data": {
@@ -341,13 +416,13 @@
               },
               "children": [
                 {
-                  "name": "Isaiah 49:1–7",
+                  "name": "Isaiah 49:1\u20137",
                   "subtitle": "A rejected servant restores Israel and becomes a light to the nations",
                   "link": "https://www.biblegateway.com/passage/?search=Isaiah+49%3A1-7&version=ESV",
                   "details": "The second major Servant Song describes a servant called from the womb whose work initially appears fruitless. God commissions him both to restore Israel and to extend salvation to the nations, while rejection gives way to recognition by rulers.",
                   "date": "c. 6th century BCE",
                   "source": {
-                    "title": "Isaiah 49:1–7 (ESV)",
+                    "title": "Isaiah 49:1\u20137 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Isaiah+49%3A1-7&version=ESV"
                   },
                   "data": {
@@ -365,13 +440,13 @@
               },
               "children": [
                 {
-                  "name": "Isaiah 50:4–9",
+                  "name": "Isaiah 50:4\u20139",
                   "subtitle": "The obedient servant endures abuse while trusting God's vindication",
                   "link": "https://www.biblegateway.com/passage/?search=Isaiah+50%3A4-9&version=ESV",
-                  "details": "The third major Servant Song portrays a faithful teacher who does not turn back when beaten, spat upon, and shamed. The servant remains confident that God will vindicate him, sharpening the suffering-and-vindication pattern completed in Isaiah 52:13–53:12.",
+                  "details": "The third major Servant Song portrays a faithful teacher who does not turn back when beaten, spat upon, and shamed. The servant remains confident that God will vindicate him, sharpening the suffering-and-vindication pattern completed in Isaiah 52:13\u201353:12.",
                   "date": "c. 6th century BCE",
                   "source": {
-                    "title": "Isaiah 50:4–9 (ESV)",
+                    "title": "Isaiah 50:4\u20139 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Isaiah+50%3A4-9&version=ESV"
                   },
                   "data": {
@@ -389,13 +464,13 @@
               },
               "children": [
                 {
-                  "name": "Isaiah 52:13–53:12",
+                  "name": "Isaiah 52:13\u201353:12",
                   "subtitle": "The servant suffers and is later vindicated",
                   "link": "https://www.biblegateway.com/passage/?search=Isaiah+52%3A13-53%3A12&version=ESV",
                   "details": "The servant is despised, afflicted, and afterward exalted. Whether or not one reads the passage as directly messianic in its original setting, it supplies a major script of redemptive suffering within Jewish scripture that early Christians identify specifically with Jesus.",
                   "date": "c. 6th century BCE",
                   "source": {
-                    "title": "Isaiah 52:13–53:12 (ESV)",
+                    "title": "Isaiah 52:13\u201353:12 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Isaiah+52%3A13-53%3A12&version=ESV"
                   },
                   "data": {
@@ -452,13 +527,13 @@
                   }
                 },
                 {
-                  "name": "Psalm 118:22–23",
+                  "name": "Psalm 118:22\u201323",
                   "subtitle": "The rejected stone becomes the cornerstone",
                   "link": "https://www.biblegateway.com/passage/?search=Psalm+118%3A22-23&version=ESV",
                   "details": "Psalm 118 describes the stone rejected by the builders becoming the cornerstone. The text supplies a compact rejection-then-vindication pattern that Jesus and the early church use to interpret his death and exaltation.",
                   "date": "1st millennium BCE",
                   "source": {
-                    "title": "Psalm 118:22–23 (ESV)",
+                    "title": "Psalm 118:22\u201323 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Psalm+118%3A22-23&version=ESV"
                   },
                   "data": {
@@ -480,7 +555,7 @@
                   "subtitle": "Mourning over the pierced one",
                   "link": "https://www.biblegateway.com/passage/?search=Zechariah+12%3A10&version=ESV",
                   "details": "Zechariah speaks of a future mourning over one who is pierced. The verse became important in Jewish eschatological reading and in Christian identification of Jesus because it connects suffering, repentance, and later recognition.",
-                  "date": "late 6th–5th century BCE",
+                  "date": "late 6th\u20135th century BCE",
                   "source": {
                     "title": "Zechariah 12:10 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Zechariah+12%3A10&version=ESV"
@@ -495,7 +570,7 @@
                   "subtitle": "Strike the shepherd and the sheep are scattered",
                   "link": "https://www.biblegateway.com/passage/?search=Zechariah+13%3A7&version=ESV",
                   "details": "Zechariah 13:7 depicts the striking of the shepherd followed by the scattering of the flock. The Gospels use the passage to interpret Jesus' arrest and the disciples' flight within an already existing scriptural pattern of struck leadership and scattered followers.",
-                  "date": "late 6th–5th century BCE",
+                  "date": "late 6th\u20135th century BCE",
                   "source": {
                     "title": "Zechariah 13:7 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Zechariah+13%3A7&version=ESV"
@@ -539,13 +614,13 @@
               },
               "children": [
                 {
-                  "name": "Psalm 16:8–11",
+                  "name": "Psalm 16:8\u201311",
                   "subtitle": "God's faithful one is not abandoned to Sheol",
                   "link": "https://www.biblegateway.com/passage/?search=Psalm+16%3A8-11&version=ESV",
                   "details": "Psalm 16 is originally a psalm of confidence, but its language about not being abandoned to Sheol became central to early Christian claims of vindication after suffering. It contributes the scriptural pattern of faithfulness preserved beyond death.",
                   "date": "1st millennium BCE",
                   "source": {
-                    "title": "Psalm 16:8–11 (ESV)",
+                    "title": "Psalm 16:8\u201311 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Psalm+16%3A8-11&version=ESV"
                   },
                   "data": {
@@ -572,18 +647,18 @@
               },
               "children": [
                 {
-                  "name": "1QIsaᵃ",
+                  "name": "1QIsa\u1d43",
                   "subtitle": "Complete pre-Christian copy of Isaiah",
                   "link": "https://www.deadseascrolls.org.il/explore-the-archive/manuscript/1Q8-1?locale=en_US",
-                  "details": "The Great Isaiah Scroll preserves Isaiah 52:13–53:12 in a complete copy of Isaiah made well before Christianity. Its relevance here is textual: it confirms that Christians inherited rather than created the passage. The manuscript by itself does not prove that Isaiah 53 received a messianic interpretation before Christianity.",
+                  "details": "The Great Isaiah Scroll preserves Isaiah 52:13\u201353:12 in a complete copy of Isaiah made well before Christianity. Its relevance here is textual: it confirms that Christians inherited rather than created the passage. The manuscript by itself does not prove that Isaiah 53 received a messianic interpretation before Christianity.",
                   "date": "c. 125 BCE",
                   "source": {
-                    "title": "1QIsaᵃ (Great Isaiah Scroll)",
+                    "title": "1QIsa\u1d43 (Great Isaiah Scroll)",
                     "url": "https://www.deadseascrolls.org.il/explore-the-archive/manuscript/1Q8-1?locale=en_US"
                   },
                   "data": {
                     "kind": "pre-example",
-                    "example": "1QIsaᵃ — complete pre-Christian copy of Isaiah"
+                    "example": "1QIsa\u1d43 \u2014 complete pre-Christian copy of Isaiah"
                   }
                 },
                 {
@@ -591,14 +666,14 @@
                   "subtitle": "Pre-Christian Greek translation of Isaiah",
                   "link": "https://ccat.sas.upenn.edu/nets/edition/33-esaias-nets.pdf",
                   "details": "The Septuagint provides a pre-Christian Jewish Greek translation of Isaiah, including the servant passage. It is important as a textual and translation witness available to early Christians, but its existence alone does not prove that Isaiah 53 was interpreted messianically before Christianity.",
-                  "date": "3rd–2nd centuries BCE",
+                  "date": "3rd\u20132nd centuries BCE",
                   "source": {
                     "title": "NETS Septuagint: Isaiah",
                     "url": "https://ccat.sas.upenn.edu/nets/edition/33-esaias-nets.pdf"
                   },
                   "data": {
                     "kind": "pre-example",
-                    "example": "LXX Isaiah — pre-Christian Greek translation"
+                    "example": "LXX Isaiah \u2014 pre-Christian Greek translation"
                   }
                 }
               ]
@@ -612,7 +687,7 @@
               "children": [
                 {
                   "name": "4Q541",
-                  "subtitle": "“Apocryphon of Levi”; suffering and priestly-redeemer motifs",
+                  "subtitle": "\u201cApocryphon of Levi\u201d; suffering and priestly-redeemer motifs",
                   "link": "https://www.deadseascrolls.org.il/explore-the-archive/manuscript/4Q541-1",
                   "details": "4Q541 is often read as describing a coming priestly figure associated with teaching, opposition, and atonement for his generation. It does not quote Isaiah 53, but it shows that suffering and priestly-redeemer motifs could cluster around an expected figure before Christianity.",
                   "date": "1st century BCE",
@@ -622,12 +697,12 @@
                   },
                   "data": {
                     "kind": "pre-example",
-                    "example": "4Q541 — “Apocryphon of Levi”"
+                    "example": "4Q541 \u2014 \u201cApocryphon of Levi\u201d"
                   }
                 },
                 {
                   "name": "4Q521",
-                  "subtitle": "“Messianic Apocalypse”; Isaiah 35 and 61 motifs",
+                  "subtitle": "\u201cMessianic Apocalypse\u201d; Isaiah 35 and 61 motifs",
                   "link": "https://www.deadseascrolls.org.il/explore-the-archive/manuscript/4Q521-1",
                   "details": "4Q521 combines Isaiah 35 and 61 motifs such as good news to the poor, healing, and the coming age of salvation. Its relevance is not direct suffering-servant interpretation, but a pre-Christian eschatological use of related Isaianic restoration language.",
                   "date": "1st century BCE",
@@ -637,7 +712,7 @@
                   },
                   "data": {
                     "kind": "pre-example",
-                    "example": "4Q521 — “Messianic Apocalypse”"
+                    "example": "4Q521 \u2014 \u201cMessianic Apocalypse\u201d"
                   }
                 },
                 {
@@ -652,22 +727,22 @@
                   },
                   "data": {
                     "kind": "pre-example",
-                    "example": "4Q285 — disputed “pierced/piercing Messiah” fragment"
+                    "example": "4Q285 \u2014 disputed \u201cpierced/piercing Messiah\u201d fragment"
                   }
                 },
                 {
-                  "name": "Wisdom of Solomon 2–5",
+                  "name": "Wisdom of Solomon 2\u20135",
                   "subtitle": "Persecuted and vindicated righteous sufferer",
                   "link": "https://www.biblegateway.com/passage/?search=Wisdom+of+Solomon+2-5&version=NRSVUE",
                   "details": "Wisdom of Solomon portrays a righteous person as mocked, tested, condemned, and ultimately vindicated by God. The figure is not explicitly messianic, but the work provides a strong pre-Christian Jewish parallel for the pattern of the persecuted and vindicated righteous sufferer.",
                   "date": "late 1st century BCE",
                   "source": {
-                    "title": "Wisdom of Solomon 2–5",
+                    "title": "Wisdom of Solomon 2\u20135",
                     "url": "https://www.biblegateway.com/passage/?search=Wisdom+of+Solomon+2-5&version=NRSVUE"
                   },
                   "data": {
                     "kind": "pre-example",
-                    "example": "Wisdom of Solomon 2–5 — righteous sufferer"
+                    "example": "Wisdom of Solomon 2\u20135 \u2014 righteous sufferer"
                   }
                 }
               ]
@@ -683,9 +758,9 @@
           "children": [
             {
               "name": "Targum Isaiah 52:13",
-              "subtitle": "Calls the servant “the Messiah,” but transfers much of the suffering to others",
+              "subtitle": "Calls the servant \u201cthe Messiah,\u201d but transfers much of the suffering to others",
               "link": "https://intertextual.bible/text/isaiah-52.13/jonathan-isaiah-52.13",
-              "details": "Targum Isaiah 52:13 explicitly calls the servant “the Messiah.” The paraphrase does not, however, simply preserve Isaiah's portrait of a suffering servant: it presents a victorious Messiah and redirects much of the passage's suffering to Israel's enemies or other figures. Because the targum's surviving form is later, it belongs to Jewish interpretation and reception rather than to the pre-Christian textual witnesses.",
+              "details": "Targum Isaiah 52:13 explicitly calls the servant \u201cthe Messiah.\u201d The paraphrase does not, however, simply preserve Isaiah's portrait of a suffering servant: it presents a victorious Messiah and redirects much of the passage's suffering to Israel's enemies or other figures. Because the targum's surviving form is later, it belongs to Jewish interpretation and reception rather than to the pre-Christian textual witnesses.",
               "date": "ancient interpretive tradition; surviving form is later",
               "source": {
                 "title": "Compare Isaiah 52:13 and Jonathan Isaiah 52:13",
@@ -725,7 +800,7 @@
               "subtitle": "Jewish historian places Jesus' execution in Pilate's administration",
               "link": "https://penelope.uchicago.edu/josephus/ant-18.html",
               "details": "Josephus places Jesus in the time of Pilate and preserves the core historical setting of his execution, despite well-known textual debates about later Christian additions to the passage. This is historical attestation, not evidence that Josephus interpreted Jesus through Isaiah 53.",
-              "date": "c. AD 93–94",
+              "date": "c. AD 93\u201394",
               "source": {
                 "title": "Josephus, Antiquities 18.3.3",
                 "url": "https://penelope.uchicago.edu/josephus/ant-18.html"
@@ -745,7 +820,7 @@
           },
           "children": [
             {
-              "name": "Jesus’ Passion",
+              "name": "Jesus\u2019 Passion",
               "subtitle": "Jesus' sayings frame his suffering through servant, covenant, and shepherd language",
               "data": {
                 "kind": "nt"
@@ -756,7 +831,7 @@
                   "subtitle": "Jesus foretells his suffering, rejection, death, and vindication",
                   "link": "https://www.biblegateway.com/passage/?search=Mark+8%3A31&version=ESV",
                   "details": "Mark presents Jesus as teaching that the Son of Man must suffer, be rejected, be killed, and then be raised. The saying does not quote Isaiah 53, but it places suffering and vindication near the center of Jesus' mission.",
-                  "date": "c. AD 55–59",
+                  "date": "c. AD 55\u201359",
                   "source": {
                     "title": "Mark 8:31 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Mark+8%3A31&version=ESV"
@@ -767,13 +842,13 @@
                   }
                 },
                 {
-                  "name": "Mark 10:42–45",
+                  "name": "Mark 10:42\u201345",
                   "subtitle": "The servant gives his life as a ransom for many",
                   "link": "https://www.biblegateway.com/passage/?search=Mark+10%3A42-45&version=ESV",
-                  "details": "Jesus contrasts domination with service and says the Son of Man came not to be served but to serve and to give his life as a ransom for many. The language of service, self-giving, and “many” strongly resonates with Isaiah 53's servant.",
-                  "date": "c. AD 55–59",
+                  "details": "Jesus contrasts domination with service and says the Son of Man came not to be served but to serve and to give his life as a ransom for many. The language of service, self-giving, and \u201cmany\u201d strongly resonates with Isaiah 53's servant.",
+                  "date": "c. AD 55\u201359",
                   "source": {
-                    "title": "Mark 10:42–45 (ESV)",
+                    "title": "Mark 10:42\u201345 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Mark+10%3A42-45&version=ESV"
                   },
                   "data": {
@@ -785,8 +860,8 @@
                   "name": "Luke 22:37",
                   "subtitle": "Jesus applies Isaiah 53 to himself",
                   "link": "https://www.biblegateway.com/passage/?search=Luke+22%3A37&version=ESV",
-                  "details": "Jesus quotes Isaiah 53:12—“numbered with the transgressors”—and says that it must be fulfilled in him. This is the clearest direct application of Isaiah 53 to himself in the Gospel tradition.",
-                  "date": "c. AD 60–62",
+                  "details": "Jesus quotes Isaiah 53:12\u2014\u201cnumbered with the transgressors\u201d\u2014and says that it must be fulfilled in him. This is the clearest direct application of Isaiah 53 to himself in the Gospel tradition.",
+                  "date": "c. AD 60\u201362",
                   "source": {
                     "title": "Luke 22:37 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Luke+22%3A37&version=ESV"
@@ -801,7 +876,7 @@
                   "subtitle": "Blood poured out for many",
                   "link": "https://www.biblegateway.com/passage/?search=Mark+14%3A24&version=ESV",
                   "details": "At the Last Supper, Jesus identifies the cup with his covenant blood poured out for many. The saying combines covenant and sacrificial language and echoes Isaiah 53:12's servant who pours out his life and bears the sin of many.",
-                  "date": "c. AD 55–59",
+                  "date": "c. AD 55\u201359",
                   "source": {
                     "title": "Mark 14:24 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Mark+14%3A24&version=ESV"
@@ -815,8 +890,8 @@
                   "name": "Mark 14:27",
                   "subtitle": "Struck shepherd applied to Jesus",
                   "link": "https://www.biblegateway.com/passage/?search=Mark+14%3A27&version=ESV",
-                  "details": "Jesus applies Zechariah 13:7—“Strike the shepherd, and the sheep will be scattered”—to his arrest and the disciples' flight. It connects the Gospel passion to the related scriptural pattern of a struck leader and scattered followers.",
-                  "date": "c. AD 55–59",
+                  "details": "Jesus applies Zechariah 13:7\u2014\u201cStrike the shepherd, and the sheep will be scattered\u201d\u2014to his arrest and the disciples' flight. It connects the Gospel passion to the related scriptural pattern of a struck leader and scattered followers.",
+                  "date": "c. AD 55\u201359",
                   "source": {
                     "title": "Mark 14:27 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Mark+14%3A27&version=ESV"
@@ -836,13 +911,13 @@
               },
               "children": [
                 {
-                  "name": "Acts 8:32–35",
+                  "name": "Acts 8:32\u201335",
                   "subtitle": "Isaiah 53 identified with Jesus",
                   "link": "https://www.biblegateway.com/passage/?search=Acts+8%3A32-35&version=ESV",
-                  "details": "The Ethiopian official reads Isaiah 53:7–8 and asks whom the prophet describes. Philip begins with that scripture and announces the good news about Jesus, making the identification explicit.",
-                  "date": "c. AD 60–62",
+                  "details": "The Ethiopian official reads Isaiah 53:7\u20138 and asks whom the prophet describes. Philip begins with that scripture and announces the good news about Jesus, making the identification explicit.",
+                  "date": "c. AD 60\u201362",
                   "source": {
-                    "title": "Acts 8:32–35 (ESV)",
+                    "title": "Acts 8:32\u201335 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Acts+8%3A32-35&version=ESV"
                   },
                   "data": {
@@ -851,13 +926,13 @@
                   }
                 },
                 {
-                  "name": "Acts 3:13–18",
+                  "name": "Acts 3:13\u201318",
                   "subtitle": "God's servant and the foretold suffering Messiah",
                   "link": "https://www.biblegateway.com/passage/?search=Acts+3%3A13-18&version=ESV",
                   "details": "Peter calls Jesus God's servant, recounts his rejection and death, and says God fulfilled what the prophets foretold about the Messiah's suffering. The passage joins servant language, suffering, and vindication in early apostolic preaching.",
-                  "date": "c. AD 60–62",
+                  "date": "c. AD 60\u201362",
                   "source": {
-                    "title": "Acts 3:13–18 (ESV)",
+                    "title": "Acts 3:13\u201318 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Acts+3%3A13-18&version=ESV"
                   },
                   "data": {
@@ -866,13 +941,13 @@
                   }
                 },
                 {
-                  "name": "1 Corinthians 15:3–5",
+                  "name": "1 Corinthians 15:3\u20135",
                   "subtitle": "Death for sins according to the Scriptures",
                   "link": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-5&version=ESV",
                   "details": "Paul preserves an early received formula that Christ died for sins according to the Scriptures, was buried, was raised, and appeared. The formula does not name Isaiah 53, but its death-for-sins language fits the servant passage's established scriptural pattern.",
-                  "date": "Creed earlier; letter c. AD 53–55",
+                  "date": "Creed earlier; letter c. AD 53\u201355",
                   "source": {
-                    "title": "1 Corinthians 15:3–5 (ESV)",
+                    "title": "1 Corinthians 15:3\u20135 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-5&version=ESV"
                   },
                   "data": {
@@ -881,13 +956,13 @@
                   }
                 },
                 {
-                  "name": "Philippians 2:5–11",
+                  "name": "Philippians 2:5\u201311",
                   "subtitle": "Servant-form humility unto death and later exaltation",
                   "link": "https://www.biblegateway.com/passage/?search=Philippians+2%3A5-11&version=ESV",
                   "details": "This early Christ hymn portrays Christ as taking the form of a servant and becoming obedient to death on a cross before exaltation. It does not quote Isaiah 53 directly, but it continues the servant-shaped pattern of humility, obedience, death, and vindication.",
-                  "date": "Tradition earlier; letter c. AD 60–62",
+                  "date": "Tradition earlier; letter c. AD 60\u201362",
                   "source": {
-                    "title": "Philippians 2:5–11 (ESV)",
+                    "title": "Philippians 2:5\u201311 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Philippians+2%3A5-11&version=ESV"
                   },
                   "data": {
@@ -896,13 +971,13 @@
                   }
                 },
                 {
-                  "name": "1 Peter 2:21–24",
+                  "name": "1 Peter 2:21\u201324",
                   "subtitle": "Isaiah 53's servant suffering applied to Jesus",
                   "link": "https://www.biblegateway.com/passage/?search=1+Peter+2%3A21-24&version=ESV",
                   "details": "1 Peter applies Isaiah 53's language directly to Jesus: he suffers without retaliation, bears sins, and brings healing through his wounds. The passage shows servant interpretation functioning as standard early Christian explanation of Jesus' death.",
-                  "date": "c. AD 60s–80s",
+                  "date": "c. AD 60s\u201380s",
                   "source": {
-                    "title": "1 Peter 2:21–24 (ESV)",
+                    "title": "1 Peter 2:21\u201324 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=1+Peter+2%3A21-24&version=ESV"
                   },
                   "data": {
@@ -955,7 +1030,7 @@
         },
         {
           "name": "Early Reception",
-          "subtitle": "Post–New Testament Christian reception explicitly applies Isaiah 53 to Christ",
+          "subtitle": "Post\u2013New Testament Christian reception explicitly applies Isaiah 53 to Christ",
           "data": {
             "kind": "hist"
           },
@@ -964,7 +1039,7 @@
               "name": "1 Clement 16",
               "subtitle": "Isaiah 53 applied to Christ",
               "link": "https://www.newadvent.org/fathers/1010.htm",
-              "details": "1 Clement presents Christ as the supreme example of humility and then quotes Isaiah 53 at length as a description of him. It is an early post–New Testament witness to explicit Christian reception of the servant passage.",
+              "details": "1 Clement presents Christ as the supreme example of humility and then quotes Isaiah 53 at length as a description of him. It is an early post\u2013New Testament witness to explicit Christian reception of the servant passage.",
               "date": "c. AD 96",
               "source": {
                 "title": "1 Clement 16",
@@ -989,7 +1064,7 @@
         "labelTiny": "Vindicated",
         "labelShort": "Vindication",
         "claim": "Jesus is proclaimed as bodily raised and exalted ahead of the general resurrection, as God's vindication after suffering",
-        "ot_ref": "Psalm 16:8–11; Psalm 2:7; Psalm 110:1; Isaiah 55:3; 2 Samuel 7:12–16; Psalm 89; Isaiah 53:10–12; Psalm 22; Daniel 7:13–14",
+        "ot_ref": "Psalm 16:8\u201311; Psalm 2:7; Psalm 110:1; Isaiah 55:3; 2 Samuel 7:12\u201316; Psalm 89; Isaiah 53:10\u201312; Psalm 22; Daniel 7:13\u201314",
         "ot_url_esv": "https://www.biblegateway.com/passage/?search=Psalm+16%3A8-11%3BPsalm+2%3A7%3BPsalm+110%3A1%3BIsaiah+55%3A3%3B2+Samuel+7%3A12-16%3BPsalm+89%3BIsaiah+53%3A10-12%3BPsalm+22%3BDaniel+7%3A13-14&version=ESV"
       },
       "children": [
@@ -1001,13 +1076,13 @@
           },
           "children": [
             {
-              "name": "Psalm 16:8–11",
+              "name": "Psalm 16:8\u201311",
               "subtitle": "God's faithful one is not abandoned to Sheol",
               "link": "https://www.biblegateway.com/passage/?search=Psalm+16%3A8-11&version=ESV",
               "details": "Originally a psalm of confidence, Psalm 16 became central in early Christian proclamation of Jesus' vindication beyond death. By itself it is not a plain prediction that one Messiah would rise in advance, but it gives scriptural shape to the claim that God did not abandon Jesus to corruption.",
               "date": "1st millennium BCE",
               "source": {
-                "title": "Psalm 16:8–11 (ESV)",
+                "title": "Psalm 16:8\u201311 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Psalm+16%3A8-11&version=ESV"
               },
               "data": {
@@ -1068,13 +1143,13 @@
               },
               "children": [
                 {
-                  "name": "2 Samuel 7:12–16",
+                  "name": "2 Samuel 7:12\u201316",
                   "subtitle": "God promises an enduring Davidic throne and sonship",
                   "link": "https://www.biblegateway.com/passage/?search=2+Samuel+7%3A12-16&version=ESV",
                   "details": "The promise to David establishes the core royal framework later assumed in Romans 1 and Acts 13. Early Christians did not argue that this text plainly predicted one Messiah's resurrection in the middle of history; rather, they proclaimed resurrection as the event by which God vindicated and secured the Davidic heir.",
                   "date": "1st millennium BCE",
                   "source": {
-                    "title": "2 Samuel 7:12–16 (ESV)",
+                    "title": "2 Samuel 7:12\u201316 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=2+Samuel+7%3A12-16&version=ESV"
                   },
                   "data": {
@@ -1100,13 +1175,13 @@
               ]
             },
             {
-              "name": "Isaiah 53:10–12",
+              "name": "Isaiah 53:10\u201312",
               "subtitle": "After suffering, the servant lives, justifies many, and is exalted",
               "link": "https://www.biblegateway.com/passage/?search=Isaiah+53%3A10-12&version=ESV",
               "details": "Isaiah 53 moves from the servant's affliction and self-offering to continued life, success, and the justification of many. The passage does not make resurrection obvious in advance, but it gave early Christians a powerful scriptural pattern of suffering followed by divine vindication.",
               "date": "c. 6th century BCE",
               "source": {
-                "title": "Isaiah 53:10–12 (ESV)",
+                "title": "Isaiah 53:10\u201312 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Isaiah+53%3A10-12&version=ESV"
               },
               "data": {
@@ -1130,13 +1205,13 @@
               }
             },
             {
-              "name": "Daniel 7:13–14",
+              "name": "Daniel 7:13\u201314",
               "subtitle": "After suffering, dominion is given to the Son of Man figure",
               "link": "https://www.biblegateway.com/passage/?search=Daniel+7%3A13-14&version=ESV",
               "details": "Daniel 7 culminates in exaltation and kingdom after persecution and judgment. Whether read corporately or with reference to an individual representative figure, the passage became crucial for early Christian claims that Jesus was vindicated and enthroned after suffering.",
               "date": "c. 2nd century BCE",
               "source": {
-                "title": "Daniel 7:13–14 (ESV)",
+                "title": "Daniel 7:13\u201314 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Daniel+7%3A13-14&version=ESV"
               },
               "data": {
@@ -1155,18 +1230,18 @@
           },
           "children": [
             {
-              "name": "Daniel 12:1–3",
+              "name": "Daniel 12:1\u20133",
               "subtitle": "Many awake to everlasting life at the end",
               "link": "https://www.biblegateway.com/passage/?search=Daniel+12%3A1-3&version=ESV",
               "details": "Daniel 12 provides the clearest biblical picture of bodily resurrection in an eschatological setting. The hope is unmistakable, but it is collective and tied to the close of the age rather than to one Messiah rising ahead of everyone else.",
               "date": "c. 2nd century BCE",
               "source": {
-                "title": "Daniel 12:1–3 (ESV)",
+                "title": "Daniel 12:1\u20133 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Daniel+12%3A1-3&version=ESV"
               },
               "data": {
                 "kind": "pre-example",
-                "example": "Daniel 12:1–3"
+                "example": "Daniel 12:1\u20133"
               }
             },
             {
@@ -1194,13 +1269,13 @@
           },
           "children": [
             {
-              "name": "Acts 2:32–36",
+              "name": "Acts 2:32\u201336",
               "subtitle": "Peter proclaims resurrection, exaltation, and lordship",
               "link": "https://www.biblegateway.com/passage/?search=Acts+2%3A32-36&version=ESV",
               "details": "Peter's Pentecost sermon does not treat resurrection as an obvious prediction everyone should have foreseen. Rather, he proclaims that God has raised Jesus and then uses Israel's Scriptures to interpret that event as vindication and exaltation.",
               "date": "c. AD 62",
               "source": {
-                "title": "Acts 2:32–36 (ESV)",
+                "title": "Acts 2:32\u201336 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Acts+2%3A32-36&version=ESV"
               },
               "data": {
@@ -1209,13 +1284,13 @@
               }
             },
             {
-              "name": "Acts 13:32–37",
+              "name": "Acts 13:32\u201337",
               "subtitle": "Paul frames resurrection as fulfillment and vindication",
               "link": "https://www.biblegateway.com/passage/?search=Acts+13%3A32-37&version=ESV",
               "details": "Paul's synagogue speech presents resurrection as the fulfillment of God's promises, while distinguishing Jesus from David by the fact that Jesus did not see corruption. The stress falls on vindication and fulfillment after the event, not on a simplistic prooftexting method.",
               "date": "c. AD 62",
               "source": {
-                "title": "Acts 13:32–37 (ESV)",
+                "title": "Acts 13:32\u201337 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Acts+13%3A32-37&version=ESV"
               },
               "data": {
@@ -1224,13 +1299,13 @@
               }
             },
             {
-              "name": "1 Corinthians 15:3–8",
+              "name": "1 Corinthians 15:3\u20138",
               "subtitle": "Received tradition of death, burial, resurrection, and appearances",
               "link": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=ESV",
               "details": "Paul passes on tradition he says he received: Christ died, was buried, was raised, and appeared to named witnesses. Historically, this is one of the most important early summaries of what Jesus' followers were proclaiming; prophetically, it presents resurrection as the climax of a broader suffering-and-vindication pattern.",
-              "date": "Tradition c. AD 30–35; citation c. AD 53–55",
+              "date": "Tradition c. AD 30\u201335; citation c. AD 53\u201355",
               "source": {
-                "title": "1 Corinthians 15:3–8 (ESV)",
+                "title": "1 Corinthians 15:3\u20138 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A3-8&version=ESV"
               },
               "data": {
@@ -1239,13 +1314,13 @@
               }
             },
             {
-              "name": "Romans 1:3–4",
+              "name": "Romans 1:3\u20134",
               "subtitle": "Jesus is marked out in power by resurrection",
               "link": "https://www.biblegateway.com/passage/?search=Romans+1%3A3-4&version=ESV",
               "details": "This compact formula joins Davidic descent and divine sonship in power by resurrection. The point is not simply that Jesus lives again, but that God has publicly vindicated and exalted him as the royal Son after suffering.",
-              "date": "c. AD 55–57",
+              "date": "c. AD 55\u201357",
               "source": {
-                "title": "Romans 1:3–4 (ESV)",
+                "title": "Romans 1:3\u20134 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Romans+1%3A3-4&version=ESV"
               },
               "data": {
@@ -1263,13 +1338,13 @@
           },
           "children": [
             {
-              "name": "1 Corinthians 15:20–23",
+              "name": "1 Corinthians 15:20\u201323",
               "subtitle": "Christ raised first; the rest follow at his coming",
               "link": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A20-23&version=ESV",
               "details": "Paul explicitly distinguishes Jesus' resurrection from the still-future resurrection of those who belong to him. This is the clearest statement of the Christian 'plot twist': the end-time resurrection has begun ahead of schedule in one person, with the general resurrection still to come.",
-              "date": "c. AD 53–55",
+              "date": "c. AD 53\u201355",
               "source": {
-                "title": "1 Corinthians 15:20–23 (ESV)",
+                "title": "1 Corinthians 15:20\u201323 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=1+Corinthians+15%3A20-23&version=ESV"
               },
               "data": {
@@ -1282,16 +1357,16 @@
       ]
     },
     {
-      "name": "Before Temple’s Fall",
+      "name": "Before Temple\u2019s Fall",
       "subtitle": "Prophetic anchors, Jewish context, Jesus tradition, and AD 70 together form a cumulative case",
       "data": {
         "id": 103,
         "cluster": "Minimal Prophecy Facts",
         "stageable": false,
         "labelTiny": "Pre-70",
-        "labelShort": "Before Temple’s Fall",
-        "claim": "The anointed one appears before the Second Temple’s destruction, and Jesus’ Temple warning fits a wider Jewish prophetic and eschatological context",
-        "ot_ref": "Daniel 9:24–27",
+        "labelShort": "Before Temple\u2019s Fall",
+        "claim": "The anointed one appears before the Second Temple\u2019s destruction, and Jesus\u2019 Temple warning fits a wider Jewish prophetic and eschatological context",
+        "ot_ref": "Daniel 9:24\u201327",
         "ot_url_esv": "https://www.biblegateway.com/passage/?search=Daniel+9%3A24-27&version=ESV"
       },
       "children": [
@@ -1303,13 +1378,13 @@
           },
           "children": [
             {
-              "name": "Daniel 9:24–27",
+              "name": "Daniel 9:24\u201327",
               "subtitle": "Anointed one, atonement, sacrifice, and later city-and-sanctuary destruction",
               "link": "https://www.biblegateway.com/passage/?search=Daniel+9%3A24-27&version=ESV",
               "details": "Daniel 9 links an anointed one with Jerusalem, atonement, covenantal crisis, sacrifice and offering, and the later destruction of the city and sanctuary. The identity of the anointed figure, the meaning of the seventy weeks, and the chronology remain debated, yet the passage clearly belongs to the Jewish eschatological matrix that shaped Second Temple expectation. In this branch it provides the main textual anchor for later Christian identification of Jesus within an already active Jewish interpretive world.",
               "date": "c. 2nd century BCE",
               "source": {
-                "title": "Daniel 9:24–27 (ESV)",
+                "title": "Daniel 9:24\u201327 (ESV)",
                 "url": "https://www.biblegateway.com/passage/?search=Daniel+9%3A24-27&version=ESV"
               },
               "data": {
@@ -1321,7 +1396,7 @@
               "name": "Micah 3:12 / Jeremiah 26:18",
               "subtitle": "Prophetic precedent for Jerusalem and the Temple mount coming under judgment",
               "link": "https://www.biblegateway.com/passage/?search=Micah+3%3A12%3BJeremiah+26%3A18&version=ESV",
-              "details": "Micah’s warning, later quoted in Jeremiah, provides a prophetic precedent for Jerusalem and the Temple mount coming under judgment. In this branch it contributes to the broader biblical pattern that the sanctuary could stand under covenantal judgment, supplying conceptual background for later Temple-destruction expectation.",
+              "details": "Micah\u2019s warning, later quoted in Jeremiah, provides a prophetic precedent for Jerusalem and the Temple mount coming under judgment. In this branch it contributes to the broader biblical pattern that the sanctuary could stand under covenantal judgment, supplying conceptual background for later Temple-destruction expectation.",
               "date": "Micah c. 8th century BCE; quoted in Jeremiah c. early 6th century BCE",
               "source": {
                 "title": "Micah 3:12 / Jeremiah 26:18 (ESV)",
@@ -1336,7 +1411,7 @@
               "name": "Zechariah 11:1",
               "subtitle": "Lebanon-and-cedars destruction imagery later read in Temple-related terms",
               "link": "https://www.biblegateway.com/passage/?search=Zechariah+11%3A1&version=ESV",
-              "details": "Zechariah 11:1 pictures Lebanon’s doors opening and its cedars being consumed by fire. Within Jewish interpretive tradition, Lebanon and cedar imagery could be associated with the Temple, making this passage relevant as destruction imagery later connected with sanctuary judgment. In this branch, the passage contributes to the broader biblical pattern of Temple-related judgment and helps explain later sanctuary-focused readings of such imagery.",
+              "details": "Zechariah 11:1 pictures Lebanon\u2019s doors opening and its cedars being consumed by fire. Within Jewish interpretive tradition, Lebanon and cedar imagery could be associated with the Temple, making this passage relevant as destruction imagery later connected with sanctuary judgment. In this branch, the passage contributes to the broader biblical pattern of Temple-related judgment and helps explain later sanctuary-focused readings of such imagery.",
               "date": "c. late 6th century BCE",
               "source": {
                 "title": "Zechariah 11:1 (ESV)",
@@ -1358,7 +1433,7 @@
           "children": [
             {
               "name": "Lebanon = Temple",
-              "subtitle": "Interpretive bridge for reading Zechariah’s Lebanon imagery in sanctuary terms",
+              "subtitle": "Interpretive bridge for reading Zechariah\u2019s Lebanon imagery in sanctuary terms",
               "data": {
                 "kind": "pre-example"
               },
@@ -1368,7 +1443,7 @@
                   "subtitle": "Rabbinic support for Lebanon functioning as Temple imagery",
                   "link": "https://www.sefaria.org/Zevachim.54b?lang=bi",
                   "details": "Zevachim 54b reflects a rabbinic association between Lebanon and the Temple. This helps explain why Lebanon and cedar imagery could be read in sanctuary terms, especially when paired with judgment passages such as Zechariah 11:1.",
-                  "date": "c. AD 200–500",
+                  "date": "c. AD 200\u2013500",
                   "source": {
                     "title": "Zevachim 54b (Sefaria)",
                     "url": "https://www.sefaria.org/Zevachim.54b?lang=bi"
@@ -1423,13 +1498,13 @@
               },
               "children": [
                 {
-                  "name": "Mark 13:1–2 // Matthew 24:1–2 // Luke 21:5–6",
+                  "name": "Mark 13:1\u20132 // Matthew 24:1\u20132 // Luke 21:5\u20136",
                   "subtitle": "Synoptic tradition that the Temple buildings will be thrown down",
                   "link": "https://www.biblegateway.com/passage/?search=Mark+13%3A1-2%3BMatthew+24%3A1-2%3BLuke+21%3A5-6&version=ESV",
-                  "details": "The Synoptic Gospels preserve Jesus’ warning that the Temple buildings would be thrown down. Together they show that Temple-destruction language stood near the center of Jesus tradition and was transmitted across multiple Gospel witnesses.",
-                  "date": "Mark c. AD 55–59; Matthew c. AD 58–62; Luke c. AD 60–62",
+                  "details": "The Synoptic Gospels preserve Jesus\u2019 warning that the Temple buildings would be thrown down. Together they show that Temple-destruction language stood near the center of Jesus tradition and was transmitted across multiple Gospel witnesses.",
+                  "date": "Mark c. AD 55\u201359; Matthew c. AD 58\u201362; Luke c. AD 60\u201362",
                   "source": {
-                    "title": "Mark 13:1–2 // Matthew 24:1–2 // Luke 21:5–6 (ESV)",
+                    "title": "Mark 13:1\u20132 // Matthew 24:1\u20132 // Luke 21:5\u20136 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Mark+13%3A1-2%3BMatthew+24%3A1-2%3BLuke+21%3A5-6&version=ESV"
                   },
                   "data": {
@@ -1438,13 +1513,13 @@
                   }
                 },
                 {
-                  "name": "Luke 19:41–44",
-                  "subtitle": "Jerusalem lament broadens the warning to the city’s coming judgment",
+                  "name": "Luke 19:41\u201344",
+                  "subtitle": "Jerusalem lament broadens the warning to the city\u2019s coming judgment",
                   "link": "https://www.biblegateway.com/passage/?search=Luke+19%3A41-44&version=ESV",
-                  "details": "Luke’s lament over Jerusalem extends the Temple warning into a broader judgment on the city, describing siege, devastation, and a missed visitation. It adds narrative texture to the branch by showing how Temple crisis and Jerusalem’s coming judgment were presented together in the Jesus tradition.",
-                  "date": "c. AD 60–62",
+                  "details": "Luke\u2019s lament over Jerusalem extends the Temple warning into a broader judgment on the city, describing siege, devastation, and a missed visitation. It adds narrative texture to the branch by showing how Temple crisis and Jerusalem\u2019s coming judgment were presented together in the Jesus tradition.",
+                  "date": "c. AD 60\u201362",
                   "source": {
-                    "title": "Luke 19:41–44 (ESV)",
+                    "title": "Luke 19:41\u201344 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Luke+19%3A41-44&version=ESV"
                   },
                   "data": {
@@ -1463,13 +1538,13 @@
               },
               "children": [
                 {
-                  "name": "John 2:19–21",
+                  "name": "John 2:19\u201321",
                   "subtitle": "John preserves the Temple saying in symbolic form",
                   "link": "https://www.biblegateway.com/passage/?search=John+2%3A19-21&version=ESV",
-                  "details": "John preserves Jesus’ Temple saying: “Destroy this temple, and in three days I will raise it up.” John interprets the saying as referring to Jesus’ body, while still preserving Temple-destruction and rebuilding language as part of Jesus’ provocative teaching.",
-                  "date": "c. AD 70–100",
+                  "details": "John preserves Jesus\u2019 Temple saying: \u201cDestroy this temple, and in three days I will raise it up.\u201d John interprets the saying as referring to Jesus\u2019 body, while still preserving Temple-destruction and rebuilding language as part of Jesus\u2019 provocative teaching.",
+                  "date": "c. AD 70\u2013100",
                   "source": {
-                    "title": "John 2:19–21 (ESV)",
+                    "title": "John 2:19\u201321 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=John+2%3A19-21&version=ESV"
                   },
                   "data": {
@@ -1478,13 +1553,13 @@
                   }
                 },
                 {
-                  "name": "Mark 14:57–58 // Matthew 26:61",
+                  "name": "Mark 14:57\u201358 // Matthew 26:61",
                   "subtitle": "Hostile trial accusation preserves the saying in adversarial form",
                   "link": "https://www.biblegateway.com/passage/?search=Mark+14%3A57-58%3BMatthew+26%3A61&version=ESV",
-                  "details": "At Jesus’ trial, witnesses attribute to him a saying about destroying the temple and rebuilding it in three days. Even in hostile form, the accusation shows that Temple-destruction and rebuilding language was memorable and publicly associated with Jesus.",
-                  "date": "Mark c. AD 55–59; Matthew c. AD 58–62",
+                  "details": "At Jesus\u2019 trial, witnesses attribute to him a saying about destroying the temple and rebuilding it in three days. Even in hostile form, the accusation shows that Temple-destruction and rebuilding language was memorable and publicly associated with Jesus.",
+                  "date": "Mark c. AD 55\u201359; Matthew c. AD 58\u201362",
                   "source": {
-                    "title": "Mark 14:57–58 // Matthew 26:61 (ESV)",
+                    "title": "Mark 14:57\u201358 // Matthew 26:61 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Mark+14%3A57-58%3BMatthew+26%3A61&version=ESV"
                   },
                   "data": {
@@ -1497,7 +1572,7 @@
                   "subtitle": "Public mockery echoes the Temple saying at the crucifixion",
                   "link": "https://www.biblegateway.com/passage/?search=Mark+15%3A29&version=ESV",
                   "details": "At the crucifixion, passersby taunt Jesus as the one who would destroy the temple and rebuild it in three days. The taunt suggests that the saying had circulated broadly enough to function as public mockery, not just courtroom testimony.",
-                  "date": "c. AD 55–59",
+                  "date": "c. AD 55\u201359",
                   "source": {
                     "title": "Mark 15:29 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Mark+15%3A29&version=ESV"
@@ -1508,13 +1583,13 @@
                   }
                 },
                 {
-                  "name": "Acts 6:13–14",
+                  "name": "Acts 6:13\u201314",
                   "subtitle": "The charge resurfaces in conflict around Stephen",
                   "link": "https://www.biblegateway.com/passage/?search=Acts+6%3A13-14&version=ESV",
-                  "details": "Stephen’s accusers echo a related charge: Jesus of Nazareth will destroy this place and change the customs Moses delivered. The passage extends Temple-threatening language beyond the Gospel narratives and shows that it remained a live point of controversy in early Christian proclamation.",
+                  "details": "Stephen\u2019s accusers echo a related charge: Jesus of Nazareth will destroy this place and change the customs Moses delivered. The passage extends Temple-threatening language beyond the Gospel narratives and shows that it remained a live point of controversy in early Christian proclamation.",
                   "date": "c. AD 62",
                   "source": {
-                    "title": "Acts 6:13–14 (ESV)",
+                    "title": "Acts 6:13\u201314 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Acts+6%3A13-14&version=ESV"
                   },
                   "data": {
@@ -1535,18 +1610,18 @@
           },
           "children": [
             {
-              "name": "Josephus, War 6.312–316",
-              "subtitle": "Expectation of a ruler from Judea remembered at the war’s climax",
+              "name": "Josephus, War 6.312\u2013316",
+              "subtitle": "Expectation of a ruler from Judea remembered at the war\u2019s climax",
               "link": "https://penelope.uchicago.edu/josephus/war-6.html#S5.4",
               "details": "Josephus reports that many Jews were stirred by an ambiguous oracle in their sacred writings that someone from their own country would rule the world. His Flavian-era application directs the oracle to Vespasian, while the expectation he preserves has a recognizably Jewish messianic shape centered on a ruler arising from Israel. In the cumulative case, the passage adds historical evidence that ruler-from-Judea expectation was alive around the war years, a pattern early Christians applied to Jesus as the Messiah proclaimed among the nations.",
               "date": "c. AD 75",
               "source": {
-                "title": "Josephus, War 6.312–316",
+                "title": "Josephus, War 6.312\u2013316",
                 "url": "https://penelope.uchicago.edu/josephus/war-6.html#S5.4"
               },
               "data": {
                 "kind": "pre-example",
-                "example": "Josephus, War 6.312–316"
+                "example": "Josephus, War 6.312\u2013316"
               }
             },
             {
@@ -1554,7 +1629,7 @@
               "subtitle": "Roman witness to the same expectation, also redirected to Vespasian",
               "link": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.02.0080:book=5:chapter=13",
               "details": "Tacitus likewise reports a widespread conviction that ancient priestly writings pointed to rulers arising from Judea and gaining worldwide power. His Roman framing channels that expectation toward Vespasian and Titus while still preserving the underlying pattern of Judean rule reaching beyond Judea. The notice is relevant because it independently confirms that this kind of expectation was remembered near AD 70, a pattern early Christianity applied to Jesus as the risen and enthroned Messiah.",
-              "date": "c. AD 105–110",
+              "date": "c. AD 105\u2013110",
               "source": {
                 "title": "Tacitus, Histories 5.13",
                 "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.02.0080:book=5:chapter=13"
@@ -1568,7 +1643,7 @@
               "name": "Suetonius, Vespasian 4.5",
               "subtitle": "Eastern ruler-from-Judea expectation likewise redirected to Vespasian",
               "link": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Suetonius/12Caesars/Vespasian*.html#4.5",
-              "details": "Suetonius reports an old and widespread Eastern belief that men coming from Judea were destined to rule the world. Like Tacitus, he says the Jews applied the expectation to themselves, but interprets its fulfillment as referring to Vespasian’s rise through the Jewish war. The notice adds a third non-Christian witness that this ruler-from-Judea tradition was remembered in connection with the war years.",
+              "details": "Suetonius reports an old and widespread Eastern belief that men coming from Judea were destined to rule the world. Like Tacitus, he says the Jews applied the expectation to themselves, but interprets its fulfillment as referring to Vespasian\u2019s rise through the Jewish war. The notice adds a third non-Christian witness that this ruler-from-Judea tradition was remembered in connection with the war years.",
               "date": "c. AD 120",
               "source": {
                 "title": "Suetonius, Vespasian 4.5",
@@ -1584,7 +1659,7 @@
         {
           "name": "Temple Crisis Traditions",
           "subtitle": "Rabbinic memories of the final forty years",
-          "details": "Later rabbinic traditions associate the final forty years before the Temple’s destruction with signs of diminished divine favor and institutional displacement. These traditions are relevant because they cluster Temple crisis, judgment, atonement, and authority around the same period leading up to AD 70.",
+          "details": "Later rabbinic traditions associate the final forty years before the Temple\u2019s destruction with signs of diminished divine favor and institutional displacement. These traditions are relevant because they cluster Temple crisis, judgment, atonement, and authority around the same period leading up to AD 70.",
           "data": {
             "kind": "pre"
           },
@@ -1593,8 +1668,8 @@
               "name": "Yoma 39b",
               "subtitle": "Forty-year tradition about unfavorable Yom Kippur signs",
               "link": "https://www.sefaria.org/Yoma.39b?lang=bi",
-              "details": "Yoma 39b preserves a rabbinic tradition that, during the forty years before the Temple’s destruction, several Yom Kippur signs no longer indicated divine favor: the lot for the Lord did not arise in the right hand, the crimson thread did not turn white, and the western lamp did not burn continually. The passage is relevant as a Jewish memory of Temple-related signs turning unfavorable in the generation before AD 70.",
-              "date": "c. AD 200–500, preserving earlier memory",
+              "details": "Yoma 39b preserves a rabbinic tradition that, during the forty years before the Temple\u2019s destruction, several Yom Kippur signs no longer indicated divine favor: the lot for the Lord did not arise in the right hand, the crimson thread did not turn white, and the western lamp did not burn continually. The passage is relevant as a Jewish memory of Temple-related signs turning unfavorable in the generation before AD 70.",
+              "date": "c. AD 200\u2013500, preserving earlier memory",
               "source": {
                 "title": "Yoma 39b (Sefaria)",
                 "url": "https://www.sefaria.org/Yoma.39b?lang=bi"
@@ -1608,8 +1683,8 @@
               "name": "Shabbat 15a",
               "subtitle": "Forty-year tradition about the Sanhedrin leaving its chamber",
               "link": "https://www.sefaria.org/Shabbat.15a.9?lang=bi",
-              "details": "Shabbat 15a preserves a rabbinic tradition that the Sanhedrin left the Chamber of Hewn Stone forty years before the Temple’s destruction. The passage is relevant as a Jewish memory of institutional displacement and diminished judicial authority in the generation before AD 70.",
-              "date": "c. AD 200–500, preserving earlier memory",
+              "details": "Shabbat 15a preserves a rabbinic tradition that the Sanhedrin left the Chamber of Hewn Stone forty years before the Temple\u2019s destruction. The passage is relevant as a Jewish memory of institutional displacement and diminished judicial authority in the generation before AD 70.",
+              "date": "c. AD 200\u2013500, preserving earlier memory",
               "source": {
                 "title": "Shabbat 15a (Sefaria)",
                 "url": "https://www.sefaria.org/Shabbat.15a.9?lang=bi"
@@ -1629,10 +1704,10 @@
           },
           "children": [
             {
-              "name": "Josephus, War 6.249–270; 6.290–300",
-              "subtitle": "Narrative of the Temple’s burning during Titus’s siege",
+              "name": "Josephus, War 6.249\u2013270; 6.290\u2013300",
+              "subtitle": "Narrative of the Temple\u2019s burning during Titus\u2019s siege",
               "link": "https://penelope.uchicago.edu/josephus/war-6.html",
-              "details": "Josephus gives a detailed narrative of the Temple’s burning during Titus’s siege, supplying the fullest ancient account of the sanctuary’s destruction. In this branch his testimony anchors the historical correlation between Temple-judgment tradition and the events of AD 70.",
+              "details": "Josephus gives a detailed narrative of the Temple\u2019s burning during Titus\u2019s siege, supplying the fullest ancient account of the sanctuary\u2019s destruction. In this branch his testimony anchors the historical correlation between Temple-judgment tradition and the events of AD 70.",
               "date": "Event AD 70; work c. AD 75",
               "source": {
                 "title": "Josephus, War 6",
@@ -1644,25 +1719,25 @@
               }
             },
             {
-              "name": "Tacitus, Histories 5.11–13",
-              "subtitle": "Hostile Roman corroboration of Jerusalem’s fall",
+              "name": "Tacitus, Histories 5.11\u201313",
+              "subtitle": "Hostile Roman corroboration of Jerusalem\u2019s fall",
               "link": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Tacitus/Histories/5A%2A.html",
-              "details": "Tacitus offers a hostile Roman account of the same war and Jerusalem’s fall. His testimony adds independent non-Christian corroboration and historical texture to the catastrophe of AD 70.",
-              "date": "Event AD 70; work c. AD 105–110",
+              "details": "Tacitus offers a hostile Roman account of the same war and Jerusalem\u2019s fall. His testimony adds independent non-Christian corroboration and historical texture to the catastrophe of AD 70.",
+              "date": "Event AD 70; work c. AD 105\u2013110",
               "source": {
-                "title": "Tacitus, Histories 5.11–13",
+                "title": "Tacitus, Histories 5.11\u201313",
                 "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Tacitus/Histories/5A%2A.html"
               },
               "data": {
                 "kind": "hist-source",
-                "source": "Tacitus, Histories 5.11–13"
+                "source": "Tacitus, Histories 5.11\u201313"
               }
             },
             {
               "name": "Archaeology",
               "subtitle": "Burn layers and toppled stones provide material corroboration of 70 CE destruction",
               "link": "https://www.biblicalarchaeology.org/daily/ancient-cultures/ancient-israel/the-temple-mount-southern-wall-excavations/",
-              "details": "Burn layers and massive fallen stones near the Temple Mount’s southwest corner provide material corroboration of violent destruction in 70 CE, adding archaeological texture to the literary accounts.",
+              "details": "Burn layers and massive fallen stones near the Temple Mount\u2019s southwest corner provide material corroboration of violent destruction in 70 CE, adding archaeological texture to the literary accounts.",
               "date": "AD 70 remains; modern excavations",
               "source": {
                 "title": "Temple Mount southern wall excavations",
@@ -1769,13 +1844,13 @@
               },
               "children": [
                 {
-                  "name": "Isaiah 2:2–4",
+                  "name": "Isaiah 2:2\u20134",
                   "subtitle": "The nations stream to Zion to learn God's ways and pursue peace",
                   "link": "https://www.biblegateway.com/passage/?search=Isaiah+2%3A2-4&version=ESV",
                   "details": "Isaiah envisions many peoples coming to Zion for instruction, with the result that instruments of war become tools of cultivation. The passage supplies a broad prophetic vision of the nations seeking Israel's God.",
                   "date": "c. 8th century BCE",
                   "source": {
-                    "title": "Isaiah 2:2–4 (ESV)",
+                    "title": "Isaiah 2:2\u20134 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Isaiah+2%3A2-4&version=ESV"
                   },
                   "data": {
@@ -1799,13 +1874,13 @@
                   }
                 },
                 {
-                  "name": "Isaiah 56:6–8",
+                  "name": "Isaiah 56:6\u20138",
                   "subtitle": "Foreigners are welcomed and God's house is for all peoples",
                   "link": "https://www.biblegateway.com/passage/?search=Isaiah+56%3A6-8&version=ESV",
                   "details": "Isaiah welcomes foreigners who join themselves to the Lord and describes the temple as a house of prayer for all peoples. The passage is an important scriptural basis for inclusion without erasing Israel's place in the vision.",
                   "date": "c. 6th century BCE",
                   "source": {
-                    "title": "Isaiah 56:6–8 (ESV)",
+                    "title": "Isaiah 56:6\u20138 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Isaiah+56%3A6-8&version=ESV"
                   },
                   "data": {
@@ -1814,13 +1889,13 @@
                   }
                 },
                 {
-                  "name": "Isaiah 60:1–3",
+                  "name": "Isaiah 60:1\u20133",
                   "subtitle": "Nations and kings come to Zion's light",
                   "link": "https://www.biblegateway.com/passage/?search=Isaiah+60%3A1-3&version=ESV",
                   "details": "In a vision of Zion's restoration, Isaiah describes nations and kings coming to its light. The imagery expands the light theme from an individual servant to the restored people and city.",
                   "date": "c. 6th century BCE",
                   "source": {
-                    "title": "Isaiah 60:1–3 (ESV)",
+                    "title": "Isaiah 60:1\u20133 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Isaiah+60%3A1-3&version=ESV"
                   },
                   "data": {
@@ -1829,13 +1904,13 @@
                   }
                 },
                 {
-                  "name": "Isaiah 66:18–21",
+                  "name": "Isaiah 66:18\u201321",
                   "subtitle": "God gathers every nation and sends witnesses to distant peoples",
                   "link": "https://www.biblegateway.com/passage/?search=Isaiah+66%3A18-21&version=ESV",
                   "details": "Isaiah closes with God gathering all nations and languages, then sending survivors to distant peoples who have not heard of his fame. It is one of the Hebrew Bible's clearest visions of outward proclamation to the nations.",
                   "date": "c. 6th century BCE",
                   "source": {
-                    "title": "Isaiah 66:18–21 (ESV)",
+                    "title": "Isaiah 66:18\u201321 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Isaiah+66%3A18-21&version=ESV"
                   },
                   "data": {
@@ -1859,13 +1934,13 @@
                   }
                 },
                 {
-                  "name": "Zechariah 8:20–23",
+                  "name": "Zechariah 8:20\u201323",
                   "subtitle": "Many peoples seek the Lord and join themselves to his people",
                   "link": "https://www.biblegateway.com/passage/?search=Zechariah+8%3A20-23&version=ESV",
                   "details": "Zechariah pictures peoples from many cities seeking the Lord in Jerusalem and taking hold of a Jew because they have heard that God is with his people. The scene is universal in reach while remaining centered on Israel.",
-                  "date": "c. 6th–5th centuries BCE",
+                  "date": "c. 6th\u20135th centuries BCE",
                   "source": {
-                    "title": "Zechariah 8:20–23 (ESV)",
+                    "title": "Zechariah 8:20\u201323 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Zechariah+8%3A20-23&version=ESV"
                   },
                   "data": {
@@ -1876,20 +1951,20 @@
               ]
             },
             {
-              "name": "David’s Tent",
+              "name": "David\u2019s Tent",
               "subtitle": "Amos links restored Davidic rule with the nations called by God's name",
               "data": {
                 "kind": "ot"
               },
               "children": [
                 {
-                  "name": "Amos 9:11–12",
+                  "name": "Amos 9:11\u201312",
                   "subtitle": "David's fallen tent is restored in a promise involving the nations",
                   "link": "https://www.biblegateway.com/passage/?search=Amos+9%3A11-12&version=ESV",
                   "details": "Amos promises the restoration of David's fallen tent. The Hebrew textual tradition speaks of possessing the remnant of Edom and the nations called by God's name, while the ancient Greek form speaks of the remnant of humanity seeking the Lord. Acts 15 cites a Greek form when arguing for Gentile inclusion.",
                   "date": "c. 8th century BCE",
                   "source": {
-                    "title": "Amos 9:11–12 (ESV)",
+                    "title": "Amos 9:11\u201312 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Amos+9%3A11-12&version=ESV"
                   },
                   "data": {
@@ -1907,18 +1982,18 @@
               },
               "children": [
                 {
-                  "name": "1QIsaᵃ",
+                  "name": "1QIsa\u1d43",
                   "subtitle": "Complete pre-Christian copy of Isaiah",
                   "link": "https://www.deadseascrolls.org.il/explore-the-archive/manuscript/1Q8-1?locale=en_US",
                   "details": "The Great Isaiah Scroll preserves Isaiah's servant and nations passages in a complete copy made well before Christianity. Its relevance is textual: it confirms that Christians inherited rather than created these texts. The manuscript alone does not prove a pre-Christian messianic interpretation.",
                   "date": "c. 125 BCE",
                   "source": {
-                    "title": "1QIsaᵃ (Great Isaiah Scroll)",
+                    "title": "1QIsa\u1d43 (Great Isaiah Scroll)",
                     "url": "https://www.deadseascrolls.org.il/explore-the-archive/manuscript/1Q8-1?locale=en_US"
                   },
                   "data": {
                     "kind": "pre-example",
-                    "example": "1QIsaᵃ — complete pre-Christian copy of Isaiah"
+                    "example": "1QIsa\u1d43 \u2014 complete pre-Christian copy of Isaiah"
                   }
                 },
                 {
@@ -1926,14 +2001,14 @@
                   "subtitle": "Pre-Christian Greek translation of Isaiah",
                   "link": "https://ccat.sas.upenn.edu/nets/edition/33-esaias-nets.pdf",
                   "details": "The Septuagint provides a pre-Christian Jewish Greek translation of Isaiah's servant and nations passages. It became an important textual form for early Christian citation, but its existence alone does not prove that those passages were already interpreted as predictions about Jesus or the Christian mission.",
-                  "date": "3rd–2nd centuries BCE",
+                  "date": "3rd\u20132nd centuries BCE",
                   "source": {
                     "title": "NETS Septuagint: Isaiah",
                     "url": "https://ccat.sas.upenn.edu/nets/edition/33-esaias-nets.pdf"
                   },
                   "data": {
                     "kind": "pre-example",
-                    "example": "LXX Isaiah — pre-Christian Greek translation"
+                    "example": "LXX Isaiah \u2014 pre-Christian Greek translation"
                   }
                 }
               ]
@@ -1955,13 +2030,13 @@
               },
               "children": [
                 {
-                  "name": "Luke 2:29–32",
+                  "name": "Luke 2:29\u201332",
                   "subtitle": "Simeon identifies Jesus as a light for revelation to the Gentiles",
                   "link": "https://www.biblegateway.com/passage/?search=Luke+2%3A29-32&version=ESV",
                   "details": "Simeon's song identifies Jesus as God's salvation prepared for all peoples, a light for revelation to the Gentiles and glory for Israel. Luke thus places Isaiah's light-to-the-nations hope at the beginning of Jesus' story.",
-                  "date": "c. AD 60–62",
+                  "date": "c. AD 60\u201362",
                   "source": {
-                    "title": "Luke 2:29–32 (ESV)",
+                    "title": "Luke 2:29\u201332 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Luke+2%3A29-32&version=ESV"
                   },
                   "data": {
@@ -1970,13 +2045,13 @@
                   }
                 },
                 {
-                  "name": "Matthew 12:18–21",
+                  "name": "Matthew 12:18\u201321",
                   "subtitle": "Matthew quotes Isaiah 42 and applies the servant's Gentile hope to Jesus",
                   "link": "https://www.biblegateway.com/passage/?search=Matthew+12%3A18-21&version=ESV",
-                  "details": "Matthew quotes Isaiah 42:1–4 after describing Jesus' withdrawal from conflict and his healing ministry. The quotation explicitly identifies Jesus with Isaiah's chosen servant and concludes that the Gentiles will hope in his name.",
+                  "details": "Matthew quotes Isaiah 42:1\u20134 after describing Jesus' withdrawal from conflict and his healing ministry. The quotation explicitly identifies Jesus with Isaiah's chosen servant and concludes that the Gentiles will hope in his name.",
                   "date": "1st century AD",
                   "source": {
-                    "title": "Matthew 12:18–21 (ESV)",
+                    "title": "Matthew 12:18\u201321 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Matthew+12%3A18-21&version=ESV"
                   },
                   "data": {
@@ -2009,13 +2084,13 @@
               },
               "children": [
                 {
-                  "name": "Luke 24:44–47",
+                  "name": "Luke 24:44\u201347",
                   "subtitle": "Repentance and forgiveness are to be proclaimed to all nations",
                   "link": "https://www.biblegateway.com/passage/?search=Luke+24%3A44-47&version=ESV",
                   "details": "Luke portrays the risen Jesus interpreting Israel's Scriptures around his suffering and resurrection, then commissioning the proclamation of repentance and forgiveness to all nations beginning from Jerusalem.",
                   "date": "1st century AD",
                   "source": {
-                    "title": "Luke 24:44–47 (ESV)",
+                    "title": "Luke 24:44\u201347 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Luke+24%3A44-47&version=ESV"
                   },
                   "data": {
@@ -2024,13 +2099,13 @@
                   }
                 },
                 {
-                  "name": "Matthew 28:18–20",
+                  "name": "Matthew 28:18\u201320",
                   "subtitle": "Jesus commissions his disciples to make disciples of all nations",
                   "link": "https://www.biblegateway.com/passage/?search=Matthew+28%3A18-20&version=ESV",
                   "details": "The risen Jesus sends his disciples to make disciples of all nations. The commission turns the worldwide scope of the promise into the church's explicit mission of teaching, baptizing, and forming communities among the nations.",
                   "date": "1st century AD",
                   "source": {
-                    "title": "Matthew 28:18–20 (ESV)",
+                    "title": "Matthew 28:18\u201320 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Matthew+28%3A18-20&version=ESV"
                   },
                   "data": {
@@ -2063,13 +2138,13 @@
               },
               "children": [
                 {
-                  "name": "Acts 8:26–39",
+                  "name": "Acts 8:26\u201339",
                   "subtitle": "An Ethiopian eunuch receives the message and is baptized",
                   "link": "https://www.biblegateway.com/passage/?search=Acts+8%3A26-39&version=ESV",
-                  "details": "Acts narrates the baptism of an Ethiopian eunuch after Philip explains Isaiah 53 to him. The quoted text is Isaiah 53, not Isaiah 56, but the inclusion of a foreign eunuch also resonates conceptually with Isaiah 56:3–8.",
+                  "details": "Acts narrates the baptism of an Ethiopian eunuch after Philip explains Isaiah 53 to him. The quoted text is Isaiah 53, not Isaiah 56, but the inclusion of a foreign eunuch also resonates conceptually with Isaiah 56:3\u20138.",
                   "date": "1st century AD",
                   "source": {
-                    "title": "Acts 8:26–39 (ESV)",
+                    "title": "Acts 8:26\u201339 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Acts+8%3A26-39&version=ESV"
                   },
                   "data": {
@@ -2078,13 +2153,13 @@
                   }
                 },
                 {
-                  "name": "Acts 10:34–35, 44–48",
+                  "name": "Acts 10:34\u201335, 44\u201348",
                   "subtitle": "Gentiles receive the message and are incorporated",
                   "link": "https://www.biblegateway.com/passage/?search=Acts+10%3A34-35%2C44-48&version=ESV",
                   "details": "The Cornelius episode presents Gentile inclusion as a major turning point in the movement's expansion. Whether one reads every narrative detail straightforwardly or not, Acts clearly portrays the mission moving beyond Israel.",
                   "date": "c. AD 62",
                   "source": {
-                    "title": "Acts 10:34–35, 44–48 (ESV)",
+                    "title": "Acts 10:34\u201335, 44\u201348 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Acts+10%3A34-35%2C44-48&version=ESV"
                   },
                   "data": {
@@ -2093,13 +2168,13 @@
                   }
                 },
                 {
-                  "name": "Acts 11:1–18",
+                  "name": "Acts 11:1\u201318",
                   "subtitle": "Jerusalem believers recognize that God has granted life to Gentiles",
                   "link": "https://www.biblegateway.com/passage/?search=Acts+11%3A1-18&version=ESV",
                   "details": "Peter recounts the Cornelius episode to believers in Jerusalem. Acts presents their objections giving way to recognition that God has granted Gentiles repentance leading to life, making the episode's implications explicit.",
                   "date": "1st century AD",
                   "source": {
-                    "title": "Acts 11:1–18 (ESV)",
+                    "title": "Acts 11:1\u201318 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Acts+11%3A1-18&version=ESV"
                   },
                   "data": {
@@ -2108,13 +2183,13 @@
                   }
                 },
                 {
-                  "name": "Acts 11:19–26",
+                  "name": "Acts 11:19\u201326",
                   "subtitle": "A mixed community forms at Antioch as the message reaches Greeks",
                   "link": "https://www.biblegateway.com/passage/?search=Acts+11%3A19-26&version=ESV",
                   "details": "Acts describes believers from Cyprus and Cyrene announcing the message to Greeks in Antioch, where a large community develops. Antioch then becomes a major base for the mission beyond Judea.",
                   "date": "1st century AD",
                   "source": {
-                    "title": "Acts 11:19–26 (ESV)",
+                    "title": "Acts 11:19\u201326 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Acts+11%3A19-26&version=ESV"
                   },
                   "data": {
@@ -2123,13 +2198,13 @@
                   }
                 },
                 {
-                  "name": "Acts 15:13–18",
+                  "name": "Acts 15:13\u201318",
                   "subtitle": "James cites Amos when supporting Gentile inclusion at the Jerusalem Council",
                   "link": "https://www.biblegateway.com/passage/?search=Acts+15%3A13-18&version=ESV",
-                  "details": "Acts portrays James appealing to Amos 9:11–12 as scriptural support for receiving Gentiles without requiring them to become Jews. The quotation follows an adapted Greek form in which the remnant of humanity seeks the Lord, rather than simply reproducing the wording of the Masoretic Text.",
+                  "details": "Acts portrays James appealing to Amos 9:11\u201312 as scriptural support for receiving Gentiles without requiring them to become Jews. The quotation follows an adapted Greek form in which the remnant of humanity seeks the Lord, rather than simply reproducing the wording of the Masoretic Text.",
                   "date": "1st century AD",
                   "source": {
-                    "title": "Acts 15:13–18 (ESV)",
+                    "title": "Acts 15:13\u201318 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Acts+15%3A13-18&version=ESV"
                   },
                   "data": {
@@ -2147,13 +2222,13 @@
               },
               "children": [
                 {
-                  "name": "Acts 13:46–47",
+                  "name": "Acts 13:46\u201347",
                   "subtitle": "Paul and Barnabas cite Isaiah 49:6 for Gentile mission",
                   "link": "https://www.biblegateway.com/passage/?search=Acts+13%3A46-47&version=ESV",
                   "details": "In Pisidian Antioch, Paul and Barnabas justify turning to the Gentiles by quoting Isaiah 49:6. The passage is one of the clearest places where the movement explicitly adopts the nations theme as a description of its own mission.",
                   "date": "1st century AD",
                   "source": {
-                    "title": "Acts 13:46–47 (ESV)",
+                    "title": "Acts 13:46\u201347 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Acts+13%3A46-47&version=ESV"
                   },
                   "data": {
@@ -2162,13 +2237,13 @@
                   }
                 },
                 {
-                  "name": "Acts 26:22–23",
+                  "name": "Acts 26:22\u201323",
                   "subtitle": "Luke portrays Paul announcing light to Israel and the Gentiles",
                   "link": "https://www.biblegateway.com/passage/?search=Acts+26%3A22-23&version=ESV",
                   "details": "In Luke's presentation of Paul's defense before Agrippa, Paul says that the Messiah would suffer, rise, and proclaim light both to Israel and to the Gentiles. The wording closely echoes Isaiah's nations theme, while remaining Luke's literary presentation of Paul's speech.",
                   "date": "1st century AD",
                   "source": {
-                    "title": "Acts 26:22–23 (ESV)",
+                    "title": "Acts 26:22\u201323 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Acts+26%3A22-23&version=ESV"
                   },
                   "data": {
@@ -2179,20 +2254,20 @@
               ]
             },
             {
-              "name": "Paul’s Witness",
+              "name": "Paul\u2019s Witness",
               "subtitle": "Paul's letters document Gentile communities and interpret their inclusion through Israel's promises",
               "data": {
                 "kind": "nt"
               },
               "children": [
                 {
-                  "name": "1 Thessalonians 1:8–9",
+                  "name": "1 Thessalonians 1:8\u20139",
                   "subtitle": "An early Pauline letter describes Gentiles turning from idols to Israel's God",
                   "link": "https://www.biblegateway.com/passage/?search=1+Thessalonians+1%3A8-9&version=ESV",
                   "details": "One of the earliest surviving New Testament writings describes the Thessalonians turning from idols to serve the living and true God. It is early evidence for the phenomenon of Gentile conversion, although Paul's language about the message sounding forth everywhere is rhetorical rather than a census of worldwide expansion.",
-                  "date": "c. AD 50–51",
+                  "date": "c. AD 50\u201351",
                   "source": {
-                    "title": "1 Thessalonians 1:8–9 (ESV)",
+                    "title": "1 Thessalonians 1:8\u20139 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=1+Thessalonians+1%3A8-9&version=ESV"
                   },
                   "data": {
@@ -2201,13 +2276,13 @@
                   }
                 },
                 {
-                  "name": "Galatians 2:1–10",
+                  "name": "Galatians 2:1\u201310",
                   "subtitle": "Jerusalem leaders recognize Paul's mission among the Gentiles",
                   "link": "https://www.biblegateway.com/passage/?search=Galatians+2%3A1-10&version=ESV",
                   "details": "Paul reports that the Jerusalem leaders recognized his commission among the Gentiles and did not require Titus, a Greek, to be circumcised. The letter provides Paul's own testimony to an agreed division of missionary labor.",
-                  "date": "c. AD 48–55",
+                  "date": "c. AD 48\u201355",
                   "source": {
-                    "title": "Galatians 2:1–10 (ESV)",
+                    "title": "Galatians 2:1\u201310 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Galatians+2%3A1-10&version=ESV"
                   },
                   "data": {
@@ -2220,7 +2295,7 @@
                   "subtitle": "Paul identifies the promise to Abraham as the gospel announced beforehand",
                   "link": "https://www.biblegateway.com/passage/?search=Galatians+3%3A8&version=ESV",
                   "details": "Paul directly connects the gospel among the Gentiles with the promise that all nations would be blessed through Abraham. The verse makes explicit the continuity between Genesis 12:3 and the multiethnic Christian mission.",
-                  "date": "c. AD 48–55",
+                  "date": "c. AD 48\u201355",
                   "source": {
                     "title": "Galatians 3:8 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Galatians+3%3A8&version=ESV"
@@ -2246,13 +2321,13 @@
                   }
                 },
                 {
-                  "name": "Romans 11:11–25",
+                  "name": "Romans 11:11\u201325",
                   "subtitle": "Paul reflects on Gentile inclusion without erasing Israel's continuing place",
                   "link": "https://www.biblegateway.com/passage/?search=Romans+11%3A11-25&version=ESV",
                   "details": "Paul uses the image of Gentile branches grafted into Israel's olive tree and warns them against arrogance. The passage is central to his understanding of Gentile inclusion while preserving a continuing theological role for Israel.",
                   "date": "c. AD 57",
                   "source": {
-                    "title": "Romans 11:11–25 (ESV)",
+                    "title": "Romans 11:11\u201325 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Romans+11%3A11-25&version=ESV"
                   },
                   "data": {
@@ -2261,13 +2336,13 @@
                   }
                 },
                 {
-                  "name": "Romans 15:8–21",
+                  "name": "Romans 15:8\u201321",
                   "subtitle": "Paul links Christ, the patriarchal promises, prophecy, and mission among the Gentiles",
                   "link": "https://www.biblegateway.com/passage/?search=Romans+15%3A8-21&version=ESV",
                   "details": "Paul presents Christ as confirming the promises given to the patriarchs so that the Gentiles may glorify God. He gathers scriptural testimony about the nations and describes his own expanding mission as carrying that promise into new regions.",
                   "date": "c. AD 57",
                   "source": {
-                    "title": "Romans 15:8–21 (ESV)",
+                    "title": "Romans 15:8\u201321 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Romans+15%3A8-21&version=ESV"
                   },
                   "data": {
@@ -2276,13 +2351,13 @@
                   }
                 },
                 {
-                  "name": "Ephesians 2:11–22; 3:1–6",
+                  "name": "Ephesians 2:11\u201322; 3:1\u20136",
                   "subtitle": "Gentiles are portrayed as fellow citizens and joint heirs in Christ",
                   "link": "https://www.biblegateway.com/passage/?search=Ephesians+2%3A11-22%3B3%3A1-6&version=ESV",
                   "details": "Ephesians describes Gentiles as brought near, incorporated with Israel into one new humanity, and made fellow heirs through the gospel. The passage is a major early Christian interpretation of Gentile inclusion, although Pauline authorship of Ephesians remains disputed.",
                   "date": "1st century AD; authorship disputed",
                   "source": {
-                    "title": "Ephesians 2:11–22; 3:1–6 (ESV)",
+                    "title": "Ephesians 2:11\u201322; 3:1\u20136 (ESV)",
                     "url": "https://www.biblegateway.com/passage/?search=Ephesians+2%3A11-22%3B3%3A1-6&version=ESV"
                   },
                   "data": {
@@ -2302,25 +2377,25 @@
           },
           "children": [
             {
-              "name": "Tobit 13–14",
+              "name": "Tobit 13\u201314",
               "subtitle": "Nations come from afar to honor God in a restored Jerusalem",
               "link": "https://www.biblegateway.com/passage/?search=Tobit+13%3A9-14%3B14%3A5-7&version=NRSVUE",
               "details": "Tobit's closing vision portrays many nations coming from afar to the name of the Lord and Jerusalem being restored in splendor. It supplies a Jewish universalist parallel centered on Israel's restoration, not an interpretation of Isaiah's servant as Jesus.",
-              "date": "c. 3rd–2nd centuries BCE",
+              "date": "c. 3rd\u20132nd centuries BCE",
               "source": {
-                "title": "Tobit 13:9–14; 14:5–7 (NRSVUE)",
+                "title": "Tobit 13:9\u201314; 14:5\u20137 (NRSVUE)",
                 "url": "https://www.biblegateway.com/passage/?search=Tobit+13%3A9-14%3B14%3A5-7&version=NRSVUE"
               },
               "data": {
                 "kind": "pre-example",
-                "example": "Tobit 13–14 — nations come to restored Jerusalem"
+                "example": "Tobit 13\u201314 \u2014 nations come to restored Jerusalem"
               }
             },
             {
               "name": "1 Enoch 48:4",
               "subtitle": "An exalted figure is described as support for the righteous and light to the nations",
               "link": "https://www.earlyjewishwritings.com/1enoch.html",
-              "details": "In the Parables of Enoch, the chosen Son of Man figure is described as a support for the righteous and a light to the nations. It is an important Jewish parallel to Isaiah's language, but the date of 1 Enoch 37–71 is disputed and the passage should not be presented as secure proof of a pre-Christian interpretation of Isaiah 49.",
+              "details": "In the Parables of Enoch, the chosen Son of Man figure is described as a support for the righteous and a light to the nations. It is an important Jewish parallel to Isaiah's language, but the date of 1 Enoch 37\u201371 is disputed and the passage should not be presented as secure proof of a pre-Christian interpretation of Isaiah 49.",
               "date": "Second Temple or early Roman period; dating disputed",
               "source": {
                 "title": "1 Enoch overview and texts",
@@ -2328,7 +2403,7 @@
               },
               "data": {
                 "kind": "pre-example",
-                "example": "1 Enoch 48:4 — disputed-date light-to-the-nations parallel"
+                "example": "1 Enoch 48:4 \u2014 disputed-date light-to-the-nations parallel"
               }
             },
             {
@@ -2343,7 +2418,7 @@
               },
               "data": {
                 "kind": "pre-example",
-                "example": "Sibylline Oracles 3 — Jewish appeal to the nations"
+                "example": "Sibylline Oracles 3 \u2014 Jewish appeal to the nations"
               }
             }
           ]
@@ -2360,7 +2435,7 @@
               "subtitle": "Justin applies Isaiah's light language to Christ and Gentiles reached through him",
               "link": "https://www.newadvent.org/fathers/0128.htm",
               "details": "In Dialogue with Trypho 65 and 122, Justin quotes Isaiah's covenant-and-light language and argues that it applies to Christ and to Gentiles illuminated through Jesus. This is among the earliest surviving extended Christian arguments connecting Isaiah 42 and 49 with the Gentile mission, but it is later reception rather than independent evidence from Jesus' lifetime.",
-              "date": "c. AD 155–160",
+              "date": "c. AD 155\u2013160",
               "source": {
                 "title": "Justin Martyr, Dialogue with Trypho",
                 "url": "https://www.newadvent.org/fathers/0128.htm"
@@ -2395,18 +2470,18 @@
               }
             },
             {
-              "name": "Pliny, Letters 10.96–97",
+              "name": "Pliny, Letters 10.96\u201397",
               "subtitle": "Pliny and Trajan discuss widespread Christian communities in Bithynia",
               "link": "https://www.earlychristianwritings.com/text/pliny.html",
               "details": "Pliny reports Christians of different ages, ranks, and sexes in the cities, villages, and countryside of Bithynia, and Trajan replies with instructions for handling accusations. The exchange does not interpret Isaiah or establish the ethnicity of every adherent; it independently attests the movement's broad presence in a Gentile provincial setting.",
-              "date": "c. AD 111–113",
+              "date": "c. AD 111\u2013113",
               "source": {
-                "title": "Pliny and Trajan, Letters 10.96–97",
+                "title": "Pliny and Trajan, Letters 10.96\u201397",
                 "url": "https://www.earlychristianwritings.com/text/pliny.html"
               },
               "data": {
                 "kind": "hist-source",
-                "source": "Pliny and Trajan, Letters 10.96–97"
+                "source": "Pliny and Trajan, Letters 10.96\u201397"
               }
             }
           ]
