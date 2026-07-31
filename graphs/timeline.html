@@ -1,0 +1,2500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Manuscript Timeline</title>
+    <!-- Favicons: SVG primary with PNG fallbacks and webmanifest -->
+    <!-- Use relative paths so files resolve correctly when hosted under a repo subpath (e.g. /parallaxviews) -->
+    <link rel="icon" href="../assets/icons/favicon.svg?v=20260430d" type="image/svg+xml">
+    <link rel="icon" href="../assets/icons/minimal-facts-icon-32.png?v=20260430c" sizes="32x32" type="image/png">
+    <link rel="icon" href="../assets/icons/minimal-facts-icon-16.png?v=20260430c" sizes="16x16" type="image/png">
+    <link rel="apple-touch-icon" href="../assets/icons/minimal-facts-icon-180.png?v=20260430c" sizes="180x180">
+    <link rel="manifest" href="../site.webmanifest?v=20260430c">
+    <link rel="mask-icon" href="../assets/icons/safari-pinned-tab.svg?v=20260430d" color="#00796B">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#f5efe4" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#09131b" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5efe4" id="theme-color-meta">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <script>
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var requestedTheme = params.get('theme');
+            var isEmbedMode = params.get('embed') === '1' || window.parent !== window;
+            var systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            var storedTheme = null;
+            try {
+                storedTheme = localStorage.getItem('parallax-theme') || localStorage.getItem('pv_theme');
+            } catch (error) {
+            }
+            var initialTheme = requestedTheme === 'light' || requestedTheme === 'dark'
+                ? requestedTheme
+                : (storedTheme || systemTheme);
+            document.documentElement.style.backgroundColor = isEmbedMode
+                ? 'transparent'
+                : (initialTheme === 'dark' ? '#09131b' : '#f5efe4');
+            document.documentElement.style.colorScheme = initialTheme;
+        }());
+    </script>
+    <style>
+        :root {
+            --ui-font: "Avenir Next", "Segoe UI Variable", "Segoe UI", "Helvetica Neue", sans-serif;
+            --title-font: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+            --bg-light: #fffaf2;
+            --bg-light-base: #f5efe4;
+            --bg-dark: #09131b;
+            --bg-dark-base: #10212a;
+            --panel-light-translucent: rgba(255, 253, 248, 0.84);
+            --panel-dark-translucent: rgba(20, 40, 50, 0.82);
+            --panel-stroke-light: rgba(24, 33, 39, 0.12);
+            --panel-stroke-dark: rgba(237, 245, 243, 0.12);
+            --surface-muted-light: rgba(250, 243, 232, 0.94);
+            --surface-muted-dark: rgba(16, 38, 48, 0.92);
+            --surface-strong-light: rgba(255, 253, 248, 0.96);
+            --surface-strong-dark: rgba(20, 40, 50, 0.94);
+            --button-bg-light: rgba(250, 243, 232, 0.94);
+            --button-bg-hover-light: rgba(255, 253, 248, 0.98);
+            --button-border-light: rgba(24, 33, 39, 0.12);
+            --button-text-light: #182127;
+            --button-bg-dark: rgba(16, 38, 48, 0.92);
+            --button-bg-hover-dark: rgba(20, 50, 63, 0.96);
+            --button-border-dark: rgba(237, 245, 243, 0.12);
+            --button-text-dark: #edf5f3;
+            --soft-shadow-light: 0 16px 40px rgba(25, 40, 48, 0.08);
+            --soft-shadow-dark: 0 18px 42px rgba(0, 0, 0, 0.30);
+            --hover-border-light: rgba(13, 143, 134, 0.22);
+            --hover-border-dark: rgba(77, 211, 198, 0.22);
+            --header-tint-light: linear-gradient(180deg, rgba(255, 252, 247, 0.86), rgba(255, 252, 247, 0.56));
+            --header-tint-dark: linear-gradient(180deg, rgba(9, 19, 27, 0.48), rgba(9, 19, 27, 0.18));
+            --chart-bg-light:
+                radial-gradient(circle at 18% 14%, rgba(13, 143, 134, 0.12), transparent 24rem),
+                radial-gradient(circle at 84% 12%, rgba(194, 144, 44, 0.12), transparent 20rem),
+                linear-gradient(180deg, rgba(255, 250, 242, 0.98), rgba(244, 250, 248, 0.92));
+            --chart-bg-dark:
+                radial-gradient(circle at 16% 14%, rgba(77, 211, 198, 0.12), transparent 24rem),
+                radial-gradient(circle at 82% 12%, rgba(235, 191, 104, 0.10), transparent 20rem),
+                linear-gradient(180deg, rgba(16, 33, 41, 0.98), rgba(11, 24, 31, 0.92));
+            --tooltip-bg-light: rgba(255, 253, 248, 0.98);
+            --tooltip-border-light: rgba(24, 33, 39, 0.12);
+            --tooltip-shadow-light: 0 24px 80px rgba(25, 40, 48, 0.16);
+            --tooltip-bg-dark: rgba(20, 40, 50, 0.94);
+            --tooltip-border-dark: rgba(237, 245, 243, 0.12);
+            --tooltip-shadow-dark: 0 28px 90px rgba(0, 0, 0, 0.42);
+            --page-glow-light-1: rgba(13, 143, 134, 0.14);
+            --page-glow-light-2: rgba(194, 144, 44, 0.12);
+            --page-glow-dark-1: rgba(77, 211, 198, 0.14);
+            --page-glow-dark-2: rgba(235, 191, 104, 0.10);
+            --grid-line-light: rgba(24, 33, 39, 0.04);
+            --grid-line-dark: rgba(255, 255, 255, 0.03);
+            --text-light: #182127;
+            --text-secondary-light: #5b6870;
+            --text-tertiary-light: #6d7b83;
+            --text-dark: #edf5f3;
+            --text-secondary-dark: #b6c7c8;
+            --text-tertiary-dark: #8ea1a4;
+            --accent-light: #0d8f86;
+            --accent-dark: #4dd3c6;
+            --gold-light: #c2902c;
+            --gold-dark: #ebbf68;
+            --link-accent: #2d7c8c;
+            /* Theme-resolving aliases: read by JS via getComputedStyle(document.body),
+               reassigned below in body.dark-mode so a single lookup always matches the
+               active theme. */
+            --accent-nt: var(--accent-light);
+            --accent-other: var(--gold-light);
+            --grid-line: var(--grid-line-light);
+            --text-tertiary: var(--text-tertiary-light);
+            --text-secondary: var(--text-secondary-light);
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            min-height: 100%;
+            background-color: var(--bg-light-base);
+        }
+
+        html.embed-mode {
+            background: transparent;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100%;
+            min-height: 100dvh;
+            font: 400 16px/1.6 var(--ui-font);
+            background-color: var(--bg-light-base);
+            background:
+                radial-gradient(circle at top left, var(--page-glow-light-1), transparent 32rem),
+                radial-gradient(circle at 85% 15%, var(--page-glow-light-2), transparent 24rem),
+                linear-gradient(180deg, var(--bg-light-base), var(--bg-light));
+            color: var(--text-light);
+            letter-spacing: 0.01em;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(to right, var(--grid-line-light) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line-light) 1px, transparent 1px);
+            background-size: 72px 72px;
+            opacity: 0.24;
+            mix-blend-mode: soft-light;
+            z-index: 0;
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            background:
+                radial-gradient(circle at top left, var(--page-glow-dark-1), transparent 32rem),
+                radial-gradient(circle at 85% 15%, var(--page-glow-dark-2), transparent 24rem),
+                linear-gradient(180deg, var(--bg-dark), var(--bg-dark-base));
+            color: var(--text-dark);
+            --link-accent: #4dd3c6;
+            --accent-nt: var(--accent-dark);
+            --accent-other: var(--gold-dark);
+            --grid-line: var(--grid-line-dark);
+            --text-tertiary: var(--text-tertiary-dark);
+            --text-secondary: var(--text-secondary-dark);
+        }
+
+        body.dark-mode::before {
+            background-image:
+                linear-gradient(to right, var(--grid-line-dark) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line-dark) 1px, transparent 1px);
+        }
+
+        html.embed-mode body {
+            background: transparent;
+        }
+
+        html.embed-mode body::before {
+            display: none;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .skip-link {
+            position: fixed;
+            top: calc(var(--safe-top) + 8px);
+            left: 12px;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            clip-path: inset(50%);
+            white-space: nowrap;
+            border: 0;
+            background: var(--bg-light);
+            color: var(--link-accent);
+            text-decoration: none;
+            font-weight: 600;
+            z-index: 20000;
+        }
+
+        .skip-link:focus {
+            width: auto;
+            height: auto;
+            margin: 0;
+            padding: 10px 16px;
+            overflow: visible;
+            clip: auto;
+            clip-path: none;
+            border: 1px solid var(--link-accent);
+            border-radius: 999px;
+            outline: 3px solid var(--link-accent);
+            outline-offset: 2px;
+            box-shadow: var(--soft-shadow-light);
+        }
+
+        body.dark-mode .skip-link {
+            background: var(--surface-strong-dark);
+            color: var(--accent-dark);
+        }
+
+        body.dark-mode .skip-link:focus {
+            border-color: var(--accent-dark);
+            outline-color: var(--accent-dark);
+            box-shadow: var(--soft-shadow-dark);
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--link-accent);
+            outline-offset: 2px;
+        }
+
+        #topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 16px 24px 14px;
+            padding-left: calc(24px + var(--safe-left));
+            padding-right: calc(24px + var(--safe-right));
+            background:
+                radial-gradient(circle at 12% 0%, rgba(13, 143, 134, 0.16), transparent 18rem),
+                radial-gradient(circle at 88% 0%, rgba(194, 144, 44, 0.10), transparent 16rem),
+                var(--header-tint-light);
+            border-bottom: 1px solid var(--panel-stroke-light);
+            box-shadow: var(--soft-shadow-light);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        body.dark-mode #topbar {
+            background:
+                radial-gradient(circle at 12% 0%, rgba(77, 211, 198, 0.18), transparent 18rem),
+                radial-gradient(circle at 88% 0%, rgba(235, 191, 104, 0.10), transparent 16rem),
+                var(--header-tint-dark);
+            border-bottom: 1px solid var(--panel-stroke-dark);
+            box-shadow: var(--soft-shadow-dark);
+        }
+
+        html.embed-mode #topbar {
+            position: static;
+        }
+
+        #topbarTitle {
+            display: block;
+            min-width: 0;
+            margin: 0;
+            color: #182127;
+            font: 600 clamp(1.22rem, 1.02rem + 0.74vw, 1.56rem)/1.08 var(--title-font);
+            letter-spacing: 0.01em;
+        }
+
+        #topbarTitle::before {
+            content: "Manuscript Evidence";
+            display: block;
+            margin-bottom: 6px;
+            color: var(--accent-light);
+            font: 700 0.72rem/1 var(--ui-font);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        body.dark-mode #topbarTitle {
+            color: var(--text-dark);
+        }
+
+        body.dark-mode #topbarTitle::before {
+            color: var(--accent-dark);
+        }
+
+        #topbarActions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        #topbarActions #embedReturnBtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            min-width: 40px;
+            padding: 0;
+        }
+
+        #topbarActions #embedReturnBtn[hidden] {
+            display: none;
+        }
+
+        #topbarActions #embedReturnBtn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.9;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        #topbar button {
+            margin: 0;
+            min-height: 40px;
+            font: 650 12px/1.3 var(--ui-font);
+            background: var(--button-bg-light);
+            color: var(--button-text-light);
+            border: 1px solid var(--button-border-light);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 650;
+            cursor: pointer;
+            box-shadow: var(--soft-shadow-light);
+            transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+        }
+
+        #topbar button:hover,
+        #topbar button:focus-visible {
+            background: var(--button-bg-hover-light);
+            border-color: var(--hover-border-light);
+            transform: translateY(-1px);
+        }
+
+        body.dark-mode #topbar button {
+            background: var(--button-bg-dark);
+            color: var(--button-text-dark);
+            border-color: var(--button-border-dark);
+            box-shadow: var(--soft-shadow-dark);
+        }
+
+        body.dark-mode #topbar button:hover,
+        body.dark-mode #topbar button:focus-visible {
+            background: var(--button-bg-hover-dark);
+            border-color: var(--hover-border-dark);
+        }
+
+        #controlsToggle .controls-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+            transition: transform 160ms ease;
+            transform-origin: center;
+            height: 1em;
+        }
+
+        #controlsToggle[aria-expanded="true"] .controls-icon {
+            transform: rotate(180deg);
+        }
+
+        #controlsToggle .controls-icon svg {
+            width: 0.88em;
+            height: 0.88em;
+            display: inline-block;
+            vertical-align: middle;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        #controls {
+            display: none;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 14px;
+            width: 100%;
+            margin-top: 0;
+            padding: 14px 16px;
+            border: 1px solid var(--panel-stroke-light);
+            border-radius: 22px;
+            background: var(--panel-light-translucent);
+            box-shadow: var(--soft-shadow-light);
+            backdrop-filter: blur(14px) saturate(120%);
+            -webkit-backdrop-filter: blur(14px) saturate(120%);
+        }
+
+        .controls-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        #controls.open {
+            display: flex;
+            margin-top: 12px;
+        }
+
+        body.dark-mode #controls {
+            border-color: var(--panel-stroke-dark);
+            background: var(--panel-dark-translucent);
+            box-shadow: var(--soft-shadow-dark);
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: var(--surface-muted-light);
+            border: 1px solid var(--panel-stroke-light);
+            color: var(--text-secondary-light);
+            font-size: 12px;
+            font-weight: 650;
+            letter-spacing: 0.01em;
+        }
+
+        body.dark-mode .pill {
+            background: var(--surface-muted-dark);
+            border-color: var(--panel-stroke-dark);
+            color: var(--text-secondary-dark);
+        }
+
+        #controls label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 40px;
+            padding: 8px 14px;
+            border: 1px solid var(--panel-stroke-light);
+            border-radius: 999px;
+            background: var(--surface-muted-light);
+            color: var(--text-secondary-light);
+            font-size: 12px;
+            font-weight: 650;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+        }
+
+        body.dark-mode #controls label {
+            border-color: var(--panel-stroke-dark);
+            background: var(--surface-muted-dark);
+            color: var(--text-secondary-dark);
+        }
+
+        #controls input[type="checkbox"] {
+            accent-color: var(--accent-light);
+            width: 16px;
+            height: 16px;
+            margin: 0;
+        }
+
+        body.dark-mode #controls input[type="checkbox"] {
+            accent-color: var(--accent-dark);
+        }
+
+        .control-divider {
+            flex: 1;
+            min-width: 4px;
+        }
+
+        /* Per-document visibility checklist: grouped by category, each group header
+           doubling as a select-all/none toggle (tri-state via .indeterminate). Uses
+           #controls .doc-filter-* selectors so these compact rows win over the
+           generic #controls label pill styling above. */
+        .doc-filter {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 240px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .doc-filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        #controls .doc-filter-group-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 0;
+            padding: 0;
+            border: 0;
+            background: none;
+            font: 700 12px/1.3 var(--ui-font);
+            letter-spacing: 0.02em;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        body.dark-mode #controls .doc-filter-group-label {
+            color: var(--text-dark);
+        }
+
+        .doc-filter-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 5px 14px;
+            padding-left: 24px;
+        }
+
+        #controls .doc-filter-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 0;
+            padding: 0;
+            border: 0;
+            background: none;
+            font: 500 12px/1.4 var(--ui-font);
+            color: var(--text-secondary-light);
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        body.dark-mode #controls .doc-filter-item {
+            color: var(--text-secondary-dark);
+        }
+
+        .doc-filter-swatch {
+            width: 9px;
+            height: 9px;
+            border-radius: 999px;
+            flex: none;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+        }
+
+        .chart-wrap {
+            width: min(1800px, calc(100% - 2rem));
+            margin: 1.5rem auto 2.5rem;
+            padding: 0.55rem;
+            border-radius: 1.35rem;
+            background: linear-gradient(180deg, rgba(13, 143, 134, 0.09), rgba(194, 144, 44, 0.06));
+            border: 1px solid var(--panel-stroke-light);
+            box-shadow: var(--soft-shadow-light);
+        }
+
+        body.dark-mode .chart-wrap {
+            background: linear-gradient(180deg, rgba(77, 211, 198, 0.08), rgba(235, 191, 104, 0.05));
+            border-color: var(--panel-stroke-dark);
+            box-shadow: var(--soft-shadow-dark);
+        }
+
+        html.embed-mode .chart-wrap {
+            width: 100%;
+            margin: 0;
+        }
+
+        #chartInner {
+            border-radius: 1rem;
+            overflow: hidden;
+            background: var(--chart-bg-light);
+        }
+
+        body.dark-mode #chartInner {
+            background: var(--chart-bg-dark);
+        }
+
+        #chart {
+            display: block;
+            width: 100%;
+        }
+
+        .axis path,
+        .axis line {
+            stroke: var(--panel-stroke-light);
+            shape-rendering: crispEdges;
+        }
+
+        body.dark-mode .axis path,
+        body.dark-mode .axis line {
+            stroke: var(--panel-stroke-dark);
+        }
+
+        .axis text {
+            fill: var(--text-secondary-light);
+            font: 500 11px/1.3 var(--ui-font);
+        }
+
+        body.dark-mode .axis text {
+            fill: var(--text-secondary-dark);
+        }
+
+        .lane-label {
+            font: 650 12.5px/1.35 var(--ui-font);
+            letter-spacing: 0.01em;
+            fill: var(--text-secondary-light);
+            transition: fill 0.15s ease;
+        }
+
+        body.dark-mode .lane-label {
+            fill: var(--text-secondary-dark);
+        }
+
+        .lane-label.row-label-active {
+            font-weight: 750;
+            fill: var(--text-light);
+        }
+
+        body.dark-mode .lane-label.row-label-active {
+            fill: var(--text-dark);
+        }
+
+        .lane-label-work {
+            font-style: italic;
+        }
+
+        .row-highlight {
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .section-band {
+            pointer-events: none;
+        }
+
+        .section-divider {
+            stroke: var(--panel-stroke-light);
+            stroke-width: 1;
+        }
+
+        body.dark-mode .section-divider {
+            stroke: var(--panel-stroke-dark);
+        }
+
+        .section-heading {
+            font: 750 10.5px/1 var(--ui-font);
+            letter-spacing: 0.11em;
+            text-transform: uppercase;
+        }
+
+        /* Compact chart title: same sans-serif/uppercase/letter-spaced family as the
+           section headings below it (so title + headings read as one typographic
+           system), just larger and in a neutral (non-accent) color so it still reads
+           as the top-level label rather than a third section. */
+        .chart-title {
+            font: 700 12.5px/1 var(--ui-font);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            fill: var(--text-secondary);
+        }
+
+        /* Manuscript-count column heading: same small-caps family as the section
+           headings, but smaller and more muted — subordinate to both the chart title
+           and the section headings, since it only labels a secondary column. */
+        .mss-column-heading {
+            font: 700 9px/1 var(--ui-font);
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            fill: var(--text-tertiary);
+            cursor: help;
+        }
+
+        @media (max-width: 720px) {
+            .mss-column-heading,
+            .mss-scale-ref-tick {
+                /* Hidden visually at narrow widths (the label column has less room
+                   to spare) but kept in the DOM/accessibility tree — its aria-label
+                   and tooltip are unaffected. */
+                opacity: 0;
+            }
+        }
+
+        /* Compact 0 / 1,000 / 2,000 reference for the fixed linear scale — smaller
+           and even more muted than the column heading, since it's a secondary aid,
+           not a real axis (exact values live in each row's tooltip). */
+        .mss-scale-ref-tick {
+            font: 500 7px/1 var(--ui-font);
+            fill: var(--text-tertiary);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Vertical guides tying the 1,000/2,000 reference to the actual bars several
+           rows down — subtle enough not to compete with the section tint or the bars
+           themselves, but present at every row so length can be checked by eye. */
+        .mss-scale-guide {
+            stroke: var(--text-tertiary);
+            stroke-width: 1;
+            stroke-dasharray: 1, 3;
+            opacity: 0.22;
+            pointer-events: none;
+        }
+
+        @media (max-width: 720px) {
+            .mss-scale-guide {
+                display: none;
+            }
+        }
+
+        /* Manuscript-count micro-bars: a thin, reduced-opacity underline beneath
+           each row's label. Never brighter/thicker than the manuscript-date marks
+           in the main chart — opacity stays below the marks' own emphasized state
+           even when this row is active. */
+        .mss-bar {
+            cursor: pointer;
+            opacity: 0.55;
+            transition: opacity 0.15s ease, filter 0.15s ease;
+        }
+
+        .mss-bar.row-emphasize {
+            opacity: 0.85;
+            filter: brightness(1.1);
+        }
+
+        .mss-bar.row-dim {
+            opacity: 0.2;
+        }
+
+        /* Endpoint marker at the bar's true linear tip — keeps very small values
+           (e.g. a count of 1) discoverable even though their bar is a near-invisible
+           sliver under the fixed linear scale. A small stroke separates it from the
+           section background the same way the manuscript-date diamonds are outlined. */
+        .mss-bar-endpoint {
+            cursor: pointer;
+            stroke: var(--surface-strong-dark);
+            stroke-width: 1;
+            opacity: 0.65;
+            transition: opacity 0.15s ease, filter 0.15s ease;
+        }
+
+        body:not(.dark-mode) .mss-bar-endpoint {
+            stroke: var(--surface-strong-light);
+        }
+
+        .mss-bar-endpoint.row-emphasize {
+            opacity: 1;
+            filter: brightness(1.15);
+        }
+
+        .mss-bar-endpoint.row-dim {
+            opacity: 0.25;
+        }
+
+        /* "Not securely totaled" / separate-traditions placeholder: a short dashed
+           neutral (non-category-colored) line, deliberately not shaped like a small
+           bar, so it can't be misread as a very small manuscript count. */
+        .mss-bar-unavailable {
+            cursor: pointer;
+            stroke: var(--text-tertiary);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 2.5, 3.5;
+            opacity: 0.5;
+            transition: opacity 0.15s ease;
+        }
+
+        .mss-bar-unavailable.row-emphasize {
+            opacity: 0.8;
+        }
+
+        .mss-bar-unavailable.row-dim {
+            opacity: 0.2;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .mss-bar,
+            .mss-bar-endpoint {
+                transition: none;
+            }
+        }
+
+        /* Estimated composition range: a lightly-tinted, thin-outlined band with
+           nearly square corners — deliberately not a solid block or a pill, so it
+           reads as an "estimate window" rather than a hard data mark. */
+        .comp-bar {
+            fill-opacity: 0.16;
+            stroke-width: 1.25;
+            stroke-opacity: 0.8;
+            transition: fill-opacity 0.2s ease, stroke-opacity 0.2s ease, filter 0.2s ease;
+            vector-effect: non-scaling-stroke;
+        }
+
+        .comp-bar:hover,
+        .comp-bar.row-emphasize {
+            fill-opacity: 0.32;
+            stroke-opacity: 1;
+            filter: brightness(1.08);
+        }
+
+        .comp-bar.row-dim {
+            fill-opacity: 0.06;
+            stroke-opacity: 0.28;
+        }
+
+        /* Manuscript date marks: a single diamond for an effectively point-like
+           date, or a thin line with a diamond at each end for a meaningful range —
+           intentionally not circles/caps, so it doesn't read as an error bar. The
+           line and its two diamonds are separate elements (see witnessMarkersLayer
+           above), so hover/dim/emphasize state is driven entirely by setActiveRow
+           adding matching classes to all three — not by CSS :hover/descendant
+           selectors, which couldn't span two different parent layers. */
+        .witness-marker,
+        .witness-range-point {
+            cursor: pointer;
+            opacity: 0.9;
+            stroke: var(--surface-strong-dark);
+            stroke-width: 1;
+            transition: opacity 0.15s ease, filter 0.15s ease;
+        }
+
+        body:not(.dark-mode) .witness-marker,
+        body:not(.dark-mode) .witness-range-point {
+            stroke: var(--surface-strong-light);
+        }
+
+        .witness-marker.row-emphasize,
+        .witness-range-point.row-emphasize {
+            opacity: 1;
+            filter: brightness(1.2);
+        }
+
+        .witness-marker.row-dim,
+        .witness-range-point.row-dim {
+            opacity: 0.22;
+        }
+
+        .witness-range-line {
+            cursor: pointer;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            opacity: 0.8;
+            transition: opacity 0.15s ease, stroke-width 0.15s ease, filter 0.15s ease;
+            vector-effect: non-scaling-stroke;
+        }
+
+        .witness-range-line.row-emphasize {
+            opacity: 1;
+            stroke-width: 3;
+            filter: brightness(1.15);
+        }
+
+        .witness-range-line.row-dim {
+            opacity: 0.16;
+        }
+
+        .midline line {
+            stroke: var(--grid-line-light);
+        }
+
+        body.dark-mode .midline line {
+            stroke: var(--grid-line-dark);
+        }
+
+        .crucifixion-marker {
+            pointer-events: none;
+        }
+
+        .crucifixion-marker-arm {
+            stroke: var(--text-light);
+            stroke-width: 2;
+            stroke-linecap: round;
+            vector-effect: non-scaling-stroke;
+        }
+
+        body.dark-mode .crucifixion-marker-arm {
+            stroke: var(--text-dark);
+        }
+
+        .tooltip {
+            position: fixed;
+            pointer-events: none;
+            background: var(--tooltip-bg-light);
+            border: 1px solid var(--tooltip-border-light);
+            padding: 12px 14px;
+            border-radius: 14px;
+            box-shadow: var(--tooltip-shadow-light);
+            max-width: min(360px, calc(100vw - 24px));
+            font: 500 12px/1.55 var(--ui-font);
+            color: var(--text-light);
+            backdrop-filter: blur(14px) saturate(120%);
+            -webkit-backdrop-filter: blur(14px) saturate(120%);
+            display: none;
+            z-index: 1000;
+        }
+
+        body.dark-mode .tooltip {
+            background: var(--tooltip-bg-dark);
+            border-color: var(--tooltip-border-dark);
+            color: var(--text-dark);
+            box-shadow: var(--tooltip-shadow-dark);
+        }
+
+        .tooltip .tt-eyebrow {
+            margin-bottom: 4px;
+            font: 700 10px/1 var(--ui-font);
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+        }
+
+        .tooltip .tt-title {
+            font: 700 14px/1.3 var(--ui-font);
+        }
+
+        .tooltip .tt-title i {
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        .tooltip .tt-original-title {
+            margin-top: 1px;
+            font: 500 11px/1.35 var(--ui-font);
+            font-style: italic;
+            color: var(--text-tertiary);
+        }
+
+        .tooltip .tt-subtitle {
+            margin-top: 2px;
+            font: 500 11.5px/1.4 var(--ui-font);
+            color: var(--text-secondary);
+        }
+
+        .tooltip .tt-divider {
+            height: 1px;
+            margin: 9px 0;
+            background: currentColor;
+            opacity: 0.14;
+        }
+
+        .tooltip .tt-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 2.5px 0;
+            font-size: 12px;
+        }
+
+        .tooltip .tt-row-label {
+            font-weight: 650;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+        }
+
+        .tooltip .tt-row-value {
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .tooltip .tt-note {
+            margin-top: 7px;
+            font: 500 11.5px/1.55 var(--ui-font);
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .tooltip .tt-pin-hint {
+            margin-top: 9px;
+            font: 600 10.5px/1.3 var(--ui-font);
+            color: var(--text-tertiary);
+        }
+
+        @media (max-width: 720px) {
+            #topbar {
+                padding: 12px 16px 12px;
+                padding-left: calc(16px + var(--safe-left));
+                padding-right: calc(16px + var(--safe-right));
+            }
+
+            #topbarTitle {
+                font-size: clamp(1.02rem, 0.9rem + 1vw, 1.24rem);
+            }
+
+            #topbarTitle::before {
+                font-size: 0.62rem;
+            }
+
+            #topbar button {
+                padding: 7px 11px;
+                font-size: 11px;
+                min-height: 34px;
+            }
+
+            .chart-wrap {
+                width: calc(100% - 1rem);
+                margin: 1rem auto 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="dark-mode">
+    <a href="#chart-wrap" class="skip-link">Skip to timeline visualization</a>
+
+    <header>
+        <div id="topbar">
+            <strong id="topbarTitle">Manuscript Timeline</strong>
+            <div id="topbarActions">
+                <button id="embedReturnBtn" type="button" hidden aria-label="Back to overview"
+                    title="Back to overview">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M3.75 10.5 12 4l8.25 6.5"></path>
+                        <path d="M6.5 9.75V20h11V9.75"></path>
+                        <path d="M10 20v-5.25h4V20"></path>
+                    </svg>
+                </button>
+                <button id="controlsToggle" type="button" aria-expanded="false" aria-controls="controls">
+                    Controls
+                    <span class="controls-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                            <path d="M6 9l6 6 6-6"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+            <div id="controls">
+                <div class="controls-row">
+                    <button id="resetZoom" type="button">Reset Zoom</button>
+                    <div class="control-divider"></div>
+                    <label id="darkModeLabel" for="darkModeToggle"><input type="checkbox" id="darkModeToggle"> Dark
+                        mode</label>
+                </div>
+                <div id="docFilter" class="doc-filter" role="group" aria-label="Documents shown on the timeline"></div>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" aria-label="Manuscript timeline visualization">
+        <div class="chart-wrap" id="chart-wrap">
+            <div id="chartInner">
+                <svg id="chart"></svg>
+            </div>
+        </div>
+    </main>
+
+    <div class="tooltip" id="tooltip" role="status" aria-live="polite"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const isInlineEmbed = params.get('embed') === '1';
+        const isEmbedMode = isInlineEmbed || window.parent !== window;
+        const requestedTheme = params.get('theme');
+        const themeMessageType = 'pv-theme';
+        const embedStateMessageType = 'pv-embed-state';
+        const sharedThemeKey = 'parallax-theme';
+        const legacyThemeKey = 'pv_theme';
+        const embedReturnBtn = document.getElementById('embedReturnBtn');
+        const overviewHref = '../index.html';
+
+        if (isEmbedMode) {
+            document.documentElement.classList.add('embed-mode');
+        }
+
+        function readStoredTheme() {
+            try {
+                return localStorage.getItem(sharedThemeKey) || localStorage.getItem(legacyThemeKey);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function storeTheme(theme) {
+            try {
+                localStorage.setItem(sharedThemeKey, theme);
+                localStorage.setItem(legacyThemeKey, theme);
+            } catch (error) { /* non-fatal */ }
+        }
+
+        function getInitialTheme() {
+            if (requestedTheme === 'light' || requestedTheme === 'dark') return requestedTheme;
+            const stored = readStoredTheme();
+            if (stored === 'light' || stored === 'dark') return stored;
+            return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+        }
+
+        let rerenderChart = null;
+
+        function applyTheme(theme) {
+            if (theme !== 'light' && theme !== 'dark') return;
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const themeColor = theme === 'dark' ? '#09131b' : '#f5efe4';
+            document.body.classList.toggle('dark-mode', theme === 'dark');
+            if (!isEmbedMode) {
+                document.documentElement.style.backgroundColor = themeColor;
+                document.body.style.backgroundColor = themeColor;
+            }
+            document.documentElement.style.colorScheme = theme;
+            if (darkModeToggle) {
+                darkModeToggle.checked = theme === 'dark';
+            }
+            Array.prototype.forEach.call(document.querySelectorAll('meta[name="theme-color"]'), function (metaTag) {
+                metaTag.setAttribute('content', themeColor);
+            });
+            if (typeof rerenderChart === 'function') {
+                rerenderChart();
+            }
+        }
+
+        function syncEmbedReturnButton() {
+            if (!embedReturnBtn) return;
+            embedReturnBtn.hidden = isEmbedMode;
+        }
+
+        if (embedReturnBtn) {
+            embedReturnBtn.addEventListener('click', function () {
+                window.location.href = overviewHref;
+            });
+            syncEmbedReturnButton();
+        }
+
+        applyTheme(getInitialTheme());
+
+        // Controls toggle (collapsed panel like the other embedded views)
+        (function () {
+            const toggle = document.getElementById('controlsToggle');
+            const controls = document.getElementById('controls');
+            if (!toggle || !controls) return;
+            toggle.addEventListener('click', function () {
+                const open = !controls.classList.contains('open');
+                controls.classList.toggle('open', open);
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            });
+        }());
+
+        // Dark mode toggle inside the controls panel
+        (function () {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            if (!darkModeToggle) return;
+            darkModeToggle.addEventListener('change', function () {
+                const nextTheme = darkModeToggle.checked ? 'dark' : 'light';
+                applyTheme(nextTheme);
+                if (!isEmbedMode) {
+                    storeTheme(nextTheme);
+                }
+            });
+        }());
+
+        window.addEventListener('message', (event) => {
+            if (!event.data) return;
+            if (window.location.origin !== 'null' && event.origin !== window.location.origin) return;
+            if (event.data.type === themeMessageType) {
+                const incomingTheme = event.data.theme;
+                if (incomingTheme === 'light' || incomingTheme === 'dark') {
+                    applyTheme(incomingTheme);
+                }
+                return;
+            }
+            if (event.data.type === embedStateMessageType) {
+                setTimeout(() => window.dispatchEvent(new Event('resize')), 30);
+                setTimeout(() => window.dispatchEvent(new Event('resize')), 180);
+            }
+        });
+
+        // Helper to get CSS variable value
+        function getCSSVar(name) {
+            return getComputedStyle(document.body).getPropertyValue(name).trim();
+        }
+
+        (async function () {
+            /**
+             * Data model:
+             * - years use integers; BCE is negative (e.g., -50 = 50 BCE), CE positive (e.g., 100 = 100 CE)
+             * - each work has a composition range (optional) and witness items (optional)
+             */
+            const dataset = await d3.json("data/manuscript_data.json");
+
+            // ---------- Chart setup ----------
+            const svg = d3.select("#chart");
+            const tooltip = d3.select("#tooltip");
+            const chartWrapEl = document.getElementById('chart-wrap');
+            const docFilterEl = document.getElementById('docFilter');
+
+            // top has a little extra room (30 -> 38) to hold the chart title in the
+            // space that used to sit empty above the first section heading.
+            // left is sized to the widest row label ("Pliny the Elder — Natural
+            // History", ~172px including the tick/padding offset) plus a little
+            // breathing room — not a fixed guess, so it no longer leaves ~90px of
+            // empty gutter to the left of every label.
+            const margin = { top: 38, right: 30, bottom: 50, left: 190 };
+            let width = 800;
+            let height = 0;
+
+            const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // A compact chart title sitting in the margin above the plot area, centered
+            // over the full chart width. Created once here (text/y never change); its
+            // x is recomputed in render() since it depends on the responsive `width`.
+            const chartTitle = g.append("text")
+                .attr("class", "chart-title")
+                .attr("text-anchor", "middle")
+                .attr("y", -16)
+                .text("Autograph Ranges vs. Surviving Manuscript Dates");
+
+            // Section bands + the row hover wash sit behind everything else (axis
+            // labels, bars, marks) and span the full chart width, including the
+            // label gutter, so they're appended before any other child of `g`.
+            const sectionBandsLayer = g.append("g").attr("class", "section-bands");
+            const rowHighlightLayer = g.append("rect")
+                .attr("class", "row-highlight")
+                .attr("x", -margin.left)
+                .style("display", "none");
+
+            // Manuscript-count micro-bars: a secondary, subordinate dimension (pre-1500
+            // manuscript abundance) drawn as a thin underline beneath each row's label,
+            // confined to the fixed label gutter so it never competes with or resizes
+            // the primary (zoomable) timeline. leftInset/maxWidth are chosen to clear
+            // the widest row label's descent and stay well short of the timeline
+            // boundary at x=0 (margin.left is 190, so this leaves a 46px gap to x=0).
+            // Scale is a fixed linear 0–2,000, so maxWidth corresponds to exactly 2,000
+            // witnesses — there is no per-dataset max/normalization.
+            const MSS_BAR = {
+                leftInset: 14,
+                maxWidth: 130,
+                height: 4,
+                endpointRadius: 3.5,
+                bottomInset: 7,
+                unavailableWidth: 20
+            };
+            const MANUSCRIPT_SCALE_MAX = 2000;
+            // Faint vertical guides at the 1,000 and 2,000 marks, drawn straight down
+            // through the bar column across every row. Without these, the "0 / 1,000 /
+            // 2,000" reference sits in the header, several rows above and visually
+            // disconnected from the bars it's describing — these make "does this bar
+            // reach 2,000?" answerable at a glance instead of by eye-measuring against
+            // small text far away. Redrawn in render() since full height depends on how
+            // many rows are currently visible.
+            const mssScaleGuideLayer = g.append("g").attr("class", "mss-scale-guide-layer");
+            const mssBarsLayer = g.append("g").attr("class", "mss-bars");
+            const MSS_COLUMN_TOOLTIP_TEXT = "Bar length represents the estimated number of surviving pre-1500 original-language manuscript witnesses on a shared linear scale from 0 to 2,000.";
+            const mssColumnHeading = g.append("text")
+                .attr("class", "mss-column-heading")
+                .attr("x", -margin.left + MSS_BAR.leftInset)
+                .attr("y", -20)
+                .attr("tabindex", 0)
+                .attr("aria-label", `Pre-1500 manuscript count column. ${MSS_COLUMN_TOOLTIP_TEXT}`)
+                .text("PRE-1500 MSS");
+
+            // Compact, visually secondary reference for the fixed 0–2,000 linear scale
+            // (not a full numeric axis — just enough context to read bar length without
+            // needing the tooltip). Purely static: position depends only on the fixed
+            // MSS_BAR constants, never on per-render data.
+            const mssScaleRefLayer = g.append("g").attr("class", "mss-scale-ref");
+            const mssBarLeftXStatic = -margin.left + MSS_BAR.leftInset;
+            [
+                { value: 0, x: mssBarLeftXStatic, anchor: "start" },
+                { value: 1000, x: mssBarLeftXStatic + MSS_BAR.maxWidth / 2, anchor: "middle" },
+                { value: 2000, x: mssBarLeftXStatic + MSS_BAR.maxWidth, anchor: "end" }
+            ].forEach(tick => {
+                mssScaleRefLayer.append("text")
+                    .attr("class", "mss-scale-ref-tick")
+                    .attr("x", tick.x)
+                    .attr("y", -8)
+                    .attr("text-anchor", tick.anchor)
+                    .text(tick.value.toLocaleString());
+            });
+
+            function showMssColumnTip(target) {
+                showTipNear(target, `
+                    <div class="tt-eyebrow">Pre-1500 MSS</div>
+                    <div class="tt-note">${MSS_COLUMN_TOOLTIP_TEXT} Exact figures and caveats are in each row's tooltip.</div>
+                `);
+            }
+            mssColumnHeading
+                .on("mousemove", (evt) => showMssColumnTip(evt.currentTarget))
+                .on("mouseleave", hideTip)
+                .on("focus", (evt) => showMssColumnTip(evt.currentTarget))
+                .on("blur", hideTip);
+
+            // Shared category accent color (teal for NT, gold for everything else),
+            // used by the composition bars, witness marks, and the mss micro-bars.
+            function accentForGroup(group) {
+                return group === "NT" ? getCSSVar('--accent-nt') : getCSSVar('--accent-other');
+            }
+
+            const xAxisG = g.append("g").attr("class", "axis").attr("transform", `translate(0,${height})`);
+            const yAxisG = g.append("g").attr("class", "axis");
+
+            // Clip the plot content to the plot area so panning/zooming can't bleed
+            // leftward under the y-axis labels (or past the other edges).
+            const clipId = "timelinePlotClip";
+            const clipRect = svg.append("defs")
+                .append("clipPath")
+                .attr("id", clipId)
+                .append("rect")
+                .attr("x", 0).attr("y", 0);
+            const plotClipGroup = g.append("g").attr("clip-path", `url(#${clipId})`);
+
+            // The midline is a direct (unscaled) child of the clip group, not the zoom
+            // layer below, so its dash pattern isn't horizontally stretched when zoomed.
+            const midlineLayer = plotClipGroup.append("g").attr("class", "midline");
+
+            // Create a zoom layer for all zoomable content (bars + witness range lines)
+            const zoomLayer = plotClipGroup.append("g").attr("class", "zoom-layer");
+            const layers = {
+                comp: zoomLayer.append("g").attr("class", "composition"),
+                witnesses: zoomLayer.append("g").attr("class", "witnesses"),
+                midline: midlineLayer
+            };
+
+            // Diamond witness markers are a direct (unscaled) child of the clip group,
+            // like the midline and crucifixion marker, rather than living inside
+            // zoomLayer: zoomLayer's horizontal-only scale(k,1) transform is correct
+            // for a rect/line whose *width* legitimately encodes a date span, but it
+            // would stretch a diamond's fixed geometry into a rhombus. Markers are
+            // repositioned with the live xZoomed on every render() and zoom tick
+            // instead, exactly like the crucifixion cross.
+            const witnessMarkersLayer = plotClipGroup.append("g").attr("class", "witness-markers");
+
+            // Small reference cross at AD 30 (a commonly cited crucifixion date),
+            // shown at the row's vertical center while hovering an NT document, so its
+            // composition/witness dates can be read directly against that fixed point.
+            const CRUCIFIXION_YEAR = 30;
+            const crucifixionMarkerLayer = plotClipGroup.append("g")
+                .attr("class", "crucifixion-marker")
+                .style("display", "none");
+            crucifixionMarkerLayer.append("line").attr("class", "crucifixion-marker-arm crucifixion-marker-v");
+            crucifixionMarkerLayer.append("line").attr("class", "crucifixion-marker-arm crucifixion-marker-h");
+            let activeCrucifixionRow = null;
+
+            // Zoom state
+            let currentTransform = d3.zoomIdentity;
+            let xScale, yScale, xZoomed;
+            let witnessRows = [];
+            // Manuscript marks: a single diamond for a witness with an effectively
+            // point-like date, or a thin connecting line with a diamond at each end
+            // when the date is a meaningful range — deliberately not circles/caps, so
+            // it doesn't read as a statistical error bar.
+            const DIAMOND_RADIUS = 5;
+            function diamondPath(cx, cy, r) {
+                return `M ${cx} ${cy - r} L ${cx + r} ${cy} L ${cx} ${cy + r} L ${cx - r} ${cy} Z`;
+            }
+            // Vertical dodge: witnesses within the same lane whose rendered x-extents
+            // are within DODGE_BUFFER_PX of each other are stacked DODGE_SPACING_PX
+            // apart instead of drawing on top of one another.
+            const DODGE_BUFFER_PX = 6;
+            // Must clear the marker/diamond footprint (half-height on each side of two
+            // adjacent rows) or neighboring rows still visually touch.
+            const DODGE_SPACING_PX = 15;
+
+            // Setup zoom behavior
+            const zoom = d3.zoom()
+                .scaleExtent([0.5, 20])
+                .on("zoom", (event) => {
+                    currentTransform = event.transform;
+                    // Apply transform to zoom layer (x-axis only)
+                    zoomLayer.attr("transform", `translate(${event.transform.x},0) scale(${event.transform.k},1)`);
+                    updateAxis();
+                });
+
+            // Apply zoom to a dedicated overlay rect, not the whole SVG
+            const zoomRect = svg.insert("rect", ":first-child")
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .style("fill", "none")
+                .style("pointer-events", "all")
+                .call(zoom);
+
+            // Reset zoom button
+            document.getElementById('resetZoom').addEventListener('click', () => {
+                zoomRect.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+            });
+
+            // Helper to get numeric year from date object (handles BCE as negative, CE as positive)
+            function getStart(dateObj) {
+                if (dateObj.startBCE !== undefined) return -dateObj.startBCE;
+                return dateObj.startCE;
+            }
+            function getEnd(dateObj) {
+                if (dateObj.endBCE !== undefined) return -dateObj.endBCE;
+                return dateObj.endCE;
+            }
+
+            function laneCenterY(d) {
+                return yScale(d.workId) + yScale.bandwidth() / 2;
+            }
+
+            // Greedily stack witnesses that collide (or nearly collide) horizontally
+            // within the same lane into separate vertical rows, centered on the lane's
+            // midline. Uses the live xZoomed, so it's re-run on every zoom tick: items
+            // that separate once zoomed in re-collapse back toward the centerline.
+            function computeDodgeOffsets(rows) {
+                const offsets = new Map();
+                const byWork = d3.group(rows, d => d.workId);
+                byWork.forEach((items) => {
+                    const sorted = items.slice().sort((a, b) => xZoomed(a._start) - xZoomed(b._start));
+                    const rowEnds = []; // rightmost occupied x (px) per dodge row
+                    const rowOf = new Map();
+                    sorted.forEach(d => {
+                        const x0 = xZoomed(d._start);
+                        const x1 = d._hasRange ? xZoomed(d._end) : x0;
+                        let row = 0;
+                        while (row < rowEnds.length && x0 < rowEnds[row] + DODGE_BUFFER_PX) row++;
+                        rowEnds[row] = Math.max(x1, x0);
+                        rowOf.set(d, row);
+                    });
+                    const rowCount = rowEnds.length;
+                    sorted.forEach(d => {
+                        offsets.set(d, (rowOf.get(d) - (rowCount - 1) / 2) * DODGE_SPACING_PX);
+                    });
+                });
+                return offsets;
+            }
+
+            // x domain: compute from all composition + witness dates
+            function computeXDomain(works) {
+                const years = [];
+                for (const w of works) {
+                    if (w.composition) years.push(getStart(w.composition), getEnd(w.composition));
+                    for (const ms of (w.witnesses ?? [])) {
+                        const start = getStart(ms.date);
+                        const end = getEnd(ms.date) ?? start;
+                        years.push(start, end);
+                    }
+                }
+                const min = d3.min(years), max = d3.max(years);
+                // pad a bit
+                return [Math.floor(min - 50), Math.ceil(max + 50)];
+            }
+
+            // Format years into BCE/CE labels
+            function fmtYear(y) {
+                if (y < 0) return `${Math.abs(y)} BCE`;
+                return `${y} CE`;
+            }
+
+            // Gap between the autograph (composition range) and a manuscript witness
+            // (date range), expressed honestly as a min–max span since both ends are
+            // themselves ranges: the closest-possible reading (latest composition
+            // estimate to earliest witness estimate) through the furthest-possible
+            // reading (earliest composition estimate to latest witness estimate).
+            function formatGap(compStart, compEnd, witnessStart, witnessEnd) {
+                if (compStart == null || compEnd == null || witnessStart == null) return null;
+                const wEnd = witnessEnd == null ? witnessStart : witnessEnd;
+                const minGap = Math.max(0, witnessStart - compEnd);
+                const maxGap = Math.max(0, wEnd - compStart);
+                if (minGap === maxGap) return `~${minGap.toLocaleString()} years`;
+                return `~${minGap.toLocaleString()}–${maxGap.toLocaleString()} years`;
+            }
+
+            // Headline gap for a work's composition tooltip: whichever witness sits
+            // closest to the autograph, reported as "earliest surviving copy."
+            // The witness with the earliest possible date for a given work — shared
+            // by the "Earliest surviving copy" tooltip line and the composition bar's
+            // hover bracket, so both always point at the same manuscript.
+            function findEarliestWitness(w) {
+                if (!w.witnesses || !w.witnesses.length) return null;
+                let earliest = null;
+                let earliestStart = Infinity;
+                for (const ms of w.witnesses) {
+                    const s = getStart(ms.date);
+                    if (s < earliestStart) {
+                        earliestStart = s;
+                        earliest = ms;
+                    }
+                }
+                if (!earliest) return null;
+                const start = getStart(earliest.date);
+                const end = getEnd(earliest.date) ?? start;
+                return { ms: earliest, start, end };
+            }
+
+            function earliestWitnessSummary(w) {
+                if (!w.composition) return null;
+                const earliest = findEarliestWitness(w);
+                if (!earliest) return null;
+                const compStart = getStart(w.composition);
+                const compEnd = getEnd(w.composition);
+                const gap = formatGap(compStart, compEnd, earliest.start, earliest.end);
+                const dateRange = earliest.start === earliest.end
+                    ? fmtYear(earliest.start)
+                    : `${fmtYear(earliest.start)}–${fmtYear(earliest.end)}`;
+                return gap ? { gap, label: earliest.ms.label, dateRange } : null;
+            }
+
+            // Prettify hyphenated witness-type slugs for tooltip display only (e.g.
+            // "papyrus-fragment" -> "Papyrus Fragment"); the underlying data is untouched.
+            function formatWitnessType(type) {
+                if (!type) return "Manuscript Witness";
+                return type.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+            }
+
+            // ---- Manuscript-count micro-bars: calculation (kept separate from
+            // rendering below so the math can be exercised/tested on its own). ----
+
+            // The single number a manuscriptCount record contributes to the shared
+            // scale, or null when it shouldn't produce a quantitative bar at all.
+            // Ranges use their midpoint for bar length only — the full min/max is
+            // preserved for the tooltip. "unavailable" and "separateTraditions" are
+            // deliberately never a number (never 0) since there's no defensible count.
+            function manuscriptDisplayValue(mc) {
+                if (!mc) return null;
+                if (mc.qualifier === "unavailable" || mc.qualifier === "separateTraditions") return null;
+                if (mc.qualifier === "range") {
+                    if (mc.min == null || mc.max == null) return mc.value ?? null;
+                    return (mc.min + mc.max) / 2;
+                }
+                return mc.value ?? null;
+            }
+
+            // Fixed linear scale: barWidth = maxWidthPx * clamp(value / 2000, 0, 1).
+            // Deliberately NOT built from (or renormalized against) the current/
+            // filtered works list — the 0–2,000 domain is constant, so a given count
+            // always produces the same width no matter which rows are shown, hidden,
+            // reordered, or viewed alone. There is no minimum-width floor: a count of
+            // 1 gets its true (near-invisible) linear width. Discoverability for very
+            // small values comes from the endpoint marker drawn at the bar's tip (see
+            // the render loop below), not from inflating the bar itself.
+            function linearMssScale(value, maxWidthPx) {
+                if (value == null || value <= 0) return 0;
+                const normalized = Math.min(1, Math.max(0, value / MANUSCRIPT_SCALE_MAX));
+                return normalized * maxWidthPx;
+            }
+
+            // Lightweight self-checks for the calculation above — this file has no
+            // test runner, so these run once at load (after the dataset has fetched)
+            // and log to the console rather than being a separate test file.
+            (function selfTestManuscriptScale() {
+                const byId = id => dataset.works.find(w => w.id === id);
+                const widthOf = id => linearMssScale(manuscriptDisplayValue(byId(id).manuscriptCount), MSS_BAR.maxWidth);
+                const close = (a, b, tol = 0.001) => Math.abs(a - b) <= tol;
+
+                const failures = [];
+
+                // 1. Linear, not logarithmic: equal *differences* in value produce
+                // equal differences in width (a log curve would not).
+                const stepLow = linearMssScale(200, 100) - linearMssScale(100, 100);
+                const stepHigh = linearMssScale(2000, 100) - linearMssScale(1900, 100);
+                if (!close(stepLow, stepHigh)) failures.push(["scale is linear (equal value-deltas -> equal width-deltas)", [stepLow, stepHigh]]);
+
+                // 2. 1,000 is exactly half the width of 2,000.
+                if (!close(linearMssScale(1000, 100), linearMssScale(2000, 100) / 2)) failures.push(["1000 is half of 2000's width"]);
+
+                // 3. 200 is exactly one-tenth the width of 2,000.
+                if (!close(linearMssScale(200, 100), linearMssScale(2000, 100) / 10)) failures.push(["200 is one-tenth of 2000's width"]);
+
+                // 4–7. Real dataset comparisons (Gospels + Pauline letters).
+                if (!close(widthOf("nt-john"), widthOf("gospel-matthew"))) failures.push(["John and Matthew are equal-width"]);
+                if (!(widthOf("gospel-luke") < widthOf("nt-john"))) failures.push(["Luke is shorter than John"]);
+                if (!(widthOf("gospel-mark") < widthOf("gospel-luke"))) failures.push(["Mark is shorter than Luke"]);
+                if (!close(widthOf("1-corinthians"), widthOf("galatians"), 1)) failures.push(["1 Corinthians and Galatians are nearly equal"]);
+
+                // 8–10. Fixed-percentage checks against the full 0–2,000 domain.
+                if (!close(linearMssScale(byId("homer-iliad").manuscriptCount.value, 100), 75)) failures.push(["Homer is 75% of max width"]);
+                if (!close(linearMssScale(byId("caesar-gallic-war").manuscriptCount.value, 100), 12)) failures.push(["Caesar is 12% of max width"]);
+                if (!close(linearMssScale(byId("tacitus-annals").manuscriptCount.value, 100), 1.65)) failures.push(["Tacitus is 1.65% of max width"]);
+
+                // 11. Marcus Aurelius (value 1) sits at its true near-zero linear
+                // position — not floored up to any artificial minimum.
+                const maExpected = (1 / MANUSCRIPT_SCALE_MAX) * MSS_BAR.maxWidth;
+                if (!close(widthOf("marcus-aurelius-meditations"), maExpected)) failures.push(["Marcus Aurelius stays at the true linear position", [widthOf("marcus-aurelius-meditations"), maExpected]]);
+
+                // 12. null (unavailable/separateTraditions) never becomes a 0-width
+                // *quantitative* bar — manuscriptDisplayValue must be null, not 0, so
+                // the render loop routes it to the dashed placeholder instead.
+                ["virgil-aeneid", "plutarch-parallel-lives"].forEach(id => {
+                    if (manuscriptDisplayValue(byId(id).manuscriptCount) !== null) failures.push([`${id} has no quantitative value (placeholder, not zero)`]);
+                });
+
+                // 13. Livy's components are never summed into manuscriptDisplayValue.
+                const livy = byId("livy-history-of-rome").manuscriptCount;
+                const componentSum = livy.components.reduce((sum, c) => sum + c.value, 0);
+                const livyValue = manuscriptDisplayValue(livy);
+                if (livyValue === componentSum) failures.push(["Livy's components are not summed into a bar value", livyValue]);
+                if (livyValue !== null) failures.push(["Livy has no unified quantitative value", livyValue]);
+
+                // 14. Greater-than / approximate qualifiers stay visible in `display`.
+                if (!byId("homer-iliad").manuscriptCount.display.includes(">")) failures.push(["Homer's '>' qualifier is preserved in display"]);
+                if (!byId("nt-john").manuscriptCount.display.includes("≈")) failures.push(["John's '≈' qualifier is preserved in display"]);
+
+                // 15. Filtering/reordering rows can't change the fixed domain: the
+                // scale function takes no per-render works list at all, so the same
+                // value always maps to the same width regardless of what's visible.
+                if (!close(linearMssScale(500, 100), linearMssScale(500, 100))) failures.push(["scale ignores which rows are currently visible"]);
+
+                // 16. No leftover "log/logarithmic scale" wording in the explanatory text.
+                if (/log/i.test(MSS_COLUMN_TOOLTIP_TEXT)) failures.push(["no logarithmic-scale wording remains in the column tooltip text"]);
+
+                if (failures.length) {
+                    console.warn("[manuscript-count self-tests] FAILED:", failures);
+                } else {
+                    console.debug("[manuscript-count self-tests] 16 checks passed");
+                }
+            })();
+
+            function positionCrucifixionMarker() {
+                if (!activeCrucifixionRow || !yScale || !xZoomed) return;
+                const x = xZoomed(CRUCIFIXION_YEAR);
+                const y = yScale(activeCrucifixionRow) + yScale.bandwidth() / 2;
+                crucifixionMarkerLayer.select(".crucifixion-marker-v")
+                    .attr("x1", x).attr("x2", x).attr("y1", y - 7).attr("y2", y + 7);
+                crucifixionMarkerLayer.select(".crucifixion-marker-h")
+                    .attr("x1", x - 5).attr("x2", x + 5).attr("y1", y - 2).attr("y2", y - 2);
+            }
+
+            function showCrucifixionMarker(relatesToCrucifixion, workId) {
+                if (!relatesToCrucifixion) return;
+                activeCrucifixionRow = workId;
+                crucifixionMarkerLayer.style("display", null);
+                positionCrucifixionMarker();
+            }
+
+            function hideCrucifixionMarker() {
+                activeCrucifixionRow = null;
+                crucifixionMarkerLayer.style("display", "none");
+            }
+
+            // Row hover state: highlights the full row (label + a full-width wash)
+            // and emphasizes every mark belonging to that work (its composition bar
+            // and all of its manuscript marks) while dimming everything else, so
+            // it's unambiguous which row a hovered mark belongs to.
+            function setActiveRow(workId, group) {
+                if (workId == null || !yScale) {
+                    rowHighlightLayer.style("display", "none");
+                    layers.comp.selectAll(".comp-bar").classed("row-dim", false).classed("row-emphasize", false);
+                    layers.witnesses.selectAll(".witness-range-line")
+                        .classed("row-dim", false).classed("row-emphasize", false);
+                    witnessMarkersLayer.selectAll(".witness-marker, .witness-range-point")
+                        .classed("row-dim", false).classed("row-emphasize", false);
+                    mssBarsLayer.selectAll(".mss-bar, .mss-bar-endpoint, .mss-bar-unavailable")
+                        .classed("row-dim", false).classed("row-emphasize", false);
+                    yAxisG.selectAll(".lane-label").classed("row-label-active", false).style("fill", null);
+                    return;
+                }
+                const accent = accentForGroup(group);
+                rowHighlightLayer
+                    .style("display", null)
+                    .attr("y", yScale(workId))
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", yScale.bandwidth())
+                    .attr("fill", accent)
+                    .style("opacity", 0.12);
+
+                layers.comp.selectAll(".comp-bar")
+                    .classed("row-emphasize", d => d.id === workId)
+                    .classed("row-dim", d => d.id !== workId);
+                layers.witnesses.selectAll(".witness-range-line")
+                    .classed("row-emphasize", d => d.workId === workId)
+                    .classed("row-dim", d => d.workId !== workId);
+                witnessMarkersLayer.selectAll(".witness-marker, .witness-range-point")
+                    .classed("row-emphasize", d => d.workId === workId)
+                    .classed("row-dim", d => d.workId !== workId);
+                mssBarsLayer.selectAll(".mss-bar, .mss-bar-endpoint, .mss-bar-unavailable")
+                    .classed("row-emphasize", d => d.id === workId)
+                    .classed("row-dim", d => d.id !== workId);
+                yAxisG.selectAll(".lane-label")
+                    .classed("row-label-active", id => id === workId)
+                    .style("fill", id => id === workId ? accent : null);
+            }
+
+            function clearActiveRow() {
+                setActiveRow(null);
+            }
+
+            function showTip(evt, html) {
+                tooltip.style("display", "block").html(html);
+                moveTip(evt);
+            }
+            function moveTip(evt) {
+                const pad = 14;
+                tooltip
+                    .style("left", `${evt.clientX + pad}px`)
+                    .style("top", `${evt.clientY + pad}px`);
+            }
+            function hideTip() {
+                tooltip.style("display", "none");
+            }
+
+            // Keyboard-focus counterpart to showTip: positions the tooltip from the
+            // focused element's own bounding box instead of mouse coordinates, so
+            // every row control (label, bars, marks) is fully usable via Tab alone.
+            function showTipNear(el, html) {
+                tooltip.style("display", "block").html(html);
+                const rect = el.getBoundingClientRect();
+                tooltip
+                    .style("left", `${rect.right + 14}px`)
+                    .style("top", `${rect.top}px`);
+            }
+
+            // One label/value line within a tooltip's structured body; omitted
+            // entirely when there's no value, so optional fields don't leave gaps.
+            function ttRow(label, value) {
+                if (value == null || value === "") return "";
+                return `<div class="tt-row"><span class="tt-row-label">${label}</span><span class="tt-row-value">${value}</span></div>`;
+            }
+
+            // "PRE-1500 GREEK/LATIN MSS" label used consistently by the work/composition
+            // tooltips and the micro-bar's own tooltip — never "Total Greek MSS"
+            // wording, which could be misread as a total across every Greek NT
+            // manuscript rather than a count scoped to this specific work. Each record
+            // now carries its own fully-formed `heading` (e.g. "Pre-1500 Greek
+            // continuous-text MSS" vs. "Pre-1500 Greek witnesses"), since the right
+            // wording depends on what's actually being counted, not just the language;
+            // the language-only fallback only applies to older/incomplete records.
+            function mssEyebrow(mc) {
+                if (mc && mc.heading) return mc.heading;
+                const langWord = mc && mc.language ? mc.language.toUpperCase() : null;
+                return langWord ? `Pre-1500 ${langWord} MSS` : "Pre-1500 MSS";
+            }
+
+            // Livy-style non-unified counts: each surviving textual tradition listed as
+            // its own row rather than summed into one figure (summing would misstate
+            // separate, partly-overlapping traditions as a single manuscript count).
+            function mssComponentsHtml(mc) {
+                if (!mc || !mc.components || !mc.components.length) return "";
+                return mc.components.map(c => ttRow(c.label, c.display)).join("");
+            }
+
+            // Manuscript-count section appended to the work/composition tooltips: a
+            // labeled row (consistent with the other Composed/Gap rows) plus the scope
+            // note in smaller type underneath, so the qualification is visible but
+            // stays secondary to the headline figure.
+            function manuscriptCountSection(w) {
+                const mc = w.manuscriptCount;
+                if (!mc) return "";
+                return `
+              <div class="tt-divider"></div>
+              ${ttRow(mssEyebrow(mc), mc.display)}
+              ${mssComponentsHtml(mc)}
+              ${mc.scope ? `<div class="tt-note">${mc.scope}</div>` : ""}
+            `;
+            }
+
+            // Standalone tooltip for hovering/focusing the micro-bar itself — same
+            // underlying data as manuscriptCountSection, but as its own eyebrow/title
+            // tooltip (matching the composition/witness tooltips' structure) since the
+            // bar can be reached independently of the row label.
+            function manuscriptCountTooltip(w, pinned) {
+                const mc = w.manuscriptCount;
+                const { author, work } = axisLabelParts(w);
+                const rangeNote = mc && mc.qualifier === "range" && mc.min != null && mc.max != null
+                    ? `Range: ${mc.min.toLocaleString()}–${mc.max.toLocaleString()}`
+                    : null;
+                return `
+              <div class="tt-eyebrow">${mssEyebrow(mc)}</div>
+              <div class="tt-title">${mc ? mc.display : "Not available"}</div>
+              <div class="tt-subtitle">${author ? `${author} — ${work}` : work}</div>
+              ${mc && mc.scope ? `<div class="tt-divider"></div><div class="tt-note">${mc.scope}</div>` : ""}
+              ${rangeNote ? `<div class="tt-note">${rangeNote}</div>` : ""}
+              ${mssComponentsHtml(mc) ? `<div class="tt-divider"></div>${mssComponentsHtml(mc)}` : ""}
+              ${mc && mc.confidence ? `<div class="tt-pin-hint">Counting confidence: ${mc.confidence}</div>` : ""}
+              ${pinned ? `<div class="tt-pin-hint">Click anywhere to dismiss.</div>` : ""}
+            `;
+            }
+
+            function filteredWorks() {
+                const checkedIds = new Set(
+                    Array.from(docFilterEl.querySelectorAll("input[data-work-id]:checked"))
+                        .map(cb => cb.dataset.workId)
+                );
+                return dataset.works.filter(w => checkedIds.has(w.id));
+            }
+
+            const GROUP_LABELS = { NT: "New Testament", ClassicalGreek: "Classical Greek", ClassicalLatin: "Classical Latin" };
+            const GROUP_ORDER = ["NT", "ClassicalGreek", "ClassicalLatin"];
+
+            // Hidden by default (still available via the filter checklist): Homer and
+            // Herodotus sit so much further back (c. 750–700 BCE and 445–425 BCE) than
+            // everything else that including them by default stretches the x-axis and
+            // compresses every other work's dates.
+            const DEFAULT_HIDDEN_WORK_IDS = new Set(["homer-iliad", "herodotus-histories"]);
+
+            // The two top-level row groupings shown on the chart (finer-grained than
+            // GROUP_LABELS, which still distinguishes Greek/Latin for the filter panel
+            // and tooltips).
+            const SECTIONS = [
+                { key: "NT", label: "New Testament Writings", match: g => g === "NT" },
+                { key: "GRECOROMAN", label: "Greco-Roman Works", match: g => g !== "NT" }
+            ];
+
+            // Within the Greco-Roman section, lead with the works most directly
+            // relevant to the NT comparison — i.e. the ones that reference Jesus,
+            // Christians, or the crucifixion (Tacitus, Josephus, Suetonius) — rather
+            // than the dataset's citation-style order. Everything else keeps its
+            // existing relative order after these three.
+            const GRECOROMAN_PRIORITY = ["tacitus-annals", "josephus-antiquities", "suetonius-twelve-caesars"];
+            function withPriorityOrder(list, priorityIds) {
+                const prioritySet = new Set(priorityIds);
+                const prioritized = priorityIds.map(id => list.find(w => w.id === id)).filter(Boolean);
+                const rest = list.filter(w => !prioritySet.has(w.id));
+                return prioritized.concat(rest);
+            }
+
+            // Standardized display titles for the row labels, filter checklist, and
+            // tooltip titles. Greco-Roman comparison works render as "Author — Work"
+            // using concise, recognizable English titles; NT works keep their bare
+            // canonical title (authorship is debated/traditional, so no author is
+            // prefixed). Original-language titles and witness-specific qualifications
+            // that used to live in the dataset's `title` field move to ORIGINAL_TITLE
+            // (shown as secondary tooltip info) instead of being dropped. None of this
+            // touches the underlying dataset — `w.title`/`w.author` are unchanged.
+            const AXIS_LABELS = {
+                "tacitus-annals": { author: "Tacitus", work: "Annals" },
+                "pliny-letters": { author: "Pliny the Younger", work: "Letters" },
+                "virgil-aeneid": { author: "Virgil", work: "Aeneid" },
+                "josephus-antiquities": { author: "Josephus", work: "Jewish Antiquities" },
+                "suetonius-twelve-caesars": { author: "Suetonius", work: "The Twelve Caesars" },
+                "pliny-elder-natural-history": { author: "Pliny the Elder", work: "Natural History" },
+                "livy-history-of-rome": { author: "Livy", work: "History of Rome" },
+                "plutarch-parallel-lives": { author: "Plutarch", work: "Parallel Lives" },
+                "marcus-aurelius-meditations": { author: "Marcus Aurelius", work: "Meditations" },
+                "homer-iliad": { author: "Homer", work: "Iliad" },
+                "caesar-gallic-war": { author: "Julius Caesar", work: "The Gallic War" },
+                "herodotus-histories": { author: "Herodotus", work: "Histories" }
+            };
+            // Original-language titles / witness-scoped qualifications, surfaced as
+            // secondary info in tooltips rather than crowding the axis label.
+            const ORIGINAL_TITLE = {
+                "livy-history-of-rome": "Ab Urbe Condita",
+                "plutarch-parallel-lives": "Bioi Paralleloi",
+                "marcus-aurelius-meditations": "Ta eis heauton",
+                "caesar-gallic-war": "Commentarii de Bello Gallico"
+            };
+            function axisLabelParts(w) {
+                return AXIS_LABELS[w.id] || { author: null, work: w.title };
+            }
+            // Plain-text "Author — Work" (or bare title for NT works), used anywhere
+            // styled tspans/HTML italics aren't available (the filter checklist) and
+            // as the tickFormat fallback.
+            function standardTitle(w) {
+                const { author, work } = axisLabelParts(w);
+                return author ? `${author} — ${work}` : work;
+            }
+
+            // Build the per-document visibility checklist, grouped by category. Each
+            // group header is itself a checkbox that shows/hides every work in that
+            // group at once, and reflects an indeterminate state when only some of its
+            // works are checked (a standard tri-state "select all" pattern).
+            function buildDocFilter(works) {
+                const byGroup = d3.group(works, w => w.group);
+                const orderedGroups = GROUP_ORDER.filter(g => byGroup.has(g))
+                    .concat(Array.from(byGroup.keys()).filter(g => !GROUP_ORDER.includes(g)));
+
+                docFilterEl.innerHTML = "";
+                orderedGroups.forEach(groupKey => {
+                    const groupEl = document.createElement("div");
+                    groupEl.className = "doc-filter-group";
+
+                    const headerLabel = document.createElement("label");
+                    headerLabel.className = "doc-filter-group-label";
+                    const headerCb = document.createElement("input");
+                    headerCb.type = "checkbox";
+                    headerCb.dataset.groupToggle = groupKey;
+                    headerLabel.append(headerCb, document.createTextNode(GROUP_LABELS[groupKey] || groupKey));
+                    groupEl.appendChild(headerLabel);
+
+                    const itemsEl = document.createElement("div");
+                    itemsEl.className = "doc-filter-items";
+                    byGroup.get(groupKey).forEach(w => {
+                        const itemLabel = document.createElement("label");
+                        itemLabel.className = "doc-filter-item";
+                        const cb = document.createElement("input");
+                        cb.type = "checkbox";
+                        cb.checked = !DEFAULT_HIDDEN_WORK_IDS.has(w.id);
+                        cb.dataset.workId = w.id;
+                        cb.dataset.group = groupKey;
+                        const swatch = document.createElement("span");
+                        swatch.className = "doc-filter-swatch";
+                        swatch.style.background = accentForGroup(w.group);
+                        itemLabel.append(cb, swatch, document.createTextNode(standardTitle(w)));
+                        itemsEl.appendChild(itemLabel);
+                    });
+                    groupEl.appendChild(itemsEl);
+                    docFilterEl.appendChild(groupEl);
+                    updateGroupHeaderState(groupKey);
+                });
+            }
+
+            function updateGroupHeaderState(groupKey) {
+                const header = docFilterEl.querySelector(`input[data-group-toggle="${groupKey}"]`);
+                if (!header) return;
+                const children = Array.from(docFilterEl.querySelectorAll(`input[data-work-id][data-group="${groupKey}"]`));
+                const checkedCount = children.filter(cb => cb.checked).length;
+                header.checked = checkedCount === children.length;
+                header.indeterminate = checkedCount > 0 && checkedCount < children.length;
+            }
+
+            docFilterEl.addEventListener("change", (event) => {
+                const target = event.target;
+                if (target.matches("input[data-group-toggle]")) {
+                    const groupKey = target.dataset.groupToggle;
+                    docFilterEl.querySelectorAll(`input[data-work-id][data-group="${groupKey}"]`)
+                        .forEach(cb => { cb.checked = target.checked; });
+                    target.indeterminate = false;
+                } else if (target.matches("input[data-work-id]")) {
+                    updateGroupHeaderState(target.dataset.group);
+                }
+                render();
+            });
+
+            // Compute the available drawing width from the (responsive) container.
+            function getAvailableWidth() {
+                if (!chartWrapEl) return 800;
+                const wrapStyles = getComputedStyle(chartWrapEl);
+                const wrapPad = parseFloat(wrapStyles.paddingLeft || 0) + parseFloat(wrapStyles.paddingRight || 0);
+                const total = Math.max(360, Math.floor(chartWrapEl.clientWidth - wrapPad));
+                return Math.max(120, total - margin.left - margin.right);
+            }
+
+            // ---------- Render ----------
+            function render() {
+                const works = filteredWorks();
+                width = getAvailableWidth();
+
+                // Center the title over the full chart width (label gutter + plot area),
+                // not just the plot area, since it's a title for the whole chart.
+                chartTitle.attr("x", (width + margin.right - margin.left) / 2);
+
+                // Partition into the two top-level sections (NT vs. everything else),
+                // each preceded by a header slot in the band domain that reserves room
+                // for a heading + divider between the groups.
+                const sections = SECTIONS
+                    .map(s => ({ ...s, works: works.filter(w => s.match(w.group)) }))
+                    .map(s => s.key === "GRECOROMAN"
+                        ? { ...s, works: withPriorityOrder(s.works, GRECOROMAN_PRIORITY) }
+                        : s)
+                    .filter(s => s.works.length > 0);
+                const headerId = key => `__section-header__${key}`;
+                const domainIds = [];
+                sections.forEach(s => {
+                    domainIds.push(headerId(s.key));
+                    s.works.forEach(w => domainIds.push(w.id));
+                });
+
+                // resize to number of lanes (including one header slot per visible section)
+                const laneH = 52;
+                const desiredH = Math.max(260, domainIds.length * laneH);
+                height = desiredH;
+                svg.attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom);
+                xAxisG.attr("transform", `translate(0,${height})`);
+                clipRect.attr("width", width).attr("height", height);
+
+                xScale = d3.scaleLinear()
+                    .domain(computeXDomain(works))
+                    .range([0, width]);
+
+                xZoomed = currentTransform.rescaleX(xScale);
+
+                yScale = d3.scaleBand()
+                    .domain(domainIds)
+                    .range([0, height])
+                    .paddingInner(0.25)
+                    .paddingOuter(0.15);
+
+                // Faint vertical guides for the manuscript-count scale at 1,000 and
+                // 2,000, spanning the full plotted height so a bar's length can be
+                // checked against them in the same glance, not by eye-measuring
+                // against the small reference text in the header above.
+                mssScaleGuideLayer.selectAll("*").remove();
+                [MSS_BAR.maxWidth / 2, MSS_BAR.maxWidth].forEach(w => {
+                    mssScaleGuideLayer.append("line")
+                        .attr("class", "mss-scale-guide")
+                        .attr("x1", mssBarLeftXStatic + w).attr("x2", mssBarLeftXStatic + w)
+                        .attr("y1", 0).attr("y2", height);
+                });
+
+                // Section bands (a faint background tint per group), the divider
+                // between groups, and each section's heading — drawn behind everything.
+                sectionBandsLayer.selectAll("*").remove();
+                sections.forEach((s, i) => {
+                    const top = yScale(headerId(s.key));
+                    const bottom = yScale(s.works[s.works.length - 1].id) + yScale.bandwidth();
+                    const accent = s.key === "NT" ? getCSSVar('--accent-nt') : getCSSVar('--accent-other');
+
+                    sectionBandsLayer.append("rect")
+                        .attr("class", "section-band")
+                        .attr("x", -margin.left).attr("y", top)
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", bottom - top)
+                        .attr("fill", accent).attr("opacity", 0.05);
+
+                    if (i > 0) {
+                        sectionBandsLayer.append("line")
+                            .attr("class", "section-divider")
+                            .attr("x1", -margin.left).attr("x2", width + margin.right)
+                            .attr("y1", top).attr("y2", top);
+                    }
+
+                    sectionBandsLayer.append("text")
+                        .attr("class", "section-heading")
+                        .attr("x", -margin.left + 4)
+                        .attr("y", top + yScale.bandwidth() - 12)
+                        .attr("fill", accent)
+                        .text(s.label);
+                });
+
+                // Midline at year 0 (rough era boundary) — just the guide line, no label.
+                layers.midline.selectAll("*").remove();
+                layers.midline.append("line")
+                    .attr("x1", xZoomed(0)).attr("x2", xZoomed(0))
+                    .attr("y1", 0).attr("y2", height)
+                    .attr("stroke", getCSSVar('--grid-line')).attr("stroke-dasharray", "4,4");
+
+                // Axes
+                const xAxis = d3.axisBottom(xZoomed)
+                    .ticks(10)
+                    .tickFormat(d => fmtYear(d));
+
+                xAxisG.call(xAxis)
+                    .selectAll("text")
+                    .attr("transform", "rotate(-25)")
+                    .style("text-anchor", "end");
+
+                function workTooltip(w, pinned) {
+                    const compRange = w.composition ? `${fmtYear(getStart(w.composition))}–${fmtYear(getEnd(w.composition))}` : null;
+                    const { author, work } = axisLabelParts(w);
+                    const original = ORIGINAL_TITLE[w.id];
+                    return `
+              <div class="tt-eyebrow">${GROUP_LABELS[w.group] || w.group}</div>
+              <div class="tt-title">${author ? `${author} — <i>${work}</i>` : work}</div>
+              ${original ? `<div class="tt-original-title">${original}</div>` : ""}
+              <div class="tt-subtitle">${author ? w.language : `${w.author} · ${w.language}`}</div>
+              <div class="tt-divider"></div>
+              ${ttRow("Composed", compRange)}
+              ${manuscriptCountSection(w)}
+              ${w.description ? `<div class="tt-divider"></div><div class="tt-note">${w.description}</div>` : ""}
+              ${pinned ? `<div class="tt-pin-hint">Click anywhere to dismiss.</div>` : ""}
+            `;
+                }
+
+                const yAxis = d3.axisLeft(yScale)
+                    .tickValues(works.map(w => w.id))
+                    // No outer end-cap ticks — d3 draws one at each end of the domain
+                    // path by default, with no associated label, which is exactly the
+                    // stray tick this was leaving at the top of the axis.
+                    .tickSizeOuter(0)
+                    .tickFormat(id => {
+                        const w = works.find(w => w.id === id);
+                        return w ? standardTitle(w) : id;
+                    });
+
+                yAxisG.call(yAxis);
+
+                // The axis's domain line still defaults to the *full* scale range,
+                // which includes the section-header placeholder slots — so without
+                // this it visibly runs up into the title/header area above the first
+                // row. Redraw it to span only the actual labeled rows.
+                const yDomainPath = yAxisG.select(".domain");
+                if (works.length) {
+                    const domainTop = yScale(works[0].id);
+                    const domainBottom = yScale(works[works.length - 1].id) + yScale.bandwidth();
+                    yDomainPath.attr("d", `M0.5,${domainTop}V${domainBottom}`).style("display", null);
+                } else {
+                    yDomainPath.style("display", "none");
+                }
+
+                yAxisG.selectAll(".tick text")
+                    .attr("class", "lane-label")
+                    .style("cursor", "pointer")
+                    .each(function (id) {
+                        // Rebuild as tspans so the Greco-Roman "Author — Work" rows
+                        // render the author in roman type and the work in italics (the
+                        // standard citation convention for classical secular titles).
+                        // Biblical book titles are conventionally set in roman type, so
+                        // NT rows are left unstyled. tickFormat's plain string above is
+                        // just the accessible/plain-text fallback.
+                        const w = works.find(w => w.id === id);
+                        if (!w) return;
+                        const { author, work } = axisLabelParts(w);
+                        const textSel = d3.select(this).text(null);
+                        if (author) {
+                            textSel.append("tspan").text(`${author} — `);
+                            textSel.append("tspan").attr("class", "lane-label-work").text(work);
+                        } else {
+                            textSel.append("tspan").text(work);
+                        }
+                    })
+                    .attr("tabindex", 0)
+                    .on("mousemove", (evt, id) => {
+                        const w = works.find(w => w.id === id);
+                        if (!w) return;
+                        showTip(evt, workTooltip(w, false));
+                        setActiveRow(id, w.group);
+                    })
+                    .on("mouseleave", () => { hideTip(); clearActiveRow(); })
+                    .on("focus", (evt, id) => {
+                        const w = works.find(w => w.id === id);
+                        if (!w) return;
+                        showTipNear(evt.currentTarget, workTooltip(w, false));
+                        setActiveRow(id, w.group);
+                    })
+                    .on("blur", () => { hideTip(); clearActiveRow(); })
+                    .on("click", (evt, id) => {
+                        evt.stopPropagation();
+                        const w = works.find(w => w.id === id);
+                        if (!w) return;
+                        showTip(evt, workTooltip(w, true));
+                    });
+
+                // Manuscript-count micro-bars: quantified rows get a fixed-linear-scale
+                // bar (0–2,000, see linearMssScale), rows without a defensible count
+                // get a short neutral dashed placeholder (never a zero-width/invisible
+                // bar). Bound to the same `works` array as the labels and comp bars —
+                // one shared row model.
+                const mssBarLeftX = -margin.left + MSS_BAR.leftInset;
+                const mssBarY = w => yScale(w.id) + yScale.bandwidth() - MSS_BAR.height - MSS_BAR.bottomInset;
+                const mssTargetWidth = w => linearMssScale(manuscriptDisplayValue(w.manuscriptCount), MSS_BAR.maxWidth);
+                const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                // Every manuscriptCount record now carries its own fully-formed
+                // `heading` (e.g. "Pre-1500 Greek continuous-text MSS", "Pre-1500
+                // Greek witnesses"), so the label is just "<title>: <heading> —
+                // <display>." for every qualifier — no separate phrasing needed for
+                // unavailable/completeOnly/etc.
+                function mssAriaLabel(w) {
+                    const mc = w.manuscriptCount;
+                    const title = standardTitle(w);
+                    if (!mc) return `${title}: pre-1500 manuscript count not available.`;
+                    return `${title}: ${mc.heading} — ${mc.display}.`;
+                }
+
+                // Shared interaction wiring for both bar variants (quantified + the
+                // unavailable placeholder) — identical to attachWitnessHandlers below,
+                // but scoped to work-level data and the manuscript-count tooltip.
+                function attachMssHandlers(sel) {
+                    return sel
+                        .attr("tabindex", 0)
+                        .attr("role", "img")
+                        .attr("aria-label", mssAriaLabel)
+                        .on("mousemove", (evt, w) => {
+                            showTip(evt, manuscriptCountTooltip(w, false));
+                            setActiveRow(w.id, w.group);
+                        })
+                        .on("mouseleave", () => { hideTip(); clearActiveRow(); })
+                        .on("focus", (evt, w) => {
+                            showTipNear(evt.currentTarget, manuscriptCountTooltip(w, false));
+                            setActiveRow(w.id, w.group);
+                        })
+                        .on("blur", () => { hideTip(); clearActiveRow(); })
+                        .on("click", (evt, w) => {
+                            evt.stopPropagation();
+                            showTip(evt, manuscriptCountTooltip(w, true));
+                        });
+                }
+
+                const quantifiedWorks = works.filter(w => manuscriptDisplayValue(w.manuscriptCount) != null);
+                const barSel = mssBarsLayer.selectAll("rect.mss-bar")
+                    .data(quantifiedWorks, w => w.id);
+
+                const barEnter = barSel.enter().append("rect")
+                    .attr("class", "mss-bar")
+                    .attr("rx", MSS_BAR.height / 2)
+                    .attr("ry", MSS_BAR.height / 2)
+                    .attr("height", MSS_BAR.height)
+                    .attr("x", mssBarLeftX)
+                    .attr("width", 0);
+
+                attachMssHandlers(barEnter.merge(barSel))
+                    .attr("y", mssBarY)
+                    .attr("fill", w => accentForGroup(w.group));
+
+                // Only bars newly entering the page animate in from zero width; bars
+                // that already existed (e.g. a resize just changed the row layout)
+                // get their width updated immediately, so ordinary interaction never
+                // re-triggers the entrance animation.
+                if (reduceMotion) {
+                    barEnter.attr("width", mssTargetWidth);
+                } else {
+                    barEnter.transition().duration(320).attr("width", mssTargetWidth);
+                }
+                barSel.attr("width", mssTargetWidth);
+
+                barSel.exit().remove();
+
+                // A small endpoint marker at the bar's true tip position. The linear
+                // scale has no minimum bar width, so a count like Marcus Aurelius's 1
+                // (0.05% of the 0–2,000 domain) would otherwise be an invisible sliver;
+                // the marker's *center* still sits at the exact linear x for that
+                // value — only the marker's own radius is a fixed minimum size, not
+                // the underlying data position.
+                const endpointCy = w => mssBarY(w) + MSS_BAR.height / 2;
+                const endpointCx = w => mssBarLeftX + mssTargetWidth(w);
+
+                const endpointSel = mssBarsLayer.selectAll("circle.mss-bar-endpoint")
+                    .data(quantifiedWorks, w => w.id);
+
+                const endpointEnter = endpointSel.enter().append("circle")
+                    .attr("class", "mss-bar-endpoint")
+                    .attr("r", MSS_BAR.endpointRadius)
+                    .attr("cx", mssBarLeftX);
+
+                attachMssHandlers(endpointEnter.merge(endpointSel))
+                    .attr("cy", endpointCy)
+                    .attr("fill", w => accentForGroup(w.group));
+
+                if (reduceMotion) {
+                    endpointEnter.attr("cx", endpointCx);
+                } else {
+                    endpointEnter.transition().duration(320).attr("cx", endpointCx);
+                }
+                endpointSel.attr("cx", endpointCx);
+
+                endpointSel.exit().remove();
+
+                // Works without a defensible count: a short dashed neutral placeholder
+                // (not the category color, and not a bar shape), so it reads as "no
+                // secure total" rather than "a very small count."
+                const unavailableWorks = works.filter(w => manuscriptDisplayValue(w.manuscriptCount) == null);
+                const dashSel = mssBarsLayer.selectAll("line.mss-bar-unavailable")
+                    .data(unavailableWorks, w => w.id);
+
+                const dashEnter = dashSel.enter().append("line")
+                    .attr("class", "mss-bar-unavailable")
+                    .attr("x1", mssBarLeftX)
+                    .attr("x2", mssBarLeftX + MSS_BAR.unavailableWidth);
+
+                attachMssHandlers(dashEnter.merge(dashSel))
+                    .attr("y1", w => mssBarY(w) + MSS_BAR.height / 2)
+                    .attr("y2", w => mssBarY(w) + MSS_BAR.height / 2);
+
+                dashSel.exit().remove();
+
+                // Composition bars (work composition ranges)
+                const compSel = layers.comp.selectAll("rect")
+                    .data(works.filter(w => w.composition), d => d.id);
+
+                function compTooltip(d, pinned) {
+                    const start = getStart(d.composition);
+                    const end = getEnd(d.composition);
+                    const dr = `${fmtYear(start)}–${fmtYear(end)}`;
+                    const earliest = earliestWitnessSummary(d);
+                    const { author, work } = axisLabelParts(d);
+                    const original = ORIGINAL_TITLE[d.id];
+                    return `
+              <div class="tt-eyebrow">Original composition</div>
+              <div class="tt-title">${author ? `${author} — <i>${work}</i>` : work}</div>
+              ${original ? `<div class="tt-original-title">${original}</div>` : ""}
+              ${!author && d.author ? `<div class="tt-subtitle">${d.author}</div>` : ""}
+              <div class="tt-divider"></div>
+              ${ttRow("Composed", dr)}
+              <div class="tt-note">${d.composition.label}</div>
+              ${earliest ? `<div class="tt-divider"></div>` : ""}
+              ${earliest ? ttRow("Earliest copy", earliest.label) : ""}
+              ${earliest ? ttRow("Manuscript date", earliest.dateRange) : ""}
+              ${earliest ? ttRow("Gap from autograph", `${earliest.gap} later`) : ""}
+              ${manuscriptCountSection(d)}
+              ${d.description ? `<div class="tt-divider"></div><div class="tt-note">${d.description}</div>` : ""}
+              ${pinned ? `<div class="tt-pin-hint">Click anywhere to dismiss.</div>` : ""}
+            `;
+                }
+
+                // Composition bars render at a fixed fraction of the row height, not
+                // full bandwidth, so they read as a band sitting within the row (and
+                // stay clearly taller than the manuscript marks without touching
+                // neighboring rows). Width has only a 2px floor — short composition
+                // estimates stay a narrow rectangle rather than being forced into a
+                // wider minimum shape.
+                const COMP_BAR_HEIGHT_RATIO = 0.62;
+                const compBarInset = d => yScale.bandwidth() * (1 - COMP_BAR_HEIGHT_RATIO) / 2;
+
+                compSel.enter().append("rect")
+                    .attr("class", "comp-bar")
+                    .attr("rx", 2)
+                    .attr("ry", 2)
+                    .style("cursor", "pointer")
+                    .merge(compSel)
+                    .attr("x", d => xZoomed(getStart(d.composition)))
+                    .attr("y", d => yScale(d.id) + compBarInset(d))
+                    .attr("width", d => Math.max(2, xZoomed(getEnd(d.composition)) - xZoomed(getStart(d.composition))))
+                    .attr("height", () => yScale.bandwidth() * COMP_BAR_HEIGHT_RATIO)
+                    .attr("fill", d => accentForGroup(d.group))
+                    .attr("stroke", d => accentForGroup(d.group))
+                    .attr("tabindex", 0)
+                    .on("mousemove", (evt, d) => {
+                        showTip(evt, compTooltip(d, false));
+                        setActiveRow(d.id, d.group);
+                        showCrucifixionMarker(d.relatesToCrucifixion, d.id);
+                    })
+                    .on("mouseleave", () => { hideTip(); clearActiveRow(); hideCrucifixionMarker(); })
+                    .on("focus", (evt, d) => {
+                        showTipNear(evt.currentTarget, compTooltip(d, false));
+                        setActiveRow(d.id, d.group);
+                        showCrucifixionMarker(d.relatesToCrucifixion, d.id);
+                    })
+                    .on("blur", () => { hideTip(); clearActiveRow(); hideCrucifixionMarker(); })
+                    .on("click", (evt, d) => {
+                        evt.stopPropagation();
+                        showTip(evt, compTooltip(d, true));
+                    });
+
+                compSel.exit().remove();
+
+                // Witness marks: a small dot for a single attested date, or a rounded
+                // capsule spanning the range when the witness date is uncertain.
+                witnessRows = [];
+                for (const w of works) {
+                    const compStart = w.composition ? getStart(w.composition) : null;
+                    const compEnd = w.composition ? getEnd(w.composition) : null;
+                    for (const ms of (w.witnesses ?? [])) {
+                        const start = getStart(ms.date);
+                        const end = getEnd(ms.date) ?? start;
+                        witnessRows.push({
+                            workId: w.id, workTitle: standardTitle(w), group: w.group, language: w.language,
+                            relatesToCrucifixion: w.relatesToCrucifixion,
+                            ...ms, _start: start, _end: end, _hasRange: end !== start,
+                            _compStart: compStart, _compEnd: compEnd
+                        });
+                    }
+                }
+
+                const dodgeOffsets = computeDodgeOffsets(witnessRows);
+                const dodgeFor = d => dodgeOffsets.get(d) || 0;
+                const accentFor = d => accentForGroup(d.group);
+
+                function witnessTooltip(d, pinned) {
+                    const dr = d._hasRange ? `${fmtYear(d._start)}–${fmtYear(d._end)}` : fmtYear(d._start);
+                    const gap = formatGap(d._compStart, d._compEnd, d._start, d._end);
+                    return `
+              <div class="tt-eyebrow">${formatWitnessType(d.type)}</div>
+              <div class="tt-title">${d.label}</div>
+              <div class="tt-subtitle">${d.workTitle} · ${d.language}</div>
+              <div class="tt-divider"></div>
+              ${d._compStart != null ? ttRow("Composed", `${fmtYear(d._compStart)}–${fmtYear(d._compEnd)}`) : ""}
+              ${ttRow("Manuscript date", dr)}
+              ${gap ? ttRow("Gap from autograph", `${gap} later`) : ""}
+              ${ttRow("Contents", d.contents)}
+              ${d.notes ? `<div class="tt-divider"></div><div class="tt-note">${d.notes}</div>` : ""}
+              ${pinned ? `<div class="tt-pin-hint">Click anywhere to dismiss.</div>` : ""}
+            `;
+                }
+
+                // Shared hover/pin behavior for every manuscript mark piece (the point
+                // diamond, and — for ranges — the connecting line and its two end
+                // diamonds), so hovering any piece of a mark behaves identically.
+                function attachWitnessHandlers(sel) {
+                    return sel
+                        .attr("tabindex", 0)
+                        .on("mousemove", (evt, d) => {
+                            showTip(evt, witnessTooltip(d, false));
+                            setActiveRow(d.workId, d.group);
+                            showCrucifixionMarker(d.relatesToCrucifixion, d.workId);
+                        })
+                        .on("mouseleave", () => { hideTip(); clearActiveRow(); hideCrucifixionMarker(); })
+                        .on("focus", (evt, d) => {
+                            showTipNear(evt.currentTarget, witnessTooltip(d, false));
+                            setActiveRow(d.workId, d.group);
+                            showCrucifixionMarker(d.relatesToCrucifixion, d.workId);
+                        })
+                        .on("blur", () => { hideTip(); clearActiveRow(); hideCrucifixionMarker(); })
+                        .on("click", (evt, d) => {
+                            // "Pin" behavior: click keeps it visible until next click elsewhere
+                            evt.stopPropagation();
+                            showTip(evt, witnessTooltip(d, true));
+                        });
+                }
+
+                // Point witnesses (effectively a single attested date): one diamond.
+                // Lives outside zoomLayer (see witnessMarkersLayer) so the diamond's
+                // shape stays undistorted at any zoom level; position is recomputed
+                // from the live xZoomed here and again in updateAxis() on every tick.
+                const pointSel = witnessMarkersLayer.selectAll("path.witness-marker")
+                    .data(witnessRows.filter(d => !d._hasRange), d => `${d.workId}:${d.id}`);
+
+                attachWitnessHandlers(pointSel.enter().append("path").attr("class", "witness-marker"))
+                    .merge(pointSel)
+                    .attr("fill", accentFor)
+                    .attr("d", d => diamondPath(xZoomed(d._start), laneCenterY(d) + dodgeFor(d), DIAMOND_RADIUS));
+
+                pointSel.exit().remove();
+
+                // Ranged witnesses (date uncertainty): a thin connecting line — which
+                // legitimately stretches with zoom since its length encodes the date
+                // span — plus a diamond at each end. The line stays inside zoomLayer
+                // (like the composition bars); its diamonds live in witnessMarkersLayer
+                // alongside the point markers.
+                const rangeLineSel = layers.witnesses.selectAll("line.witness-range-line")
+                    .data(witnessRows.filter(d => d._hasRange), d => `${d.workId}:${d.id}`);
+
+                attachWitnessHandlers(rangeLineSel.enter().append("line").attr("class", "witness-range-line"))
+                    .merge(rangeLineSel)
+                    .attr("stroke", accentFor)
+                    .attr("x1", d => xZoomed(d._start))
+                    .attr("x2", d => xZoomed(d._end))
+                    .attr("y1", d => laneCenterY(d) + dodgeFor(d))
+                    .attr("y2", d => laneCenterY(d) + dodgeFor(d));
+
+                rangeLineSel.exit().remove();
+
+                const rangeStartSel = witnessMarkersLayer.selectAll("path.witness-range-point-start")
+                    .data(witnessRows.filter(d => d._hasRange), d => `${d.workId}:${d.id}`);
+
+                attachWitnessHandlers(rangeStartSel.enter().append("path").attr("class", "witness-range-point witness-range-point-start"))
+                    .merge(rangeStartSel)
+                    .attr("fill", accentFor)
+                    .attr("d", d => diamondPath(xZoomed(d._start), laneCenterY(d) + dodgeFor(d), DIAMOND_RADIUS));
+
+                rangeStartSel.exit().remove();
+
+                const rangeEndSel = witnessMarkersLayer.selectAll("path.witness-range-point-end")
+                    .data(witnessRows.filter(d => d._hasRange), d => `${d.workId}:${d.id}`);
+
+                attachWitnessHandlers(rangeEndSel.enter().append("path").attr("class", "witness-range-point witness-range-point-end"))
+                    .merge(rangeEndSel)
+                    .attr("fill", accentFor)
+                    .attr("d", d => diamondPath(xZoomed(d._end), laneCenterY(d) + dodgeFor(d), DIAMOND_RADIUS));
+
+                rangeEndSel.exit().remove();
+            }
+
+            // Update axis during zoom
+            function updateAxis() {
+                if (!xScale) return;
+
+                xZoomed = currentTransform.rescaleX(xScale);
+
+                // Reposition the midline directly since it's no longer inside the zoom
+                // layer's scale transform (kept out of it to avoid stretching it).
+                const midX = xZoomed(0);
+                layers.midline.select("line").attr("x1", midX).attr("x2", midX);
+
+                if (activeCrucifixionRow) positionCrucifixionMarker();
+
+                // Re-run the vertical dodge at the current zoom level: witnesses that
+                // were colliding may separate once zoomed in (and should re-center), or
+                // vice versa. The range line's x1/x2 don't need updating — it's inside
+                // zoomLayer, so its own transform handles that — but the diamonds live
+                // outside zoomLayer (to avoid the non-uniform scale distorting their
+                // shape) and so need both x *and* y recomputed from the live xZoomed on
+                // every tick.
+                if (yScale) {
+                    const dodgeOffsets = computeDodgeOffsets(witnessRows);
+                    const dodgeFor = d => dodgeOffsets.get(d) || 0;
+
+                    layers.witnesses.selectAll("line.witness-range-line")
+                        .attr("y1", d => laneCenterY(d) + dodgeFor(d))
+                        .attr("y2", d => laneCenterY(d) + dodgeFor(d));
+
+                    witnessMarkersLayer.selectAll("path.witness-marker")
+                        .attr("d", d => diamondPath(xZoomed(d._start), laneCenterY(d) + dodgeFor(d), DIAMOND_RADIUS));
+                    witnessMarkersLayer.selectAll("path.witness-range-point-start")
+                        .attr("d", d => diamondPath(xZoomed(d._start), laneCenterY(d) + dodgeFor(d), DIAMOND_RADIUS));
+                    witnessMarkersLayer.selectAll("path.witness-range-point-end")
+                        .attr("d", d => diamondPath(xZoomed(d._end), laneCenterY(d) + dodgeFor(d), DIAMOND_RADIUS));
+                }
+
+                const xAxis = d3.axisBottom(xZoomed)
+                    .ticks(10)
+                    .tickFormat(d => fmtYear(d));
+
+                xAxisG.call(xAxis)
+                    .selectAll("text")
+                    .attr("transform", "rotate(-25)")
+                    .style("text-anchor", "end");
+            }
+
+            // Click anywhere to dismiss pinned tooltips
+            document.addEventListener("click", () => { hideTip(); clearActiveRow(); });
+
+            // Keep the chart responsive to its (possibly embedded) container width
+            let resizeTimer = null;
+            window.addEventListener("resize", () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(render, 120);
+            });
+
+            buildDocFilter(dataset.works);
+            rerenderChart = render;
+            render();
+        })();
+    </script>
+</body>
+
+</html>

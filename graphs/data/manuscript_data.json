@@ -1,0 +1,1031 @@
+{
+    "meta": {
+        "datasetId": "ancient-text-manuscripts-v0",
+        "title": "Ancient Texts: Composition vs. Manuscript Witnesses",
+        "notes": [
+            "Dates are approximate and often expressed as ranges (e.g., a manuscript dated 'saec. ix' becomes 800–899).",
+            "For most classical works, only a few flagship witnesses are catalogued here rather than the full manuscript tradition.",
+            "New Testament composition ranges are drawn wide enough to span both the commonly cited critical/majority dating and the conservative (often pre-70 CE) dating defended by a real body of scholarship, rather than presenting only one side as settled; see each Gospel's composition.label for the specific reasoning and sources."
+        ]
+    },
+    "fieldGuide": {
+        "works[].id": "Stable identifier you’ll use for filtering/joins in D3.",
+        "works[].group": "High-level grouping (e.g., 'NT' vs 'ClassicalLatin').",
+        "works[].composition": "When the work was composed (range).",
+        "works[].manuscriptCount": "Structured pre-1500 original-language manuscript-witness count for this specific work (value/display/qualifier/language/heading/scope/confidence, plus optional min/max for qualifier:range or components[] for qualifier:separateTraditions). qualifier is one of exact, approximate, minimum, range, separateTraditions, completeOnly, or unavailable — never encode an unknown total as 0, and never sum components[] into a single value.",
+        "works[].witnesses[]": "Specific manuscript witnesses you want plotted as points/ranges on the timeline.",
+        "works[].links": "Where to learn more, read online, and/or purchase a reliable edition."
+    },
+    "works": [
+        {
+            "id": "nt-john",
+            "title": "Gospel of John",
+            "author": "Traditionally John; authorship debated in scholarship",
+            "language": "Greek",
+            "group": "NT",
+            "relatesToCrucifixion": true,
+            "composition": {
+                "startCE": 60,
+                "endCE": 100,
+                "label": "most commonly dated c. 90–100 CE; a minority of scholars (e.g., J. A. T. Robinson, and others weighing the Gospel's detailed Jerusalem topography and lack of any reference to the Temple's destruction) argue for composition before 70 CE, as early as the 60s"
+            },
+            "description": "One of the four canonical Gospels; central source for Jesus’ ministry, crucifixion, and resurrection narratives in Christian tradition.",
+            "manuscriptCount": {
+                "value": 1950,
+                "display": "≈1,950",
+                "qualifier": "approximate",
+                "language": "Greek",
+                "heading": "Pre-1500 Greek continuous-text MSS",
+                "scope": "Greek continuous-text manuscripts containing some portion of John; lectionaries excluded.",
+                "confidence": "provisional"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Gospel_of_John",
+                "readOnline": "https://www.biblegateway.com/passage/?search=John+1&version=ESV",
+                "purchase": "https://www.amazon.com/Nestle-Aland-Novum-Testamentum-Graece/dp/3438051565"
+            },
+            "witnesses": [
+                {
+                    "id": "p52-rylands-greek-457",
+                    "label": "P52 (Rylands Greek Papyrus 457)",
+                    "type": "papyrus-fragment",
+                    "contents": "John 18:31–33, 37–38 (fragmentary)",
+                    "date": {
+                        "startCE": 125,
+                        "endCE": 200,
+                        "label": "2nd century CE (often dated c. 125–175; debated)"
+                    },
+                    "repository": "John Rylands Library, Manchester",
+                    "shelfmark": "Greek P 457",
+                    "links": {
+                        "info": "https://en.wikipedia.org/wiki/Rylands_Library_Papyrus_P52"
+                    },
+                    "notes": "Often cited as the earliest surviving fragment of the NT; precise dating is disputed."
+                }
+            ]
+        },
+               {
+            "id": "gospel-matthew",
+            "title": "Gospel of Matthew",
+            "author": "Traditionally attributed to Matthew (anonymous in-text)",
+            "language": "Greek",
+            "group": "NT",
+            "relatesToCrucifixion": true,
+            "composition": {
+                "startCE": 50,
+                "endCE": 95,
+                "label": "critical scholarship commonly dates Matthew after 70 CE (often c. 80–90), reasoning partly from apparent references to Jerusalem's destruction; a conservative minority — weighing Papias's early testimony about a Hebrew/Aramaic Matthew and arguments for Matthean priority — dates it to the 50s–60s"
+            },
+            "description": "A canonical Gospel presenting Jesus as Israel’s Messiah and emphasizing fulfillment of Jewish Scripture; widely regarded as dependent on (and later than) Mark.",
+            "manuscriptCount": {
+                "value": 1950,
+                "display": "≈1,950",
+                "qualifier": "approximate",
+                "language": "Greek",
+                "heading": "Pre-1500 Greek continuous-text MSS",
+                "scope": "Greek continuous-text manuscripts containing some portion of Matthew; lectionaries excluded.",
+                "confidence": "provisional"
+            },
+            "links": {
+                "info": "https://www.britannica.com/topic/Gospel-According-to-Matthew",
+                "readOnline": "https://www.biblegateway.com/passage/?search=Matthew+1&version=ESV",
+                "purchase": "https://www.crossway.org/bibles/esv-study-bible-hcb/"
+            },
+            "witnesses": [
+                {
+                    "id": "p104-oxy-4404",
+                    "label": "𝔓104 (P.Oxy. 4404) — Matthew 21:34–37 (and traces)",
+                    "type": "papyrus-fragment",
+                    "contents": "Matt 21:34–37 (recto) with traces often noted for 21:43,45 (verso)",
+                    "date": {
+                        "startCE": 100,
+                        "endCE": 199,
+                        "label": "2nd century"
+                    },
+                    "repository": "Oxford (Sackler Library / Bodleian), via Oxyrhynchus collection",
+                    "shelfmark": "P. Oxy. 4404",
+                    "links": {
+                        "info": "https://manuscripts.csntm.org/manuscript/View/GA_P104"
+                    },
+                    "notes": "Among the earliest surviving witnesses to Matthew, dated on paleographic grounds to the 2nd century."
+                }
+            ]
+        },
+        {
+            "id": "gospel-mark",
+            "title": "Gospel of Mark",
+            "author": "Traditionally attributed to Mark (anonymous in-text)",
+            "language": "Greek",
+            "group": "NT",
+            "relatesToCrucifixion": true,
+            "composition": {
+                "startCE": 50,
+                "endCE": 70,
+                "label": "mainstream scholarship often favors the years just before 70 CE; a significant minority — following early patristic testimony (Papias, via Eusebius) linking Mark's Gospel to Peter's preaching in Rome, and the Synoptics' silence about the Jewish War — argues for the 50s"
+            },
+            "description": "The shortest canonical Gospel and commonly treated as the earliest; heavily used as a source by Matthew and Luke in many scholarly models.",
+            "manuscriptCount": {
+                "value": 1890,
+                "display": "≈1,890",
+                "qualifier": "approximate",
+                "language": "Greek",
+                "heading": "Pre-1500 Greek continuous-text MSS",
+                "scope": "Greek continuous-text manuscripts containing some portion of Mark; lectionaries excluded.",
+                "confidence": "provisional"
+            },
+            "links": {
+                "info": "https://www.britannica.com/topic/Gospel-According-to-Mark",
+                "readOnline": "https://www.biblegateway.com/passage/?search=Mark+1&version=ESV",
+                "purchase": "https://www.crossway.org/bibles/esv-compact-bible-tru/"
+            },
+            "witnesses": [
+                {
+                    "id": "p137-oxy-5345",
+                    "label": "𝔓137 (P.Oxy. LXXXIII 5345) — Mark 1 fragment",
+                    "type": "papyrus-fragment",
+                    "contents": "Mark 1:7–9 (recto) and 1:16–18 (verso)",
+                    "date": {
+                        "startCE": 175,
+                        "endCE": 250,
+                        "label": "late 2nd / early 3rd century"
+                    },
+                    "repository": "Oxyrhynchus Papyri collection (published by EES; held in Oxford for research/access)",
+                    "shelfmark": "P.Oxy. LXXXIII 5345",
+                    "links": {
+                        "info": "https://www.ees.ac.uk/News/poxy-lxxxiii-5345/"
+                    },
+                    "notes": "Published as P.Oxy. 83.5345; editorial dating is commonly given as late 2nd/early 3rd century, while an earlier internal record card marked it 'I/II' (preliminary, not the published date)."
+                }
+            ]
+        },
+        {
+            "id": "gospel-luke",
+            "title": "Gospel of Luke",
+            "author": "Traditionally attributed to Luke (anonymous in-text)",
+            "language": "Greek",
+            "group": "NT",
+            "relatesToCrucifixion": true,
+            "composition": {
+                "startCE": 57,
+                "endCE": 90,
+                "label": "critical scholarship commonly dates Luke c. 80–90 CE; a substantial body of scholarship dates Luke–Acts earlier, to the late 50s/early 60s, noting that Acts ends abruptly c. 62 CE without mentioning Paul's death, James's death (62 CE), or Jerusalem's fall (70 CE) — all of which would be difficult to pass over in a work otherwise so invested in Paul's fate and in Jewish–Roman conflict"
+            },
+            "description": "A canonical Gospel written with an explicitly Gentile-facing horizon and forming a two-volume work with Acts (Luke–Acts) in many scholarly treatments.",
+            "manuscriptCount": {
+                "value": 1930,
+                "display": "≈1,930",
+                "qualifier": "approximate",
+                "language": "Greek",
+                "heading": "Pre-1500 Greek continuous-text MSS",
+                "scope": "Greek continuous-text manuscripts containing some portion of Luke; lectionaries excluded.",
+                "confidence": "provisional"
+            },
+            "links": {
+                "info": "https://www.britannica.com/topic/biblical-literature/The-Gospel-According-to-Luke",
+                "readOnline": "https://www.biblegateway.com/passage/?search=Luke+1&version=ESV",
+                "purchase": "https://www.crossway.org/bibles/esv-reader-s-bible-hcb/"
+            },
+            "witnesses": [
+                {
+                    "id": "p75-hanna-1",
+                    "label": "𝔓75 (Hanna Papyrus 1 / Pap. Hanna 1) — large portions of Luke (and John)",
+                    "type": "papyrus-codex",
+                    "contents": "Luke 3:18–24:53 (and John 1:1–15:8)",
+                    "date": {
+                        "startCE": 200,
+                        "endCE": 299,
+                        "label": "3rd century"
+                    },
+                    "repository": "Vatican Library",
+                    "shelfmark": "Pap. Hanna. 1",
+                    "links": {
+                        "info": "https://manuscripts.csntm.org/manuscript/View/GA_P75"
+                    },
+                    "notes": "One of the most significant early New Testament papyri, preserving large continuous portions of both Luke and John from the 3rd century."
+                }
+            ]
+        },
+        {
+            "id": "1-corinthians",
+            "title": "1 Corinthians",
+            "author": "Paul (authorship essentially undisputed, even among critical scholars)",
+            "language": "Greek",
+            "group": "NT",
+            "relatesToCrucifixion": true,
+            "composition": {
+                "startCE": 33,
+                "endCE": 55,
+                "label": "the letter itself was written c. 53–55 CE from Ephesus (1 Cor 16:8); it explicitly quotes an earlier creedal formula (15:3–7) that a wide range of scholars — including skeptics such as Gerd Lüdemann and Bart Ehrman — date to within a few years of the crucifixion, commonly placed c. 33–38 CE"
+            },
+            "description": "One of Paul's undisputed letters, written to the church he founded at Corinth. Chapter 15 preserves what most scholars regard as a pre-Pauline creedal formula listing resurrection appearances — often cited as the earliest surviving testimony to the resurrection, predating the Gospels by decades and the letter itself by years.",
+            "manuscriptCount": {
+                "value": 640,
+                "display": "≈640",
+                "qualifier": "approximate",
+                "language": "Greek",
+                "heading": "Pre-1500 Greek continuous-text MSS",
+                "scope": "Greek continuous-text manuscripts containing some portion of 1 Corinthians; lectionaries excluded.",
+                "confidence": "provisional"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/First_Epistle_to_the_Corinthians",
+                "readOnline": "https://www.biblegateway.com/passage/?search=1+Corinthians+15&version=ESV",
+                "purchase": "https://www.crossway.org/bibles/esv-study-bible-hcb/"
+            },
+            "witnesses": [
+                {
+                    "id": "p46-chester-beatty-ii-1cor",
+                    "label": "𝔓46 (Chester Beatty Papyrus II) — 1 Corinthians portion",
+                    "type": "papyrus-codex",
+                    "contents": "Substantial portions of 1 Corinthians, within a codex originally containing nine Pauline letters",
+                    "date": {
+                        "startCE": 175,
+                        "endCE": 225,
+                        "label": "c. 175–225 CE (some scholars favor the early 3rd century)"
+                    },
+                    "repository": "Chester Beatty Library (Dublin) and University of Michigan Papyrus Collection (split)",
+                    "shelfmark": "Chester Beatty Bibl. Pap. II / P.Mich.inv. 6238",
+                    "links": {
+                        "info": "https://en.wikipedia.org/wiki/Papyrus_46"
+                    },
+                    "notes": "The earliest substantial witness to the Pauline corpus; among the most important early New Testament manuscripts."
+                },
+                {
+                    "id": "p15-oxy-1008",
+                    "label": "𝔓15 (P.Oxy. 1008)",
+                    "type": "papyrus-fragment",
+                    "contents": "1 Corinthians 7:18–8:4",
+                    "date": {
+                        "startCE": 200,
+                        "endCE": 299,
+                        "label": "3rd century (some place it in the 4th)"
+                    },
+                    "repository": "Bibliotheca Alexandrina (Alexandria, Egypt)",
+                    "shelfmark": "BAAM 0543",
+                    "links": {
+                        "info": "https://en.wikipedia.org/wiki/Papyrus_15"
+                    },
+                    "notes": "Originally part of the same papyrus codex as 𝔓16."
+                }
+            ]
+        },
+        {
+            "id": "galatians",
+            "title": "Galatians",
+            "author": "Paul (authorship essentially undisputed, even among critical scholars)",
+            "language": "Greek",
+            "group": "NT",
+            "relatesToCrucifixion": true,
+            "composition": {
+                "startCE": 48,
+                "endCE": 57,
+                "label": "the 'South Galatian' view — favored by most recent scholarship — dates it c. 48–49 CE, before the Jerusalem Council, which would make it the earliest surviving Christian writing; the older 'North Galatian' view dates it c. 53–57 CE, from Ephesus or Macedonia"
+            },
+            "description": "One of Paul's undisputed letters, defending his apostleship and gospel of justification by faith. Its autobiographical first two chapters — recounting Paul's conversion, his visits to Jerusalem, and his relationship with Peter and James — are a key primary source for the earliest years of the Christian movement.",
+            "manuscriptCount": {
+                "value": 635,
+                "display": "≈635",
+                "qualifier": "approximate",
+                "language": "Greek",
+                "heading": "Pre-1500 Greek continuous-text MSS",
+                "scope": "Greek continuous-text manuscripts containing some portion of Galatians; lectionaries excluded.",
+                "confidence": "provisional"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Epistle_to_the_Galatians",
+                "readOnline": "https://www.biblegateway.com/passage/?search=Galatians+1&version=ESV",
+                "purchase": "https://www.crossway.org/bibles/esv-study-bible-hcb/"
+            },
+            "witnesses": [
+                {
+                    "id": "p46-chester-beatty-ii-gal",
+                    "label": "𝔓46 (Chester Beatty Papyrus II) — Galatians portion",
+                    "type": "papyrus-codex",
+                    "contents": "Substantial portions of Galatians, within a codex originally containing nine Pauline letters",
+                    "date": {
+                        "startCE": 175,
+                        "endCE": 225,
+                        "label": "c. 175–225 CE (some scholars favor the early 3rd century)"
+                    },
+                    "repository": "Chester Beatty Library (Dublin) and University of Michigan Papyrus Collection (split)",
+                    "shelfmark": "Chester Beatty Bibl. Pap. II / P.Mich.inv. 6238",
+                    "links": {
+                        "info": "https://en.wikipedia.org/wiki/Papyrus_46"
+                    },
+                    "notes": "The earliest substantial witness to the Pauline corpus; among the most important early New Testament manuscripts."
+                },
+                {
+                    "id": "p51-oxy-2157",
+                    "label": "𝔓51 (P.Oxy. 2157)",
+                    "type": "papyrus-fragment",
+                    "contents": "Galatians 1:2–10, 13, 16–20",
+                    "date": {
+                        "startCE": 350,
+                        "endCE": 450,
+                        "label": "4th–5th century (often cited as c. 400)"
+                    },
+                    "repository": "Ashmolean Museum (Oxford)",
+                    "shelfmark": "P.Oxy. 2157",
+                    "links": {
+                        "info": "https://en.wikipedia.org/wiki/Papyrus_51"
+                    },
+                    "notes": "A fragmentary but early witness to the opening of Galatians."
+                }
+            ]
+        },
+        {
+            "id": "tacitus-annals",
+            "title": "Annals",
+            "author": "Tacitus",
+            "language": "Latin",
+            "group": "ClassicalLatin",
+            "relatesToCrucifixion": true,
+            "composition": {
+                "startCE": 109,
+                "endCE": 117,
+                "label": "early 2nd century CE (approx.)"
+            },
+            "description": "Roman imperial history (Tiberius through Nero). Large portions survive via a small manuscript tradition dominated by the Medicean codices. Book 15.44 records that 'Christus, from whom the name had its origin, suffered the extreme penalty during the reign of Tiberius at the hands of ... Pontius Pilatus' — a rare, non-Christian historical reference to the crucifixion itself.",
+            "manuscriptCount": {
+                "value": 33,
+                "display": "≈33",
+                "qualifier": "approximate",
+                "language": "Latin",
+                "heading": "Pre-1500 Latin MSS",
+                "scope": "Direct Latin manuscript witnesses containing surviving portions of the Annals.",
+                "confidence": "moderate"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Annals_(Tacitus)",
+                "readOnline": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Tacitus/Annals/home.html",
+                "purchase": "https://www.hup.harvard.edu/books/9780674991286"
+            },
+            "witnesses": [
+                {
+                    "id": "mediceus-i-laur-68-1",
+                    "label": "Codex Mediceus I (Laurentianus 68.1)",
+                    "type": "parchment-codex",
+                    "contents": "Annals I–VI (primary witness)",
+                    "date": {
+                        "startCE": 800,
+                        "endCE": 899,
+                        "label": "saec. ix (9th century)"
+                    },
+                    "repository": "Biblioteca Medicea Laurenziana (Florence)",
+                    "shelfmark": "Laur. 68.1",
+                    "links": {
+                        "info": "https://www.cambridge.org/core/books/annals-of-tacitus/sigla/17C28604B7DA68FC2C388E2E7B847413"
+                    }
+                },
+                {
+                    "id": "mediceus-ii-laur-68-2",
+                    "label": "Codex Mediceus II (Laurentianus 68.2)",
+                    "type": "parchment-codex",
+                    "contents": "Annals XI–XVI; also associated with the surviving tradition for parts of Histories",
+                    "date": {
+                        "startCE": 1058,
+                        "endCE": 1087,
+                        "label": "11th century (linked to Monte Cassino; often placed mid-11th c.)"
+                    },
+                    "repository": "Biblioteca Medicea Laurenziana (Florence)",
+                    "shelfmark": "Laur. 68.2",
+                    "links": {
+                        "info": "https://assets.cambridge.org/97811070/11106/excerpt/9781107011106_excerpt.pdf"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "pliny-letters",
+            "title": "Letters",
+            "author": "Pliny the Younger",
+            "language": "Latin",
+            "group": "ClassicalLatin",
+            "composition": {
+                "startCE": 97,
+                "endCE": 112,
+                "label": "late 1st–early 2nd century CE (approx.)"
+            },
+            "description": "Collected correspondence (Books 1–10). Includes the famous letters on Vesuvius and the exchange with Trajan.",
+            "manuscriptCount": {
+                "value": 100,
+                "display": ">100",
+                "qualifier": "minimum",
+                "language": "Latin",
+                "heading": "Pre-1500 Latin MSS",
+                "scope": "More than 100 surviving Latin manuscript witnesses.",
+                "confidence": "moderate"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Pliny_the_Younger",
+                "readOnline": "https://www.gutenberg.org/ebooks/3234",
+                "purchase": "https://www.hup.harvard.edu/books/9780674990616"
+            },
+            "witnesses": [
+                {
+                    "id": "morgan-m462-fragment",
+                    "label": "Morgan Fragment (MS M.462)",
+                    "type": "parchment-fragment",
+                    "contents": "Portion of Letters (fragmentary leaves; Books II–III in the published study)",
+                    "date": {
+                        "startCE": 500,
+                        "endCE": 550,
+                        "label": "early 6th century (uncial manuscript; approx.)"
+                    },
+                    "repository": "Pierpont Morgan Library (New York)",
+                    "shelfmark": "MS M.462",
+                    "links": {
+                        "info": "https://archive.org/download/sixthcenturyfrag00lowe/sixthcenturyfrag00lowe.pdf"
+                    },
+                    "notes": "The study argues it is an early sixth-century witness and emphasizes its textual importance relative to later codices."
+                }
+            ]
+        },
+        {
+            "id": "virgil-aeneid",
+            "title": "Aeneid (with Georgics fragments in this witness)",
+            "author": "Virgil",
+            "language": "Latin",
+            "group": "ClassicalLatin",
+            "composition": {
+                "startBCE": 29,
+                "endBCE": 19,
+                "label": "c. 29–19 BCE"
+            },
+            "description": "Rome’s national epic. Many medieval copies exist; this starter entry spotlights a famous late-antique illustrated witness.",
+            "manuscriptCount": {
+                "value": null,
+                "display": "Not securely isolated",
+                "qualifier": "unavailable",
+                "language": "Latin",
+                "heading": "Pre-1500 Latin MSS",
+                "scope": "More than 1,000 medieval and Renaissance manuscripts are reported, but a defensible strictly pre-1500 subtotal has not been isolated.",
+                "confidence": "unavailable"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Aeneid",
+                "readOnline": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.02.0055",
+                "purchase": "https://www.hup.harvard.edu/books/9780674995901"
+            },
+            "witnesses": [
+                {
+                    "id": "vat-lat-3225",
+                    "label": "Vergilius Vaticanus (Vat. lat. 3225)",
+                    "type": "parchment-codex",
+                    "contents": "Fragments of the Aeneid and Georgics (illustrated)",
+                    "date": {
+                        "startCE": 300,
+                        "endCE": 399,
+                        "label": "sec. IV (4th century) per Vatican digitization record"
+                    },
+                    "repository": "Biblioteca Apostolica Vaticana",
+                    "shelfmark": "Vat. lat. 3225",
+                    "links": {
+                        "info": "https://digi.vatlib.it/view/MSS_Vat.lat.3225",
+                        "iiifManifest": "https://digi.vatlib.it/iiif/MSS_Vat.lat.3225/manifest.json"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "josephus-antiquities",
+            "title": "Antiquities of the Jews",
+            "author": "Flavius Josephus",
+            "language": "Greek",
+            "group": "ClassicalGreek",
+            "relatesToCrucifixion": true,
+            "composition": {
+                "startCE": 93,
+                "endCE": 94,
+                "label": "c. 93–94 CE"
+            },
+            "description": "A sweeping history of the Jewish people from creation to the outbreak of the Jewish revolt; a cornerstone source for 1st-century Jewish/Roman context. Book 18.3.3 (the 'Testimonium Flavianum') describes Jesus's condemnation and crucifixion under Pilate; the passage's authenticity and extent of later Christian editing are debated, but most scholars accept it has an authentic core.",
+            "manuscriptCount": {
+                "value": 110,
+                "display": "≈110 catalogue records",
+                "qualifier": "approximate",
+                "language": "Greek",
+                "heading": "Pre-1500 Greek witnesses",
+                "scope": "Catalogue records may include partial copies, excerpts, and isolated passages; not necessarily continuous copies of the complete work.",
+                "confidence": "provisional"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Antiquities_of_the_Jews",
+                "readOnline": "https://penelope.uchicago.edu/josephus/",
+                "purchase": "https://www.hup.harvard.edu/books/9780674991293"
+            },
+            "witnesses": [
+                {
+                    "id": "ambrosianus-370-f128-sup",
+                    "label": "Codex Ambrosianus 370 (F 128 sup.)",
+                    "type": "parchment-codex",
+                    "contents": "Antiquities 11–20 + Life (Vita); damaged at beginning; some gaps/repairs noted in apparatus tradition",
+                    "date": {
+                        "startCE": 1000,
+                        "endCE": 1099,
+                        "label": "11th century"
+                    },
+                    "repository": "Biblioteca Ambrosiana (Milan)",
+                    "shelfmark": "Ambrosianus gr. 370 / F 128 sup.",
+                    "links": {
+                        "info": "https://www.tertullian.org/rpearse/manuscripts/josephus_all.htm"
+                    },
+                    "notes": "Often cited as the earliest key Greek witness for the latter half of Antiquities."
+                }
+            ]
+        },
+        {
+            "id": "suetonius-twelve-caesars",
+            "title": "The Twelve Caesars",
+            "author": "Suetonius",
+            "language": "Latin",
+            "group": "ClassicalLatin",
+            "composition": {
+                "startCE": 110,
+                "endCE": 130,
+                "label": "early 2nd century CE (approx.)"
+            },
+            "description": "Biographies of Julius Caesar and the first eleven emperors; a major Roman source for imperial-era culture and politics. The Life of Claudius (25.4) reports that Claudius 'expelled from Rome the Jews, who were constantly making disturbances at the instigation of Chrestus' — often read as a garbled reference to Christ or the early Christian movement (and sometimes linked to the expulsion mentioned in Acts 18:2), though scholars remain divided on the identification.",
+            "manuscriptCount": {
+                "value": 200,
+                "display": ">200",
+                "qualifier": "minimum",
+                "language": "Latin",
+                "heading": "Pre-1500 Latin MSS",
+                "scope": "More than 200 manuscripts, including complete texts, partial texts, fragments, or excerpts.",
+                "confidence": "moderate"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/The_Twelve_Caesars",
+                "readOnline": "https://www.gutenberg.org/ebooks/6400",
+                "purchase": "https://www.hup.harvard.edu/books/9780674992894"
+            },
+            "witnesses": [
+                {
+                    "id": "paris-lat-6115-codex-memmianus",
+                    "label": "Codex Memmianus (Parisinus lat. 6115)",
+                    "type": "parchment-codex",
+                    "contents": "De vita Caesarum (principal witness for the tradition)",
+                    "date": {
+                        "startCE": 815,
+                        "endCE": 830,
+                        "label": "c. 820 (Tours)"
+                    },
+                    "repository": "Bibliothèque nationale de France (Paris)",
+                    "shelfmark": "Parisinus lat. 6115",
+                    "links": {
+                        "info": "https://www.loebclassics.com/view/LCL031/1914/pb_LCL031.29.xml"
+                    },
+                    "notes": "Loeb describes it as the oldest extant manuscript, written at Tours ca. 820."
+                }
+            ]
+        },
+        {
+            "id": "pliny-elder-natural-history",
+            "title": "Natural History",
+            "author": "Pliny the Elder",
+            "language": "Latin",
+            "group": "ClassicalLatin",
+            "composition": {
+                "startCE": 73,
+                "endCE": 79,
+                "label": "c. 73–79 CE (published before 79)"
+            },
+            "description": "A massive encyclopedia of the natural world; one of the most-cited ancient works for Roman-era knowledge and cultural assumptions.",
+            "manuscriptCount": {
+                "value": 120,
+                "display": ">120",
+                "qualifier": "minimum",
+                "language": "Latin",
+                "heading": "Pre-1500 Latin continuous-text MSS",
+                "scope": "More than 120 surviving continuous-text Latin manuscripts.",
+                "confidence": "moderate"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Natural_History_(Pliny)",
+                "readOnline": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Pliny_the_Elder/home.html",
+                "purchase": "https://www.hup.harvard.edu/books/9780674993648"
+            },
+            "witnesses": [
+                {
+                    "id": "st-paul-3-1-codex-moneus",
+                    "label": "St. Paul in Lavanttal, Stiftsbibliothek 3.1 (Codex Moneus) — palimpsest undertext",
+                    "type": "palimpsest-undertext",
+                    "contents": "Large sections of Natural History (books 11–15) as lower text (partly visible)",
+                    "date": {
+                        "startCE": 400,
+                        "endCE": 499,
+                        "label": "5th century (undertext)"
+                    },
+                    "repository": "Stiftsbibliothek St. Paul im Lavanttal (Austria)",
+                    "shelfmark": "3.1 (also cited with catalog cross-refs)",
+                    "links": {
+                        "info": "https://www.roger-pearse.com/weblog/2013/06/22/the-manuscripts-of-pliny-the-elders-natural-history/comment-page-1/"
+                    },
+                    "notes": "One of the earliest surviving witnesses to the Natural History, though only partially recoverable as the erased undertext of a later palimpsest."
+                },
+                {
+                    "id": "bamberg-class-42",
+                    "label": "Bamberg, Class. 42 (often cited as a key medieval witness)",
+                    "type": "parchment-codex",
+                    "contents": "Books 32–37 (and key for preserving the ending of the work, per some descriptions)",
+                    "date": {
+                        "startCE": 800,
+                        "endCE": 999,
+                        "label": "9th–10th century (dating varies by reference)"
+                    },
+                    "repository": "Staatsbibliothek Bamberg",
+                    "shelfmark": "Class. 42",
+                    "links": {
+                        "info": "https://www.loebclassics.com/view/LCL418/1963/pb_LCL418.vii.xml"
+                    },
+                    "notes": "Loeb refers to a Codex Bambergensis as the oldest manuscript (10th c.) for its editorial discussion; other catalogs discuss Bamberg witnesses with slightly different datings."
+                }
+            ]
+        },
+        {
+            "id": "livy-history-of-rome",
+            "title": "Ab Urbe Condita (History of Rome)",
+            "author": "Titus Livius (Livy)",
+            "language": "Latin",
+            "group": "ClassicalLatin",
+            "composition": {
+                "startBCE": 27,
+                "endBCE": 9,
+                "label": "late 1st century BCE (approx.)"
+            },
+            "description": "A monumental narrative history of Rome from its legendary foundations through the early imperial period; one of the best-known Latin histories and a major source for Roman historical tradition.",
+            "manuscriptCount": {
+                "value": null,
+                "display": "No unified total",
+                "qualifier": "separateTraditions",
+                "language": "Latin",
+                "heading": "Pre-1500 Latin MSS",
+                "scope": "The surviving portions circulated in partly separate manuscript traditions: Books 1–10 ≈200; Books 21–30 >170; Books 31–40 ≈100; Books 41–45 depend directly on one principal manuscript. These values must not be added together.",
+                "components": [
+                    { "label": "Books 1–10", "value": 200, "display": "≈200" },
+                    { "label": "Books 21–30", "value": 170, "display": ">170" },
+                    { "label": "Books 31–40", "value": 100, "display": "≈100" },
+                    { "label": "Books 41–45", "value": 1, "display": "1 principal direct witness" }
+                ],
+                "confidence": "qualified"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/History_of_Rome_(Livy)",
+                "readOnline": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.02.0163",
+                "purchase": "https://www.loebclassics.com/search?query=Livy"
+            },
+            "witnesses": [
+                {
+                    "id": "taurinensis-palimpsest-fragments",
+                    "label": "Taurinensis palimpsest (fragments of Books 27 & 29)",
+                    "type": "palimpsest-undertext",
+                    "contents": "Fragments of Books 27 and 29 (collations survive)",
+                    "date": {
+                        "startCE": 400,
+                        "endCE": 499,
+                        "label": "5th century (undertext)"
+                    },
+                    "repository": "Formerly Turin library (destroyed by fire in 1904)",
+                    "shelfmark": "Known in scholarship as Taurinensis (palimpsest)",
+                    "links": {
+                        "info": "https://catalogimages.wiley.com/images/db/pdf/9781118301289.excerpt.pdf"
+                    },
+                    "notes": "Described as containing fragments of Books 27 and 29 written in the 5th century; destroyed in 1904, but earlier collations preserve readings."
+                },
+                {
+                    "id": "veronensis-livy",
+                    "label": "Veronensis (V) — Livy witness cited in editorial tradition",
+                    "type": "parchment-codex",
+                    "contents": "Livy (specific scope depends on edition’s manuscript list)",
+                    "date": {
+                        "startCE": 300,
+                        "endCE": 399,
+                        "label": "4th century"
+                    },
+                    "repository": "Referenced in editorial sigla (see edition introductions)",
+                    "shelfmark": "Siglum V (Veronensis)",
+                    "links": {
+                        "info": "https://www.loebclassics.com/view/LCL114/1919/pb_LCL114.xxxvii.xml"
+                    },
+                    "notes": "Loeb’s manuscript list for Livy includes a Veronensis (V) dated to the 4th century."
+                },
+                {
+                    "id": "harleianus-harl-2672",
+                    "label": "Harleianus (H) — British Library, Harley MS 2672",
+                    "type": "parchment-codex",
+                    "contents": "Livy (First Decade tradition in manuscript discussions)",
+                    "date": {
+                        "startCE": 950,
+                        "endCE": 999,
+                        "label": "late 10th century"
+                    },
+                    "repository": "British Library (London)",
+                    "shelfmark": "Harley MS 2672",
+                    "links": {
+                        "info": "https://www.jstor.org/stable/637575"
+                    },
+                    "notes": "A standard reference on Livy’s First Decade tradition describes Harleianus (Harl. 2672) as late 10th century."
+                }
+            ]
+        },
+        {
+            "id": "plutarch-parallel-lives",
+            "title": "Parallel Lives (Bioi Paralleloi)",
+            "author": "Plutarch",
+            "language": "Greek",
+            "group": "ClassicalGreek",
+            "composition": {
+                "startCE": 95,
+                "endCE": 125,
+                "label": "late 1st–early 2nd century CE (approx.)"
+            },
+            "description": "Paired biographies of Greek and Roman figures intended for moral and political reflection; among the most influential biographical works of antiquity.",
+            "manuscriptCount": {
+                "value": null,
+                "display": "Not securely totaled",
+                "qualifier": "unavailable",
+                "language": "Greek",
+                "heading": "Pre-1500 Greek MSS",
+                "scope": "Individual Lives and groups of Lives circulated in overlapping manuscript configurations; no defensible unified total is currently supplied.",
+                "confidence": "unavailable"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Parallel_Lives",
+                "readOnline": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Plutarch/Lives/home.html",
+                "purchase": "https://www.loebclassics.com/search?query=Plutarch%20Lives"
+            },
+            "witnesses": [
+                {
+                    "id": "parisinus-gr-1671-selection",
+                    "label": "Parisinus graecus 1671 (selection of Lives; contemporary with Arethas)",
+                    "type": "parchment-codex",
+                    "contents": "A small selection from the Lives (not the complete corpus)",
+                    "date": {
+                        "startCE": 900,
+                        "endCE": 999,
+                        "label": "10th century (approx.)"
+                    },
+                    "repository": "Bibliothèque nationale de France (Paris)",
+                    "shelfmark": "Parisinus graecus 1671",
+                    "links": {
+                        "info": "https://brill.com/display/book/edcoll/9789004409446/BP000031.xml?language=en"
+                    },
+                    "notes": "A Brill chapter on transmission notes a codex contemporary with Arethas containing a small selection from the Lives (identified there as MS 1671)."
+                }
+            ]
+        },
+        {
+            "id": "marcus-aurelius-meditations",
+            "title": "Meditations (Ta eis heauton)",
+            "author": "Marcus Aurelius",
+            "language": "Greek",
+            "group": "ClassicalGreek",
+            "composition": {
+                "startCE": 170,
+                "endCE": 180,
+                "label": "c. 170–180 CE"
+            },
+            "description": "Private philosophical reflections associated with Stoicism; one of the best-known works of ancient moral philosophy.",
+            "manuscriptCount": {
+                "value": 1,
+                "display": "1 complete MS",
+                "qualifier": "completeOnly",
+                "language": "Greek",
+                "heading": "Pre-1500 Greek MSS",
+                "scope": "One complete Greek manuscript is counted here; additional fragmentary and excerpt witnesses survive but are not quantified by this value.",
+                "confidence": "high for complete manuscripts only"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Meditations",
+                "readOnline": "https://en.wikisource.org/wiki/The_Meditations_of_the_Emperor_Marcus_Antoninus",
+                "purchase": "https://www.loebclassics.com/search?query=Marcus%20Aurelius%20Meditations"
+            },
+            "witnesses": [
+                {
+                    "id": "vat-gr-1950",
+                    "label": "Codex Vaticanus graecus 1950 (A)",
+                    "type": "parchment-codex",
+                    "contents": "Primary complete witness commonly cited for the full text",
+                    "date": {
+                        "startCE": 1300,
+                        "endCE": 1399,
+                        "label": "14th century"
+                    },
+                    "repository": "Biblioteca Apostolica Vaticana",
+                    "shelfmark": "Vaticanus graecus 1950",
+                    "links": {
+                        "info": "https://en.wikisource.org/wiki/The_Meditations_of_the_Emperor_Marcus_Antoninus/Introduction"
+                    },
+                    "notes": "Commonly described in introductions as the principal complete surviving manuscript witness."
+                },
+                {
+                    "id": "codex-palatinus-toxitanus-lost",
+                    "label": "Codex Palatinus / Codex Toxitanus (P/T) — manuscript used for the 1558–59 edition (now lost)",
+                    "type": "lost-manuscript",
+                    "contents": "Reported principal source behind the editio princeps; no longer extant",
+                    "date": {
+                        "startCE": 1500,
+                        "endCE": 1599,
+                        "label": "known by 16th century (exact copy date unknown)"
+                    },
+                    "repository": "Lost (formerly associated with the Palatine library tradition in accounts of the editio princeps)",
+                    "shelfmark": "Often labeled P or T in discussions; now lost",
+                    "links": {
+                        "info": "https://en.wikipedia.org/wiki/Meditations"
+                    },
+                    "notes": "Wikipedia’s summary of the textual history describes modern texts as based largely on Vaticanus 1950 plus a lost manuscript underlying the first printed edition."
+                }
+            ]
+        },
+        {
+            "id": "homer-iliad",
+            "title": "Iliad",
+            "author": "Homer (traditional attribution; composition process and single authorship are debated — the “Homeric Question”)",
+            "language": "Greek",
+            "group": "ClassicalGreek",
+            "composition": {
+                "startBCE": 750,
+                "endBCE": 700,
+                "label": "traditionally dated c. 750–700 BCE"
+            },
+            "description": "The foundational epic of Greek literature, recounting an episode of the Trojan War. It is the classic 'best case' comparator in the manuscript-reliability literature: by manuscript count it is the most abundantly attested classical text other than the New Testament.",
+            "manuscriptCount": {
+                "value": 1500,
+                "display": ">1,500",
+                "qualifier": "minimum",
+                "language": "Greek",
+                "heading": "Pre-1500 Greek witnesses",
+                "scope": "More than 1,500 papyrus and manuscript witnesses containing portions of the Iliad; the count includes fragmentary witnesses.",
+                "confidence": "moderate"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Iliad",
+                "readOnline": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0134",
+                "purchase": "https://www.loebclassics.com/search?query=Homer%20Iliad"
+            },
+            "witnesses": [
+                {
+                    "id": "p-oxy-20",
+                    "label": "P.Oxy. 20 — Iliad Book 2 fragment",
+                    "type": "papyrus-fragment",
+                    "contents": "Iliad 2.730–828 (twelve fragments)",
+                    "date": {
+                        "startCE": 100,
+                        "endCE": 199,
+                        "label": "2nd century CE"
+                    },
+                    "repository": "British Library",
+                    "shelfmark": "P.Oxy. 20",
+                    "links": {
+                        "info": "https://en.wikipedia.org/wiki/Papyrus_Oxyrhynchus_20"
+                    },
+                    "notes": "One of many surviving Iliad papyri; West's catalogue includes Ptolemaic-era witnesses reaching back to the 3rd century BCE, though this one is a conveniently well-documented example."
+                },
+                {
+                    "id": "venetus-a",
+                    "label": "Venetus A (Marcianus Graecus 454 = 822)",
+                    "type": "parchment-codex",
+                    "contents": "The oldest surviving complete text of the Iliad, with extensive marginal scholia preserving Alexandrian scholarship",
+                    "date": {
+                        "startCE": 950,
+                        "endCE": 999,
+                        "label": "late 10th century"
+                    },
+                    "repository": "Biblioteca Marciana (Venice)",
+                    "shelfmark": "Marcianus Gr. Z. 454 (= 822)",
+                    "links": {
+                        "info": "https://en.wikipedia.org/wiki/Venetus_A"
+                    },
+                    "notes": "The standard reference point for 'the oldest complete copy' of the Iliad."
+                }
+            ]
+        },
+        {
+            "id": "caesar-gallic-war",
+            "title": "Commentarii de Bello Gallico (The Gallic War)",
+            "author": "Julius Caesar",
+            "language": "Latin",
+            "group": "ClassicalLatin",
+            "composition": {
+                "startBCE": 58,
+                "endBCE": 50,
+                "label": "58–50 BCE (books composed/circulated close to the campaign season each describes)"
+            },
+            "description": "Caesar's first-person account of his campaigns in Gaul; a foundational work of Latin prose and one of the classic comparison points in the 'bibliographical test' literature — though its manuscript count is more often cited from outdated older figures than current scholarship.",
+            "manuscriptCount": {
+                "value": 240,
+                "display": "≈240",
+                "qualifier": "approximate",
+                "language": "Latin",
+                "heading": "Pre-1500 Latin MSS",
+                "scope": "Approximately 240 medieval Latin manuscripts containing the work.",
+                "confidence": "moderate"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Commentarii_de_Bello_Gallico",
+                "readOnline": "https://www.gutenberg.org/ebooks/10657",
+                "purchase": "https://www.loebclassics.com/search?query=Caesar%20Gallic%20War"
+            },
+            "witnesses": [
+                {
+                    "id": "paris-lat-5763",
+                    "label": "Parisinus Latinus 5763 (siglum B)",
+                    "type": "parchment-codex",
+                    "contents": "Bellum Gallicum (Alpha family of the tradition)",
+                    "date": {
+                        "startCE": 800,
+                        "endCE": 825,
+                        "label": "1st quarter of the 9th century"
+                    },
+                    "repository": "Bibliothèque nationale de France (Paris)",
+                    "shelfmark": "Paris, BnF, lat. 5763",
+                    "links": {
+                        "info": "https://www.roger-pearse.com/weblog/2011/01/08/the-manuscripts-of-caesars-works/"
+                    },
+                    "notes": "French, later at Fleury Abbey; generally reckoned the oldest surviving witness to the Gallic War."
+                },
+                {
+                    "id": "amsterdam-73",
+                    "label": "Amstelodamensis 73 (siglum A)",
+                    "type": "parchment-codex",
+                    "contents": "Bellum Gallicum (Alpha family of the tradition)",
+                    "date": {
+                        "startCE": 825,
+                        "endCE": 850,
+                        "label": "2nd quarter of the 9th century"
+                    },
+                    "repository": "Amsterdam, University Library (Bibliotheca Publica)",
+                    "shelfmark": "Amsterdam 73",
+                    "links": {
+                        "info": "https://www.auf.nl/en/annual-fund-2022/19-de-bello-gallico.html"
+                    },
+                    "notes": "Copied by Benedictine monks at Fleury Abbey; one of the two oldest surviving copies of the Gallic War, alongside Paris lat. 5763."
+                }
+            ]
+        },
+        {
+            "id": "herodotus-histories",
+            "title": "The Histories",
+            "author": "Herodotus",
+            "language": "Greek",
+            "group": "ClassicalGreek",
+            "composition": {
+                "startBCE": 445,
+                "endBCE": 425,
+                "label": "compiled/composed over decades, substantially complete by his death c. 425 BCE"
+            },
+            "description": "Often called the first work of history in the Western tradition; an account of the Greco-Persian Wars and the peoples and lands surrounding the Aegean. A classic 'typical case' comparator: an undisputed, canonical classical text with a manuscript tradition that is far smaller and later than the New Testament's.",
+            "manuscriptCount": {
+                "value": 110,
+                "display": "≈110",
+                "qualifier": "approximate",
+                "language": "Greek",
+                "heading": "Pre-1500 Greek witnesses",
+                "scope": "Approximately 110 papyrus and manuscript witnesses; fragmentary witnesses are included.",
+                "confidence": "provisional"
+            },
+            "links": {
+                "info": "https://en.wikipedia.org/wiki/Histories_(Herodotus)",
+                "readOnline": "https://www.gutenberg.org/ebooks/2707",
+                "purchase": "https://www.loebclassics.com/search?query=Herodotus"
+            },
+            "witnesses": [
+                {
+                    "id": "p-oxy-2099",
+                    "label": "P.Oxy. 2099 — Histories Book 8 fragment",
+                    "type": "papyrus-fragment",
+                    "contents": "Histories 8 (Greco-Persian Wars narrative, including material relating to Salamis)",
+                    "date": {
+                        "startCE": 100,
+                        "endCE": 150,
+                        "label": "early 2nd century CE"
+                    },
+                    "repository": "Oxyrhynchus Papyri collection (Egypt Exploration Society)",
+                    "shelfmark": "P.Oxy. 2099",
+                    "links": {
+                        "info": "https://en.wikipedia.org/wiki/Oxyrhynchus_Papyri"
+                    },
+                    "notes": "One of roughly 49 papyrus witnesses now catalogued for the Histories, per Clay Jones's updated figures."
+                },
+                {
+                    "id": "laurentianus-70-3",
+                    "label": "Codex Laurentianus 70.3 (siglum A)",
+                    "type": "parchment-codex",
+                    "contents": "Complete text of the Histories, with marginal summaries and scholia",
+                    "date": {
+                        "startCE": 900,
+                        "endCE": 999,
+                        "label": "10th century"
+                    },
+                    "repository": "Biblioteca Medicea Laurenziana (Florence)",
+                    "shelfmark": "Plut. 70.3",
+                    "links": {
+                        "info": "https://www.tertullian.org/rpearse/manuscripts/greek_classics.htm"
+                    },
+                    "notes": "The earliest surviving substantially complete manuscript of the Histories."
+                }
+            ]
+        }
+    ]
+}
