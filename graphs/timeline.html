@@ -606,6 +606,40 @@
             width: 100%;
         }
 
+        /* ---- Responsive chart scaffold -------------------------------------
+           Two-panel structure used only below the mobile breakpoint (see
+           MOBILE_BREAKPOINT in JS): a non-scrolling label/volume column
+           (#chartLabelCol) beside a horizontally scrollable historical-
+           timeline column (#chartScrollCol). On desktop #chartLabelCol stays
+           empty/hidden and #chartScrollCol is an ordinary block, reproducing
+           the original single-SVG layout exactly. */
+        #chartGrid {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        #chartLabelCol {
+            display: none;
+            flex: 0 0 auto;
+        }
+
+        #chartScrollCol {
+            flex: 1 1 auto;
+            min-width: 0;
+            position: relative;
+        }
+
+        /* HTML stand-in for the in-SVG chart title (see .chart-title), shown
+           only at mobile widths so the title can wrap normally instead of
+           being clipped by a plot area narrower than its centered text. */
+        #chartTitleHtml {
+            display: none;
+        }
+
+        #chartHint {
+            display: none;
+        }
+
         .axis path,
         .axis line {
             stroke: var(--panel-stroke-light);
@@ -696,15 +730,11 @@
             cursor: help;
         }
 
-        @media (max-width: 720px) {
-            .mss-column-heading,
-            .mss-scale-ref-tick {
-                /* Hidden visually at narrow widths (the label column has less room
-                   to spare) but kept in the DOM/accessibility tree — its aria-label
-                   and tooltip are unaffected. */
-                opacity: 0;
-            }
-        }
+        /* Below the mobile breakpoint this heading (and the rest of the desktop
+           label gutter — the y-axis text, the mss bars/endpoints/dashes, and the
+           0/1,000/2,000 reference) is fully replaced by the HTML #chartLabelCol
+           column, so render() hides the whole group with display:none rather
+           than the opacity-only hiding this used before. */
 
         /* Compact 0 / 1,000 / 2,000 reference for the fixed linear scale — smaller
            and even more muted than the column heading, since it's a secondary aid,
@@ -879,6 +909,27 @@
             opacity: 0.16;
         }
 
+        /* Invisible, much wider stroke stacked directly on top of each
+           .witness-range-line, purely to enlarge its click/tap target — the
+           visible line stays a thin 2.5–3px so it doesn't read as a thick bar,
+           but a 2.5px-tall line is a genuinely hard target to hit precisely with
+           a mouse, let alone a fingertip. Same technique already used elsewhere
+           on this site for touch targets (see the enlarged invisible node hit
+           circles in minimalFactsTidyTree.html). opacity:0 (not display:none or
+           visibility:hidden) keeps it hit-testable while fully invisible; it
+           shares attachWitnessHandlers with the visible line, so hovering/
+           tapping/focusing either one behaves identically.
+           stroke-width is kept comfortably below DODGE_SPACING_PX (15px, see the
+           script) so two dodge-stacked witnesses in the same lane still get
+           separate, unambiguous hit regions instead of overlapping. */
+        .witness-range-hit {
+            cursor: pointer;
+            stroke-width: 14;
+            stroke-linecap: round;
+            opacity: 0;
+            vector-effect: non-scaling-stroke;
+        }
+
         .midline line {
             stroke: var(--grid-line-light);
         }
@@ -926,7 +977,12 @@
             box-shadow: var(--tooltip-shadow-dark);
         }
 
-        .tooltip .tt-eyebrow {
+        /* Tooltip content classes (tt-*) are shared verbatim by .detail-sheet —
+           the mobile tap-to-pin surface reuses the exact same tooltip HTML
+           builders (workTooltip, compTooltip, witnessTooltip, etc.), just
+           presented in a bottom sheet instead of a floating box. */
+        .tooltip .tt-eyebrow,
+        .detail-sheet .tt-eyebrow {
             margin-bottom: 4px;
             font: 700 10px/1 var(--ui-font);
             letter-spacing: 0.09em;
@@ -934,36 +990,42 @@
             color: var(--text-tertiary);
         }
 
-        .tooltip .tt-title {
+        .tooltip .tt-title,
+        .detail-sheet .tt-title {
             font: 700 14px/1.3 var(--ui-font);
         }
 
-        .tooltip .tt-title i {
+        .tooltip .tt-title i,
+        .detail-sheet .tt-title i {
             font-style: italic;
             font-weight: 700;
         }
 
-        .tooltip .tt-original-title {
+        .tooltip .tt-original-title,
+        .detail-sheet .tt-original-title {
             margin-top: 1px;
             font: 500 11px/1.35 var(--ui-font);
             font-style: italic;
             color: var(--text-tertiary);
         }
 
-        .tooltip .tt-subtitle {
+        .tooltip .tt-subtitle,
+        .detail-sheet .tt-subtitle {
             margin-top: 2px;
             font: 500 11.5px/1.4 var(--ui-font);
             color: var(--text-secondary);
         }
 
-        .tooltip .tt-divider {
+        .tooltip .tt-divider,
+        .detail-sheet .tt-divider {
             height: 1px;
             margin: 9px 0;
             background: currentColor;
             opacity: 0.14;
         }
 
-        .tooltip .tt-row {
+        .tooltip .tt-row,
+        .detail-sheet .tt-row {
             display: flex;
             align-items: baseline;
             justify-content: space-between;
@@ -972,25 +1034,29 @@
             font-size: 12px;
         }
 
-        .tooltip .tt-row-label {
+        .tooltip .tt-row-label,
+        .detail-sheet .tt-row-label {
             font-weight: 650;
             color: var(--text-tertiary);
             white-space: nowrap;
         }
 
-        .tooltip .tt-row-value {
+        .tooltip .tt-row-value,
+        .detail-sheet .tt-row-value {
             font-weight: 600;
             text-align: right;
         }
 
-        .tooltip .tt-note {
+        .tooltip .tt-note,
+        .detail-sheet .tt-note {
             margin-top: 7px;
             font: 500 11.5px/1.55 var(--ui-font);
             font-style: italic;
             color: var(--text-secondary);
         }
 
-        .tooltip .tt-pin-hint {
+        .tooltip .tt-pin-hint,
+        .detail-sheet .tt-pin-hint {
             margin-top: 9px;
             font: 600 10.5px/1.3 var(--ui-font);
             color: var(--text-tertiary);
@@ -1022,6 +1088,410 @@
                 margin: 1rem auto 1.5rem;
             }
         }
+
+        /* ---- Mobile chart layout -------------------------------------------
+           Below the breakpoint, work labels move out of the SVG's left gutter
+           into a non-scrolling HTML column (#chartLabelCol); the historical
+           timeline keeps a real (wider-than-viewport) pixel scale and becomes
+           natively horizontally scrollable in #chartScrollCol instead of being
+           compressed to fit. This is what actually preserves temporal
+           separation on a phone — see render()/renderMobileLabelColumn() in
+           the script below, which is what decides row heights, the virtual
+           canvas width, and which desktop-only SVG layers to hide. */
+        @media (max-width: 720px) {
+            #chartTitleHtml {
+                display: block;
+                margin: 0 2px 4px;
+                font: 700 11.5px/1.3 var(--ui-font);
+                letter-spacing: 0.09em;
+                text-transform: uppercase;
+                color: var(--text-secondary);
+            }
+
+            #chartHint {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                margin: 0 2px 10px;
+                font: 600 11px/1.3 var(--ui-font);
+                color: var(--text-tertiary);
+            }
+
+            #chartHint[hidden] {
+                display: none;
+            }
+
+            #chartHint svg {
+                width: 12px;
+                height: 12px;
+                flex: none;
+                fill: none;
+                stroke: currentColor;
+                stroke-width: 2.3;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+
+            #chartGrid {
+                gap: 8px;
+            }
+
+            #chartLabelCol {
+                display: flex;
+                flex-direction: column;
+                width: 130px;
+            }
+
+            #chartScrollCol {
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                /* pan-x *and* pan-y, not pan-x alone: pan-x alone tells the browser
+                   only horizontal panning is a permitted default action here, which
+                   suppresses vertical panning entirely for touches starting on the
+                   timeline rather than letting it fall through to scroll the page —
+                   the opposite of what's needed, since this element has no vertical
+                   overflow of its own. Listing both axes (equivalent to `auto` minus
+                   pinch-zoom/double-tap-zoom) keeps horizontal drags scrolling this
+                   panel while vertical drags bubble up to the page as normal. */
+                touch-action: pan-x pan-y;
+                overscroll-behavior-x: contain;
+            }
+
+            /* Edge fades: masked on the scroll container itself (not separate
+               overlay elements), so there's no risk of them scrolling away
+               with their own content or needing position:sticky bookkeeping.
+               Classes toggled by updateMobileScrollAffordances() in JS. */
+            #chartScrollCol.fade-left {
+                -webkit-mask-image: linear-gradient(to right, transparent, black 24px);
+                mask-image: linear-gradient(to right, transparent, black 24px);
+            }
+
+            #chartScrollCol.fade-right {
+                -webkit-mask-image: linear-gradient(to left, transparent, black 24px);
+                mask-image: linear-gradient(to left, transparent, black 24px);
+            }
+
+            #chartScrollCol.fade-left.fade-right {
+                -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+                mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+            }
+
+            #chartInner {
+                width: max-content;
+                min-width: 100%;
+            }
+
+            .mobile-row {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 4px;
+                padding: 4px 8px 4px 2px;
+                margin: 0;
+                border: none;
+                background: none;
+                text-align: left;
+                font: inherit;
+                color: inherit;
+                width: 100%;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .mobile-row:focus-visible {
+                outline: 2px solid var(--link-accent);
+                outline-offset: -2px;
+                border-radius: 6px;
+            }
+
+            .mobile-row-title {
+                font: 650 11.5px/1.32 var(--ui-font);
+                color: var(--text-secondary-light);
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            body.dark-mode .mobile-row-title {
+                color: var(--text-secondary-dark);
+            }
+
+            .mobile-row.row-label-active .mobile-row-title {
+                font-weight: 750;
+            }
+
+            .mobile-row-title i {
+                font-style: italic;
+            }
+
+            .mobile-mss-track {
+                position: relative;
+                width: 100%;
+                height: 6px;
+                margin-top: 1px;
+                flex: none;
+            }
+
+            .mobile-mss-fill {
+                position: absolute;
+                left: 0;
+                top: 1px;
+                height: 4px;
+                min-width: 2px;
+                border-radius: 2px;
+                opacity: 0.6;
+            }
+
+            .mobile-mss-endpoint {
+                position: absolute;
+                top: 0;
+                width: 6px;
+                height: 6px;
+                margin-left: -3px;
+                border-radius: 999px;
+                opacity: 0.85;
+            }
+
+            .mobile-mss-dash {
+                position: absolute;
+                left: 0;
+                top: 2px;
+                width: 20px;
+                height: 2px;
+                border-radius: 1px;
+                background: repeating-linear-gradient(to right, var(--text-tertiary) 0 3px, transparent 3px 6px);
+                opacity: 0.5;
+            }
+
+            .mobile-section-header {
+                padding: 9px 8px 5px 2px;
+                font: 750 9.5px/1.15 var(--ui-font);
+                letter-spacing: 0.09em;
+                text-transform: uppercase;
+            }
+        }
+
+        @media (max-width: 360px) {
+            #chartLabelCol {
+                width: 108px;
+            }
+        }
+
+        /* ---- Help modal (legend + navigation) -------------------------------
+           Adapted from the About-dialog pattern in minimalFactsTidyTree.html:
+           a focus-trapped, Escape/backdrop/close-button dismissible dialog
+           sized against the dynamic viewport (100dvh) so it can never exceed
+           the visible area on iOS Safari. Restyled with this page's own
+           tokens (tooltip/panel surfaces) rather than copied verbatim. */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            padding-top: calc(20px + var(--safe-top));
+            padding-bottom: calc(20px + var(--safe-bottom));
+            padding-left: calc(20px + var(--safe-left));
+            padding-right: calc(20px + var(--safe-right));
+            background: rgba(9, 15, 19, 0.5);
+            z-index: 10000;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-content {
+            width: min(480px, 100%);
+            max-height: calc(100dvh - 40px - var(--safe-top) - var(--safe-bottom));
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            padding: 22px 22px 20px;
+            border-radius: 22px;
+            border: 1px solid var(--panel-stroke-light);
+            background: var(--surface-strong-light);
+            box-shadow: var(--tooltip-shadow-light);
+            backdrop-filter: blur(18px) saturate(120%);
+            -webkit-backdrop-filter: blur(18px) saturate(120%);
+        }
+
+        body.dark-mode .modal-content {
+            border-color: var(--panel-stroke-dark);
+            background: var(--surface-strong-dark);
+            box-shadow: var(--tooltip-shadow-dark);
+        }
+
+        .modal-content h2 {
+            margin: 0 0 4px;
+            padding-right: 30px;
+            font: 700 17px/1.3 var(--title-font);
+            color: var(--text-light);
+        }
+
+        body.dark-mode .modal-content h2 {
+            color: var(--text-dark);
+        }
+
+        .modal-content h3 {
+            margin: 16px 0 7px;
+            font: 750 10.5px/1 var(--ui-font);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+        }
+
+        .modal-content p {
+            margin: 6px 0;
+            font: 500 13px/1.55 var(--ui-font);
+            color: var(--text-secondary);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid var(--panel-stroke-light);
+            background: var(--surface-muted-light);
+            color: var(--text-light);
+            font-size: 16px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        body.dark-mode .modal-close {
+            border-color: var(--panel-stroke-dark);
+            background: var(--surface-muted-dark);
+            color: var(--text-dark);
+        }
+
+        .legend-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+        }
+
+        .legend-icon {
+            flex: none;
+            width: 34px;
+            height: 18px;
+            margin-top: 3px;
+            color: var(--text-tertiary);
+        }
+
+        .legend-item p {
+            margin: 0;
+        }
+
+        .legend-item strong {
+            color: var(--text-light);
+        }
+
+        body.dark-mode .legend-item strong {
+            color: var(--text-dark);
+        }
+
+        /* ---- Mobile detail sheet ---------------------------------------------
+           Touch-first replacement for the desktop "click to pin" floating
+           tooltip: reuses the exact same tooltip HTML (see the shared .tt-*
+           rules above) inside a bottom sheet — the same interaction family as
+           minimalFactsTidyTree's per-node bottom sheet — so pinned content
+           always has a safe, full-width, viewport-clamped home instead of a
+           small floating box that could run off a narrow screen. */
+        .detail-sheet {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            transform: translateY(100%);
+            max-height: min(72dvh, calc(100dvh - 32px));
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 18px 18px calc(18px + var(--safe-bottom));
+            padding-left: calc(18px + var(--safe-left));
+            padding-right: calc(18px + var(--safe-right));
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border: 1px solid var(--tooltip-border-light);
+            border-bottom: none;
+            background: var(--tooltip-bg-light);
+            box-shadow: var(--tooltip-shadow-light);
+            transition: transform 220ms ease;
+            z-index: 10500;
+            font: 500 12px/1.55 var(--ui-font);
+            color: var(--text-light);
+        }
+
+        .detail-sheet.open {
+            transform: translateY(0);
+        }
+
+        body.dark-mode .detail-sheet {
+            border-color: var(--tooltip-border-dark);
+            background: var(--tooltip-bg-dark);
+            box-shadow: var(--tooltip-shadow-dark);
+            color: var(--text-dark);
+        }
+
+        .detail-sheet .sheet-grabber {
+            width: 36px;
+            height: 4px;
+            margin: 0 auto 14px;
+            border-radius: 999px;
+            background: var(--panel-stroke-light);
+        }
+
+        body.dark-mode .detail-sheet .sheet-grabber {
+            background: var(--panel-stroke-dark);
+        }
+
+        .detail-sheet .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid var(--tooltip-border-light);
+            background: var(--surface-muted-light);
+            color: var(--text-light);
+            font-size: 16px;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        body.dark-mode .detail-sheet .close-btn {
+            border-color: var(--tooltip-border-dark);
+            background: var(--surface-muted-dark);
+            color: var(--text-dark);
+        }
+
+        @media (min-width: 721px) {
+            .detail-sheet {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -1039,6 +1509,9 @@
                         <path d="M6.5 9.75V20h11V9.75"></path>
                         <path d="M10 20v-5.25h4V20"></path>
                     </svg>
+                </button>
+                <button id="helpBtn" type="button" aria-haspopup="dialog" aria-label="Help: legend and navigation">
+                    Help
                 </button>
                 <button id="controlsToggle" type="button" aria-expanded="false" aria-controls="controls">
                     Controls
@@ -1063,13 +1536,80 @@
 
     <main id="main-content" aria-label="Manuscript timeline visualization">
         <div class="chart-wrap" id="chart-wrap">
-            <div id="chartInner">
-                <svg id="chart"></svg>
+            <div id="chartTitleHtml">Autograph Ranges vs. Surviving Manuscript Dates</div>
+            <div id="chartHint" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 6 3 12l5 6"></path>
+                    <path d="M16 6l5 6-5 6"></path>
+                </svg>
+                Swipe the timeline to see the full date range
+            </div>
+            <div id="chartGrid">
+                <div id="chartLabelCol" role="group" aria-label="Works shown on the timeline"></div>
+                <div id="chartScrollCol">
+                    <div id="chartInner">
+                        <svg id="chart"></svg>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
     <div class="tooltip" id="tooltip" role="status" aria-live="polite"></div>
+    <div class="detail-sheet" id="detailSheet" role="dialog" aria-hidden="true" aria-label="Details"></div>
+
+    <div class="modal-backdrop" id="helpModal" role="dialog" aria-hidden="true" aria-modal="true"
+        aria-labelledby="helpModalTitle">
+        <div class="modal-content" tabindex="-1" role="document">
+            <button class="modal-close" type="button" aria-label="Close">×</button>
+            <h2 id="helpModalTitle">Reading the Timeline</h2>
+            <h3>What the marks mean</h3>
+            <div class="legend-list">
+                <div class="legend-item">
+                    <svg class="legend-icon" viewBox="0 0 40 20" aria-hidden="true">
+                        <rect x="4" y="3" width="22" height="14" rx="3" fill="currentColor" fill-opacity="0.18"
+                            stroke="currentColor" stroke-width="1.4"></rect>
+                    </svg>
+                    <p><strong>Box</strong> — the estimated composition range: the scholarly window for when a work
+                        was likely first written (the autograph), not a surviving copy.</p>
+                </div>
+                <div class="legend-item">
+                    <svg class="legend-icon" viewBox="0 0 40 20" aria-hidden="true">
+                        <path d="M32 10 3 10" stroke="currentColor" stroke-width="1.6"></path>
+                        <path d="M32 4 36 10 32 16 28 10Z" fill="currentColor"></path>
+                    </svg>
+                    <p><strong>Diamond</strong> — a surviving manuscript witness. A single diamond marks one attested
+                        date; two diamonds joined by a line mark a date range.</p>
+                </div>
+                <div class="legend-item">
+                    <svg class="legend-icon" viewBox="0 0 40 20" aria-hidden="true">
+                        <rect x="2" y="8" width="26" height="4" rx="2" fill="currentColor" fill-opacity="0.6"></rect>
+                        <circle cx="30" cy="10" r="3.5" fill="currentColor"></circle>
+                    </svg>
+                    <p><strong>Bar with a dot</strong> — pre-1500 manuscript volume, on a shared 0–2,000 linear scale
+                        (not normalized per row).</p>
+                </div>
+                <div class="legend-item">
+                    <svg class="legend-icon" viewBox="0 0 40 20" aria-hidden="true">
+                        <line x1="4" y1="10" x2="24" y2="10" stroke="currentColor" stroke-width="3"
+                            stroke-linecap="round" stroke-dasharray="2.5,3.5"></line>
+                    </svg>
+                    <p><strong>Dashed line</strong> — no securely totaled manuscript count (see the row for why),
+                        never a bar of zero.</p>
+                </div>
+                <div class="legend-item">
+                    <svg class="legend-icon" viewBox="0 0 40 20" aria-hidden="true">
+                        <circle cx="10" cy="10" r="7" fill="#0d8f86"></circle>
+                        <circle cx="26" cy="10" r="7" fill="#c2902c"></circle>
+                    </svg>
+                    <p><strong>Teal</strong> marks New Testament writings; <strong>gold</strong> marks Greco-Roman
+                        comparison works.</p>
+                </div>
+            </div>
+            <h3>Navigating the timeline</h3>
+            <p id="helpNavText"></p>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script>
@@ -1206,14 +1746,42 @@
             const tooltip = d3.select("#tooltip");
             const chartWrapEl = document.getElementById('chart-wrap');
             const docFilterEl = document.getElementById('docFilter');
+            const chartLabelColEl = document.getElementById('chartLabelCol');
+            const chartScrollColEl = document.getElementById('chartScrollCol');
+            const chartTitleHtmlEl = document.getElementById('chartTitleHtml');
+            const chartHintEl = document.getElementById('chartHint');
+            const detailSheetEl = document.getElementById('detailSheet');
+
+            // Below this width the chart switches from the desktop single-SVG
+            // layout (labels in the left gutter, drag/wheel zoom over the whole
+            // plot) to a two-panel mobile layout: a non-scrolling HTML label +
+            // manuscript-volume column, and a horizontally scrollable SVG for the
+            // historical timeline, which keeps a real (wider-than-viewport) pixel
+            // scale instead of compressing the full date range to fit. Matches the
+            // breakpoint already used by the rest of this file's mobile CSS.
+            const MOBILE_BREAKPOINT = 720;
+            // Target density for the mobile virtual canvas. At 0.72px/year the
+            // ~1,650-year default domain renders at roughly triple the resolution
+            // of simply squeezing it into one phone-width screen, while still
+            // keeping the scrollable canvas to a handful of "screens" wide.
+            const MOBILE_PX_PER_YEAR = 0.72;
+            const MOBILE_MAX_CANVAS_WIDTH = 2600;
+            const LANE_HEIGHT_DESKTOP = 52;
+            const LANE_HEIGHT_MOBILE = 70;
+            function isMobileLayout() {
+                return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`).matches;
+            }
 
             // top has a little extra room (30 -> 38) to hold the chart title in the
             // space that used to sit empty above the first section heading.
             // left is sized to the widest row label ("Pliny the Elder — Natural
             // History", ~172px including the tick/padding offset) plus a little
             // breathing room — not a fixed guess, so it no longer leaves ~90px of
-            // empty gutter to the left of every label.
-            const margin = { top: 38, right: 30, bottom: 50, left: 190 };
+            // empty gutter to the left of every label. Mobile uses a much smaller
+            // margin since labels move out of the SVG entirely into
+            // #chartLabelCol — render() reassigns this every pass based on the
+            // current layout mode (see mobileMode there).
+            let margin = { top: 38, right: 30, bottom: 50, left: 190 };
             let width = 800;
             let height = 0;
 
@@ -1392,9 +1960,21 @@
                 .style("pointer-events", "all")
                 .call(zoom);
 
-            // Reset zoom button
-            document.getElementById('resetZoom').addEventListener('click', () => {
-                zoomRect.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+            // Reset zoom button. On mobile there is no d3-zoom transform to reset
+            // (panning is native horizontal scroll instead — see render()), so the
+            // same control scrolls the timeline panel back to its start; its label
+            // is kept in sync with the current mode by syncResetButtonLabel() below.
+            const resetZoomBtn = document.getElementById('resetZoom');
+            function syncResetButtonLabel() {
+                if (!resetZoomBtn) return;
+                resetZoomBtn.textContent = isMobileLayout() ? 'Scroll to Start' : 'Reset Zoom';
+            }
+            resetZoomBtn.addEventListener('click', () => {
+                if (isMobileLayout()) {
+                    if (chartScrollColEl) chartScrollColEl.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    zoomRect.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+                }
             });
 
             // Helper to get numeric year from date object (handles BCE as negative, CE as positive)
@@ -1656,11 +2236,19 @@
                     mssBarsLayer.selectAll(".mss-bar, .mss-bar-endpoint, .mss-bar-unavailable")
                         .classed("row-dim", false).classed("row-emphasize", false);
                     yAxisG.selectAll(".lane-label").classed("row-label-active", false).style("fill", null);
+                    if (chartLabelColEl) {
+                        chartLabelColEl.querySelectorAll(".mobile-row").forEach(el => {
+                            el.classList.remove("row-label-active");
+                            const t = el.querySelector(".mobile-row-title");
+                            if (t) t.style.color = "";
+                        });
+                    }
                     return;
                 }
                 const accent = accentForGroup(group);
                 rowHighlightLayer
                     .style("display", null)
+                    .attr("x", -margin.left)
                     .attr("y", yScale(workId))
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", yScale.bandwidth())
@@ -1682,12 +2270,38 @@
                 yAxisG.selectAll(".lane-label")
                     .classed("row-label-active", id => id === workId)
                     .style("fill", id => id === workId ? accent : null);
+                if (chartLabelColEl) {
+                    chartLabelColEl.querySelectorAll(".mobile-row").forEach(el => {
+                        const active = el.dataset.workId === workId;
+                        el.classList.toggle("row-label-active", active);
+                        const t = el.querySelector(".mobile-row-title");
+                        if (t) t.style.color = active ? accent : "";
+                    });
+                }
             }
 
             function clearActiveRow() {
                 setActiveRow(null);
             }
 
+            // Keeps the floating tooltip's already-set left/top fully on screen —
+            // needed because showTip/showTipNear position it from a raw pointer or
+            // element coordinate with no awareness of the viewport edge, which on a
+            // narrow phone (or a mark near the right/bottom of a wide desktop
+            // window) could otherwise push it partly or fully off screen.
+            function clampTooltipPosition() {
+                const node = tooltip.node();
+                if (!node || getComputedStyle(node).display === "none") return;
+                const rect = node.getBoundingClientRect();
+                const pad = 8;
+                let left = parseFloat(node.style.left) || 0;
+                let top = parseFloat(node.style.top) || 0;
+                const maxLeft = Math.max(pad, window.innerWidth - rect.width - pad);
+                const maxTop = Math.max(pad, window.innerHeight - rect.height - pad);
+                left = Math.min(Math.max(left, pad), maxLeft);
+                top = Math.min(Math.max(top, pad), maxTop);
+                tooltip.style("left", `${left}px`).style("top", `${top}px`);
+            }
             function showTip(evt, html) {
                 tooltip.style("display", "block").html(html);
                 moveTip(evt);
@@ -1697,6 +2311,7 @@
                 tooltip
                     .style("left", `${evt.clientX + pad}px`)
                     .style("top", `${evt.clientY + pad}px`);
+                clampTooltipPosition();
             }
             function hideTip() {
                 tooltip.style("display", "none");
@@ -1711,6 +2326,76 @@
                 tooltip
                     .style("left", `${rect.right + 14}px`)
                     .style("top", `${rect.top}px`);
+                clampTooltipPosition();
+            }
+
+            // Touch-first counterpart to "click to pin": on mobile, tapped detail
+            // (a work, its composition bar, a manuscript witness, or the volume
+            // bar) opens the same tooltip HTML in a full-width bottom sheet instead
+            // of a small floating box near the tap point — the established pattern
+            // this site already uses for per-item detail on touch (see the bottom
+            // sheet in minimalFactsTidyTree.html), which sidesteps needing to clamp
+            // a floating tooltip against a much smaller viewport. Desktop keeps the
+            // existing floating "click to pin" tooltip unchanged.
+            function showPinned(evt, html) {
+                if (isMobileLayout()) {
+                    openDetailSheet(html);
+                } else {
+                    showTip(evt, html);
+                }
+            }
+
+            let detailSheetLastFocus = null;
+            function detailSheetKeyHandler(e) {
+                if (e.key === "Escape") closeDetailSheet();
+            }
+            function openDetailSheet(html) {
+                if (!detailSheetEl) return;
+                hideTip();
+                detailSheetLastFocus = document.activeElement;
+                detailSheetEl.innerHTML = `<div class="sheet-grabber"></div><button type="button" class="close-btn" aria-label="Close">×</button><div class="sheet-body">${html}</div>`;
+                detailSheetEl.classList.add("open");
+                detailSheetEl.setAttribute("aria-hidden", "false");
+                const closeBtn = detailSheetEl.querySelector(".close-btn");
+                if (closeBtn) closeBtn.addEventListener("click", (e) => { e.stopPropagation(); closeDetailSheet(); });
+                document.addEventListener("keydown", detailSheetKeyHandler);
+            }
+            function closeDetailSheet() {
+                if (!detailSheetEl || !detailSheetEl.classList.contains("open")) return;
+                detailSheetEl.classList.remove("open");
+                detailSheetEl.setAttribute("aria-hidden", "true");
+                document.removeEventListener("keydown", detailSheetKeyHandler);
+                clearActiveRow();
+                if (detailSheetLastFocus && typeof detailSheetLastFocus.focus === "function") {
+                    try { detailSheetLastFocus.focus({ preventScroll: true }); } catch (e) { /* non-fatal */ }
+                }
+                detailSheetLastFocus = null;
+                // Belt-and-suspenders: restoring focus above can itself trigger the
+                // originally-tapped mark's own "focus" handler. That handler now
+                // skips showing the floating tooltip on mobile (see
+                // attachWitnessHandlers/the composition bar handlers), but hide it
+                // again here regardless so this stays correct even if some other
+                // path re-shows it.
+                hideTip();
+            }
+            if (detailSheetEl) {
+                detailSheetEl.addEventListener("click", (e) => {
+                    if (e.target === detailSheetEl) closeDetailSheet();
+                });
+                // Swipe-down-to-dismiss, matching the bottom sheet gesture already
+                // used elsewhere on this site (minimalFactsTidyTree.html).
+                let sheetDragStartY = null;
+                detailSheetEl.addEventListener("touchstart", (e) => {
+                    if (e.touches.length === 1) sheetDragStartY = e.touches[0].clientY;
+                }, { passive: true });
+                detailSheetEl.addEventListener("touchmove", (e) => {
+                    if (sheetDragStartY == null) return;
+                    if (e.touches[0].clientY - sheetDragStartY > 60) {
+                        closeDetailSheet();
+                        sheetDragStartY = null;
+                    }
+                }, { passive: true });
+                detailSheetEl.addEventListener("touchend", () => { sheetDragStartY = null; }, { passive: true });
             }
 
             // One label/value line within a tooltip's structured body; omitted
@@ -1718,6 +2403,17 @@
             function ttRow(label, value) {
                 if (value == null || value === "") return "";
                 return `<div class="tt-row"><span class="tt-row-label">${label}</span><span class="tt-row-value">${value}</span></div>`;
+            }
+
+            // Dismiss instructions for a pinned tooltip/detail sheet — wording
+            // depends on layout mode since desktop's pin is dismissed by clicking
+            // elsewhere on the page, while mobile's detail sheet is dismissed by
+            // tapping outside it, its own close button, or swiping it down.
+            function pinHintHtml() {
+                const text = isMobileLayout()
+                    ? "Tap outside, or swipe down, to dismiss."
+                    : "Click anywhere to dismiss.";
+                return `<div class="tt-pin-hint">${text}</div>`;
             }
 
             // "PRE-1500 GREEK/LATIN MSS" label used consistently by the work/composition
@@ -1775,7 +2471,7 @@
               ${rangeNote ? `<div class="tt-note">${rangeNote}</div>` : ""}
               ${mssComponentsHtml(mc) ? `<div class="tt-divider"></div>${mssComponentsHtml(mc)}` : ""}
               ${mc && mc.confidence ? `<div class="tt-pin-hint">Counting confidence: ${mc.confidence}</div>` : ""}
-              ${pinned ? `<div class="tt-pin-hint">Click anywhere to dismiss.</div>` : ""}
+              ${pinned ? pinHintHtml() : ""}
             `;
             }
 
@@ -1925,22 +2621,69 @@
             });
 
             // Compute the available drawing width from the (responsive) container.
+            // Desktop only: the mobile layout uses computeMobileCanvasWidth below
+            // instead, since it deliberately does NOT fit the full date range to
+            // the container.
             function getAvailableWidth() {
-                if (!chartWrapEl) return 800;
-                const wrapStyles = getComputedStyle(chartWrapEl);
-                const wrapPad = parseFloat(wrapStyles.paddingLeft || 0) + parseFloat(wrapStyles.paddingRight || 0);
-                const total = Math.max(360, Math.floor(chartWrapEl.clientWidth - wrapPad));
+                const containerEl = chartScrollColEl || chartWrapEl;
+                if (!containerEl) return 800;
+                const total = Math.max(120, Math.floor(containerEl.clientWidth));
                 return Math.max(120, total - margin.left - margin.right);
+            }
+
+            // Mobile only: a virtual plot width sized from the actual date span
+            // (MOBILE_PX_PER_YEAR px per year) rather than the visible container,
+            // so centuries of separation stay visually distinguishable instead of
+            // being compressed into ~one phone-width's worth of pixels. Clamped to
+            // the visible width at the low end (so a narrow date range still fills
+            // the screen with no pointless scrollbar) and to
+            // MOBILE_MAX_CANVAS_WIDTH at the high end (so enabling every optional
+            // document, e.g. Homer/Herodotus, doesn't produce an unreasonably long
+            // scroll).
+            function computeMobileCanvasWidth(domain) {
+                const span = Math.max(1, domain[1] - domain[0]);
+                const target = Math.round(span * MOBILE_PX_PER_YEAR);
+                const visible = chartScrollColEl
+                    ? Math.max(0, chartScrollColEl.clientWidth - margin.left - margin.right)
+                    : 0;
+                const minW = Math.max(200, visible);
+                return Math.max(minW, Math.min(target, MOBILE_MAX_CANVAS_WIDTH));
             }
 
             // ---------- Render ----------
             function render() {
                 const works = filteredWorks();
-                width = getAvailableWidth();
+                const mobileMode = isMobileLayout();
 
-                // Center the title over the full chart width (label gutter + plot area),
-                // not just the plot area, since it's a title for the whole chart.
-                chartTitle.attr("x", (width + margin.right - margin.left) / 2);
+                // Desktop keeps the original label-gutter margin; mobile shrinks it
+                // to a small breathing margin since work labels/manuscript-volume
+                // bars move entirely into the HTML #chartLabelCol column instead of
+                // living in the SVG's left gutter (see renderMobileLabelColumn).
+                margin = mobileMode
+                    ? { top: 12, right: 16, bottom: 46, left: 14 }
+                    : { top: 38, right: 30, bottom: 50, left: 190 };
+                g.attr("transform", `translate(${margin.left},${margin.top})`);
+
+                const domain = computeXDomain(works);
+                width = mobileMode ? computeMobileCanvasWidth(domain) : getAvailableWidth();
+
+                // The desktop in-SVG title is replaced by an HTML title above the
+                // chart at mobile widths (see #chartTitleHtml) — an SVG text
+                // centered over a plot area narrower than its own content, as
+                // happens once the full descriptive title no longer fits a phone's
+                // width, has no way to wrap and gets silently clipped instead.
+                chartTitle.style("display", mobileMode ? "none" : null);
+                if (chartTitleHtmlEl) chartTitleHtmlEl.style.display = mobileMode ? "" : "none";
+                if (!mobileMode) {
+                    chartTitle.attr("x", (width + margin.right - margin.left) / 2);
+                }
+
+                // Desktop-only label-gutter chrome (the column heading and its
+                // 0/1,000/2,000 reference) — fully hidden (not just dimmed) on
+                // mobile, since renderMobileLabelColumn() below gives every row its
+                // own accessible label instead.
+                mssColumnHeading.style("display", mobileMode ? "none" : null);
+                mssScaleRefLayer.style("display", mobileMode ? "none" : null);
 
                 // Partition into the two top-level sections (NT vs. everything else),
                 // each preceded by a header slot in the band domain that reserves room
@@ -1959,16 +2702,25 @@
                 });
 
                 // resize to number of lanes (including one header slot per visible section)
-                const laneH = 52;
+                const laneH = mobileMode ? LANE_HEIGHT_MOBILE : LANE_HEIGHT_DESKTOP;
                 const desiredH = Math.max(260, domainIds.length * laneH);
                 height = desiredH;
                 svg.attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom);
+                // On mobile the SVG is intentionally wider than #chartScrollCol so it
+                // produces real horizontal overflow (and therefore a native scroll
+                // gesture) inside that panel; the stylesheet's `#chart { width: 100% }`
+                // is overridden with an explicit pixel width to make that possible
+                // (with no viewBox, CSS width also drives the SVG's own coordinate
+                // space, so leaving it at 100% would just rescale/clip the content
+                // back down to the visible panel width instead of overflowing it).
+                // Desktop clears the inline style so the normal 100%-fit rule applies.
+                svg.style("width", mobileMode ? `${width + margin.left + margin.right}px` : null);
                 xAxisG.attr("transform", `translate(0,${height})`);
                 clipRect.attr("width", width).attr("height", height);
 
                 xScale = d3.scaleLinear()
-                    .domain(computeXDomain(works))
+                    .domain(domain)
                     .range([0, width]);
 
                 xZoomed = currentTransform.rescaleX(xScale);
@@ -1982,17 +2734,22 @@
                 // Faint vertical guides for the manuscript-count scale at 1,000 and
                 // 2,000, spanning the full plotted height so a bar's length can be
                 // checked against them in the same glance, not by eye-measuring
-                // against the small reference text in the header above.
+                // against the small reference text in the header above. Desktop only
+                // — the mobile column has its own compact per-row bar instead.
                 mssScaleGuideLayer.selectAll("*").remove();
-                [MSS_BAR.maxWidth / 2, MSS_BAR.maxWidth].forEach(w => {
-                    mssScaleGuideLayer.append("line")
-                        .attr("class", "mss-scale-guide")
-                        .attr("x1", mssBarLeftXStatic + w).attr("x2", mssBarLeftXStatic + w)
-                        .attr("y1", 0).attr("y2", height);
-                });
+                if (!mobileMode) {
+                    [MSS_BAR.maxWidth / 2, MSS_BAR.maxWidth].forEach(w => {
+                        mssScaleGuideLayer.append("line")
+                            .attr("class", "mss-scale-guide")
+                            .attr("x1", mssBarLeftXStatic + w).attr("x2", mssBarLeftXStatic + w)
+                            .attr("y1", 0).attr("y2", height);
+                    });
+                }
 
-                // Section bands (a faint background tint per group), the divider
-                // between groups, and each section's heading — drawn behind everything.
+                // Section bands (a faint background tint per group) and the divider
+                // between groups — drawn behind everything, in both modes (useful
+                // visual continuity even though the mobile section *heading* text
+                // lives in #chartLabelCol instead — see renderMobileLabelColumn).
                 sectionBandsLayer.selectAll("*").remove();
                 sections.forEach((s, i) => {
                     const top = yScale(headerId(s.key));
@@ -2013,12 +2770,14 @@
                             .attr("y1", top).attr("y2", top);
                     }
 
-                    sectionBandsLayer.append("text")
-                        .attr("class", "section-heading")
-                        .attr("x", -margin.left + 4)
-                        .attr("y", top + yScale.bandwidth() - 12)
-                        .attr("fill", accent)
-                        .text(s.label);
+                    if (!mobileMode) {
+                        sectionBandsLayer.append("text")
+                            .attr("class", "section-heading")
+                            .attr("x", -margin.left + 4)
+                            .attr("y", top + yScale.bandwidth() - 12)
+                            .attr("fill", accent)
+                            .text(s.label);
+                    }
                 });
 
                 // Midline at year 0 (rough era boundary) — just the guide line, no label.
@@ -2051,78 +2810,87 @@
               ${ttRow("Composed", compRange)}
               ${manuscriptCountSection(w)}
               ${w.description ? `<div class="tt-divider"></div><div class="tt-note">${w.description}</div>` : ""}
-              ${pinned ? `<div class="tt-pin-hint">Click anywhere to dismiss.</div>` : ""}
+              ${pinned ? pinHintHtml() : ""}
             `;
                 }
 
-                const yAxis = d3.axisLeft(yScale)
-                    .tickValues(works.map(w => w.id))
-                    // No outer end-cap ticks — d3 draws one at each end of the domain
-                    // path by default, with no associated label, which is exactly the
-                    // stray tick this was leaving at the top of the axis.
-                    .tickSizeOuter(0)
-                    .tickFormat(id => {
-                        const w = works.find(w => w.id === id);
-                        return w ? standardTitle(w) : id;
-                    });
+                // The SVG y-axis (row label text in the left gutter) is desktop
+                // only — on mobile, work identity/manuscript volume live in the
+                // HTML #chartLabelCol column instead (renderMobileLabelColumn,
+                // called below), which is what actually stays readable at phone
+                // widths instead of being squeezed into a ~14px gutter.
+                if (!mobileMode) {
+                    const yAxis = d3.axisLeft(yScale)
+                        .tickValues(works.map(w => w.id))
+                        // No outer end-cap ticks — d3 draws one at each end of the domain
+                        // path by default, with no associated label, which is exactly the
+                        // stray tick this was leaving at the top of the axis.
+                        .tickSizeOuter(0)
+                        .tickFormat(id => {
+                            const w = works.find(w => w.id === id);
+                            return w ? standardTitle(w) : id;
+                        });
 
-                yAxisG.call(yAxis);
+                    yAxisG.call(yAxis);
 
-                // The axis's domain line still defaults to the *full* scale range,
-                // which includes the section-header placeholder slots — so without
-                // this it visibly runs up into the title/header area above the first
-                // row. Redraw it to span only the actual labeled rows.
-                const yDomainPath = yAxisG.select(".domain");
-                if (works.length) {
-                    const domainTop = yScale(works[0].id);
-                    const domainBottom = yScale(works[works.length - 1].id) + yScale.bandwidth();
-                    yDomainPath.attr("d", `M0.5,${domainTop}V${domainBottom}`).style("display", null);
+                    // The axis's domain line still defaults to the *full* scale range,
+                    // which includes the section-header placeholder slots — so without
+                    // this it visibly runs up into the title/header area above the first
+                    // row. Redraw it to span only the actual labeled rows.
+                    const yDomainPath = yAxisG.select(".domain");
+                    if (works.length) {
+                        const domainTop = yScale(works[0].id);
+                        const domainBottom = yScale(works[works.length - 1].id) + yScale.bandwidth();
+                        yDomainPath.attr("d", `M0.5,${domainTop}V${domainBottom}`).style("display", null);
+                    } else {
+                        yDomainPath.style("display", "none");
+                    }
+
+                    yAxisG.selectAll(".tick text")
+                        .attr("class", "lane-label")
+                        .style("cursor", "pointer")
+                        .each(function (id) {
+                            // Rebuild as tspans so the Greco-Roman "Author — Work" rows
+                            // render the author in roman type and the work in italics (the
+                            // standard citation convention for classical secular titles).
+                            // Biblical book titles are conventionally set in roman type, so
+                            // NT rows are left unstyled. tickFormat's plain string above is
+                            // just the accessible/plain-text fallback.
+                            const w = works.find(w => w.id === id);
+                            if (!w) return;
+                            const { author, work } = axisLabelParts(w);
+                            const textSel = d3.select(this).text(null);
+                            if (author) {
+                                textSel.append("tspan").text(`${author} — `);
+                                textSel.append("tspan").attr("class", "lane-label-work").text(work);
+                            } else {
+                                textSel.append("tspan").text(work);
+                            }
+                        })
+                        .attr("tabindex", 0)
+                        .on("mousemove", (evt, id) => {
+                            const w = works.find(w => w.id === id);
+                            if (!w) return;
+                            showTip(evt, workTooltip(w, false));
+                            setActiveRow(id, w.group);
+                        })
+                        .on("mouseleave", () => { hideTip(); clearActiveRow(); })
+                        .on("focus", (evt, id) => {
+                            const w = works.find(w => w.id === id);
+                            if (!w) return;
+                            showTipNear(evt.currentTarget, workTooltip(w, false));
+                            setActiveRow(id, w.group);
+                        })
+                        .on("blur", () => { hideTip(); clearActiveRow(); })
+                        .on("click", (evt, id) => {
+                            evt.stopPropagation();
+                            const w = works.find(w => w.id === id);
+                            if (!w) return;
+                            showPinned(evt, workTooltip(w, true));
+                        });
                 } else {
-                    yDomainPath.style("display", "none");
+                    yAxisG.selectAll("*").remove();
                 }
-
-                yAxisG.selectAll(".tick text")
-                    .attr("class", "lane-label")
-                    .style("cursor", "pointer")
-                    .each(function (id) {
-                        // Rebuild as tspans so the Greco-Roman "Author — Work" rows
-                        // render the author in roman type and the work in italics (the
-                        // standard citation convention for classical secular titles).
-                        // Biblical book titles are conventionally set in roman type, so
-                        // NT rows are left unstyled. tickFormat's plain string above is
-                        // just the accessible/plain-text fallback.
-                        const w = works.find(w => w.id === id);
-                        if (!w) return;
-                        const { author, work } = axisLabelParts(w);
-                        const textSel = d3.select(this).text(null);
-                        if (author) {
-                            textSel.append("tspan").text(`${author} — `);
-                            textSel.append("tspan").attr("class", "lane-label-work").text(work);
-                        } else {
-                            textSel.append("tspan").text(work);
-                        }
-                    })
-                    .attr("tabindex", 0)
-                    .on("mousemove", (evt, id) => {
-                        const w = works.find(w => w.id === id);
-                        if (!w) return;
-                        showTip(evt, workTooltip(w, false));
-                        setActiveRow(id, w.group);
-                    })
-                    .on("mouseleave", () => { hideTip(); clearActiveRow(); })
-                    .on("focus", (evt, id) => {
-                        const w = works.find(w => w.id === id);
-                        if (!w) return;
-                        showTipNear(evt.currentTarget, workTooltip(w, false));
-                        setActiveRow(id, w.group);
-                    })
-                    .on("blur", () => { hideTip(); clearActiveRow(); })
-                    .on("click", (evt, id) => {
-                        evt.stopPropagation();
-                        const w = works.find(w => w.id === id);
-                        if (!w) return;
-                        showTip(evt, workTooltip(w, true));
-                    });
 
                 // Manuscript-count micro-bars: quantified rows get a fixed-linear-scale
                 // bar (0–2,000, see linearMssScale), rows without a defensible count
@@ -2166,86 +2934,94 @@
                         .on("blur", () => { hideTip(); clearActiveRow(); })
                         .on("click", (evt, w) => {
                             evt.stopPropagation();
-                            showTip(evt, manuscriptCountTooltip(w, true));
+                            showPinned(evt, manuscriptCountTooltip(w, true));
                         });
                 }
 
-                const quantifiedWorks = works.filter(w => manuscriptDisplayValue(w.manuscriptCount) != null);
-                const barSel = mssBarsLayer.selectAll("rect.mss-bar")
-                    .data(quantifiedWorks, w => w.id);
+                // The in-SVG manuscript-volume bars/endpoints/dashed placeholders
+                // are desktop only, confined to the (now much narrower or absent)
+                // left gutter — on mobile the same data drives a compact bar drawn
+                // directly in each #chartLabelCol row instead (buildMobileRow).
+                if (!mobileMode) {
+                    const quantifiedWorks = works.filter(w => manuscriptDisplayValue(w.manuscriptCount) != null);
+                    const barSel = mssBarsLayer.selectAll("rect.mss-bar")
+                        .data(quantifiedWorks, w => w.id);
 
-                const barEnter = barSel.enter().append("rect")
-                    .attr("class", "mss-bar")
-                    .attr("rx", MSS_BAR.height / 2)
-                    .attr("ry", MSS_BAR.height / 2)
-                    .attr("height", MSS_BAR.height)
-                    .attr("x", mssBarLeftX)
-                    .attr("width", 0);
+                    const barEnter = barSel.enter().append("rect")
+                        .attr("class", "mss-bar")
+                        .attr("rx", MSS_BAR.height / 2)
+                        .attr("ry", MSS_BAR.height / 2)
+                        .attr("height", MSS_BAR.height)
+                        .attr("x", mssBarLeftX)
+                        .attr("width", 0);
 
-                attachMssHandlers(barEnter.merge(barSel))
-                    .attr("y", mssBarY)
-                    .attr("fill", w => accentForGroup(w.group));
+                    attachMssHandlers(barEnter.merge(barSel))
+                        .attr("y", mssBarY)
+                        .attr("fill", w => accentForGroup(w.group));
 
-                // Only bars newly entering the page animate in from zero width; bars
-                // that already existed (e.g. a resize just changed the row layout)
-                // get their width updated immediately, so ordinary interaction never
-                // re-triggers the entrance animation.
-                if (reduceMotion) {
-                    barEnter.attr("width", mssTargetWidth);
+                    // Only bars newly entering the page animate in from zero width; bars
+                    // that already existed (e.g. a resize just changed the row layout)
+                    // get their width updated immediately, so ordinary interaction never
+                    // re-triggers the entrance animation.
+                    if (reduceMotion) {
+                        barEnter.attr("width", mssTargetWidth);
+                    } else {
+                        barEnter.transition().duration(320).attr("width", mssTargetWidth);
+                    }
+                    barSel.attr("width", mssTargetWidth);
+
+                    barSel.exit().remove();
+
+                    // A small endpoint marker at the bar's true tip position. The linear
+                    // scale has no minimum bar width, so a count like Marcus Aurelius's 1
+                    // (0.05% of the 0–2,000 domain) would otherwise be an invisible sliver;
+                    // the marker's *center* still sits at the exact linear x for that
+                    // value — only the marker's own radius is a fixed minimum size, not
+                    // the underlying data position.
+                    const endpointCy = w => mssBarY(w) + MSS_BAR.height / 2;
+                    const endpointCx = w => mssBarLeftX + mssTargetWidth(w);
+
+                    const endpointSel = mssBarsLayer.selectAll("circle.mss-bar-endpoint")
+                        .data(quantifiedWorks, w => w.id);
+
+                    const endpointEnter = endpointSel.enter().append("circle")
+                        .attr("class", "mss-bar-endpoint")
+                        .attr("r", MSS_BAR.endpointRadius)
+                        .attr("cx", mssBarLeftX);
+
+                    attachMssHandlers(endpointEnter.merge(endpointSel))
+                        .attr("cy", endpointCy)
+                        .attr("fill", w => accentForGroup(w.group));
+
+                    if (reduceMotion) {
+                        endpointEnter.attr("cx", endpointCx);
+                    } else {
+                        endpointEnter.transition().duration(320).attr("cx", endpointCx);
+                    }
+                    endpointSel.attr("cx", endpointCx);
+
+                    endpointSel.exit().remove();
+
+                    // Works without a defensible count: a short dashed neutral placeholder
+                    // (not the category color, and not a bar shape), so it reads as "no
+                    // secure total" rather than "a very small count."
+                    const unavailableWorks = works.filter(w => manuscriptDisplayValue(w.manuscriptCount) == null);
+                    const dashSel = mssBarsLayer.selectAll("line.mss-bar-unavailable")
+                        .data(unavailableWorks, w => w.id);
+
+                    const dashEnter = dashSel.enter().append("line")
+                        .attr("class", "mss-bar-unavailable")
+                        .attr("x1", mssBarLeftX)
+                        .attr("x2", mssBarLeftX + MSS_BAR.unavailableWidth);
+
+                    attachMssHandlers(dashEnter.merge(dashSel))
+                        .attr("y1", w => mssBarY(w) + MSS_BAR.height / 2)
+                        .attr("y2", w => mssBarY(w) + MSS_BAR.height / 2);
+
+                    dashSel.exit().remove();
                 } else {
-                    barEnter.transition().duration(320).attr("width", mssTargetWidth);
+                    mssBarsLayer.selectAll("*").remove();
                 }
-                barSel.attr("width", mssTargetWidth);
-
-                barSel.exit().remove();
-
-                // A small endpoint marker at the bar's true tip position. The linear
-                // scale has no minimum bar width, so a count like Marcus Aurelius's 1
-                // (0.05% of the 0–2,000 domain) would otherwise be an invisible sliver;
-                // the marker's *center* still sits at the exact linear x for that
-                // value — only the marker's own radius is a fixed minimum size, not
-                // the underlying data position.
-                const endpointCy = w => mssBarY(w) + MSS_BAR.height / 2;
-                const endpointCx = w => mssBarLeftX + mssTargetWidth(w);
-
-                const endpointSel = mssBarsLayer.selectAll("circle.mss-bar-endpoint")
-                    .data(quantifiedWorks, w => w.id);
-
-                const endpointEnter = endpointSel.enter().append("circle")
-                    .attr("class", "mss-bar-endpoint")
-                    .attr("r", MSS_BAR.endpointRadius)
-                    .attr("cx", mssBarLeftX);
-
-                attachMssHandlers(endpointEnter.merge(endpointSel))
-                    .attr("cy", endpointCy)
-                    .attr("fill", w => accentForGroup(w.group));
-
-                if (reduceMotion) {
-                    endpointEnter.attr("cx", endpointCx);
-                } else {
-                    endpointEnter.transition().duration(320).attr("cx", endpointCx);
-                }
-                endpointSel.attr("cx", endpointCx);
-
-                endpointSel.exit().remove();
-
-                // Works without a defensible count: a short dashed neutral placeholder
-                // (not the category color, and not a bar shape), so it reads as "no
-                // secure total" rather than "a very small count."
-                const unavailableWorks = works.filter(w => manuscriptDisplayValue(w.manuscriptCount) == null);
-                const dashSel = mssBarsLayer.selectAll("line.mss-bar-unavailable")
-                    .data(unavailableWorks, w => w.id);
-
-                const dashEnter = dashSel.enter().append("line")
-                    .attr("class", "mss-bar-unavailable")
-                    .attr("x1", mssBarLeftX)
-                    .attr("x2", mssBarLeftX + MSS_BAR.unavailableWidth);
-
-                attachMssHandlers(dashEnter.merge(dashSel))
-                    .attr("y1", w => mssBarY(w) + MSS_BAR.height / 2)
-                    .attr("y2", w => mssBarY(w) + MSS_BAR.height / 2);
-
-                dashSel.exit().remove();
 
                 // Composition bars (work composition ranges)
                 const compSel = layers.comp.selectAll("rect")
@@ -2272,7 +3048,7 @@
               ${earliest ? ttRow("Gap from autograph", `${earliest.gap} later`) : ""}
               ${manuscriptCountSection(d)}
               ${d.description ? `<div class="tt-divider"></div><div class="tt-note">${d.description}</div>` : ""}
-              ${pinned ? `<div class="tt-pin-hint">Click anywhere to dismiss.</div>` : ""}
+              ${pinned ? pinHintHtml() : ""}
             `;
                 }
 
@@ -2299,20 +3075,34 @@
                     .attr("stroke", d => accentForGroup(d.group))
                     .attr("tabindex", 0)
                     .on("mousemove", (evt, d) => {
+                        // Desktop-only hover preview. On mobile, "mousemove" also
+                        // fires as part of the browser's synthetic touch-to-mouse
+                        // sequence on tap/drag — showing a floating tooltip there
+                        // would either get orphaned (the same touch turns into a
+                        // scroll/pan instead of a click, so nothing ever hides it
+                        // again) or, once hidden by openDetailSheet, get resurfaced
+                        // later when closeDetailSheet() restores focus (see the
+                        // "focus" handler below). Mobile detail is tap → detail
+                        // sheet only (see showPinned/openDetailSheet).
+                        if (isMobileLayout()) return;
                         showTip(evt, compTooltip(d, false));
                         setActiveRow(d.id, d.group);
                         showCrucifixionMarker(d.relatesToCrucifixion, d.id);
                     })
                     .on("mouseleave", () => { hideTip(); clearActiveRow(); hideCrucifixionMarker(); })
                     .on("focus", (evt, d) => {
-                        showTipNear(evt.currentTarget, compTooltip(d, false));
+                        // Desktop-only: also guards against closeDetailSheet()'s
+                        // focus-restoration re-triggering this handler and
+                        // resurfacing the floating tooltip right after the detail
+                        // sheet it was replaced by has just been dismissed.
+                        if (!isMobileLayout()) showTipNear(evt.currentTarget, compTooltip(d, false));
                         setActiveRow(d.id, d.group);
                         showCrucifixionMarker(d.relatesToCrucifixion, d.id);
                     })
                     .on("blur", () => { hideTip(); clearActiveRow(); hideCrucifixionMarker(); })
                     .on("click", (evt, d) => {
                         evt.stopPropagation();
-                        showTip(evt, compTooltip(d, true));
+                        showPinned(evt, compTooltip(d, true));
                     });
 
                 compSel.exit().remove();
@@ -2352,7 +3142,7 @@
               ${gap ? ttRow("Gap from autograph", `${gap} later`) : ""}
               ${ttRow("Contents", d.contents)}
               ${d.notes ? `<div class="tt-divider"></div><div class="tt-note">${d.notes}</div>` : ""}
-              ${pinned ? `<div class="tt-pin-hint">Click anywhere to dismiss.</div>` : ""}
+              ${pinned ? pinHintHtml() : ""}
             `;
                 }
 
@@ -2363,21 +3153,27 @@
                     return sel
                         .attr("tabindex", 0)
                         .on("mousemove", (evt, d) => {
+                            // See the matching comment on the composition bar's
+                            // "mousemove" handler above: this is desktop-only.
+                            if (isMobileLayout()) return;
                             showTip(evt, witnessTooltip(d, false));
                             setActiveRow(d.workId, d.group);
                             showCrucifixionMarker(d.relatesToCrucifixion, d.workId);
                         })
                         .on("mouseleave", () => { hideTip(); clearActiveRow(); hideCrucifixionMarker(); })
                         .on("focus", (evt, d) => {
-                            showTipNear(evt.currentTarget, witnessTooltip(d, false));
+                            // Desktop-only — see the composition bar's "focus" handler.
+                            if (!isMobileLayout()) showTipNear(evt.currentTarget, witnessTooltip(d, false));
                             setActiveRow(d.workId, d.group);
                             showCrucifixionMarker(d.relatesToCrucifixion, d.workId);
                         })
                         .on("blur", () => { hideTip(); clearActiveRow(); hideCrucifixionMarker(); })
                         .on("click", (evt, d) => {
                             // "Pin" behavior: click keeps it visible until next click elsewhere
+                            // (or, on mobile, opens the same content in the detail sheet — see
+                            // showPinned).
                             evt.stopPropagation();
-                            showTip(evt, witnessTooltip(d, true));
+                            showPinned(evt, witnessTooltip(d, true));
                         });
                 }
 
@@ -2413,6 +3209,23 @@
 
                 rangeLineSel.exit().remove();
 
+                // Invisible, wider hit target stacked exactly on top of the line
+                // above (see .witness-range-hit) — same data join and positioning,
+                // so it always coincides with the visible line, just far easier to
+                // actually hit with a mouse or a fingertip.
+                const rangeHitSel = layers.witnesses.selectAll("line.witness-range-hit")
+                    .data(witnessRows.filter(d => d._hasRange), d => `${d.workId}:${d.id}`);
+
+                attachWitnessHandlers(rangeHitSel.enter().append("line").attr("class", "witness-range-hit"))
+                    .merge(rangeHitSel)
+                    .attr("stroke", accentFor)
+                    .attr("x1", d => xZoomed(d._start))
+                    .attr("x2", d => xZoomed(d._end))
+                    .attr("y1", d => laneCenterY(d) + dodgeFor(d))
+                    .attr("y2", d => laneCenterY(d) + dodgeFor(d));
+
+                rangeHitSel.exit().remove();
+
                 const rangeStartSel = witnessMarkersLayer.selectAll("path.witness-range-point-start")
                     .data(witnessRows.filter(d => d._hasRange), d => `${d.workId}:${d.id}`);
 
@@ -2432,6 +3245,175 @@
                     .attr("d", d => diamondPath(xZoomed(d._end), laneCenterY(d) + dodgeFor(d), DIAMOND_RADIUS));
 
                 rangeEndSel.exit().remove();
+
+                // Scrolls the mobile timeline panel so a work's marks are visible,
+                // used when a tap on its row in #chartLabelCol might otherwise land
+                // on a row whose marks are currently scrolled out of view — the
+                // label column doesn't scroll with the timeline, so without this,
+                // tapping a label for evidence outside the current scroll position
+                // would silently do nothing visible.
+                function scrollWorkIntoView(w) {
+                    if (!chartScrollColEl || !xZoomed) return;
+                    const compXs = [];
+                    if (w.composition) compXs.push(xZoomed(getStart(w.composition)), xZoomed(getEnd(w.composition)));
+                    const witnessXs = [];
+                    (w.witnesses ?? []).forEach(ms => {
+                        const s = getStart(ms.date);
+                        witnessXs.push(xZoomed(s), xZoomed(getEnd(ms.date) ?? s));
+                    });
+                    const allXs = compXs.concat(witnessXs);
+                    if (!allXs.length) return;
+
+                    const viewW = chartScrollColEl.clientWidth;
+                    const pad = 16;
+                    const curLeft = chartScrollColEl.scrollLeft;
+                    const maxScroll = Math.max(0, chartScrollColEl.scrollWidth - viewW);
+
+                    const fullMinX = Math.min(...allXs) + margin.left;
+                    const fullMaxX = Math.max(...allXs) + margin.left;
+
+                    // Already fully visible: leave the scroll position alone.
+                    if (fullMinX >= curLeft + pad && fullMaxX <= curLeft + viewW - pad) return;
+
+                    if (fullMaxX - fullMinX <= viewW - pad * 2) {
+                        // Composition range + every witness fit on one screen
+                        // together — center the whole span.
+                        const target = Math.min(maxScroll, Math.max(0, (fullMinX + fullMaxX) / 2 - viewW / 2));
+                        chartScrollColEl.scrollTo({ left: target, behavior: "smooth" });
+                        return;
+                    }
+
+                    // They don't fit together — e.g. Tacitus's Annals (composed
+                    // c. 116 CE) survives only from 9th-century copies, an 800-year
+                    // gap. Centering that whole span just lands on the empty middle,
+                    // showing neither end. Land on the composition/autograph range
+                    // instead (falling back to the earliest witness if a work has no
+                    // composition date) — "where does this row begin" is the more
+                    // useful landing point than the midpoint of a centuries-wide
+                    // gap — and left-align it rather than centering it, so the empty
+                    // space and edge fade to its right read as "keep swiping" rather
+                    // than looking like a stray, unexplained gap.
+                    let anchorXs = compXs;
+                    if (!anchorXs.length) {
+                        const earliest = findEarliestWitness(w);
+                        anchorXs = earliest ? [xZoomed(earliest.start), xZoomed(earliest.end)] : witnessXs.slice(0, 2);
+                    }
+                    const anchorMinX = Math.min(...anchorXs) + margin.left;
+                    const target = Math.min(maxScroll, Math.max(0, anchorMinX - pad));
+                    chartScrollColEl.scrollTo({ left: target, behavior: "smooth" });
+                }
+
+                // Builds one tappable row for #chartLabelCol: the work's title
+                // (author roman / work italic, matching the desktop axis label) plus
+                // a compact manuscript-volume bar using the exact same
+                // manuscriptDisplayValue/MANUSCRIPT_SCALE_MAX scale as the desktop
+                // in-SVG mss bars, just rendered as HTML instead of SVG. rowHeight
+                // comes from yScale.step() (see renderMobileLabelColumn) rather than
+                // the laneH estimate used to size the plot, so it lines up with the
+                // SVG marks pixel-for-pixel regardless of scaleBand's own padding
+                // rounding.
+                function buildMobileRow(w, rowHeight) {
+                    const row = document.createElement("button");
+                    row.type = "button";
+                    row.className = "mobile-row";
+                    row.style.height = `${rowHeight}px`;
+                    row.dataset.workId = w.id;
+                    row.setAttribute("aria-label", `${standardTitle(w)}. ${mssAriaLabel(w)}`);
+
+                    const titleEl = document.createElement("div");
+                    titleEl.className = "mobile-row-title";
+                    const { author, work } = axisLabelParts(w);
+                    if (author) {
+                        titleEl.append(`${author} — `);
+                        const em = document.createElement("i");
+                        em.textContent = work;
+                        titleEl.appendChild(em);
+                    } else {
+                        titleEl.textContent = work;
+                    }
+                    row.appendChild(titleEl);
+
+                    const track = document.createElement("div");
+                    track.className = "mobile-mss-track";
+                    const value = manuscriptDisplayValue(w.manuscriptCount);
+                    const accent = accentForGroup(w.group);
+                    if (value != null) {
+                        const pct = Math.min(100, Math.max(0, (value / MANUSCRIPT_SCALE_MAX) * 100));
+                        const fill = document.createElement("div");
+                        fill.className = "mobile-mss-fill";
+                        fill.style.width = `${pct}%`;
+                        fill.style.background = accent;
+                        const endpoint = document.createElement("div");
+                        endpoint.className = "mobile-mss-endpoint";
+                        endpoint.style.left = `${pct}%`;
+                        endpoint.style.background = accent;
+                        track.append(fill, endpoint);
+                    } else {
+                        const dash = document.createElement("div");
+                        dash.className = "mobile-mss-dash";
+                        track.appendChild(dash);
+                    }
+                    row.appendChild(track);
+
+                    row.addEventListener("mouseenter", () => setActiveRow(w.id, w.group));
+                    row.addEventListener("focus", () => setActiveRow(w.id, w.group));
+                    row.addEventListener("mouseleave", clearActiveRow);
+                    row.addEventListener("blur", clearActiveRow);
+                    row.addEventListener("click", (evt) => {
+                        evt.stopPropagation();
+                        setActiveRow(w.id, w.group);
+                        openDetailSheet(workTooltip(w, true));
+                        scrollWorkIntoView(w);
+                    });
+                    return row;
+                }
+
+                // Rebuilds #chartLabelCol to mirror the SVG's section/row structure
+                // exactly: iterating the same `sections` array (in the same order)
+                // used to build domainIds above guarantees each HTML row lines up
+                // with its SVG counterpart, and using yScale.step() (band scales
+                // have a single uniform step by construction) for every row's height
+                // keeps that alignment exact rather than approximate, however many
+                // rows are in a section.
+                function renderMobileLabelColumn(sections) {
+                    if (!chartLabelColEl) return;
+                    chartLabelColEl.innerHTML = "";
+                    chartLabelColEl.style.paddingTop = `${margin.top}px`;
+                    const rowHeight = yScale.step();
+                    sections.forEach(s => {
+                        const header = document.createElement("div");
+                        header.className = "mobile-section-header";
+                        header.style.height = `${rowHeight}px`;
+                        header.style.color = s.key === "NT" ? getCSSVar('--accent-nt') : getCSSVar('--accent-other');
+                        header.textContent = s.label;
+                        chartLabelColEl.appendChild(header);
+                        s.works.forEach(w => chartLabelColEl.appendChild(buildMobileRow(w, rowHeight)));
+                    });
+                }
+
+                if (mobileMode) {
+                    renderMobileLabelColumn(sections);
+                } else if (chartLabelColEl) {
+                    chartLabelColEl.innerHTML = "";
+                }
+
+                // Zoom/pan is a desktop-only interaction. On mobile the timeline
+                // panel scrolls natively instead (#chartScrollCol), which lets
+                // iOS/Android correctly tell a mostly-horizontal drag (pan the
+                // timeline) from a mostly-vertical one (scroll the page) with no
+                // custom gesture code. Attaching d3-zoom's touch handlers here too
+                // would fight that: d3-zoom calls preventDefault on touch gestures
+                // over the whole chart, which would block ordinary page scrolling
+                // anywhere a finger starts on the chart.
+                if (mobileMode) {
+                    zoomRect.style("pointer-events", "none").on(".zoom", null);
+                } else {
+                    zoomRect.style("pointer-events", "all").call(zoom);
+                }
+
+                syncResetButtonLabel();
+                syncHelpNavText();
+                updateMobileScrollAffordances();
             }
 
             // Update axis during zoom
@@ -2458,7 +3440,7 @@
                     const dodgeOffsets = computeDodgeOffsets(witnessRows);
                     const dodgeFor = d => dodgeOffsets.get(d) || 0;
 
-                    layers.witnesses.selectAll("line.witness-range-line")
+                    layers.witnesses.selectAll("line.witness-range-line, line.witness-range-hit")
                         .attr("y1", d => laneCenterY(d) + dodgeFor(d))
                         .attr("y2", d => laneCenterY(d) + dodgeFor(d));
 
@@ -2480,10 +3462,95 @@
                     .style("text-anchor", "end");
             }
 
-            // Click anywhere to dismiss pinned tooltips
-            document.addEventListener("click", () => { hideTip(); clearActiveRow(); });
+            // Click anywhere to dismiss pinned tooltips (and, on mobile, the detail
+            // sheet — unless the click originated inside it, since its own content
+            // links/close button need their click to actually register first).
+            document.addEventListener("click", (evt) => {
+                hideTip();
+                clearActiveRow();
+                if (detailSheetEl && detailSheetEl.classList.contains("open") && !detailSheetEl.contains(evt.target)) {
+                    closeDetailSheet();
+                }
+            });
+
+            // Edge-fade + "swipe to see more" hint, kept in sync with the mobile
+            // timeline panel's actual scroll position/extent (see #chartScrollCol.
+            // fade-left/.fade-right in the stylesheet and #chartHint in the markup).
+            function updateMobileScrollAffordances() {
+                if (!chartScrollColEl) return;
+                const maxScroll = chartScrollColEl.scrollWidth - chartScrollColEl.clientWidth;
+                const scrollable = maxScroll > 4;
+                const atStart = chartScrollColEl.scrollLeft <= 2;
+                const atEnd = chartScrollColEl.scrollLeft >= maxScroll - 2;
+                chartScrollColEl.classList.toggle("fade-left", scrollable && !atStart);
+                chartScrollColEl.classList.toggle("fade-right", scrollable && !atEnd);
+                if (chartHintEl) chartHintEl.hidden = !scrollable;
+            }
+            if (chartScrollColEl) {
+                chartScrollColEl.addEventListener("scroll", updateMobileScrollAffordances, { passive: true });
+            }
+
+            // Navigation instructions inside the Help modal depend on the current
+            // layout mode (native swipe-scroll on mobile vs. drag/wheel zoom on
+            // desktop), so this is re-run by render() whenever the mode may have
+            // changed, not just once at load.
+            function syncHelpNavText() {
+                const navEl = document.getElementById('helpNavText');
+                if (!navEl) return;
+                navEl.textContent = isMobileLayout()
+                    ? "Swipe left or right within the timeline panel to move through the full date range — the timeline scrolls rather than compressing. Tap any box, diamond, or bar for full details in a sheet at the bottom of the screen; tap outside it, its close button, or swipe it down to dismiss. Use “Scroll to Start” (in Controls) to jump back to the beginning."
+                    : "Drag anywhere in the timeline to pan, and scroll or pinch to zoom in on a date range. Hover, click, or tab to any box, diamond, or bar for full details; click elsewhere to dismiss a pinned detail. Use “Reset Zoom” (in Controls) to return to the full view.";
+            }
+
+            // Help modal: legend + navigation instructions. Adapted from the
+            // About-dialog pattern in minimalFactsTidyTree.html (focus trap,
+            // Escape/backdrop/close-button dismissal, restores focus to whatever
+            // opened it) so this site's help affordance behaves consistently
+            // across graphs, even though the content here is hardcoded rather than
+            // sourced from a JSON `meta.aboutModal` block.
+            (function () {
+                const helpBtn = document.getElementById('helpBtn');
+                const helpModal = document.getElementById('helpModal');
+                if (!helpBtn || !helpModal) return;
+                const closeBtn = helpModal.querySelector('.modal-close');
+                const content = helpModal.querySelector('.modal-content');
+                let lastFocused = null;
+
+                function keyHandler(e) {
+                    if (e.key === 'Escape') { closeHelpModal(); return; }
+                    if (e.key === 'Tab' && helpModal.classList.contains('open')) {
+                        const focusables = helpModal.querySelectorAll('a[href], button:not([disabled])');
+                        if (!focusables.length) { e.preventDefault(); return; }
+                        const first = focusables[0], last = focusables[focusables.length - 1];
+                        if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+                        else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+                    }
+                }
+                function openHelpModal() {
+                    lastFocused = document.activeElement;
+                    syncHelpNavText();
+                    helpModal.classList.add('open');
+                    helpModal.setAttribute('aria-hidden', 'false');
+                    if (content) content.scrollTop = 0;
+                    if (closeBtn) closeBtn.focus();
+                    document.addEventListener('keydown', keyHandler);
+                }
+                function closeHelpModal() {
+                    helpModal.classList.remove('open');
+                    helpModal.setAttribute('aria-hidden', 'true');
+                    document.removeEventListener('keydown', keyHandler);
+                    if (lastFocused && typeof lastFocused.focus === 'function') {
+                        try { lastFocused.focus({ preventScroll: true }); } catch (e) { /* non-fatal */ }
+                    }
+                }
+                helpBtn.addEventListener('click', (e) => { e.stopPropagation(); openHelpModal(); });
+                if (closeBtn) closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closeHelpModal(); });
+                helpModal.addEventListener('click', (e) => { if (e.target === helpModal) closeHelpModal(); });
+            })();
 
             // Keep the chart responsive to its (possibly embedded) container width
+            // — and, since MOBILE_BREAKPOINT is a width media query, to crossing
+            // between the desktop and mobile layouts as the window is resized.
             let resizeTimer = null;
             window.addEventListener("resize", () => {
                 clearTimeout(resizeTimer);
